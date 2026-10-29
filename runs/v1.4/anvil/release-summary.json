@@ -1,0 +1,2938 @@
+{
+  "project": "anvil",
+  "commit": "e83ea0f5516ce2ece26740266165180018741e66",
+  "export": "<temporary-path>",
+  "summary": {
+    "all": {
+      "everything_else": {
+        "sloc": 0,
+        "statuses": {
+          "hazard": 0,
+          "proven": 0,
+          "proven-bounded": 0,
+          "proven-upstream": 0,
+          "tested": 0,
+          "trusted": 0,
+          "unverified": 0
+        },
+        "unknown_dependency_sizes": 0
+      },
+      "security_relevant": {
+        "sloc": 2988168,
+        "statuses": {
+          "hazard": 112,
+          "proven": 0,
+          "proven-bounded": 0,
+          "proven-upstream": 0,
+          "tested": 5128,
+          "trusted": 2599,
+          "unverified": 2980329
+        },
+        "unknown_dependency_sizes": 0
+      }
+    },
+    "escape_sites": 21636,
+    "first_party": {
+      "everything_else": {
+        "sloc": 0,
+        "statuses": {
+          "hazard": 0,
+          "proven": 0,
+          "proven-bounded": 0,
+          "proven-upstream": 0,
+          "tested": 0,
+          "trusted": 0,
+          "unverified": 0
+        },
+        "unknown_dependency_sizes": 0
+      },
+      "security_relevant": {
+        "sloc": 13893,
+        "statuses": {
+          "hazard": 112,
+          "proven": 0,
+          "proven-bounded": 0,
+          "proven-upstream": 0,
+          "tested": 5128,
+          "trusted": 2599,
+          "unverified": 6054
+        },
+        "unknown_dependency_sizes": 0
+      }
+    },
+    "proof_code": {
+      "everything_else": {
+        "hazard_units": 0,
+        "sloc": 0,
+        "units": 0,
+        "unverified": 0,
+        "verified": 0
+      },
+      "security_relevant": {
+        "hazard_units": 131,
+        "sloc": 53101,
+        "units": 2134,
+        "unverified": 2134,
+        "verified": 0
+      },
+      "total": {
+        "hazard_units": 131,
+        "sloc": 53101,
+        "units": 2134,
+        "unverified": 2134,
+        "verified": 0
+      }
+    },
+    "security_first_party_hazard_units": 156,
+    "third_party": {
+      "everything_else": {
+        "sloc": 0,
+        "statuses": {
+          "hazard": 0,
+          "proven": 0,
+          "proven-bounded": 0,
+          "proven-upstream": 0,
+          "tested": 0,
+          "trusted": 0,
+          "unverified": 0
+        },
+        "unknown_dependency_sizes": 0
+      },
+      "security_relevant": {
+        "sloc": 2974275,
+        "statuses": {
+          "hazard": 0,
+          "proven": 0,
+          "proven-bounded": 0,
+          "proven-upstream": 0,
+          "tested": 0,
+          "trusted": 0,
+          "unverified": 2974275
+        },
+        "unknown_dependency_sizes": 0
+      }
+    },
+    "trusted_items": 401,
+    "trusted_sloc": 2732
+  },
+  "evidence_runs": [
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-composition.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: nonzero exit status"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-crds.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: nonzero exit status"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-external_shim_layer.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: nonzero exit status"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-focus-composition.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-focus-crds.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: nonzero exit status"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-focus-external_shim_layer.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: nonzero exit status"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-focus-kubernetes_api_objects.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-focus-kubernetes_cluster.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-focus-rabbitmq_controller.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-focus-reconciler.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-focus-shim_layer.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-focus-state_machine.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-focus-tla_demo.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-focus-unit_tests.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-focus-vdeployment_controller.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-focus-vreplicaset_controller.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-focus-vstatefulset_controller.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-focus-vstd_ext.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-fresh-composition.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-fresh-kubernetes_api_objects.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-fresh-kubernetes_cluster.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-fresh-rabbitmq_controller.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-fresh-reconciler.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-fresh-state_machine.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-fresh-tla_demo.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-fresh-vdeployment_controller.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-fresh-vreplicaset_controller.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-fresh-vstatefulset_controller.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-fresh-vstd_ext.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-kubernetes_api_objects.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: nonzero exit status"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-kubernetes_cluster.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: nonzero exit status"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-rabbitmq_controller.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: nonzero exit status"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-reconciler.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: nonzero exit status"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-shim_layer.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: nonzero exit status"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-state_machine.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: nonzero exit status"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-subtree-composition.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-subtree-kubernetes_api_objects.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-subtree-kubernetes_cluster.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-subtree-rabbitmq_controller.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-subtree-reconciler.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-subtree-state_machine.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-subtree-tla_demo.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-subtree-vdeployment_controller.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-subtree-vreplicaset_controller.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-subtree-vstatefulset_controller.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-subtree-vstd_ext.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: unsupported or partial verifier command"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-tla_demo.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: nonzero exit status"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-unit_tests.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: nonzero exit status"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-vdeployment_controller.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: nonzero exit status"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-vreplicaset_controller.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: nonzero exit status"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-vstatefulset_controller.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: nonzero exit status"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus-vstd_ext.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: nonzero exit status"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    },
+    {
+      "tool": "verus",
+      "log": "runs/v1.4/anvil/verus.log",
+      "accepted": false,
+      "reasons": [
+        "verus evidence unconfirmed: nonzero exit status"
+      ],
+      "cfg": [],
+      "trusted_sloc": 0,
+      "credited_units_count": 0,
+      "credited_units_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "verified_files_count": 0,
+      "verified_files_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "trusted_sites_count": 0,
+      "trusted_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "escape_sites_count": 0,
+      "escape_sites_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+    }
+  ],
+  "dependency_inventory_complete": true,
+  "closure": "cargo metadata (runtime)",
+  "closure_reason": null,
+  "target": "aarch64-unknown-linux-gnu",
+  "cargo_version": "cargo 1.99.1 (5f94df478 2026-08-27) (Homebrew)",
+  "build_dependency_count": 65,
+  "build_dependency_sloc": 757393,
+  "build_unknown_dependencies": [],
+  "dev_dependencies_excluded": 0,
+  "unknown_dependencies": [],
+  "dependency_count": 209,
+  "dependency_sloc": 2974275,
+  "dependency_before": {
+    "count": 0,
+    "sloc": 0,
+    "unknown": 0,
+    "complete": false
+  },
+  "report_sha256": "1ca480ded50bed82d69a1678c659561f0568540bdc3a740a10bc23b9f776fca4",
+  "manifest_sha256": "981a88c37fcbb1d0aa3fc337ab75f57cc05096bcc9511024ae1b9934fe135094",
+  "escape_sites": [
+    {
+      "file": "discussion/exec-as-spec/specexec.rs",
+      "line": 44,
+      "kind": "admit",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/executable_model/object_map.rs",
+      "line": 92,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/executable_model/object_map.rs",
+      "line": 95,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/executable_model/object_ref_set.rs",
+      "line": 55,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/executable_model/object_ref_set.rs",
+      "line": 58,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/executable_model/string_set.rs",
+      "line": 45,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/executable_model/string_set.rs",
+      "line": 48,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/executable_model/string_set.rs",
+      "line": 51,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_api_objects/error.rs",
+      "line": 23,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_api_objects/exec/api_method.rs",
+      "line": 46,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_api_objects/exec/api_method.rs",
+      "line": 73,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_api_objects/exec/api_method.rs",
+      "line": 98,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_api_objects/exec/api_method.rs",
+      "line": 124,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_api_objects/exec/api_method.rs",
+      "line": 154,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_api_objects/exec/api_method.rs",
+      "line": 181,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_api_objects/exec/api_method.rs",
+      "line": 210,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_api_objects/exec/api_method.rs",
+      "line": 250,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_api_objects/exec/api_method.rs",
+      "line": 288,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_api_objects/exec/dynamic.rs",
+      "line": 32,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_api_objects/exec/pod.rs",
+      "line": 70,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_api_objects/exec/pod.rs",
+      "line": 149,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_api_objects/exec/resource.rs",
+      "line": 216,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_cluster/proof/cluster.rs",
+      "line": 27,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_cluster/proof/controller_runtime_liveness.rs",
+      "line": 6,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_cluster/proof/controller_runtime_liveness.rs",
+      "line": 619,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_cluster/proof/controller_runtime_safety.rs",
+      "line": 5,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_cluster/proof/controller_runtime_safety.rs",
+      "line": 170,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_cluster/proof/controller_runtime_safety.rs",
+      "line": 353,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_cluster/proof/controller_runtime_safety.rs",
+      "line": 366,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_cluster/proof/wf1_helpers.rs",
+      "line": 4,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_cluster/proof/wf1_helpers.rs",
+      "line": 151,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_cluster/proof/wf1_helpers.rs",
+      "line": 153,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_cluster/spec/cluster.rs",
+      "line": 6,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_cluster/spec/cluster.rs",
+      "line": 7,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_cluster/spec/cluster.rs",
+      "line": 35,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_cluster/spec/cluster.rs",
+      "line": 136,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_cluster/spec/cluster.rs",
+      "line": 138,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_cluster/spec/cluster.rs",
+      "line": 562,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_cluster/spec/cluster.rs",
+      "line": 564,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_cluster/spec/cluster.rs",
+      "line": 585,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_cluster/spec/cluster.rs",
+      "line": 692,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_cluster/spec/cluster.rs",
+      "line": 693,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_cluster/spec/cluster.rs",
+      "line": 695,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_cluster/spec/cluster.rs",
+      "line": 727,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_cluster/spec/cluster.rs",
+      "line": 728,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_cluster/spec/external/state_machine.rs",
+      "line": 2,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_cluster/spec/external/state_machine.rs",
+      "line": 38,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/kubernetes_cluster/spec/mod.rs",
+      "line": 8,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/vstd_ext/string_map.rs",
+      "line": 114,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "src/vstd_ext/string_map.rs",
+      "line": 117,
+      "kind": "external",
+      "first_party": true,
+      "security": true
+    }
+  ],
+  "trusted_inventory": {
+    "count": 401,
+    "sloc": 2732,
+    "sha256": "a1e39d103bf362884c5cd1699fea5322d722612b44b4ccf8837a24290f57cacc"
+  },
+  "verifier_outcome": {
+    "scope": "every root library module, including framework, four controllers and composition",
+    "counts": {
+      "skipped": 4,
+      "verified": 11
+    },
+    "modules": [
+      {
+        "module": "crds",
+        "outcome": "skipped",
+        "verified": null,
+        "errors": null,
+        "log": null,
+        "previous_attempts": [
+          {
+            "module": "crds",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-crds.log",
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 1,
+            "seconds": 0.21946004102937877
+          },
+          {
+            "module": "crds",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-focus-crds.log",
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 101,
+            "seconds": 66.20090137491934
+          },
+          {
+            "module": "crds",
+            "outcome": "skipped",
+            "verified": null,
+            "errors": null,
+            "log": null,
+            "selected_descendants": [],
+            "reason": "not in the pinned verifier selectable-module inventory (Rust-only/cfg-excluded source); earlier selector errors retained"
+          }
+        ],
+        "selected_descendants": [],
+        "reason": "not in the pinned verifier selectable-module inventory (Rust-only/cfg-excluded source); earlier selector errors retained"
+      },
+      {
+        "module": "external_shim_layer",
+        "outcome": "skipped",
+        "verified": null,
+        "errors": null,
+        "log": null,
+        "previous_attempts": [
+          {
+            "module": "external_shim_layer",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-external_shim_layer.log",
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 1,
+            "seconds": 0.1819136249832809
+          },
+          {
+            "module": "external_shim_layer",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-focus-external_shim_layer.log",
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 101,
+            "seconds": 53.103902959031984
+          },
+          {
+            "module": "external_shim_layer",
+            "outcome": "skipped",
+            "verified": null,
+            "errors": null,
+            "log": null,
+            "selected_descendants": [],
+            "reason": "not in the pinned verifier selectable-module inventory (Rust-only/cfg-excluded source); earlier selector errors retained"
+          }
+        ],
+        "selected_descendants": [],
+        "reason": "not in the pinned verifier selectable-module inventory (Rust-only/cfg-excluded source); earlier selector errors retained"
+      },
+      {
+        "module": "kubernetes_api_objects",
+        "outcome": "verified",
+        "verified": 88,
+        "errors": 0,
+        "log": "verus-fresh-kubernetes_api_objects.log",
+        "previous_attempts": [
+          {
+            "module": "kubernetes_api_objects",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-kubernetes_api_objects.log",
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 1,
+            "seconds": 0.18521541683003306
+          },
+          {
+            "module": "kubernetes_api_objects",
+            "outcome": "verified",
+            "verified": 0,
+            "errors": 0,
+            "log": "verus-focus-kubernetes_api_objects.log",
+            "reason": null,
+            "exit_code": 0,
+            "seconds": 32.090831249952316
+          },
+          {
+            "module": "kubernetes_api_objects",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-subtree-kubernetes_api_objects.log",
+            "selected_descendants": [
+              "kubernetes_api_objects",
+              "kubernetes_api_objects::error",
+              "kubernetes_api_objects::exec::affinity",
+              "kubernetes_api_objects::exec::api_method",
+              "kubernetes_api_objects::exec::api_resource",
+              "kubernetes_api_objects::exec::common",
+              "kubernetes_api_objects::exec::config_map",
+              "kubernetes_api_objects::exec::container",
+              "kubernetes_api_objects::exec::daemon_set",
+              "kubernetes_api_objects::exec::dynamic",
+              "kubernetes_api_objects::exec::label_selector",
+              "kubernetes_api_objects::exec::object_meta",
+              "kubernetes_api_objects::exec::owner_reference",
+              "kubernetes_api_objects::exec::persistent_volume_claim",
+              "kubernetes_api_objects::exec::pod",
+              "kubernetes_api_objects::exec::pod_template_spec",
+              "kubernetes_api_objects::exec::preconditions",
+              "kubernetes_api_objects::exec::resource_requirements",
+              "kubernetes_api_objects::exec::role",
+              "kubernetes_api_objects::exec::role_binding",
+              "kubernetes_api_objects::exec::secret",
+              "kubernetes_api_objects::exec::service",
+              "kubernetes_api_objects::exec::service_account",
+              "kubernetes_api_objects::exec::stateful_set",
+              "kubernetes_api_objects::exec::toleration",
+              "kubernetes_api_objects::exec::volume",
+              "kubernetes_api_objects::exec::volume_resource_requirements",
+              "kubernetes_api_objects::spec::affinity",
+              "kubernetes_api_objects::spec::api_method",
+              "kubernetes_api_objects::spec::api_resource",
+              "kubernetes_api_objects::spec::common",
+              "kubernetes_api_objects::spec::config_map",
+              "kubernetes_api_objects::spec::container",
+              "kubernetes_api_objects::spec::daemon_set",
+              "kubernetes_api_objects::spec::dynamic",
+              "kubernetes_api_objects::spec::label_selector",
+              "kubernetes_api_objects::spec::object_meta",
+              "kubernetes_api_objects::spec::owner_reference",
+              "kubernetes_api_objects::spec::persistent_volume_claim",
+              "kubernetes_api_objects::spec::pod",
+              "kubernetes_api_objects::spec::pod_template_spec",
+              "kubernetes_api_objects::spec::preconditions",
+              "kubernetes_api_objects::spec::resource",
+              "kubernetes_api_objects::spec::resource_requirements",
+              "kubernetes_api_objects::spec::role",
+              "kubernetes_api_objects::spec::role_binding",
+              "kubernetes_api_objects::spec::secret",
+              "kubernetes_api_objects::spec::service",
+              "kubernetes_api_objects::spec::service_account",
+              "kubernetes_api_objects::spec::stateful_set",
+              "kubernetes_api_objects::spec::toleration",
+              "kubernetes_api_objects::spec::volume",
+              "kubernetes_api_objects::spec::volume_resource_requirements"
+            ],
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 0,
+            "seconds": 1.5772494580596685
+          }
+        ],
+        "selected_descendants": [
+          "kubernetes_api_objects",
+          "kubernetes_api_objects::error",
+          "kubernetes_api_objects::exec::affinity",
+          "kubernetes_api_objects::exec::api_method",
+          "kubernetes_api_objects::exec::api_resource",
+          "kubernetes_api_objects::exec::common",
+          "kubernetes_api_objects::exec::config_map",
+          "kubernetes_api_objects::exec::container",
+          "kubernetes_api_objects::exec::daemon_set",
+          "kubernetes_api_objects::exec::dynamic",
+          "kubernetes_api_objects::exec::label_selector",
+          "kubernetes_api_objects::exec::object_meta",
+          "kubernetes_api_objects::exec::owner_reference",
+          "kubernetes_api_objects::exec::persistent_volume_claim",
+          "kubernetes_api_objects::exec::pod",
+          "kubernetes_api_objects::exec::pod_template_spec",
+          "kubernetes_api_objects::exec::preconditions",
+          "kubernetes_api_objects::exec::resource_requirements",
+          "kubernetes_api_objects::exec::role",
+          "kubernetes_api_objects::exec::role_binding",
+          "kubernetes_api_objects::exec::secret",
+          "kubernetes_api_objects::exec::service",
+          "kubernetes_api_objects::exec::service_account",
+          "kubernetes_api_objects::exec::stateful_set",
+          "kubernetes_api_objects::exec::toleration",
+          "kubernetes_api_objects::exec::volume",
+          "kubernetes_api_objects::exec::volume_resource_requirements",
+          "kubernetes_api_objects::spec::affinity",
+          "kubernetes_api_objects::spec::api_method",
+          "kubernetes_api_objects::spec::api_resource",
+          "kubernetes_api_objects::spec::common",
+          "kubernetes_api_objects::spec::config_map",
+          "kubernetes_api_objects::spec::container",
+          "kubernetes_api_objects::spec::daemon_set",
+          "kubernetes_api_objects::spec::dynamic",
+          "kubernetes_api_objects::spec::label_selector",
+          "kubernetes_api_objects::spec::object_meta",
+          "kubernetes_api_objects::spec::owner_reference",
+          "kubernetes_api_objects::spec::persistent_volume_claim",
+          "kubernetes_api_objects::spec::pod",
+          "kubernetes_api_objects::spec::pod_template_spec",
+          "kubernetes_api_objects::spec::preconditions",
+          "kubernetes_api_objects::spec::resource",
+          "kubernetes_api_objects::spec::resource_requirements",
+          "kubernetes_api_objects::spec::role",
+          "kubernetes_api_objects::spec::role_binding",
+          "kubernetes_api_objects::spec::secret",
+          "kubernetes_api_objects::spec::service",
+          "kubernetes_api_objects::spec::service_account",
+          "kubernetes_api_objects::spec::stateful_set",
+          "kubernetes_api_objects::spec::toleration",
+          "kubernetes_api_objects::spec::volume",
+          "kubernetes_api_objects::spec::volume_resource_requirements"
+        ],
+        "reason": null,
+        "observed_modules": [
+          "kubernetes_api_objects",
+          "kubernetes_api_objects::error",
+          "kubernetes_api_objects::exec::affinity",
+          "kubernetes_api_objects::exec::api_method",
+          "kubernetes_api_objects::exec::api_resource",
+          "kubernetes_api_objects::exec::common",
+          "kubernetes_api_objects::exec::config_map",
+          "kubernetes_api_objects::exec::container",
+          "kubernetes_api_objects::exec::daemon_set",
+          "kubernetes_api_objects::exec::dynamic",
+          "kubernetes_api_objects::exec::label_selector",
+          "kubernetes_api_objects::exec::object_meta",
+          "kubernetes_api_objects::exec::owner_reference",
+          "kubernetes_api_objects::exec::persistent_volume_claim",
+          "kubernetes_api_objects::exec::pod",
+          "kubernetes_api_objects::exec::pod_template_spec",
+          "kubernetes_api_objects::exec::preconditions",
+          "kubernetes_api_objects::exec::resource_requirements",
+          "kubernetes_api_objects::exec::role",
+          "kubernetes_api_objects::exec::role_binding",
+          "kubernetes_api_objects::exec::secret",
+          "kubernetes_api_objects::exec::service",
+          "kubernetes_api_objects::exec::service_account",
+          "kubernetes_api_objects::exec::stateful_set",
+          "kubernetes_api_objects::exec::toleration",
+          "kubernetes_api_objects::exec::volume",
+          "kubernetes_api_objects::exec::volume_resource_requirements",
+          "kubernetes_api_objects::spec::affinity",
+          "kubernetes_api_objects::spec::api_method",
+          "kubernetes_api_objects::spec::common",
+          "kubernetes_api_objects::spec::config_map",
+          "kubernetes_api_objects::spec::container",
+          "kubernetes_api_objects::spec::daemon_set",
+          "kubernetes_api_objects::spec::dynamic",
+          "kubernetes_api_objects::spec::label_selector",
+          "kubernetes_api_objects::spec::object_meta",
+          "kubernetes_api_objects::spec::owner_reference",
+          "kubernetes_api_objects::spec::persistent_volume_claim",
+          "kubernetes_api_objects::spec::pod",
+          "kubernetes_api_objects::spec::pod_template_spec",
+          "kubernetes_api_objects::spec::preconditions",
+          "kubernetes_api_objects::spec::resource",
+          "kubernetes_api_objects::spec::resource_requirements",
+          "kubernetes_api_objects::spec::role",
+          "kubernetes_api_objects::spec::role_binding",
+          "kubernetes_api_objects::spec::secret",
+          "kubernetes_api_objects::spec::service",
+          "kubernetes_api_objects::spec::service_account",
+          "kubernetes_api_objects::spec::stateful_set",
+          "kubernetes_api_objects::spec::toleration",
+          "kubernetes_api_objects::spec::volume",
+          "kubernetes_api_objects::spec::volume_resource_requirements"
+        ],
+        "fresh_compile": true,
+        "phase": "verification",
+        "exit_code": 0,
+        "seconds": 23.084472042042762
+      },
+      {
+        "module": "kubernetes_cluster",
+        "outcome": "verified",
+        "verified": 110,
+        "errors": 0,
+        "log": "verus-fresh-kubernetes_cluster.log",
+        "previous_attempts": [
+          {
+            "module": "kubernetes_cluster",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-kubernetes_cluster.log",
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 1,
+            "seconds": 0.19555545807816088
+          },
+          {
+            "module": "kubernetes_cluster",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-focus-kubernetes_cluster.log",
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 0,
+            "seconds": 1.3243632498197258
+          },
+          {
+            "module": "kubernetes_cluster",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-subtree-kubernetes_cluster.log",
+            "selected_descendants": [
+              "kubernetes_cluster",
+              "kubernetes_cluster::proof::api_server",
+              "kubernetes_cluster::proof::cluster",
+              "kubernetes_cluster::proof::composition",
+              "kubernetes_cluster::proof::composition::example",
+              "kubernetes_cluster::proof::controller_runtime_liveness",
+              "kubernetes_cluster::proof::controller_runtime_safety",
+              "kubernetes_cluster::proof::core",
+              "kubernetes_cluster::proof::failures_liveness",
+              "kubernetes_cluster::proof::garbage_collector",
+              "kubernetes_cluster::proof::network",
+              "kubernetes_cluster::proof::network_liveness",
+              "kubernetes_cluster::proof::objects_in_reconcile",
+              "kubernetes_cluster::proof::objects_in_store",
+              "kubernetes_cluster::proof::req_resp",
+              "kubernetes_cluster::proof::retentive_cluster",
+              "kubernetes_cluster::proof::stability",
+              "kubernetes_cluster::proof::transition_validation",
+              "kubernetes_cluster::proof::wf1_helpers",
+              "kubernetes_cluster::spec::api_server::state_machine",
+              "kubernetes_cluster::spec::api_server::types",
+              "kubernetes_cluster::spec::builtin_controllers::garbage_collector",
+              "kubernetes_cluster::spec::builtin_controllers::state_machine",
+              "kubernetes_cluster::spec::builtin_controllers::types",
+              "kubernetes_cluster::spec::cluster",
+              "kubernetes_cluster::spec::controller::state_machine",
+              "kubernetes_cluster::spec::controller::types",
+              "kubernetes_cluster::spec::esr",
+              "kubernetes_cluster::spec::external::state_machine",
+              "kubernetes_cluster::spec::external::types",
+              "kubernetes_cluster::spec::install_helpers",
+              "kubernetes_cluster::spec::message",
+              "kubernetes_cluster::spec::network::state_machine",
+              "kubernetes_cluster::spec::network::types",
+              "kubernetes_cluster::spec::pod_monkey::state_machine",
+              "kubernetes_cluster::spec::pod_monkey::types",
+              "kubernetes_cluster::spec::retentive_cluster"
+            ],
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 0,
+            "seconds": 1.5173745839856565
+          }
+        ],
+        "selected_descendants": [
+          "kubernetes_cluster",
+          "kubernetes_cluster::proof::api_server",
+          "kubernetes_cluster::proof::cluster",
+          "kubernetes_cluster::proof::composition",
+          "kubernetes_cluster::proof::composition::example",
+          "kubernetes_cluster::proof::controller_runtime_liveness",
+          "kubernetes_cluster::proof::controller_runtime_safety",
+          "kubernetes_cluster::proof::core",
+          "kubernetes_cluster::proof::failures_liveness",
+          "kubernetes_cluster::proof::garbage_collector",
+          "kubernetes_cluster::proof::network",
+          "kubernetes_cluster::proof::network_liveness",
+          "kubernetes_cluster::proof::objects_in_reconcile",
+          "kubernetes_cluster::proof::objects_in_store",
+          "kubernetes_cluster::proof::req_resp",
+          "kubernetes_cluster::proof::retentive_cluster",
+          "kubernetes_cluster::proof::stability",
+          "kubernetes_cluster::proof::transition_validation",
+          "kubernetes_cluster::proof::wf1_helpers",
+          "kubernetes_cluster::spec::api_server::state_machine",
+          "kubernetes_cluster::spec::api_server::types",
+          "kubernetes_cluster::spec::builtin_controllers::garbage_collector",
+          "kubernetes_cluster::spec::builtin_controllers::state_machine",
+          "kubernetes_cluster::spec::builtin_controllers::types",
+          "kubernetes_cluster::spec::cluster",
+          "kubernetes_cluster::spec::controller::state_machine",
+          "kubernetes_cluster::spec::controller::types",
+          "kubernetes_cluster::spec::esr",
+          "kubernetes_cluster::spec::external::state_machine",
+          "kubernetes_cluster::spec::external::types",
+          "kubernetes_cluster::spec::install_helpers",
+          "kubernetes_cluster::spec::message",
+          "kubernetes_cluster::spec::network::state_machine",
+          "kubernetes_cluster::spec::network::types",
+          "kubernetes_cluster::spec::pod_monkey::state_machine",
+          "kubernetes_cluster::spec::pod_monkey::types",
+          "kubernetes_cluster::spec::retentive_cluster"
+        ],
+        "reason": null,
+        "observed_modules": [
+          "kubernetes_cluster",
+          "kubernetes_cluster::proof::api_server",
+          "kubernetes_cluster::proof::cluster",
+          "kubernetes_cluster::proof::composition",
+          "kubernetes_cluster::proof::composition::example",
+          "kubernetes_cluster::proof::controller_runtime_liveness",
+          "kubernetes_cluster::proof::controller_runtime_safety",
+          "kubernetes_cluster::proof::core",
+          "kubernetes_cluster::proof::failures_liveness",
+          "kubernetes_cluster::proof::garbage_collector",
+          "kubernetes_cluster::proof::network",
+          "kubernetes_cluster::proof::network_liveness",
+          "kubernetes_cluster::proof::objects_in_reconcile",
+          "kubernetes_cluster::proof::objects_in_store",
+          "kubernetes_cluster::proof::req_resp",
+          "kubernetes_cluster::proof::retentive_cluster",
+          "kubernetes_cluster::proof::stability",
+          "kubernetes_cluster::proof::transition_validation",
+          "kubernetes_cluster::proof::wf1_helpers",
+          "kubernetes_cluster::spec::api_server::state_machine",
+          "kubernetes_cluster::spec::builtin_controllers::garbage_collector",
+          "kubernetes_cluster::spec::builtin_controllers::state_machine",
+          "kubernetes_cluster::spec::cluster",
+          "kubernetes_cluster::spec::controller::state_machine",
+          "kubernetes_cluster::spec::controller::types",
+          "kubernetes_cluster::spec::esr",
+          "kubernetes_cluster::spec::external::state_machine",
+          "kubernetes_cluster::spec::install_helpers",
+          "kubernetes_cluster::spec::message",
+          "kubernetes_cluster::spec::network::state_machine",
+          "kubernetes_cluster::spec::pod_monkey::state_machine",
+          "kubernetes_cluster::spec::retentive_cluster",
+          "kubernetes_cluster::proof::controller_runtime_liveness",
+          "kubernetes_cluster::proof::garbage_collector",
+          "kubernetes_cluster::proof::objects_in_store"
+        ],
+        "fresh_compile": true,
+        "phase": "verification",
+        "exit_code": 0,
+        "seconds": 137.74711891682819
+      },
+      {
+        "module": "reconciler",
+        "outcome": "verified",
+        "verified": 6,
+        "errors": 0,
+        "log": "verus-fresh-reconciler.log",
+        "previous_attempts": [
+          {
+            "module": "reconciler",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-reconciler.log",
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 1,
+            "seconds": 0.16987850004807115
+          },
+          {
+            "module": "reconciler",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-focus-reconciler.log",
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 0,
+            "seconds": 1.3208202091045678
+          },
+          {
+            "module": "reconciler",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-subtree-reconciler.log",
+            "selected_descendants": [
+              "reconciler",
+              "reconciler::exec::io",
+              "reconciler::exec::reconciler",
+              "reconciler::exec::resource_builder",
+              "reconciler::spec::io",
+              "reconciler::spec::reconciler",
+              "reconciler::spec::resource_builder"
+            ],
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 0,
+            "seconds": 1.5044127081055194
+          }
+        ],
+        "selected_descendants": [
+          "reconciler",
+          "reconciler::exec::io",
+          "reconciler::exec::reconciler",
+          "reconciler::exec::resource_builder",
+          "reconciler::spec::io",
+          "reconciler::spec::reconciler",
+          "reconciler::spec::resource_builder"
+        ],
+        "reason": null,
+        "observed_modules": [
+          "reconciler",
+          "reconciler::exec::io",
+          "reconciler::exec::reconciler",
+          "reconciler::exec::resource_builder",
+          "reconciler::spec::io",
+          "reconciler::spec::reconciler",
+          "reconciler::spec::resource_builder"
+        ],
+        "fresh_compile": true,
+        "phase": "verification",
+        "exit_code": 0,
+        "seconds": 22.397146583069116
+      },
+      {
+        "module": "shim_layer",
+        "outcome": "skipped",
+        "verified": null,
+        "errors": null,
+        "log": null,
+        "previous_attempts": [
+          {
+            "module": "shim_layer",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-shim_layer.log",
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 1,
+            "seconds": 0.17543349997140467
+          },
+          {
+            "module": "shim_layer",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-focus-shim_layer.log",
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 0,
+            "seconds": 1.3000066669192165
+          },
+          {
+            "module": "shim_layer",
+            "outcome": "skipped",
+            "verified": null,
+            "errors": null,
+            "log": null,
+            "selected_descendants": [],
+            "reason": "not in the pinned verifier selectable-module inventory (Rust-only/cfg-excluded source); earlier selector errors retained"
+          }
+        ],
+        "selected_descendants": [],
+        "reason": "not in the pinned verifier selectable-module inventory (Rust-only/cfg-excluded source); earlier selector errors retained"
+      },
+      {
+        "module": "state_machine",
+        "outcome": "verified",
+        "verified": 1,
+        "errors": 0,
+        "log": "verus-fresh-state_machine.log",
+        "previous_attempts": [
+          {
+            "module": "state_machine",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-state_machine.log",
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 1,
+            "seconds": 0.17858104198239744
+          },
+          {
+            "module": "state_machine",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-focus-state_machine.log",
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 0,
+            "seconds": 1.2930168341845274
+          },
+          {
+            "module": "state_machine",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-subtree-state_machine.log",
+            "selected_descendants": [
+              "state_machine",
+              "state_machine::action",
+              "state_machine::state_machine"
+            ],
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 0,
+            "seconds": 1.4906462500803173
+          }
+        ],
+        "selected_descendants": [
+          "state_machine",
+          "state_machine::action",
+          "state_machine::state_machine"
+        ],
+        "reason": null,
+        "observed_modules": [
+          "state_machine",
+          "state_machine::action",
+          "state_machine::state_machine"
+        ],
+        "fresh_compile": true,
+        "phase": "verification",
+        "exit_code": 0,
+        "seconds": 22.520515208132565
+      },
+      {
+        "module": "tla_demo",
+        "outcome": "verified",
+        "verified": 1,
+        "errors": 0,
+        "log": "verus-fresh-tla_demo.log",
+        "previous_attempts": [
+          {
+            "module": "tla_demo",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-tla_demo.log",
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 1,
+            "seconds": 0.19918162492103875
+          },
+          {
+            "module": "tla_demo",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-focus-tla_demo.log",
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 0,
+            "seconds": 1.3005514170508832
+          },
+          {
+            "module": "tla_demo",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-subtree-tla_demo.log",
+            "selected_descendants": [
+              "tla_demo"
+            ],
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 0,
+            "seconds": 1.49741595890373
+          }
+        ],
+        "selected_descendants": [
+          "tla_demo"
+        ],
+        "reason": null,
+        "observed_modules": [
+          "tla_demo"
+        ],
+        "fresh_compile": true,
+        "phase": "verification",
+        "exit_code": 0,
+        "seconds": 22.23517550015822
+      },
+      {
+        "module": "unit_tests",
+        "outcome": "skipped",
+        "verified": null,
+        "errors": null,
+        "log": null,
+        "previous_attempts": [
+          {
+            "module": "unit_tests",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-unit_tests.log",
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 1,
+            "seconds": 0.18490495905280113
+          },
+          {
+            "module": "unit_tests",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-focus-unit_tests.log",
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 0,
+            "seconds": 1.2636005831882358
+          },
+          {
+            "module": "unit_tests",
+            "outcome": "skipped",
+            "verified": null,
+            "errors": null,
+            "log": null,
+            "selected_descendants": [],
+            "reason": "not in the pinned verifier selectable-module inventory (Rust-only/cfg-excluded source); earlier selector errors retained"
+          }
+        ],
+        "selected_descendants": [],
+        "reason": "not in the pinned verifier selectable-module inventory (Rust-only/cfg-excluded source); earlier selector errors retained"
+      },
+      {
+        "module": "vstd_ext",
+        "outcome": "verified",
+        "verified": 37,
+        "errors": 0,
+        "log": "verus-fresh-vstd_ext.log",
+        "previous_attempts": [
+          {
+            "module": "vstd_ext",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-vstd_ext.log",
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 1,
+            "seconds": 0.18345291703008115
+          },
+          {
+            "module": "vstd_ext",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-focus-vstd_ext.log",
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 0,
+            "seconds": 1.3057336248457432
+          },
+          {
+            "module": "vstd_ext",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-subtree-vstd_ext.log",
+            "selected_descendants": [
+              "vstd_ext",
+              "vstd_ext::map_lib",
+              "vstd_ext::multiset_lib",
+              "vstd_ext::seq_lib",
+              "vstd_ext::set_lib",
+              "vstd_ext::string_map",
+              "vstd_ext::string_view",
+              "vstd_ext::vec_lib"
+            ],
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 0,
+            "seconds": 1.5068465839140117
+          }
+        ],
+        "selected_descendants": [
+          "vstd_ext",
+          "vstd_ext::map_lib",
+          "vstd_ext::multiset_lib",
+          "vstd_ext::seq_lib",
+          "vstd_ext::set_lib",
+          "vstd_ext::string_map",
+          "vstd_ext::string_view",
+          "vstd_ext::vec_lib"
+        ],
+        "reason": null,
+        "observed_modules": [
+          "vstd_ext",
+          "vstd_ext::map_lib",
+          "vstd_ext::multiset_lib",
+          "vstd_ext::seq_lib",
+          "vstd_ext::set_lib",
+          "vstd_ext::string_map",
+          "vstd_ext::string_view",
+          "vstd_ext::vec_lib"
+        ],
+        "fresh_compile": true,
+        "phase": "verification",
+        "exit_code": 0,
+        "seconds": 22.481397666968405
+      },
+      {
+        "module": "vdeployment_controller",
+        "outcome": "verified",
+        "verified": 144,
+        "errors": 0,
+        "log": "verus-fresh-vdeployment_controller.log",
+        "previous_attempts": [
+          {
+            "module": "vdeployment_controller",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-vdeployment_controller.log",
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 1,
+            "seconds": 0.1848716251552105
+          },
+          {
+            "module": "vdeployment_controller",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-focus-vdeployment_controller.log",
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 0,
+            "seconds": 1.306812125025317
+          },
+          {
+            "module": "vdeployment_controller",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-subtree-vdeployment_controller.log",
+            "selected_descendants": [
+              "vdeployment_controller",
+              "vdeployment_controller::exec::reconciler",
+              "vdeployment_controller::model::install",
+              "vdeployment_controller::model::reconciler",
+              "vdeployment_controller::proof::guarantee",
+              "vdeployment_controller::proof::helper_invariants::predicate",
+              "vdeployment_controller::proof::helper_invariants::proof",
+              "vdeployment_controller::proof::helper_lemmas",
+              "vdeployment_controller::proof::liveness::api_actions",
+              "vdeployment_controller::proof::liveness::proof",
+              "vdeployment_controller::proof::liveness::resource_match",
+              "vdeployment_controller::proof::liveness::rolling_update::composition",
+              "vdeployment_controller::proof::liveness::rolling_update::helper_lemmas",
+              "vdeployment_controller::proof::liveness::rolling_update::predicate",
+              "vdeployment_controller::proof::liveness::rolling_update::resource_match",
+              "vdeployment_controller::proof::liveness::spec",
+              "vdeployment_controller::proof::liveness::terminate",
+              "vdeployment_controller::proof::predicate",
+              "vdeployment_controller::trusted::exec_types",
+              "vdeployment_controller::trusted::liveness_theorem",
+              "vdeployment_controller::trusted::rely_guarantee",
+              "vdeployment_controller::trusted::spec_types",
+              "vdeployment_controller::trusted::step"
+            ],
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 0,
+            "seconds": 1.505150374956429
+          }
+        ],
+        "selected_descendants": [
+          "vdeployment_controller",
+          "vdeployment_controller::exec::reconciler",
+          "vdeployment_controller::model::install",
+          "vdeployment_controller::model::reconciler",
+          "vdeployment_controller::proof::guarantee",
+          "vdeployment_controller::proof::helper_invariants::predicate",
+          "vdeployment_controller::proof::helper_invariants::proof",
+          "vdeployment_controller::proof::helper_lemmas",
+          "vdeployment_controller::proof::liveness::api_actions",
+          "vdeployment_controller::proof::liveness::proof",
+          "vdeployment_controller::proof::liveness::resource_match",
+          "vdeployment_controller::proof::liveness::rolling_update::composition",
+          "vdeployment_controller::proof::liveness::rolling_update::helper_lemmas",
+          "vdeployment_controller::proof::liveness::rolling_update::predicate",
+          "vdeployment_controller::proof::liveness::rolling_update::resource_match",
+          "vdeployment_controller::proof::liveness::spec",
+          "vdeployment_controller::proof::liveness::terminate",
+          "vdeployment_controller::proof::predicate",
+          "vdeployment_controller::trusted::exec_types",
+          "vdeployment_controller::trusted::liveness_theorem",
+          "vdeployment_controller::trusted::rely_guarantee",
+          "vdeployment_controller::trusted::spec_types",
+          "vdeployment_controller::trusted::step"
+        ],
+        "reason": null,
+        "observed_modules": [
+          "vdeployment_controller",
+          "vdeployment_controller::exec::reconciler",
+          "vdeployment_controller::model::install",
+          "vdeployment_controller::model::reconciler",
+          "vdeployment_controller::proof::guarantee",
+          "vdeployment_controller::proof::helper_invariants::predicate",
+          "vdeployment_controller::proof::helper_invariants::proof",
+          "vdeployment_controller::proof::helper_lemmas",
+          "vdeployment_controller::proof::liveness::api_actions",
+          "vdeployment_controller::proof::liveness::proof",
+          "vdeployment_controller::proof::liveness::resource_match",
+          "vdeployment_controller::proof::liveness::rolling_update::composition",
+          "vdeployment_controller::proof::liveness::rolling_update::helper_lemmas",
+          "vdeployment_controller::proof::liveness::rolling_update::predicate",
+          "vdeployment_controller::proof::liveness::rolling_update::resource_match",
+          "vdeployment_controller::proof::liveness::spec",
+          "vdeployment_controller::proof::liveness::terminate",
+          "vdeployment_controller::proof::predicate",
+          "vdeployment_controller::trusted::exec_types",
+          "vdeployment_controller::trusted::liveness_theorem",
+          "vdeployment_controller::trusted::rely_guarantee",
+          "vdeployment_controller::trusted::spec_types",
+          "vdeployment_controller::trusted::step",
+          "vdeployment_controller::proof::helper_invariants::proof",
+          "vdeployment_controller::proof::helper_invariants::proof",
+          "vdeployment_controller::proof::helper_invariants::proof",
+          "vdeployment_controller::proof::helper_invariants::proof",
+          "vdeployment_controller::proof::liveness::api_actions",
+          "vdeployment_controller::proof::liveness::api_actions",
+          "vdeployment_controller::proof::liveness::resource_match",
+          "vdeployment_controller::proof::liveness::resource_match",
+          "vdeployment_controller::proof::liveness::resource_match",
+          "vdeployment_controller::proof::liveness::resource_match",
+          "vdeployment_controller::proof::liveness::resource_match",
+          "vdeployment_controller::proof::liveness::resource_match",
+          "vdeployment_controller::proof::liveness::resource_match",
+          "vdeployment_controller::proof::liveness::resource_match",
+          "vdeployment_controller::proof::liveness::resource_match",
+          "vdeployment_controller::proof::liveness::resource_match",
+          "vdeployment_controller::proof::liveness::rolling_update::composition",
+          "vdeployment_controller::proof::liveness::rolling_update::composition",
+          "vdeployment_controller::proof::liveness::rolling_update::composition",
+          "vdeployment_controller::proof::liveness::rolling_update::resource_match",
+          "vdeployment_controller::proof::liveness::rolling_update::resource_match",
+          "vdeployment_controller::proof::liveness::rolling_update::resource_match"
+        ],
+        "fresh_compile": true,
+        "phase": "verification",
+        "exit_code": 0,
+        "seconds": 78.56969729205593
+      },
+      {
+        "module": "vreplicaset_controller",
+        "outcome": "verified",
+        "verified": 105,
+        "errors": 0,
+        "log": "verus-fresh-vreplicaset_controller.log",
+        "previous_attempts": [
+          {
+            "module": "vreplicaset_controller",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-vreplicaset_controller.log",
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 1,
+            "seconds": 0.19010941707529128
+          },
+          {
+            "module": "vreplicaset_controller",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-focus-vreplicaset_controller.log",
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 0,
+            "seconds": 1.3034940420184284
+          },
+          {
+            "module": "vreplicaset_controller",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-subtree-vreplicaset_controller.log",
+            "selected_descendants": [
+              "vreplicaset_controller",
+              "vreplicaset_controller::exec::reconciler",
+              "vreplicaset_controller::model::install",
+              "vreplicaset_controller::model::reconciler",
+              "vreplicaset_controller::proof::guarantee",
+              "vreplicaset_controller::proof::helper_invariants::predicate",
+              "vreplicaset_controller::proof::helper_invariants::proof",
+              "vreplicaset_controller::proof::helper_lemmas",
+              "vreplicaset_controller::proof::liveness::api_actions",
+              "vreplicaset_controller::proof::liveness::proof",
+              "vreplicaset_controller::proof::liveness::resource_match",
+              "vreplicaset_controller::proof::liveness::spec",
+              "vreplicaset_controller::proof::liveness::terminate",
+              "vreplicaset_controller::proof::predicate",
+              "vreplicaset_controller::trusted::exec_types",
+              "vreplicaset_controller::trusted::liveness_theorem",
+              "vreplicaset_controller::trusted::rely_guarantee",
+              "vreplicaset_controller::trusted::spec_types",
+              "vreplicaset_controller::trusted::step"
+            ],
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 0,
+            "seconds": 1.496195999905467
+          }
+        ],
+        "selected_descendants": [
+          "vreplicaset_controller",
+          "vreplicaset_controller::exec::reconciler",
+          "vreplicaset_controller::model::install",
+          "vreplicaset_controller::model::reconciler",
+          "vreplicaset_controller::proof::guarantee",
+          "vreplicaset_controller::proof::helper_invariants::predicate",
+          "vreplicaset_controller::proof::helper_invariants::proof",
+          "vreplicaset_controller::proof::helper_lemmas",
+          "vreplicaset_controller::proof::liveness::api_actions",
+          "vreplicaset_controller::proof::liveness::proof",
+          "vreplicaset_controller::proof::liveness::resource_match",
+          "vreplicaset_controller::proof::liveness::spec",
+          "vreplicaset_controller::proof::liveness::terminate",
+          "vreplicaset_controller::proof::predicate",
+          "vreplicaset_controller::trusted::exec_types",
+          "vreplicaset_controller::trusted::liveness_theorem",
+          "vreplicaset_controller::trusted::rely_guarantee",
+          "vreplicaset_controller::trusted::spec_types",
+          "vreplicaset_controller::trusted::step"
+        ],
+        "reason": null,
+        "observed_modules": [
+          "vreplicaset_controller",
+          "vreplicaset_controller::exec::reconciler",
+          "vreplicaset_controller::model::install",
+          "vreplicaset_controller::model::reconciler",
+          "vreplicaset_controller::proof::guarantee",
+          "vreplicaset_controller::proof::helper_invariants::predicate",
+          "vreplicaset_controller::proof::helper_invariants::proof",
+          "vreplicaset_controller::proof::helper_lemmas",
+          "vreplicaset_controller::proof::liveness::api_actions",
+          "vreplicaset_controller::proof::liveness::proof",
+          "vreplicaset_controller::proof::liveness::resource_match",
+          "vreplicaset_controller::proof::liveness::spec",
+          "vreplicaset_controller::proof::liveness::terminate",
+          "vreplicaset_controller::proof::predicate",
+          "vreplicaset_controller::trusted::exec_types",
+          "vreplicaset_controller::trusted::liveness_theorem",
+          "vreplicaset_controller::trusted::rely_guarantee",
+          "vreplicaset_controller::trusted::spec_types",
+          "vreplicaset_controller::trusted::step",
+          "vreplicaset_controller::proof::guarantee",
+          "vreplicaset_controller::proof::liveness::api_actions",
+          "vreplicaset_controller::proof::liveness::api_actions",
+          "vreplicaset_controller::proof::liveness::resource_match",
+          "vreplicaset_controller::proof::liveness::resource_match",
+          "vreplicaset_controller::proof::liveness::resource_match",
+          "vreplicaset_controller::proof::liveness::resource_match"
+        ],
+        "fresh_compile": true,
+        "phase": "verification",
+        "exit_code": 0,
+        "seconds": 124.5994492918253
+      },
+      {
+        "module": "vstatefulset_controller",
+        "outcome": "verified",
+        "verified": 231,
+        "errors": 0,
+        "log": "verus-fresh-vstatefulset_controller.log",
+        "previous_attempts": [
+          {
+            "module": "vstatefulset_controller",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-vstatefulset_controller.log",
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 1,
+            "seconds": 0.18265804089605808
+          },
+          {
+            "module": "vstatefulset_controller",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-focus-vstatefulset_controller.log",
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 0,
+            "seconds": 1.2850375410635024
+          },
+          {
+            "module": "vstatefulset_controller",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-subtree-vstatefulset_controller.log",
+            "selected_descendants": [
+              "vstatefulset_controller",
+              "vstatefulset_controller::exec::reconciler",
+              "vstatefulset_controller::exec::validation",
+              "vstatefulset_controller::model::install",
+              "vstatefulset_controller::model::reconciler",
+              "vstatefulset_controller::proof::guarantee",
+              "vstatefulset_controller::proof::helper_invariants",
+              "vstatefulset_controller::proof::helper_lemmas",
+              "vstatefulset_controller::proof::internal_rely_guarantee",
+              "vstatefulset_controller::proof::liveness::api_actions",
+              "vstatefulset_controller::proof::liveness::proof",
+              "vstatefulset_controller::proof::liveness::resource_match",
+              "vstatefulset_controller::proof::liveness::spec",
+              "vstatefulset_controller::proof::liveness::state_predicates",
+              "vstatefulset_controller::proof::liveness::terminate",
+              "vstatefulset_controller::proof::predicate",
+              "vstatefulset_controller::trusted::exec_types",
+              "vstatefulset_controller::trusted::liveness_theorem",
+              "vstatefulset_controller::trusted::reconciler",
+              "vstatefulset_controller::trusted::rely_guarantee",
+              "vstatefulset_controller::trusted::spec_types",
+              "vstatefulset_controller::trusted::step"
+            ],
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 0,
+            "seconds": 1.5079971249215305
+          }
+        ],
+        "selected_descendants": [
+          "vstatefulset_controller",
+          "vstatefulset_controller::exec::reconciler",
+          "vstatefulset_controller::exec::validation",
+          "vstatefulset_controller::model::install",
+          "vstatefulset_controller::model::reconciler",
+          "vstatefulset_controller::proof::guarantee",
+          "vstatefulset_controller::proof::helper_invariants",
+          "vstatefulset_controller::proof::helper_lemmas",
+          "vstatefulset_controller::proof::internal_rely_guarantee",
+          "vstatefulset_controller::proof::liveness::api_actions",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::resource_match",
+          "vstatefulset_controller::proof::liveness::spec",
+          "vstatefulset_controller::proof::liveness::state_predicates",
+          "vstatefulset_controller::proof::liveness::terminate",
+          "vstatefulset_controller::proof::predicate",
+          "vstatefulset_controller::trusted::exec_types",
+          "vstatefulset_controller::trusted::liveness_theorem",
+          "vstatefulset_controller::trusted::reconciler",
+          "vstatefulset_controller::trusted::rely_guarantee",
+          "vstatefulset_controller::trusted::spec_types",
+          "vstatefulset_controller::trusted::step"
+        ],
+        "reason": null,
+        "observed_modules": [
+          "vstatefulset_controller",
+          "vstatefulset_controller::exec::reconciler",
+          "vstatefulset_controller::exec::validation",
+          "vstatefulset_controller::model::install",
+          "vstatefulset_controller::model::reconciler",
+          "vstatefulset_controller::proof::guarantee",
+          "vstatefulset_controller::proof::helper_invariants",
+          "vstatefulset_controller::proof::helper_lemmas",
+          "vstatefulset_controller::proof::internal_rely_guarantee",
+          "vstatefulset_controller::proof::liveness::api_actions",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::resource_match",
+          "vstatefulset_controller::proof::liveness::spec",
+          "vstatefulset_controller::proof::liveness::state_predicates",
+          "vstatefulset_controller::proof::liveness::terminate",
+          "vstatefulset_controller::proof::predicate",
+          "vstatefulset_controller::trusted::exec_types",
+          "vstatefulset_controller::trusted::liveness_theorem",
+          "vstatefulset_controller::trusted::reconciler",
+          "vstatefulset_controller::trusted::rely_guarantee",
+          "vstatefulset_controller::trusted::spec_types",
+          "vstatefulset_controller::trusted::step",
+          "vstatefulset_controller::proof::guarantee",
+          "vstatefulset_controller::proof::helper_invariants",
+          "vstatefulset_controller::proof::helper_invariants",
+          "vstatefulset_controller::proof::internal_rely_guarantee",
+          "vstatefulset_controller::proof::internal_rely_guarantee",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::proof",
+          "vstatefulset_controller::proof::liveness::resource_match",
+          "vstatefulset_controller::proof::liveness::resource_match",
+          "vstatefulset_controller::proof::liveness::resource_match",
+          "vstatefulset_controller::proof::liveness::resource_match",
+          "vstatefulset_controller::proof::liveness::resource_match",
+          "vstatefulset_controller::proof::liveness::resource_match",
+          "vstatefulset_controller::proof::liveness::resource_match",
+          "vstatefulset_controller::proof::liveness::resource_match",
+          "vstatefulset_controller::proof::liveness::resource_match",
+          "vstatefulset_controller::proof::liveness::resource_match",
+          "vstatefulset_controller::proof::liveness::resource_match",
+          "vstatefulset_controller::proof::liveness::resource_match",
+          "vstatefulset_controller::proof::liveness::resource_match",
+          "vstatefulset_controller::proof::liveness::resource_match",
+          "vstatefulset_controller::proof::liveness::resource_match",
+          "vstatefulset_controller::proof::liveness::resource_match",
+          "vstatefulset_controller::proof::liveness::resource_match",
+          "vstatefulset_controller::proof::liveness::resource_match"
+        ],
+        "fresh_compile": true,
+        "phase": "verification",
+        "exit_code": 0,
+        "seconds": 104.60777337523177
+      },
+      {
+        "module": "rabbitmq_controller",
+        "outcome": "verified",
+        "verified": 200,
+        "errors": 0,
+        "log": "verus-fresh-rabbitmq_controller.log",
+        "previous_attempts": [
+          {
+            "module": "rabbitmq_controller",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-rabbitmq_controller.log",
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 1,
+            "seconds": 0.18662129109725356
+          },
+          {
+            "module": "rabbitmq_controller",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-focus-rabbitmq_controller.log",
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 0,
+            "seconds": 1.3256438749376684
+          },
+          {
+            "module": "rabbitmq_controller",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-subtree-rabbitmq_controller.log",
+            "selected_descendants": [
+              "rabbitmq_controller",
+              "rabbitmq_controller::exec::reconciler",
+              "rabbitmq_controller::exec::resource::common",
+              "rabbitmq_controller::exec::resource::config_map",
+              "rabbitmq_controller::exec::resource::default_user_secret",
+              "rabbitmq_controller::exec::resource::erlang_cookie",
+              "rabbitmq_controller::exec::resource::headless_service",
+              "rabbitmq_controller::exec::resource::rabbitmq_plugins",
+              "rabbitmq_controller::exec::resource::role",
+              "rabbitmq_controller::exec::resource::role_binding",
+              "rabbitmq_controller::exec::resource::service",
+              "rabbitmq_controller::exec::resource::service_account",
+              "rabbitmq_controller::exec::resource::stateful_set",
+              "rabbitmq_controller::model::install",
+              "rabbitmq_controller::model::reconciler",
+              "rabbitmq_controller::model::resource::common",
+              "rabbitmq_controller::model::resource::config_map",
+              "rabbitmq_controller::model::resource::default_user_secret",
+              "rabbitmq_controller::model::resource::erlang_cookie",
+              "rabbitmq_controller::model::resource::headless_service",
+              "rabbitmq_controller::model::resource::rabbitmq_plugins",
+              "rabbitmq_controller::model::resource::role",
+              "rabbitmq_controller::model::resource::role_binding",
+              "rabbitmq_controller::model::resource::service",
+              "rabbitmq_controller::model::resource::service_account",
+              "rabbitmq_controller::model::resource::stateful_set",
+              "rabbitmq_controller::proof::composition",
+              "rabbitmq_controller::proof::guarantee",
+              "rabbitmq_controller::proof::helper_invariants::predicate",
+              "rabbitmq_controller::proof::helper_invariants::proof",
+              "rabbitmq_controller::proof::helper_lemmas",
+              "rabbitmq_controller::proof::liveness::proof",
+              "rabbitmq_controller::proof::liveness::resource_match",
+              "rabbitmq_controller::proof::liveness::spec",
+              "rabbitmq_controller::proof::liveness::terminate",
+              "rabbitmq_controller::proof::predicate",
+              "rabbitmq_controller::proof::resource",
+              "rabbitmq_controller::trusted::exec_types",
+              "rabbitmq_controller::trusted::liveness_theorem",
+              "rabbitmq_controller::trusted::rely_guarantee",
+              "rabbitmq_controller::trusted::spec_types",
+              "rabbitmq_controller::trusted::step"
+            ],
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 0,
+            "seconds": 1.5044770839158446
+          }
+        ],
+        "selected_descendants": [
+          "rabbitmq_controller",
+          "rabbitmq_controller::exec::reconciler",
+          "rabbitmq_controller::exec::resource::common",
+          "rabbitmq_controller::exec::resource::config_map",
+          "rabbitmq_controller::exec::resource::default_user_secret",
+          "rabbitmq_controller::exec::resource::erlang_cookie",
+          "rabbitmq_controller::exec::resource::headless_service",
+          "rabbitmq_controller::exec::resource::rabbitmq_plugins",
+          "rabbitmq_controller::exec::resource::role",
+          "rabbitmq_controller::exec::resource::role_binding",
+          "rabbitmq_controller::exec::resource::service",
+          "rabbitmq_controller::exec::resource::service_account",
+          "rabbitmq_controller::exec::resource::stateful_set",
+          "rabbitmq_controller::model::install",
+          "rabbitmq_controller::model::reconciler",
+          "rabbitmq_controller::model::resource::common",
+          "rabbitmq_controller::model::resource::config_map",
+          "rabbitmq_controller::model::resource::default_user_secret",
+          "rabbitmq_controller::model::resource::erlang_cookie",
+          "rabbitmq_controller::model::resource::headless_service",
+          "rabbitmq_controller::model::resource::rabbitmq_plugins",
+          "rabbitmq_controller::model::resource::role",
+          "rabbitmq_controller::model::resource::role_binding",
+          "rabbitmq_controller::model::resource::service",
+          "rabbitmq_controller::model::resource::service_account",
+          "rabbitmq_controller::model::resource::stateful_set",
+          "rabbitmq_controller::proof::composition",
+          "rabbitmq_controller::proof::guarantee",
+          "rabbitmq_controller::proof::helper_invariants::predicate",
+          "rabbitmq_controller::proof::helper_invariants::proof",
+          "rabbitmq_controller::proof::helper_lemmas",
+          "rabbitmq_controller::proof::liveness::proof",
+          "rabbitmq_controller::proof::liveness::resource_match",
+          "rabbitmq_controller::proof::liveness::spec",
+          "rabbitmq_controller::proof::liveness::terminate",
+          "rabbitmq_controller::proof::predicate",
+          "rabbitmq_controller::proof::resource",
+          "rabbitmq_controller::trusted::exec_types",
+          "rabbitmq_controller::trusted::liveness_theorem",
+          "rabbitmq_controller::trusted::rely_guarantee",
+          "rabbitmq_controller::trusted::spec_types",
+          "rabbitmq_controller::trusted::step"
+        ],
+        "reason": null,
+        "observed_modules": [
+          "rabbitmq_controller",
+          "rabbitmq_controller::exec::reconciler",
+          "rabbitmq_controller::exec::resource::common",
+          "rabbitmq_controller::exec::resource::config_map",
+          "rabbitmq_controller::exec::resource::default_user_secret",
+          "rabbitmq_controller::exec::resource::erlang_cookie",
+          "rabbitmq_controller::exec::resource::headless_service",
+          "rabbitmq_controller::exec::resource::rabbitmq_plugins",
+          "rabbitmq_controller::exec::resource::role",
+          "rabbitmq_controller::exec::resource::role_binding",
+          "rabbitmq_controller::exec::resource::service",
+          "rabbitmq_controller::exec::resource::service_account",
+          "rabbitmq_controller::exec::resource::stateful_set",
+          "rabbitmq_controller::model::install",
+          "rabbitmq_controller::model::reconciler",
+          "rabbitmq_controller::model::resource::common",
+          "rabbitmq_controller::model::resource::config_map",
+          "rabbitmq_controller::model::resource::default_user_secret",
+          "rabbitmq_controller::model::resource::erlang_cookie",
+          "rabbitmq_controller::model::resource::headless_service",
+          "rabbitmq_controller::model::resource::rabbitmq_plugins",
+          "rabbitmq_controller::model::resource::role",
+          "rabbitmq_controller::model::resource::role_binding",
+          "rabbitmq_controller::model::resource::service",
+          "rabbitmq_controller::model::resource::service_account",
+          "rabbitmq_controller::model::resource::stateful_set",
+          "rabbitmq_controller::proof::composition",
+          "rabbitmq_controller::proof::guarantee",
+          "rabbitmq_controller::proof::helper_invariants::predicate",
+          "rabbitmq_controller::proof::helper_invariants::proof",
+          "rabbitmq_controller::proof::helper_lemmas",
+          "rabbitmq_controller::proof::liveness::proof",
+          "rabbitmq_controller::proof::liveness::resource_match",
+          "rabbitmq_controller::proof::liveness::spec",
+          "rabbitmq_controller::proof::liveness::terminate",
+          "rabbitmq_controller::proof::predicate",
+          "rabbitmq_controller::proof::resource",
+          "rabbitmq_controller::trusted::exec_types",
+          "rabbitmq_controller::trusted::liveness_theorem",
+          "rabbitmq_controller::trusted::rely_guarantee",
+          "rabbitmq_controller::trusted::spec_types",
+          "rabbitmq_controller::trusted::step",
+          "rabbitmq_controller::proof::guarantee",
+          "rabbitmq_controller::proof::helper_invariants::proof",
+          "rabbitmq_controller::proof::helper_lemmas",
+          "rabbitmq_controller::proof::helper_lemmas",
+          "rabbitmq_controller::proof::helper_lemmas",
+          "rabbitmq_controller::proof::helper_lemmas",
+          "rabbitmq_controller::proof::liveness::resource_match",
+          "rabbitmq_controller::proof::liveness::resource_match",
+          "rabbitmq_controller::proof::liveness::resource_match",
+          "rabbitmq_controller::proof::liveness::resource_match",
+          "rabbitmq_controller::proof::liveness::resource_match",
+          "rabbitmq_controller::proof::liveness::resource_match",
+          "rabbitmq_controller::proof::liveness::resource_match",
+          "rabbitmq_controller::proof::liveness::resource_match",
+          "rabbitmq_controller::proof::liveness::resource_match",
+          "rabbitmq_controller::proof::liveness::resource_match",
+          "rabbitmq_controller::proof::liveness::resource_match",
+          "rabbitmq_controller::proof::liveness::spec",
+          "rabbitmq_controller::proof::liveness::spec",
+          "rabbitmq_controller::proof::liveness::spec",
+          "rabbitmq_controller::proof::liveness::spec"
+        ],
+        "fresh_compile": true,
+        "phase": "verification",
+        "exit_code": 0,
+        "seconds": 101.70322458306327
+      },
+      {
+        "module": "composition",
+        "outcome": "verified",
+        "verified": 12,
+        "errors": 0,
+        "log": "verus-fresh-composition.log",
+        "previous_attempts": [
+          {
+            "module": "composition",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-composition.log",
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 1,
+            "seconds": 0.18900066684000194
+          },
+          {
+            "module": "composition",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-focus-composition.log",
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 0,
+            "seconds": 1.2929191659204662
+          },
+          {
+            "module": "composition",
+            "outcome": "errors",
+            "verified": null,
+            "errors": null,
+            "log": "verus-subtree-composition.log",
+            "selected_descendants": [
+              "composition",
+              "composition::compose_all",
+              "composition::rabbitmq_reconciler",
+              "composition::vdeployment_reconciler",
+              "composition::vreplicaset_reconciler",
+              "composition::vstatefulset_reconciler"
+            ],
+            "reason": "nonzero verifier exit or missing successful project summary; see log",
+            "exit_code": 0,
+            "seconds": 1.4866013750433922
+          }
+        ],
+        "selected_descendants": [
+          "composition",
+          "composition::compose_all",
+          "composition::rabbitmq_reconciler",
+          "composition::vdeployment_reconciler",
+          "composition::vreplicaset_reconciler",
+          "composition::vstatefulset_reconciler"
+        ],
+        "reason": null,
+        "observed_modules": [
+          "composition",
+          "composition::compose_all",
+          "composition::rabbitmq_reconciler",
+          "composition::vdeployment_reconciler",
+          "composition::vreplicaset_reconciler",
+          "composition::vstatefulset_reconciler"
+        ],
+        "fresh_compile": true,
+        "phase": "verification",
+        "exit_code": 0,
+        "seconds": 23.518941292073578
+      }
+    ],
+    "invocation_mode": "fresh-partial",
+    "count_semantics": "Counts are exact project-run summary counts where emitted; null means no project summary. Dependency summaries are not Anvil counts."
+  },
+  "receipt_counts": {
+    "rejected": 53
+  },
+  "report_artifact": "release/report.json"
+}

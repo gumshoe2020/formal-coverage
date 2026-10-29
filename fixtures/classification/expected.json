@@ -1,0 +1,6 @@
+{
+  "security": ["classification::entry", "classification::parser", "classification::helper"],
+  "everything_else": ["classification::unrelated"],
+  "dependencies": ["external-parser"],
+  "overrides": [["classification::helper",true],["classification::unrelated",false]]
+}

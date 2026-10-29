@@ -1,0 +1,43 @@
+{
+  "project": "firecracker",
+  "steps": [
+    {
+      "label": "m3-fetch",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "fc-verify-firecracker-m3-fetch",
+        "--platform",
+        "linux/arm64",
+        "--mount",
+        "type=bind,source=<temporary-export>/firecracker,target=<temporary-export>/firecracker,readonly",
+        "--mount",
+        "type=bind,source=<checkout>/runs/v1.4/firecracker,target=/out",
+        "--workdir",
+        "<temporary-export>/firecracker",
+        "--env",
+        "CARGO_HOME=/out/cargo-home",
+        "--env",
+        "CARGO_TARGET_DIR=/out/target",
+        "--env",
+        "TMPDIR=/out/tmp",
+        "--env",
+        "CARGO_BUILD_JOBS=2",
+        "sha256:620dbcd124499c59e2406d3741574b5c5838cf9eb9656f0c3a03948f79b02959",
+        "bash",
+        "-c",
+        "mkdir -p /out/tmp; cargo +1.98.0 fetch --locked"
+      ],
+      "script": "cargo +1.98.0 fetch --locked",
+      "image_id": "sha256:620dbcd124499c59e2406d3741574b5c5838cf9eb9656f0c3a03948f79b02959",
+      "exit_code": 0,
+      "seconds": 0.3904355838894844,
+      "timeout_seconds": 1200,
+      "log": "m3-fetch.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "lockfile_sha256": "b305ba10ad334623f7f551126858c2cac1a825649aa0a83f32c43a568ad38de1"
+}

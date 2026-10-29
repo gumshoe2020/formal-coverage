@@ -1,0 +1,8 @@
+FROM rust@sha256:620dbcd124499c59e2406d3741574b5c5838cf9eb9656f0c3a03948f79b02959
+ARG VERUS_SHA=781a460f35066e4bbc914b7fe3feb219ca9c850f
+RUN apt-get update && apt-get install -y --no-install-recommends clang cmake libclang-dev libssl-dev pkg-config python3 unzip && rm -rf /var/lib/apt/lists/*
+RUN git init /opt/verus && cd /opt/verus && git remote add origin https://github.com/verus-lang/verus && git fetch --depth 1 origin "$VERUS_SHA" && git checkout --detach FETCH_HEAD && git submodule update --init --recursive
+WORKDIR /opt/verus/source
+RUN rustup show && ./tools/get-z3.sh && bash -c 'source ../tools/activate && CARGO_BUILD_JOBS=2 VERUS_Z3_PATH="$PWD/z3" vargo build --release'
+ENV PATH="/opt/verus/source/target-verus/release:${PATH}"
+RUN verus --version && ./z3 --version && rustup toolchain list && dpkg-query -W > /packages.txt

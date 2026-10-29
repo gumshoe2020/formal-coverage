@@ -1,0 +1,43 @@
+{
+  "project": "vest",
+  "steps": [
+    {
+      "label": "m3-fetch",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "fc-verify-vest-m3-fetch",
+        "--platform",
+        "linux/arm64",
+        "--mount",
+        "type=bind,source=<temporary-export>/vest,target=<temporary-export>/vest,readonly",
+        "--mount",
+        "type=bind,source=<checkout>/runs/v1.4/vest,target=/out",
+        "--workdir",
+        "<temporary-export>/vest",
+        "--env",
+        "CARGO_HOME=/out/cargo-home",
+        "--env",
+        "CARGO_TARGET_DIR=/out/target",
+        "--env",
+        "TMPDIR=/out/tmp",
+        "--env",
+        "CARGO_BUILD_JOBS=2",
+        "sha256:620dbcd124499c59e2406d3741574b5c5838cf9eb9656f0c3a03948f79b02959",
+        "bash",
+        "-c",
+        "mkdir -p /out/tmp; cargo +1.98.0 fetch --locked"
+      ],
+      "script": "cargo +1.98.0 fetch --locked",
+      "image_id": "sha256:620dbcd124499c59e2406d3741574b5c5838cf9eb9656f0c3a03948f79b02959",
+      "exit_code": 0,
+      "seconds": 0.5966304591856897,
+      "timeout_seconds": 1200,
+      "log": "m3-fetch.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "lockfile_sha256": "3b138c05d0aeea7130031eef114023a5a4bb7df195bd0567388accd97faabda9"
+}

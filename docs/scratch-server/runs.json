@@ -1,0 +1,161 @@
+[
+  {
+    "branch": "main",
+    "commit": "ce8baf1da131e41e548cbf863fcc81e9fc0fdc21",
+    "verify_exit": null,
+    "roots": [],
+    "receipts": []
+  },
+  {
+    "branch": "nix-scratch",
+    "commit": "3747f1e0782230042d81cc93a02a379be127e8f4",
+    "verify_exit": null,
+    "roots": [],
+    "receipts": []
+  },
+  {
+    "branch": "verified-boundary",
+    "commit": "bc2c73b03b6e346cd0acf96badaa0d6ec7bed814",
+    "verify_exit": 0,
+    "roots": [
+      "crates/http-subset/src/lib.rs"
+    ],
+    "receipts": [
+      "verified-boundary.verus.log"
+    ]
+  },
+  {
+    "branch": "browser-whitelist",
+    "commit": "3a3cf20dad01a2d00c4b10c28f9f9ea975ad683a",
+    "verify_exit": 0,
+    "roots": [
+      "crates/http-subset/src/lib.rs"
+    ],
+    "receipts": [
+      "browser-whitelist.verus.log"
+    ]
+  },
+  {
+    "branch": "https",
+    "commit": "969540cf8dd5e7b2223105fbab8272514702f0c2",
+    "verify_exit": 0,
+    "roots": [
+      "crates/http-subset/src/lib.rs"
+    ],
+    "receipts": [
+      "https.verus.log"
+    ]
+  },
+  {
+    "branch": "https-headers",
+    "commit": "131f109a5b5a0ac87db3ac44bef4260e7be8ce74",
+    "verify_exit": 0,
+    "roots": [
+      "crates/http-subset/src/lib.rs"
+    ],
+    "receipts": [
+      "https-headers.verus.log"
+    ]
+  },
+  {
+    "branch": "idle-connections",
+    "commit": "a3952e45725d37ef6600a60266567a6bfab8c2de",
+    "verify_exit": 0,
+    "roots": [
+      "crates/http-subset/src/lib.rs"
+    ],
+    "receipts": [
+      "idle-connections.verus.log"
+    ]
+  },
+  {
+    "branch": "proven-transport",
+    "commit": "42b6565a2b6906b9ad84dd8854a5c719f5186049",
+    "verify_exit": 0,
+    "roots": [
+      "crates/http-subset/src/lib.rs",
+      "crates/transport-core/src/lib.rs",
+      "crates/transport-core/src/aead.rs"
+    ],
+    "receipts": [
+      "proven-transport.verus.log",
+      "proven-transport.root-2.verus.log",
+      "proven-transport.root-3.verus.log"
+    ]
+  },
+  {
+    "branch": "firefox-headers",
+    "commit": "39a1d28397229e50d5614dc407722e45fc6c59bf",
+    "verify_exit": 0,
+    "roots": [
+      "crates/http-subset/src/lib.rs",
+      "crates/transport-core/src/lib.rs",
+      "crates/transport-core/src/aead.rs"
+    ],
+    "receipts": [
+      "firefox-headers.verus.log",
+      "firefox-headers.root-2.verus.log",
+      "firefox-headers.root-3.verus.log"
+    ]
+  },
+  {
+    "branch": "chromium-headers",
+    "commit": "df3f49ef9303e196d3822bd29acb71c8c17f9f1e",
+    "verify_exit": 0,
+    "roots": [
+      "crates/http-subset/src/lib.rs",
+      "crates/transport-core/src/lib.rs",
+      "crates/transport-core/src/aead.rs"
+    ],
+    "receipts": [
+      "chromium-headers.verus.log",
+      "chromium-headers.root-2.verus.log",
+      "chromium-headers.root-3.verus.log"
+    ]
+  },
+  {
+    "branch": "pragma-header",
+    "commit": "6ee509803195af5e5d77cfd124079f2984e1717d",
+    "verify_exit": 0,
+    "roots": [
+      "crates/http-subset/src/lib.rs",
+      "crates/transport-core/src/lib.rs",
+      "crates/transport-core/src/aead.rs"
+    ],
+    "receipts": [
+      "pragma-header.verus.log",
+      "pragma-header.root-2.verus.log",
+      "pragma-header.root-3.verus.log"
+    ]
+  },
+  {
+    "branch": "header-policy",
+    "commit": "3fe444ddf1c46f08335c3a4513f633ed7b07219c",
+    "verify_exit": 0,
+    "roots": [
+      "crates/http-subset/src/lib.rs",
+      "crates/transport-core/src/lib.rs",
+      "crates/transport-core/src/aead.rs"
+    ],
+    "receipts": [
+      "header-policy.verus.log",
+      "header-policy.root-2.verus.log",
+      "header-policy.root-3.verus.log"
+    ]
+  },
+  {
+    "branch": "spec-lemmas",
+    "commit": "2fa5eb78a6f96a8433229dc64ec4b82c3e5f9bc2",
+    "verify_exit": 0,
+    "roots": [
+      "crates/http-subset/src/lib.rs",
+      "crates/transport-core/src/lib.rs",
+      "crates/transport-core/src/aead.rs"
+    ],
+    "receipts": [
+      "spec-lemmas.verus.log",
+      "spec-lemmas.root-2.verus.log",
+      "spec-lemmas.root-3.verus.log"
+    ]
+  }
+]

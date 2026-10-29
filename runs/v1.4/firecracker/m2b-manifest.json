@@ -1,0 +1,49 @@
+{
+  "basis": "M1 retained unchanged",
+  "steps": [
+    {
+      "label": "m2b-help",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "fc-verify-firecracker-m2b-help",
+        "--platform",
+        "linux/arm64",
+        "--mount",
+        "type=bind,source=<temporary-export>/firecracker,target=<temporary-export>/firecracker,readonly",
+        "--mount",
+        "type=bind,source=<checkout>/runs/v1.4/firecracker,target=/out",
+        "--workdir",
+        "<temporary-export>/firecracker",
+        "--env",
+        "CARGO_HOME=/out/cargo-home",
+        "--env",
+        "CARGO_TARGET_DIR=/out/target",
+        "--env",
+        "TMPDIR=/out/tmp",
+        "--env",
+        "CARGO_BUILD_JOBS=2",
+        "sha256:07252577f6970a9acd106f521ea8f1ad0534d7220826e5e3bd96363ecf84cad0",
+        "bash",
+        "-c",
+        "mkdir -p /out/tmp; cargo kani --help > /out/kani-help.txt; grep -n -A 5 -B 2 \"harness\\|exact\" /out/kani-help.txt"
+      ],
+      "script": "cargo kani --help > /out/kani-help.txt; grep -n -A 5 -B 2 \"harness\\|exact\" /out/kani-help.txt",
+      "image_id": "sha256:07252577f6970a9acd106f521ea8f1ad0534d7220826e5e3bd96363ecf84cad0",
+      "exit_code": 0,
+      "seconds": 0.23407941684126854,
+      "timeout_seconds": 900,
+      "log": "m2b-help.log",
+      "log_sha256": "41f0396d6a61ccd50941ff52852af3c58f3e0f9f66bf140ae3764a3a8a8630f5"
+    }
+  ],
+  "policy_files": {
+    "src/kani.rs": "d3c74fd7822b70f978965d31521d099263829b302dbf9930cba6467e3f9718c3",
+    "src/evidence.rs": "4aae6203da85a7e95164d271f7937bc6157d819d94a06efa4f932090203e4830",
+    "src/lib.rs": "290120c34fe6559b1b3b4c7eaf1d485274b864bcd93216653de85c0f77ae8d4b"
+  },
+  "binary_sha256": "ca3842f9b066e3a8e81618ce2df40b513c0c1264e61ad435875d7951828fdcb3",
+  "credits_sha256": "6fb5f494f7d17ca9837cb6f3f3db810626b8887f8516fec6c8bfdde5ece7895d"
+}

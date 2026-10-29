@@ -1,0 +1,676 @@
+{
+  "project": "vest",
+  "commit": "ce6705fad1af476e828feae6621d0bcf4d0c1665",
+  "export": "<temporary-export>/vest",
+  "summary": {
+    "all": {
+      "everything_else": {
+        "sloc": 77712,
+        "statuses": {
+          "hazard": 21501,
+          "proven": 0,
+          "proven-bounded": 0,
+          "proven-upstream": 0,
+          "tested": 21659,
+          "trusted": 268,
+          "unverified": 34284
+        },
+        "unknown_dependency_sizes": 0
+      },
+      "security_relevant": {
+        "sloc": 1046043,
+        "statuses": {
+          "hazard": 394,
+          "proven": 2961,
+          "proven-bounded": 0,
+          "proven-upstream": 0,
+          "tested": 4048,
+          "trusted": 217,
+          "unverified": 1038423
+        },
+        "unknown_dependency_sizes": 0
+      }
+    },
+    "escape_sites": 5110,
+    "first_party": {
+      "everything_else": {
+        "sloc": 77712,
+        "statuses": {
+          "hazard": 21501,
+          "proven": 0,
+          "proven-bounded": 0,
+          "proven-upstream": 0,
+          "tested": 21659,
+          "trusted": 268,
+          "unverified": 34284
+        },
+        "unknown_dependency_sizes": 0
+      },
+      "security_relevant": {
+        "sloc": 10555,
+        "statuses": {
+          "hazard": 394,
+          "proven": 2961,
+          "proven-bounded": 0,
+          "proven-upstream": 0,
+          "tested": 4048,
+          "trusted": 217,
+          "unverified": 2935
+        },
+        "unknown_dependency_sizes": 0
+      }
+    },
+    "proof_code": {
+      "everything_else": {
+        "hazard_units": 6610,
+        "sloc": 79774,
+        "units": 10963,
+        "unverified": 10963,
+        "verified": 0
+      },
+      "security_relevant": {
+        "hazard_units": 0,
+        "sloc": 23838,
+        "units": 4000,
+        "unverified": 229,
+        "verified": 3771
+      },
+      "total": {
+        "hazard_units": 6610,
+        "sloc": 103612,
+        "units": 14963,
+        "unverified": 11192,
+        "verified": 3771
+      }
+    },
+    "security_first_party_hazard_units": 20,
+    "third_party": {
+      "everything_else": {
+        "sloc": 0,
+        "statuses": {
+          "hazard": 0,
+          "proven": 0,
+          "proven-bounded": 0,
+          "proven-upstream": 0,
+          "tested": 0,
+          "trusted": 0,
+          "unverified": 0
+        },
+        "unknown_dependency_sizes": 0
+      },
+      "security_relevant": {
+        "sloc": 1035488,
+        "statuses": {
+          "hazard": 0,
+          "proven": 0,
+          "proven-bounded": 0,
+          "proven-upstream": 0,
+          "tested": 0,
+          "trusted": 0,
+          "unverified": 1035488
+        },
+        "unknown_dependency_sizes": 0
+      }
+    },
+    "trusted_items": 39,
+    "trusted_sloc": 520
+  },
+  "evidence_runs": [
+    {
+      "tool": "verus",
+      "log": "<checkout>/docs/survey/vest.verus.log",
+      "accepted": true,
+      "reasons": [
+        "module vest_lib/src/asn1/any::tests: excluded path/cfg/verifier scope; unverified",
+        "module vest_lib/src/asn1/ber::tests: excluded path/cfg/verifier scope; unverified",
+        "module vest_lib/src/asn1/enumerated::tests: excluded path/cfg/verifier scope; unverified",
+        "module vest_lib/src/asn1/integer::tests: excluded path/cfg/verifier scope; unverified",
+        "module vest_lib/src/asn1/oid::tests: excluded path/cfg/verifier scope; unverified",
+        "module vest_lib/src/asn1/real::tests: excluded path/cfg/verifier scope; unverified",
+        "module vest_lib/src/asn1/set_of::tests: excluded path/cfg/verifier scope; unverified",
+        "module vest_lib/src/asn1/tlv::tests: excluded path/cfg/verifier scope; unverified",
+        "module vest_lib/src::cbor: excluded path/cfg/verifier scope; unverified",
+        "module vest_lib/src/combinators/permute::tests: excluded path/cfg/verifier scope; unverified",
+        "module vest_lib/src/combinators/star/exec::reservation_tests: excluded path/cfg/verifier scope; unverified",
+        "module vest_lib/src/primitives/base128::tests: excluded path/cfg/verifier scope; unverified",
+        "module vest_lib/src/primitives/base256::tests: excluded path/cfg/verifier scope; unverified",
+        "verus: accepted caller-supplied run receipt <checkout>/docs/survey/vest.verus.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "cfg": [
+        "verus_keep_ghost",
+        "verus_keep_ghost_body",
+        "verus_only"
+      ],
+      "trusted_sloc": 234,
+      "credited_units_count": 3935,
+      "credited_units_sha256": "56cea460d42611fea06a91a1551faec183b65b83f65a5f66fbb2e449f749048c",
+      "verified_files_count": 134,
+      "verified_files_sha256": "4b2f877c67520c9c3bf95bc450160d430433ccaab52682024809e497b4d8ea7e",
+      "trusted_sites_count": 31,
+      "trusted_sites_sha256": "50eaf8fb42c33d6fab8ca560d2d0cc96482ce09681bd6cfb955f26edea7c434a",
+      "escape_sites_count": 5,
+      "escape_sites_sha256": "eabaea18013265f339a619cb7f703103d03948a24fd4867759d4daf7fb19f74e"
+    }
+  ],
+  "dependency_inventory_complete": true,
+  "closure": "cargo metadata (runtime)",
+  "closure_reason": null,
+  "target": "aarch64-unknown-linux-gnu",
+  "cargo_version": "cargo 1.99.1 (5f94df478 2026-08-27) (Homebrew)",
+  "build_dependency_count": 40,
+  "build_dependency_sloc": 544353,
+  "build_unknown_dependencies": [],
+  "dev_dependencies_excluded": 0,
+  "unknown_dependencies": [],
+  "dependency_count": 121,
+  "dependency_sloc": 1035488,
+  "dependency_before": {
+    "count": 207,
+    "sloc": 0,
+    "unknown": 207,
+    "complete": true
+  },
+  "report_sha256": "2dc35b8079295c1ab53a0cabf246bb53fac4ecdf5572bee19dd6b22308b76597",
+  "manifest_sha256": "53e6697e9561d668f41a4fab78b6eeb2fcd00f0225bf87863f8c63fbc9c78a24",
+  "escape_sites": [
+    {
+      "file": "vest/src/codegen/datatypes.rs",
+      "line": 880,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_asn1_tests/src/generated.rs",
+      "line": 177,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_asn1_tests/src/generated_cms.rs",
+      "line": 1872,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_bench/src/allocations.rs",
+      "line": 31,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_bench/src/allocations.rs",
+      "line": 32,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_bench/src/allocations.rs",
+      "line": 33,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_bench/src/allocations.rs",
+      "line": 42,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_bench/src/allocations.rs",
+      "line": 43,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_bench/src/allocations.rs",
+      "line": 52,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_bench/src/allocations.rs",
+      "line": 54,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_bench/src/allocations.rs",
+      "line": 56,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_bench/src/allocations.rs",
+      "line": 57,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_dev/src/formats/mutual_fix_template.rs",
+      "line": 3127,
+      "kind": "assume",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_dev/src/formats/mutual_fix_template.rs",
+      "line": 3128,
+      "kind": "assume",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_lib/src/asn1/ber/char_string.rs",
+      "line": 341,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "vest_lib/src/asn1/ber/char_string.rs",
+      "line": 363,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "vest_lib/src/asn1/ber/char_string.rs",
+      "line": 416,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "vest_lib/src/asn1/ber/char_string.rs",
+      "line": 436,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "vest_lib/src/asn1/bmpstring.rs",
+      "line": 410,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "vest_lib/src/asn1/tag.rs",
+      "line": 1076,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "vest_lib/src/asn1/tag.rs",
+      "line": 1078,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "vest_lib/src/asn1/tag.rs",
+      "line": 1080,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "vest_lib/src/asn1/universalstring.rs",
+      "line": 339,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "vest_lib/src/asn1/utf8string.rs",
+      "line": 73,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "vest_lib/src/cbor/chunk.rs",
+      "line": 226,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "vest_lib/src/core/exec/output.rs",
+      "line": 170,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "vest_lib/src/core/exec/output.rs",
+      "line": 171,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "vest_lib/src/core/exec/output.rs",
+      "line": 190,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "vest_lib/src/core/exec/output.rs",
+      "line": 191,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": true
+    },
+    {
+      "file": "vest_tests/src/anonymous_nested.rs",
+      "line": 39,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/anonymous_nested.rs",
+      "line": 61,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/bits.rs",
+      "line": 80,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/bits.rs",
+      "line": 147,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/bits_little.rs",
+      "line": 80,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/bits_little.rs",
+      "line": 147,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/codegen.rs",
+      "line": 96,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/elab.rs",
+      "line": 117,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/enum_constraints.rs",
+      "line": 40,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/enum_constraints.rs",
+      "line": 96,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/enum_constraints.rs",
+      "line": 159,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/enums.rs",
+      "line": 40,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/enums.rs",
+      "line": 94,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/enums.rs",
+      "line": 180,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/enums.rs",
+      "line": 234,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/enums.rs",
+      "line": 291,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/josh.rs",
+      "line": 69,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/mutual_rec.rs",
+      "line": 135,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/mutual_rec.rs",
+      "line": 251,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/projected_argument_deref.rs",
+      "line": 40,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/tls.rs",
+      "line": 43,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/tls.rs",
+      "line": 103,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/tls.rs",
+      "line": 125,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/tls.rs",
+      "line": 203,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/tls.rs",
+      "line": 345,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/tls.rs",
+      "line": 393,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/tls.rs",
+      "line": 454,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/tls.rs",
+      "line": 500,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/tls.rs",
+      "line": 646,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/tls.rs",
+      "line": 793,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/tls.rs",
+      "line": 1301,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/tls.rs",
+      "line": 1612,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/tls.rs",
+      "line": 2234,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/tls.rs",
+      "line": 2284,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/tls.rs",
+      "line": 2333,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/tls.rs",
+      "line": 2461,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/tls.rs",
+      "line": 3040,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/tls.rs",
+      "line": 3070,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    },
+    {
+      "file": "vest_tests/src/tlv.rs",
+      "line": 121,
+      "kind": "unsafe",
+      "first_party": true,
+      "security": false
+    }
+  ],
+  "trusted_inventory": {
+    "count": 39,
+    "sloc": 520,
+    "sha256": "2ef1a8be96b85ab6fe4fba6ed594c8b33c6abe7b952e70017ab5aa17f357efeb"
+  },
+  "verifier_outcome": {
+    "verified": 2935,
+    "errors": 0,
+    "scope": "retained source-bound Vest run; no new verifier execution"
+  },
+  "vest_lib": {
+    "runtime": {
+      "sloc": 11916,
+      "proven": 2961
+    },
+    "security_runtime": {
+      "sloc": 10555,
+      "proven": 2961
+    }
+  },
+  "receipt_counts": {
+    "accepted": 1
+  }
+}

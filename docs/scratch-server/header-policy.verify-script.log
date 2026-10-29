@@ -1,0 +1,331 @@
+note: automatically chose triggers for this expression:
+  --> crates/http-subset/src/lib.rs:58:12
+   |
+58 |           && forall|j: int| 0 <= j < text.len() ==>
+   |  ____________^
+59 | |             ascii_lower(s[at + j]) == ascii_lower(text[j])
+   | |__________________________________________________________^
+
+note:   trigger 1 of 1:
+  --> crates/http-subset/src/lib.rs:59:51
+   |
+59 |             ascii_lower(s[at + j]) == ascii_lower(text[j])
+   |                                                   ^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> crates/http-subset/src/lib.rs:578:5
+    |
+578 | /     forall|i: int, j: int| 0 <= i < j < h.len() && (h[i].name == 0 || h[i].name == 2)
+579 | |         ==> h[i].name != h[j].name
+    | |__________________________________^
+
+note:   trigger 1 of 1:
+   --> crates/http-subset/src/lib.rs:578:53
+    |
+578 |     forall|i: int, j: int| 0 <= i < j < h.len() && (h[i].name == 0 || h[i].name == 2)
+    |                                                     ^^^^
+579 |         ==> h[i].name != h[j].name
+    |                          ^^^^
+
+note: automatically chose triggers for this expression:
+   --> crates/http-subset/src/lib.rs:582:25
+    |
+582 |     no_duplicates(h) && forall|i: int| 0 <= i < h.len() ==> drops(p, h[i].name)
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+   --> crates/http-subset/src/lib.rs:582:70
+    |
+582 |     no_duplicates(h) && forall|i: int| 0 <= i < h.len() ==> drops(p, h[i].name)
+    |                                                                      ^^^^
+
+note: automatically chose triggers for this expression:
+  --> crates/http-subset/src/lib.rs:69:13
+   |
+69 | /             forall|j: int| 0 <= j < i ==>
+70 | |                 ascii_lower(s@[at + j]) == ascii_lower(text@[j]),
+   | |________________________________________________________________^
+
+note:   trigger 1 of 1:
+  --> crates/http-subset/src/lib.rs:70:56
+   |
+70 |                 ascii_lower(s@[at + j]) == ascii_lower(text@[j]),
+   |                                                        ^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> crates/http-subset/src/lib.rs:592:21
+    |
+592 |             host == (exists|j: int| 0 <= j < i && h@[j].name == 0),
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+   --> crates/http-subset/src/lib.rs:592:51
+    |
+592 |             host == (exists|j: int| 0 <= j < i && h@[j].name == 0),
+    |                                                   ^^^^^
+
+note: automatically chose triggers for this expression:
+   --> crates/http-subset/src/lib.rs:593:27
+    |
+593 |             connection == (exists|j: int| 0 <= j < i && h@[j].name == 2),
+    |                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+   --> crates/http-subset/src/lib.rs:593:57
+    |
+593 |             connection == (exists|j: int| 0 <= j < i && h@[j].name == 2),
+    |                                                         ^^^^^
+
+note: automatically chose triggers for this expression:
+   --> crates/http-subset/src/lib.rs:594:13
+    |
+594 |             forall|j: int| 0 <= j < i ==> drops(p, h@[j].name),
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+   --> crates/http-subset/src/lib.rs:594:52
+    |
+594 |             forall|j: int| 0 <= j < i ==> drops(p, h@[j].name),
+    |                                                    ^^^^^
+
+note: automatically chose triggers for this expression:
+   --> crates/http-subset/src/lib.rs:661:13
+    |
+661 |       ensures forall|i: int| 0 <= i < header_spec(s, at, remaining).unwrap().len()
+    |  _____________^
+662 | |         ==> header_spec(s, at, remaining).unwrap()[i].name < 19,
+    | |_______________________________________________________________^
+
+note:   trigger 1 of 1:
+   --> crates/http-subset/src/lib.rs:662:13
+    |
+662 |         ==> header_spec(s, at, remaining).unwrap()[i].name < 19,
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> crates/http-subset/src/lib.rs:673:13
+    |
+673 |       ensures forall|i: int| 0 <= i < stage11_request_spec(s).unwrap().3.len()
+    |  _____________^
+674 | |         ==> stage11_request_spec(s).unwrap().3[i].name < 19,
+    | |___________________________________________________________^
+
+note:   trigger 1 of 1:
+   --> crates/http-subset/src/lib.rs:674:13
+    |
+674 |         ==> stage11_request_spec(s).unwrap().3[i].name < 19,
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> crates/http-subset/src/lib.rs:653:9
+    |
+653 |         assert forall|i: int| 0 <= i < h.len() implies drops(p, h[i].name) by {
+    |         ^^^^^^
+
+note:   trigger 1 of 1:
+   --> crates/http-subset/src/lib.rs:653:65
+    |
+653 |         assert forall|i: int| 0 <= i < h.len() implies drops(p, h[i].name) by {
+    |                                                                 ^^^^
+
+note: automatically chose triggers for this expression:
+   --> crates/http-subset/src/lib.rs:791:9
+    |
+791 | /         forall|i: int| 0 <= i < selected_spec(s, p).unwrap().3.len() ==>
+792 | |             drops(p, selected_spec(s, p).unwrap().3[i].name)
+793 | |             && !(19 <= selected_spec(s, p).unwrap().3[i].name < 28),
+    | |___________________________________________________________________^
+
+note:   trigger 1 of 1:
+   --> crates/http-subset/src/lib.rs:792:22
+    |
+792 |             drops(p, selected_spec(s, p).unwrap().3[i].name)
+    |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: Verus printed one or more automatically chosen quantifier triggers
+      because it had low confidence in the chosen triggers.
+      To suppress these messages, do one of the following:
+        (1) manually annotate a single desired trigger using `#[trigger]`
+            (example: `forall|i: int, j: int| f(i) && #[trigger] g(i) && #[trigger] h(j)`),
+        (2) manually annotate multiple desired triggers using `#![trigger ...]`
+            (example: `forall|i: int| #![trigger f(i)] #![trigger g(i)] f(i) && g(i)`),
+        (3) accept the automatically chosen trigger using `#![auto]`
+            (example: `forall|i: int, j: int| #![auto] f(i) && g(i) && h(j)`)
+        (4) use the `--triggers-mode silent` command-line option to suppress all printing of triggers.
+      (Note: triggers are used by the underlying SMT theorem prover to instantiate quantifiers;
+      the theorem prover instantiates a quantifier whenever some expression matches the
+      pattern specified by one of the quantifier's triggers.)
+   --> crates/http-subset/src/lib.rs:791:9
+    |
+791 | /         forall|i: int| 0 <= i < selected_spec(s, p).unwrap().3.len() ==>
+792 | |             drops(p, selected_spec(s, p).unwrap().3[i].name)
+793 | |             && !(19 <= selected_spec(s, p).unwrap().3[i].name < 28),
+    | |___________________________________________________________________^
+
+verification results:: 56 verified, 0 errors
+note: automatically chose triggers for this expression:
+  --> crates/transport-core/src/../../http-subset/src/lib.rs:58:12
+   |
+58 |           && forall|j: int| 0 <= j < text.len() ==>
+   |  ____________^
+59 | |             ascii_lower(s[at + j]) == ascii_lower(text[j])
+   | |__________________________________________________________^
+
+note:   trigger 1 of 1:
+  --> crates/transport-core/src/../../http-subset/src/lib.rs:59:51
+   |
+59 |             ascii_lower(s[at + j]) == ascii_lower(text[j])
+   |                                                   ^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> crates/transport-core/src/../../http-subset/src/lib.rs:578:5
+    |
+578 | /     forall|i: int, j: int| 0 <= i < j < h.len() && (h[i].name == 0 || h[i].name == 2)
+579 | |         ==> h[i].name != h[j].name
+    | |__________________________________^
+
+note:   trigger 1 of 1:
+   --> crates/transport-core/src/../../http-subset/src/lib.rs:578:53
+    |
+578 |     forall|i: int, j: int| 0 <= i < j < h.len() && (h[i].name == 0 || h[i].name == 2)
+    |                                                     ^^^^
+579 |         ==> h[i].name != h[j].name
+    |                          ^^^^
+
+note: automatically chose triggers for this expression:
+   --> crates/transport-core/src/../../http-subset/src/lib.rs:582:25
+    |
+582 |     no_duplicates(h) && forall|i: int| 0 <= i < h.len() ==> drops(p, h[i].name)
+    |                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+   --> crates/transport-core/src/../../http-subset/src/lib.rs:582:70
+    |
+582 |     no_duplicates(h) && forall|i: int| 0 <= i < h.len() ==> drops(p, h[i].name)
+    |                                                                      ^^^^
+
+note: automatically chose triggers for this expression:
+  --> crates/transport-core/src/../../http-subset/src/lib.rs:69:13
+   |
+69 | /             forall|j: int| 0 <= j < i ==>
+70 | |                 ascii_lower(s@[at + j]) == ascii_lower(text@[j]),
+   | |________________________________________________________________^
+
+note:   trigger 1 of 1:
+  --> crates/transport-core/src/../../http-subset/src/lib.rs:70:56
+   |
+70 |                 ascii_lower(s@[at + j]) == ascii_lower(text@[j]),
+   |                                                        ^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> crates/transport-core/src/../../http-subset/src/lib.rs:592:21
+    |
+592 |             host == (exists|j: int| 0 <= j < i && h@[j].name == 0),
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+   --> crates/transport-core/src/../../http-subset/src/lib.rs:592:51
+    |
+592 |             host == (exists|j: int| 0 <= j < i && h@[j].name == 0),
+    |                                                   ^^^^^
+
+note: automatically chose triggers for this expression:
+   --> crates/transport-core/src/../../http-subset/src/lib.rs:593:27
+    |
+593 |             connection == (exists|j: int| 0 <= j < i && h@[j].name == 2),
+    |                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+   --> crates/transport-core/src/../../http-subset/src/lib.rs:593:57
+    |
+593 |             connection == (exists|j: int| 0 <= j < i && h@[j].name == 2),
+    |                                                         ^^^^^
+
+note: automatically chose triggers for this expression:
+   --> crates/transport-core/src/../../http-subset/src/lib.rs:594:13
+    |
+594 |             forall|j: int| 0 <= j < i ==> drops(p, h@[j].name),
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note:   trigger 1 of 1:
+   --> crates/transport-core/src/../../http-subset/src/lib.rs:594:52
+    |
+594 |             forall|j: int| 0 <= j < i ==> drops(p, h@[j].name),
+    |                                                    ^^^^^
+
+note: automatically chose triggers for this expression:
+   --> crates/transport-core/src/../../http-subset/src/lib.rs:661:13
+    |
+661 |       ensures forall|i: int| 0 <= i < header_spec(s, at, remaining).unwrap().len()
+    |  _____________^
+662 | |         ==> header_spec(s, at, remaining).unwrap()[i].name < 19,
+    | |_______________________________________________________________^
+
+note:   trigger 1 of 1:
+   --> crates/transport-core/src/../../http-subset/src/lib.rs:662:13
+    |
+662 |         ==> header_spec(s, at, remaining).unwrap()[i].name < 19,
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> crates/transport-core/src/../../http-subset/src/lib.rs:673:13
+    |
+673 |       ensures forall|i: int| 0 <= i < stage11_request_spec(s).unwrap().3.len()
+    |  _____________^
+674 | |         ==> stage11_request_spec(s).unwrap().3[i].name < 19,
+    | |___________________________________________________________^
+
+note:   trigger 1 of 1:
+   --> crates/transport-core/src/../../http-subset/src/lib.rs:674:13
+    |
+674 |         ==> stage11_request_spec(s).unwrap().3[i].name < 19,
+    |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: automatically chose triggers for this expression:
+   --> crates/transport-core/src/../../http-subset/src/lib.rs:653:9
+    |
+653 |         assert forall|i: int| 0 <= i < h.len() implies drops(p, h[i].name) by {
+    |         ^^^^^^
+
+note:   trigger 1 of 1:
+   --> crates/transport-core/src/../../http-subset/src/lib.rs:653:65
+    |
+653 |         assert forall|i: int| 0 <= i < h.len() implies drops(p, h[i].name) by {
+    |                                                                 ^^^^
+
+note: automatically chose triggers for this expression:
+   --> crates/transport-core/src/../../http-subset/src/lib.rs:791:9
+    |
+791 | /         forall|i: int| 0 <= i < selected_spec(s, p).unwrap().3.len() ==>
+792 | |             drops(p, selected_spec(s, p).unwrap().3[i].name)
+793 | |             && !(19 <= selected_spec(s, p).unwrap().3[i].name < 28),
+    | |___________________________________________________________________^
+
+note:   trigger 1 of 1:
+   --> crates/transport-core/src/../../http-subset/src/lib.rs:792:22
+    |
+792 |             drops(p, selected_spec(s, p).unwrap().3[i].name)
+    |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note: Verus printed one or more automatically chosen quantifier triggers
+      because it had low confidence in the chosen triggers.
+      To suppress these messages, do one of the following:
+        (1) manually annotate a single desired trigger using `#[trigger]`
+            (example: `forall|i: int, j: int| f(i) && #[trigger] g(i) && #[trigger] h(j)`),
+        (2) manually annotate multiple desired triggers using `#![trigger ...]`
+            (example: `forall|i: int| #![trigger f(i)] #![trigger g(i)] f(i) && g(i)`),
+        (3) accept the automatically chosen trigger using `#![auto]`
+            (example: `forall|i: int, j: int| #![auto] f(i) && g(i) && h(j)`)
+        (4) use the `--triggers-mode silent` command-line option to suppress all printing of triggers.
+      (Note: triggers are used by the underlying SMT theorem prover to instantiate quantifiers;
+      the theorem prover instantiates a quantifier whenever some expression matches the
+      pattern specified by one of the quantifier's triggers.)
+   --> crates/transport-core/src/../../http-subset/src/lib.rs:791:9
+    |
+791 | /         forall|i: int| 0 <= i < selected_spec(s, p).unwrap().3.len() ==>
+792 | |             drops(p, selected_spec(s, p).unwrap().3[i].name)
+793 | |             && !(19 <= selected_spec(s, p).unwrap().3[i].name < 28),
+    | |___________________________________________________________________^
+
+verification results:: 82 verified, 0 errors
+verification results:: 9 verified, 0 errors

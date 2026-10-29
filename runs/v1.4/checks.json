@@ -1,0 +1,58 @@
+{
+  "checked_at": "2026-10-29T00:28:50.494801-04:00",
+  "independent_acceptance": false,
+  "checks": [
+    {
+      "name": "survey",
+      "command": [
+        "python3",
+        "scripts/check_survey.py"
+      ],
+      "exit_code": 0,
+      "log": "runs/v1.4/final-survey.log"
+    },
+    {
+      "name": "tests",
+      "command": [
+        "cargo",
+        "test",
+        "--frozen"
+      ],
+      "exit_code": 0,
+      "log": "runs/v1.4/final-tests.log"
+    },
+    {
+      "name": "clippy",
+      "command": [
+        "cargo",
+        "clippy",
+        "--frozen",
+        "--",
+        "-D",
+        "warnings"
+      ],
+      "exit_code": 0,
+      "log": "runs/v1.4/final-clippy.log"
+    },
+    {
+      "name": "fmt",
+      "command": [
+        "cargo",
+        "fmt",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log": "runs/v1.4/final-fmt.log"
+    },
+    {
+      "name": "diff",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "log": "runs/v1.4/final-diff.log"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "tool": "verus",
+  "tool_version": "Verus\n  Version: 0.2026.10.26.d17fbd0\n  Profile: release\n  Platform: macos_aarch64\n  Toolchain: 1.99.1-aarch64-apple-darwin (overridden by environment variable RUSTUP_TOOLCHAIN)",
+  "command": [
+    "verus",
+    "--crate-type",
+    "lib",
+    "crates/http-subset/src/lib.rs"
+  ],
+  "exit_code": 0,
+  "files": {
+    "tests/transport.rs": "21068535059a8797bc63097cd81f822a9cd123687f9e96f261a696290a7846c7",
+    "tests/boundary.rs": "4e54a59e793cc6cb773095c4937a5524e79c05c0038f2e445c3f2052474b5244",
+    "tests/differential.rs": "425840f9c4cfd499bbc1e7a3c5cc666e7445911cc1a47a5fe06ffa922265365a",
+    "src/transport.rs": "4f5d30a9e8bb74357a7ae3a4a30bdc7315441cc411a9974e9b23598329c21d76",
+    "src/lib.rs": "766a1c688d8f360e9a385aa50d13aa36474943fc4960871e0423dcdd7c3f2bf5",
+    "src/main.rs": "ed7c412715b156db64fd516642c7293ebce66305bc825a7e14858f256318e9a2",
+    "src/tls.rs": "392e49c4a71a940eff93b69826212a58bf388f8a0e52822b3567639ece7cdb25",
+    "crates/http-subset/src/lib.rs": "eb2d2ca9f30c71ea6145a375f2d8639760edac17e44f1e5af3155777420730e8",
+    "crates/transport-core/src/aead.rs": "f7f7178384942e142dcbb0f43e0fe16813a26e06ea75d061d12faa30e5bc756f",
+    "crates/transport-core/src/lib.rs": "a724066ecd651cfb35e67fc3fdd6f638a0485891fc2b2c44863ed634d5422392"
+  },
+  "log_sha256": "82d406ca56e3a2edec461c6a323a0f38abc3214562855fb1d9aa3070205914ed",
+  "harnesses": []
+}

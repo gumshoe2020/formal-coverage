@@ -1,0 +1,6174 @@
+{
+  "results": [
+    {
+      "closure": "lockfile (fallback)",
+      "closure_reason": "cargo metadata: error: failed to download `atomic-waker v1.1.2`\n\nCaused by:\n  attempting to make an HTTP request, but --frozen was specified",
+      "target": "aarch64-apple-darwin",
+      "cargo_version": "cargo 1.99.1 (5f94df478 2026-08-27) (Homebrew)",
+      "dev_dependencies_excluded": 0,
+      "summary": {
+        "all": {
+          "everything_else": {
+            "sloc": 15,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 15
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 31,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 31
+            },
+            "unknown_dependency_sizes": 53
+          }
+        },
+        "escape_sites": 0,
+        "first_party": {
+          "everything_else": {
+            "sloc": 15,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 15
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 31,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 31
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "proof_code": {
+          "everything_else": {
+            "hazard_units": 0,
+            "sloc": 0,
+            "units": 0,
+            "unverified": 0,
+            "verified": 0
+          },
+          "security_relevant": {
+            "hazard_units": 0,
+            "sloc": 0,
+            "units": 0,
+            "unverified": 0,
+            "verified": 0
+          },
+          "total": {
+            "hazard_units": 0,
+            "sloc": 0,
+            "units": 0,
+            "unverified": 0,
+            "verified": 0
+          }
+        },
+        "security_first_party_hazard_units": 0,
+        "third_party": {
+          "everything_else": {
+            "sloc": 0,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 0
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 0,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 0
+            },
+            "unknown_dependency_sizes": 53
+          }
+        },
+        "trusted_items": 0,
+        "trusted_sloc": 0
+      },
+      "branch": "main",
+      "commit": "ce8baf1da131e41e548cbf863fcc81e9fc0fdc21",
+      "receipts": [],
+      "runtime_dependencies": [
+        {
+          "name": "atomic-waker",
+          "version": "1.1.2",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "axum",
+          "version": "0.8.9",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "axum-core",
+          "version": "0.5.6",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "bytes",
+          "version": "1.12.1",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "errno",
+          "version": "0.3.14",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "form_urlencoded",
+          "version": "1.2.2",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "futures-core",
+          "version": "0.3.34",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "futures-task",
+          "version": "0.3.34",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "futures-util",
+          "version": "0.3.34",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "http",
+          "version": "1.5.0",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "http-body",
+          "version": "1.1.0",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "http-body-util",
+          "version": "0.1.5",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "httparse",
+          "version": "1.10.1",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "httpdate",
+          "version": "1.0.3",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "hyper",
+          "version": "1.12.0",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "hyper-util",
+          "version": "0.1.21",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "itoa",
+          "version": "1.0.18",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "libc",
+          "version": "0.2.191",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "log",
+          "version": "0.4.34",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "matchit",
+          "version": "0.8.4",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "memchr",
+          "version": "2.8.3",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "mime",
+          "version": "0.3.17",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "mio",
+          "version": "1.2.4",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "once_cell",
+          "version": "1.21.4",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "percent-encoding",
+          "version": "2.3.2",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "pin-project-lite",
+          "version": "0.2.17",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "proc-macro2",
+          "version": "1.0.107",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "quote",
+          "version": "1.0.47",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "ryu",
+          "version": "1.0.23",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "serde",
+          "version": "1.0.229",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "serde_core",
+          "version": "1.0.229",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "serde_derive",
+          "version": "1.0.229",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "serde_json",
+          "version": "1.0.154",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "serde_path_to_error",
+          "version": "0.1.20",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "serde_urlencoded",
+          "version": "0.7.1",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "signal-hook-registry",
+          "version": "1.4.8",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "slab",
+          "version": "0.4.12",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "smallvec",
+          "version": "1.16.4",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "socket2",
+          "version": "0.6.5",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "syn",
+          "version": "3.0.9",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "sync_wrapper",
+          "version": "1.0.2",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "tokio",
+          "version": "1.54.1",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "tokio-macros",
+          "version": "2.7.2",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "tower",
+          "version": "0.5.3",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "tower-layer",
+          "version": "0.3.3",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "tower-service",
+          "version": "0.3.3",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "tracing",
+          "version": "0.1.44",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "tracing-core",
+          "version": "0.1.36",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "unicode-ident",
+          "version": "1.0.27",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "wasi",
+          "version": "0.11.1+wasi-snapshot-preview1",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "windows-link",
+          "version": "0.2.1",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "windows-sys",
+          "version": "0.61.2",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "zmij",
+          "version": "1.0.23",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        }
+      ],
+      "build_dependencies": []
+    },
+    {
+      "closure": "lockfile (fallback)",
+      "closure_reason": "cargo metadata: error: failed to download `atomic-waker v1.1.2`\n\nCaused by:\n  attempting to make an HTTP request, but --frozen was specified",
+      "target": "aarch64-apple-darwin",
+      "cargo_version": "cargo 1.99.1 (5f94df478 2026-08-27) (Homebrew)",
+      "dev_dependencies_excluded": 0,
+      "summary": {
+        "all": {
+          "everything_else": {
+            "sloc": 15,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 15
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 31,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 31
+            },
+            "unknown_dependency_sizes": 53
+          }
+        },
+        "escape_sites": 0,
+        "first_party": {
+          "everything_else": {
+            "sloc": 15,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 15
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 31,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 31
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "proof_code": {
+          "everything_else": {
+            "hazard_units": 0,
+            "sloc": 0,
+            "units": 0,
+            "unverified": 0,
+            "verified": 0
+          },
+          "security_relevant": {
+            "hazard_units": 0,
+            "sloc": 0,
+            "units": 0,
+            "unverified": 0,
+            "verified": 0
+          },
+          "total": {
+            "hazard_units": 0,
+            "sloc": 0,
+            "units": 0,
+            "unverified": 0,
+            "verified": 0
+          }
+        },
+        "security_first_party_hazard_units": 0,
+        "third_party": {
+          "everything_else": {
+            "sloc": 0,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 0
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 0,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 0
+            },
+            "unknown_dependency_sizes": 53
+          }
+        },
+        "trusted_items": 0,
+        "trusted_sloc": 0
+      },
+      "branch": "nix-scratch",
+      "commit": "3747f1e0782230042d81cc93a02a379be127e8f4",
+      "receipts": [],
+      "runtime_dependencies": [
+        {
+          "name": "atomic-waker",
+          "version": "1.1.2",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "axum",
+          "version": "0.8.9",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "axum-core",
+          "version": "0.5.6",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "bytes",
+          "version": "1.12.1",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "errno",
+          "version": "0.3.14",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "form_urlencoded",
+          "version": "1.2.2",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "futures-core",
+          "version": "0.3.34",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "futures-task",
+          "version": "0.3.34",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "futures-util",
+          "version": "0.3.34",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "http",
+          "version": "1.5.0",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "http-body",
+          "version": "1.1.0",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "http-body-util",
+          "version": "0.1.5",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "httparse",
+          "version": "1.10.1",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "httpdate",
+          "version": "1.0.3",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "hyper",
+          "version": "1.12.0",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "hyper-util",
+          "version": "0.1.21",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "itoa",
+          "version": "1.0.18",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "libc",
+          "version": "0.2.191",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "log",
+          "version": "0.4.34",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "matchit",
+          "version": "0.8.4",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "memchr",
+          "version": "2.8.3",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "mime",
+          "version": "0.3.17",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "mio",
+          "version": "1.2.4",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "once_cell",
+          "version": "1.21.4",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "percent-encoding",
+          "version": "2.3.2",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "pin-project-lite",
+          "version": "0.2.17",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "proc-macro2",
+          "version": "1.0.107",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "quote",
+          "version": "1.0.47",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "ryu",
+          "version": "1.0.23",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "serde",
+          "version": "1.0.229",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "serde_core",
+          "version": "1.0.229",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "serde_derive",
+          "version": "1.0.229",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "serde_json",
+          "version": "1.0.154",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "serde_path_to_error",
+          "version": "0.1.20",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "serde_urlencoded",
+          "version": "0.7.1",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "signal-hook-registry",
+          "version": "1.4.8",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "slab",
+          "version": "0.4.12",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "smallvec",
+          "version": "1.16.4",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "socket2",
+          "version": "0.6.5",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "syn",
+          "version": "3.0.9",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "sync_wrapper",
+          "version": "1.0.2",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "tokio",
+          "version": "1.54.1",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "tokio-macros",
+          "version": "2.7.2",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "tower",
+          "version": "0.5.3",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "tower-layer",
+          "version": "0.3.3",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "tower-service",
+          "version": "0.3.3",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "tracing",
+          "version": "0.1.44",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "tracing-core",
+          "version": "0.1.36",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "unicode-ident",
+          "version": "1.0.27",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "wasi",
+          "version": "0.11.1+wasi-snapshot-preview1",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "windows-link",
+          "version": "0.2.1",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "windows-sys",
+          "version": "0.61.2",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        },
+        {
+          "name": "zmij",
+          "version": "1.0.23",
+          "sloc": 0,
+          "size_known": false,
+          "unsafe_sites": null
+        }
+      ],
+      "build_dependencies": []
+    },
+    {
+      "closure": "cargo metadata (runtime)",
+      "closure_reason": null,
+      "target": "aarch64-apple-darwin",
+      "cargo_version": "cargo 1.99.1 (5f94df478 2026-08-27) (Homebrew)",
+      "dev_dependencies_excluded": 15,
+      "summary": {
+        "all": {
+          "everything_else": {
+            "sloc": 291,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 254,
+              "trusted": 0,
+              "unverified": 37
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 51988,
+            "statuses": {
+              "hazard": 0,
+              "proven": 120,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 38,
+              "trusted": 0,
+              "unverified": 51830
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "escape_sites": 990,
+        "first_party": {
+          "everything_else": {
+            "sloc": 291,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 254,
+              "trusted": 0,
+              "unverified": 37
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 228,
+            "statuses": {
+              "hazard": 0,
+              "proven": 120,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 38,
+              "trusted": 0,
+              "unverified": 70
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "proof_code": {
+          "everything_else": {
+            "hazard_units": 0,
+            "sloc": 0,
+            "units": 0,
+            "unverified": 0,
+            "verified": 0
+          },
+          "security_relevant": {
+            "hazard_units": 0,
+            "sloc": 68,
+            "units": 9,
+            "unverified": 0,
+            "verified": 9
+          },
+          "total": {
+            "hazard_units": 0,
+            "sloc": 68,
+            "units": 9,
+            "unverified": 0,
+            "verified": 9
+          }
+        },
+        "security_first_party_hazard_units": 0,
+        "third_party": {
+          "everything_else": {
+            "sloc": 0,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 0
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 51760,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 51760
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "trusted_items": 0,
+        "trusted_sloc": 0
+      },
+      "branch": "verified-boundary",
+      "commit": "bc2c73b03b6e346cd0acf96badaa0d6ec7bed814",
+      "receipts": [
+        "verified-boundary.verus.log"
+      ],
+      "runtime_dependencies": [
+        {
+          "name": "verus_builtin",
+          "version": "0.0.0-2026-10-11-0230",
+          "sloc": 2097,
+          "size_known": true,
+          "unsafe_sites": 54
+        },
+        {
+          "name": "vstd",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 49663,
+          "size_known": true,
+          "unsafe_sites": 31
+        }
+      ],
+      "build_dependencies": [
+        {
+          "name": "convert_case",
+          "version": "0.4.0",
+          "sloc": 836,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "equivalent",
+          "version": "1.0.3",
+          "sloc": 113,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "hashbrown",
+          "version": "0.17.1",
+          "sloc": 22052,
+          "size_known": true,
+          "unsafe_sites": 451
+        },
+        {
+          "name": "indexmap",
+          "version": "2.14.2",
+          "sloc": 13629,
+          "size_known": true,
+          "unsafe_sites": 13
+        },
+        {
+          "name": "proc-macro2",
+          "version": "1.0.107",
+          "sloc": 6662,
+          "size_known": true,
+          "unsafe_sites": 6
+        },
+        {
+          "name": "quote",
+          "version": "1.0.47",
+          "sloc": 2804,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "syn",
+          "version": "2.0.119",
+          "sloc": 61443,
+          "size_known": true,
+          "unsafe_sites": 69
+        },
+        {
+          "name": "synstructure",
+          "version": "0.13.2",
+          "sloc": 2641,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "unicode-ident",
+          "version": "1.0.27",
+          "sloc": 2046,
+          "size_known": true,
+          "unsafe_sites": 2
+        },
+        {
+          "name": "verus_builtin_macros",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 14883,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "verus_prettyplease",
+          "version": "0.0.0-2026-09-06-0133",
+          "sloc": 10128,
+          "size_known": true,
+          "unsafe_sites": 23
+        },
+        {
+          "name": "verus_state_machines_macros",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 9734,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "verus_syn",
+          "version": "0.0.0-2026-09-06-0133",
+          "sloc": 77054,
+          "size_known": true,
+          "unsafe_sites": 73
+        }
+      ]
+    },
+    {
+      "closure": "cargo metadata (runtime)",
+      "closure_reason": null,
+      "target": "aarch64-apple-darwin",
+      "cargo_version": "cargo 1.99.1 (5f94df478 2026-08-27) (Homebrew)",
+      "dev_dependencies_excluded": 15,
+      "summary": {
+        "all": {
+          "everything_else": {
+            "sloc": 403,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 366,
+              "trusted": 0,
+              "unverified": 37
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 52037,
+            "statuses": {
+              "hazard": 0,
+              "proven": 125,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 78,
+              "trusted": 0,
+              "unverified": 51834
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "escape_sites": 990,
+        "first_party": {
+          "everything_else": {
+            "sloc": 403,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 366,
+              "trusted": 0,
+              "unverified": 37
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 277,
+            "statuses": {
+              "hazard": 0,
+              "proven": 125,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 78,
+              "trusted": 0,
+              "unverified": 74
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "proof_code": {
+          "everything_else": {
+            "hazard_units": 0,
+            "sloc": 0,
+            "units": 0,
+            "unverified": 0,
+            "verified": 0
+          },
+          "security_relevant": {
+            "hazard_units": 0,
+            "sloc": 73,
+            "units": 9,
+            "unverified": 0,
+            "verified": 9
+          },
+          "total": {
+            "hazard_units": 0,
+            "sloc": 73,
+            "units": 9,
+            "unverified": 0,
+            "verified": 9
+          }
+        },
+        "security_first_party_hazard_units": 0,
+        "third_party": {
+          "everything_else": {
+            "sloc": 0,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 0
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 51760,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 51760
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "trusted_items": 0,
+        "trusted_sloc": 0
+      },
+      "branch": "browser-whitelist",
+      "commit": "3a3cf20dad01a2d00c4b10c28f9f9ea975ad683a",
+      "receipts": [
+        "browser-whitelist.verus.log"
+      ],
+      "runtime_dependencies": [
+        {
+          "name": "verus_builtin",
+          "version": "0.0.0-2026-10-11-0230",
+          "sloc": 2097,
+          "size_known": true,
+          "unsafe_sites": 54
+        },
+        {
+          "name": "vstd",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 49663,
+          "size_known": true,
+          "unsafe_sites": 31
+        }
+      ],
+      "build_dependencies": [
+        {
+          "name": "convert_case",
+          "version": "0.4.0",
+          "sloc": 836,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "equivalent",
+          "version": "1.0.3",
+          "sloc": 113,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "hashbrown",
+          "version": "0.17.1",
+          "sloc": 22052,
+          "size_known": true,
+          "unsafe_sites": 451
+        },
+        {
+          "name": "indexmap",
+          "version": "2.14.2",
+          "sloc": 13629,
+          "size_known": true,
+          "unsafe_sites": 13
+        },
+        {
+          "name": "proc-macro2",
+          "version": "1.0.107",
+          "sloc": 6662,
+          "size_known": true,
+          "unsafe_sites": 6
+        },
+        {
+          "name": "quote",
+          "version": "1.0.47",
+          "sloc": 2804,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "syn",
+          "version": "2.0.119",
+          "sloc": 61443,
+          "size_known": true,
+          "unsafe_sites": 69
+        },
+        {
+          "name": "synstructure",
+          "version": "0.13.2",
+          "sloc": 2641,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "unicode-ident",
+          "version": "1.0.27",
+          "sloc": 2046,
+          "size_known": true,
+          "unsafe_sites": 2
+        },
+        {
+          "name": "verus_builtin_macros",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 14883,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "verus_prettyplease",
+          "version": "0.0.0-2026-09-06-0133",
+          "sloc": 10128,
+          "size_known": true,
+          "unsafe_sites": 23
+        },
+        {
+          "name": "verus_state_machines_macros",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 9734,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "verus_syn",
+          "version": "0.0.0-2026-09-06-0133",
+          "sloc": 77054,
+          "size_known": true,
+          "unsafe_sites": 73
+        }
+      ]
+    },
+    {
+      "closure": "cargo metadata (runtime)",
+      "closure_reason": null,
+      "target": "aarch64-apple-darwin",
+      "cargo_version": "cargo 1.99.1 (5f94df478 2026-08-27) (Homebrew)",
+      "dev_dependencies_excluded": 16,
+      "summary": {
+        "all": {
+          "everything_else": {
+            "sloc": 651,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 579,
+              "trusted": 0,
+              "unverified": 72
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 337246,
+            "statuses": {
+              "hazard": 0,
+              "proven": 125,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 193,
+              "trusted": 0,
+              "unverified": 336928
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "escape_sites": 2472,
+        "first_party": {
+          "everything_else": {
+            "sloc": 651,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 579,
+              "trusted": 0,
+              "unverified": 72
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 592,
+            "statuses": {
+              "hazard": 0,
+              "proven": 125,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 193,
+              "trusted": 0,
+              "unverified": 274
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "proof_code": {
+          "everything_else": {
+            "hazard_units": 0,
+            "sloc": 0,
+            "units": 0,
+            "unverified": 0,
+            "verified": 0
+          },
+          "security_relevant": {
+            "hazard_units": 0,
+            "sloc": 73,
+            "units": 9,
+            "unverified": 0,
+            "verified": 9
+          },
+          "total": {
+            "hazard_units": 0,
+            "sloc": 73,
+            "units": 9,
+            "unverified": 0,
+            "verified": 9
+          }
+        },
+        "security_first_party_hazard_units": 0,
+        "third_party": {
+          "everything_else": {
+            "sloc": 0,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 0
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 336654,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 336654
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "trusted_items": 0,
+        "trusted_sloc": 0
+      },
+      "branch": "https",
+      "commit": "969540cf8dd5e7b2223105fbab8272514702f0c2",
+      "receipts": [
+        "https.verus.log"
+      ],
+      "runtime_dependencies": [
+        {
+          "name": "base16ct",
+          "version": "0.2.0",
+          "sloc": 509,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "cfg-if",
+          "version": "1.0.5",
+          "sloc": 189,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "chacha20",
+          "version": "0.10.2",
+          "sloc": 2986,
+          "size_known": true,
+          "unsafe_sites": 66
+        },
+        {
+          "name": "const-oid",
+          "version": "0.9.6",
+          "sloc": 5217,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "der",
+          "version": "0.7.10",
+          "sloc": 10135,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "generic-array",
+          "version": "0.14.9",
+          "sloc": 1745,
+          "size_known": true,
+          "unsafe_sites": 78
+        },
+        {
+          "name": "getrandom",
+          "version": "0.3.4",
+          "sloc": 2318,
+          "size_known": true,
+          "unsafe_sites": 97
+        },
+        {
+          "name": "getrandom",
+          "version": "0.4.3",
+          "sloc": 2375,
+          "size_known": true,
+          "unsafe_sites": 113
+        },
+        {
+          "name": "libc",
+          "version": "0.2.191",
+          "sloc": 118894,
+          "size_known": true,
+          "unsafe_sites": 800
+        },
+        {
+          "name": "libcrux-chacha20poly1305",
+          "version": "0.0.10",
+          "sloc": 1606,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-curve25519",
+          "version": "0.0.9",
+          "sloc": 133,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-ecdsa",
+          "version": "0.0.9",
+          "sloc": 840,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-hacl-rs",
+          "version": "0.0.6",
+          "sloc": 10122,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-hkdf",
+          "version": "0.0.9",
+          "sloc": 1372,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-hmac",
+          "version": "0.0.9",
+          "sloc": 769,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-intrinsics",
+          "version": "0.0.9",
+          "sloc": 2215,
+          "size_known": true,
+          "unsafe_sites": 192
+        },
+        {
+          "name": "libcrux-p256",
+          "version": "0.0.9",
+          "sloc": 3684,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-platform",
+          "version": "0.0.4",
+          "sloc": 498,
+          "size_known": true,
+          "unsafe_sites": 2
+        },
+        {
+          "name": "libcrux-poly1305",
+          "version": "0.0.7",
+          "sloc": 756,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-secrets",
+          "version": "0.0.7",
+          "sloc": 1323,
+          "size_known": true,
+          "unsafe_sites": 18
+        },
+        {
+          "name": "libcrux-sha2",
+          "version": "0.0.9",
+          "sloc": 1582,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-sha3",
+          "version": "0.0.11",
+          "sloc": 4652,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-traits",
+          "version": "0.0.9",
+          "sloc": 2413,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "once_cell",
+          "version": "1.21.4",
+          "sloc": 3405,
+          "size_known": true,
+          "unsafe_sites": 49
+        },
+        {
+          "name": "pkcs8",
+          "version": "0.10.2",
+          "sloc": 1169,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "rand",
+          "version": "0.10.3",
+          "sloc": 8699,
+          "size_known": true,
+          "unsafe_sites": 16
+        },
+        {
+          "name": "rand_core",
+          "version": "0.10.1",
+          "sloc": 1205,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "rustls",
+          "version": "0.23.46",
+          "sloc": 42386,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "rustls-pki-types",
+          "version": "1.15.1",
+          "sloc": 3535,
+          "size_known": true,
+          "unsafe_sites": 1
+        },
+        {
+          "name": "rustls-webpki",
+          "version": "0.103.16",
+          "sloc": 7874,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "sec1",
+          "version": "0.7.3",
+          "sloc": 1217,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "spki",
+          "version": "0.7.3",
+          "sloc": 886,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "subtle",
+          "version": "2.6.1",
+          "sloc": 1233,
+          "size_known": true,
+          "unsafe_sites": 2
+        },
+        {
+          "name": "typenum",
+          "version": "1.20.1",
+          "sloc": 35003,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "untrusted",
+          "version": "0.9.0",
+          "sloc": 428,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "verus_builtin",
+          "version": "0.0.0-2026-10-11-0230",
+          "sloc": 2097,
+          "size_known": true,
+          "unsafe_sites": 54
+        },
+        {
+          "name": "vstd",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 49663,
+          "size_known": true,
+          "unsafe_sites": 31
+        },
+        {
+          "name": "zeroize",
+          "version": "1.9.1",
+          "sloc": 1521,
+          "size_known": true,
+          "unsafe_sites": 38
+        }
+      ],
+      "build_dependencies": [
+        {
+          "name": "convert_case",
+          "version": "0.4.0",
+          "sloc": 836,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "equivalent",
+          "version": "1.0.3",
+          "sloc": 113,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "hashbrown",
+          "version": "0.17.1",
+          "sloc": 22052,
+          "size_known": true,
+          "unsafe_sites": 451
+        },
+        {
+          "name": "indexmap",
+          "version": "2.14.2",
+          "sloc": 13629,
+          "size_known": true,
+          "unsafe_sites": 13
+        },
+        {
+          "name": "libcrux-macros",
+          "version": "0.0.4",
+          "sloc": 120,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "proc-macro2",
+          "version": "1.0.107",
+          "sloc": 6662,
+          "size_known": true,
+          "unsafe_sites": 6
+        },
+        {
+          "name": "quote",
+          "version": "1.0.47",
+          "sloc": 2804,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "syn",
+          "version": "2.0.119",
+          "sloc": 61443,
+          "size_known": true,
+          "unsafe_sites": 69
+        },
+        {
+          "name": "syn",
+          "version": "3.0.9",
+          "sloc": 63168,
+          "size_known": true,
+          "unsafe_sites": 78
+        },
+        {
+          "name": "synstructure",
+          "version": "0.13.2",
+          "sloc": 2641,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "unicode-ident",
+          "version": "1.0.27",
+          "sloc": 2046,
+          "size_known": true,
+          "unsafe_sites": 2
+        },
+        {
+          "name": "version_check",
+          "version": "0.9.5",
+          "sloc": 1136,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "verus_builtin_macros",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 14883,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "verus_prettyplease",
+          "version": "0.0.0-2026-09-06-0133",
+          "sloc": 10128,
+          "size_known": true,
+          "unsafe_sites": 23
+        },
+        {
+          "name": "verus_state_machines_macros",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 9734,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "verus_syn",
+          "version": "0.0.0-2026-09-06-0133",
+          "sloc": 77054,
+          "size_known": true,
+          "unsafe_sites": 73
+        }
+      ]
+    },
+    {
+      "closure": "cargo metadata (runtime)",
+      "closure_reason": null,
+      "target": "aarch64-apple-darwin",
+      "cargo_version": "cargo 1.99.1 (5f94df478 2026-08-27) (Homebrew)",
+      "dev_dependencies_excluded": 16,
+      "summary": {
+        "all": {
+          "everything_else": {
+            "sloc": 681,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 609,
+              "trusted": 0,
+              "unverified": 72
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 337252,
+            "statuses": {
+              "hazard": 0,
+              "proven": 128,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 196,
+              "trusted": 0,
+              "unverified": 336928
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "escape_sites": 2472,
+        "first_party": {
+          "everything_else": {
+            "sloc": 681,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 609,
+              "trusted": 0,
+              "unverified": 72
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 598,
+            "statuses": {
+              "hazard": 0,
+              "proven": 128,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 196,
+              "trusted": 0,
+              "unverified": 274
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "proof_code": {
+          "everything_else": {
+            "hazard_units": 0,
+            "sloc": 0,
+            "units": 0,
+            "unverified": 0,
+            "verified": 0
+          },
+          "security_relevant": {
+            "hazard_units": 0,
+            "sloc": 76,
+            "units": 9,
+            "unverified": 0,
+            "verified": 9
+          },
+          "total": {
+            "hazard_units": 0,
+            "sloc": 76,
+            "units": 9,
+            "unverified": 0,
+            "verified": 9
+          }
+        },
+        "security_first_party_hazard_units": 0,
+        "third_party": {
+          "everything_else": {
+            "sloc": 0,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 0
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 336654,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 336654
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "trusted_items": 0,
+        "trusted_sloc": 0
+      },
+      "branch": "https-headers",
+      "commit": "131f109a5b5a0ac87db3ac44bef4260e7be8ce74",
+      "receipts": [
+        "https-headers.verus.log"
+      ],
+      "runtime_dependencies": [
+        {
+          "name": "base16ct",
+          "version": "0.2.0",
+          "sloc": 509,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "cfg-if",
+          "version": "1.0.5",
+          "sloc": 189,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "chacha20",
+          "version": "0.10.2",
+          "sloc": 2986,
+          "size_known": true,
+          "unsafe_sites": 66
+        },
+        {
+          "name": "const-oid",
+          "version": "0.9.6",
+          "sloc": 5217,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "der",
+          "version": "0.7.10",
+          "sloc": 10135,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "generic-array",
+          "version": "0.14.9",
+          "sloc": 1745,
+          "size_known": true,
+          "unsafe_sites": 78
+        },
+        {
+          "name": "getrandom",
+          "version": "0.3.4",
+          "sloc": 2318,
+          "size_known": true,
+          "unsafe_sites": 97
+        },
+        {
+          "name": "getrandom",
+          "version": "0.4.3",
+          "sloc": 2375,
+          "size_known": true,
+          "unsafe_sites": 113
+        },
+        {
+          "name": "libc",
+          "version": "0.2.191",
+          "sloc": 118894,
+          "size_known": true,
+          "unsafe_sites": 800
+        },
+        {
+          "name": "libcrux-chacha20poly1305",
+          "version": "0.0.10",
+          "sloc": 1606,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-curve25519",
+          "version": "0.0.9",
+          "sloc": 133,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-ecdsa",
+          "version": "0.0.9",
+          "sloc": 840,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-hacl-rs",
+          "version": "0.0.6",
+          "sloc": 10122,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-hkdf",
+          "version": "0.0.9",
+          "sloc": 1372,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-hmac",
+          "version": "0.0.9",
+          "sloc": 769,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-intrinsics",
+          "version": "0.0.9",
+          "sloc": 2215,
+          "size_known": true,
+          "unsafe_sites": 192
+        },
+        {
+          "name": "libcrux-p256",
+          "version": "0.0.9",
+          "sloc": 3684,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-platform",
+          "version": "0.0.4",
+          "sloc": 498,
+          "size_known": true,
+          "unsafe_sites": 2
+        },
+        {
+          "name": "libcrux-poly1305",
+          "version": "0.0.7",
+          "sloc": 756,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-secrets",
+          "version": "0.0.7",
+          "sloc": 1323,
+          "size_known": true,
+          "unsafe_sites": 18
+        },
+        {
+          "name": "libcrux-sha2",
+          "version": "0.0.9",
+          "sloc": 1582,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-sha3",
+          "version": "0.0.11",
+          "sloc": 4652,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-traits",
+          "version": "0.0.9",
+          "sloc": 2413,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "once_cell",
+          "version": "1.21.4",
+          "sloc": 3405,
+          "size_known": true,
+          "unsafe_sites": 49
+        },
+        {
+          "name": "pkcs8",
+          "version": "0.10.2",
+          "sloc": 1169,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "rand",
+          "version": "0.10.3",
+          "sloc": 8699,
+          "size_known": true,
+          "unsafe_sites": 16
+        },
+        {
+          "name": "rand_core",
+          "version": "0.10.1",
+          "sloc": 1205,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "rustls",
+          "version": "0.23.46",
+          "sloc": 42386,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "rustls-pki-types",
+          "version": "1.15.1",
+          "sloc": 3535,
+          "size_known": true,
+          "unsafe_sites": 1
+        },
+        {
+          "name": "rustls-webpki",
+          "version": "0.103.16",
+          "sloc": 7874,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "sec1",
+          "version": "0.7.3",
+          "sloc": 1217,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "spki",
+          "version": "0.7.3",
+          "sloc": 886,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "subtle",
+          "version": "2.6.1",
+          "sloc": 1233,
+          "size_known": true,
+          "unsafe_sites": 2
+        },
+        {
+          "name": "typenum",
+          "version": "1.20.1",
+          "sloc": 35003,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "untrusted",
+          "version": "0.9.0",
+          "sloc": 428,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "verus_builtin",
+          "version": "0.0.0-2026-10-11-0230",
+          "sloc": 2097,
+          "size_known": true,
+          "unsafe_sites": 54
+        },
+        {
+          "name": "vstd",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 49663,
+          "size_known": true,
+          "unsafe_sites": 31
+        },
+        {
+          "name": "zeroize",
+          "version": "1.9.1",
+          "sloc": 1521,
+          "size_known": true,
+          "unsafe_sites": 38
+        }
+      ],
+      "build_dependencies": [
+        {
+          "name": "convert_case",
+          "version": "0.4.0",
+          "sloc": 836,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "equivalent",
+          "version": "1.0.3",
+          "sloc": 113,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "hashbrown",
+          "version": "0.17.1",
+          "sloc": 22052,
+          "size_known": true,
+          "unsafe_sites": 451
+        },
+        {
+          "name": "indexmap",
+          "version": "2.14.2",
+          "sloc": 13629,
+          "size_known": true,
+          "unsafe_sites": 13
+        },
+        {
+          "name": "libcrux-macros",
+          "version": "0.0.4",
+          "sloc": 120,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "proc-macro2",
+          "version": "1.0.107",
+          "sloc": 6662,
+          "size_known": true,
+          "unsafe_sites": 6
+        },
+        {
+          "name": "quote",
+          "version": "1.0.47",
+          "sloc": 2804,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "syn",
+          "version": "2.0.119",
+          "sloc": 61443,
+          "size_known": true,
+          "unsafe_sites": 69
+        },
+        {
+          "name": "syn",
+          "version": "3.0.9",
+          "sloc": 63168,
+          "size_known": true,
+          "unsafe_sites": 78
+        },
+        {
+          "name": "synstructure",
+          "version": "0.13.2",
+          "sloc": 2641,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "unicode-ident",
+          "version": "1.0.27",
+          "sloc": 2046,
+          "size_known": true,
+          "unsafe_sites": 2
+        },
+        {
+          "name": "version_check",
+          "version": "0.9.5",
+          "sloc": 1136,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "verus_builtin_macros",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 14883,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "verus_prettyplease",
+          "version": "0.0.0-2026-09-06-0133",
+          "sloc": 10128,
+          "size_known": true,
+          "unsafe_sites": 23
+        },
+        {
+          "name": "verus_state_machines_macros",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 9734,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "verus_syn",
+          "version": "0.0.0-2026-09-06-0133",
+          "sloc": 77054,
+          "size_known": true,
+          "unsafe_sites": 73
+        }
+      ]
+    },
+    {
+      "closure": "cargo metadata (runtime)",
+      "closure_reason": null,
+      "target": "aarch64-apple-darwin",
+      "cargo_version": "cargo 1.99.1 (5f94df478 2026-08-27) (Homebrew)",
+      "dev_dependencies_excluded": 16,
+      "summary": {
+        "all": {
+          "everything_else": {
+            "sloc": 803,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 734,
+              "trusted": 0,
+              "unverified": 69
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 337315,
+            "statuses": {
+              "hazard": 0,
+              "proven": 128,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 205,
+              "trusted": 0,
+              "unverified": 336982
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "escape_sites": 2472,
+        "first_party": {
+          "everything_else": {
+            "sloc": 803,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 734,
+              "trusted": 0,
+              "unverified": 69
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 661,
+            "statuses": {
+              "hazard": 0,
+              "proven": 128,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 205,
+              "trusted": 0,
+              "unverified": 328
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "proof_code": {
+          "everything_else": {
+            "hazard_units": 0,
+            "sloc": 0,
+            "units": 0,
+            "unverified": 0,
+            "verified": 0
+          },
+          "security_relevant": {
+            "hazard_units": 0,
+            "sloc": 76,
+            "units": 9,
+            "unverified": 0,
+            "verified": 9
+          },
+          "total": {
+            "hazard_units": 0,
+            "sloc": 76,
+            "units": 9,
+            "unverified": 0,
+            "verified": 9
+          }
+        },
+        "security_first_party_hazard_units": 0,
+        "third_party": {
+          "everything_else": {
+            "sloc": 0,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 0
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 336654,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 336654
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "trusted_items": 0,
+        "trusted_sloc": 0
+      },
+      "branch": "idle-connections",
+      "commit": "a3952e45725d37ef6600a60266567a6bfab8c2de",
+      "receipts": [
+        "idle-connections.verus.log"
+      ],
+      "runtime_dependencies": [
+        {
+          "name": "base16ct",
+          "version": "0.2.0",
+          "sloc": 509,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "cfg-if",
+          "version": "1.0.5",
+          "sloc": 189,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "chacha20",
+          "version": "0.10.2",
+          "sloc": 2986,
+          "size_known": true,
+          "unsafe_sites": 66
+        },
+        {
+          "name": "const-oid",
+          "version": "0.9.6",
+          "sloc": 5217,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "der",
+          "version": "0.7.10",
+          "sloc": 10135,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "generic-array",
+          "version": "0.14.9",
+          "sloc": 1745,
+          "size_known": true,
+          "unsafe_sites": 78
+        },
+        {
+          "name": "getrandom",
+          "version": "0.3.4",
+          "sloc": 2318,
+          "size_known": true,
+          "unsafe_sites": 97
+        },
+        {
+          "name": "getrandom",
+          "version": "0.4.3",
+          "sloc": 2375,
+          "size_known": true,
+          "unsafe_sites": 113
+        },
+        {
+          "name": "libc",
+          "version": "0.2.191",
+          "sloc": 118894,
+          "size_known": true,
+          "unsafe_sites": 800
+        },
+        {
+          "name": "libcrux-chacha20poly1305",
+          "version": "0.0.10",
+          "sloc": 1606,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-curve25519",
+          "version": "0.0.9",
+          "sloc": 133,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-ecdsa",
+          "version": "0.0.9",
+          "sloc": 840,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-hacl-rs",
+          "version": "0.0.6",
+          "sloc": 10122,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-hkdf",
+          "version": "0.0.9",
+          "sloc": 1372,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-hmac",
+          "version": "0.0.9",
+          "sloc": 769,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-intrinsics",
+          "version": "0.0.9",
+          "sloc": 2215,
+          "size_known": true,
+          "unsafe_sites": 192
+        },
+        {
+          "name": "libcrux-p256",
+          "version": "0.0.9",
+          "sloc": 3684,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-platform",
+          "version": "0.0.4",
+          "sloc": 498,
+          "size_known": true,
+          "unsafe_sites": 2
+        },
+        {
+          "name": "libcrux-poly1305",
+          "version": "0.0.7",
+          "sloc": 756,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-secrets",
+          "version": "0.0.7",
+          "sloc": 1323,
+          "size_known": true,
+          "unsafe_sites": 18
+        },
+        {
+          "name": "libcrux-sha2",
+          "version": "0.0.9",
+          "sloc": 1582,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-sha3",
+          "version": "0.0.11",
+          "sloc": 4652,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-traits",
+          "version": "0.0.9",
+          "sloc": 2413,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "once_cell",
+          "version": "1.21.4",
+          "sloc": 3405,
+          "size_known": true,
+          "unsafe_sites": 49
+        },
+        {
+          "name": "pkcs8",
+          "version": "0.10.2",
+          "sloc": 1169,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "rand",
+          "version": "0.10.3",
+          "sloc": 8699,
+          "size_known": true,
+          "unsafe_sites": 16
+        },
+        {
+          "name": "rand_core",
+          "version": "0.10.1",
+          "sloc": 1205,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "rustls",
+          "version": "0.23.46",
+          "sloc": 42386,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "rustls-pki-types",
+          "version": "1.15.1",
+          "sloc": 3535,
+          "size_known": true,
+          "unsafe_sites": 1
+        },
+        {
+          "name": "rustls-webpki",
+          "version": "0.103.16",
+          "sloc": 7874,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "sec1",
+          "version": "0.7.3",
+          "sloc": 1217,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "spki",
+          "version": "0.7.3",
+          "sloc": 886,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "subtle",
+          "version": "2.6.1",
+          "sloc": 1233,
+          "size_known": true,
+          "unsafe_sites": 2
+        },
+        {
+          "name": "typenum",
+          "version": "1.20.1",
+          "sloc": 35003,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "untrusted",
+          "version": "0.9.0",
+          "sloc": 428,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "verus_builtin",
+          "version": "0.0.0-2026-10-11-0230",
+          "sloc": 2097,
+          "size_known": true,
+          "unsafe_sites": 54
+        },
+        {
+          "name": "vstd",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 49663,
+          "size_known": true,
+          "unsafe_sites": 31
+        },
+        {
+          "name": "zeroize",
+          "version": "1.9.1",
+          "sloc": 1521,
+          "size_known": true,
+          "unsafe_sites": 38
+        }
+      ],
+      "build_dependencies": [
+        {
+          "name": "convert_case",
+          "version": "0.4.0",
+          "sloc": 836,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "equivalent",
+          "version": "1.0.3",
+          "sloc": 113,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "hashbrown",
+          "version": "0.17.1",
+          "sloc": 22052,
+          "size_known": true,
+          "unsafe_sites": 451
+        },
+        {
+          "name": "indexmap",
+          "version": "2.14.2",
+          "sloc": 13629,
+          "size_known": true,
+          "unsafe_sites": 13
+        },
+        {
+          "name": "libcrux-macros",
+          "version": "0.0.4",
+          "sloc": 120,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "proc-macro2",
+          "version": "1.0.107",
+          "sloc": 6662,
+          "size_known": true,
+          "unsafe_sites": 6
+        },
+        {
+          "name": "quote",
+          "version": "1.0.47",
+          "sloc": 2804,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "syn",
+          "version": "2.0.119",
+          "sloc": 61443,
+          "size_known": true,
+          "unsafe_sites": 69
+        },
+        {
+          "name": "syn",
+          "version": "3.0.9",
+          "sloc": 63168,
+          "size_known": true,
+          "unsafe_sites": 78
+        },
+        {
+          "name": "synstructure",
+          "version": "0.13.2",
+          "sloc": 2641,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "unicode-ident",
+          "version": "1.0.27",
+          "sloc": 2046,
+          "size_known": true,
+          "unsafe_sites": 2
+        },
+        {
+          "name": "version_check",
+          "version": "0.9.5",
+          "sloc": 1136,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "verus_builtin_macros",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 14883,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "verus_prettyplease",
+          "version": "0.0.0-2026-09-06-0133",
+          "sloc": 10128,
+          "size_known": true,
+          "unsafe_sites": 23
+        },
+        {
+          "name": "verus_state_machines_macros",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 9734,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "verus_syn",
+          "version": "0.0.0-2026-09-06-0133",
+          "sloc": 77054,
+          "size_known": true,
+          "unsafe_sites": 73
+        }
+      ]
+    },
+    {
+      "closure": "cargo metadata (runtime)",
+      "closure_reason": null,
+      "target": "aarch64-apple-darwin",
+      "cargo_version": "cargo 1.99.1 (5f94df478 2026-08-27) (Homebrew)",
+      "dev_dependencies_excluded": 16,
+      "summary": {
+        "all": {
+          "everything_else": {
+            "sloc": 1005,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 920,
+              "trusted": 0,
+              "unverified": 85
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 337505,
+            "statuses": {
+              "hazard": 0,
+              "proven": 315,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 204,
+              "trusted": 0,
+              "unverified": 336986
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "escape_sites": 2472,
+        "first_party": {
+          "everything_else": {
+            "sloc": 1005,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 920,
+              "trusted": 0,
+              "unverified": 85
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 851,
+            "statuses": {
+              "hazard": 0,
+              "proven": 315,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 204,
+              "trusted": 0,
+              "unverified": 332
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "proof_code": {
+          "everything_else": {
+            "hazard_units": 0,
+            "sloc": 0,
+            "units": 0,
+            "unverified": 0,
+            "verified": 0
+          },
+          "security_relevant": {
+            "hazard_units": 0,
+            "sloc": 130,
+            "units": 17,
+            "unverified": 0,
+            "verified": 17
+          },
+          "total": {
+            "hazard_units": 0,
+            "sloc": 130,
+            "units": 17,
+            "unverified": 0,
+            "verified": 17
+          }
+        },
+        "security_first_party_hazard_units": 0,
+        "third_party": {
+          "everything_else": {
+            "sloc": 0,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 0
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 336654,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 336654
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "trusted_items": 0,
+        "trusted_sloc": 0
+      },
+      "branch": "proven-transport",
+      "commit": "42b6565a2b6906b9ad84dd8854a5c719f5186049",
+      "receipts": [
+        "proven-transport.verus.log",
+        "proven-transport.root-2.verus.log",
+        "proven-transport.root-3.verus.log"
+      ],
+      "runtime_dependencies": [
+        {
+          "name": "base16ct",
+          "version": "0.2.0",
+          "sloc": 509,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "cfg-if",
+          "version": "1.0.5",
+          "sloc": 189,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "chacha20",
+          "version": "0.10.2",
+          "sloc": 2986,
+          "size_known": true,
+          "unsafe_sites": 66
+        },
+        {
+          "name": "const-oid",
+          "version": "0.9.6",
+          "sloc": 5217,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "der",
+          "version": "0.7.10",
+          "sloc": 10135,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "generic-array",
+          "version": "0.14.9",
+          "sloc": 1745,
+          "size_known": true,
+          "unsafe_sites": 78
+        },
+        {
+          "name": "getrandom",
+          "version": "0.3.4",
+          "sloc": 2318,
+          "size_known": true,
+          "unsafe_sites": 97
+        },
+        {
+          "name": "getrandom",
+          "version": "0.4.3",
+          "sloc": 2375,
+          "size_known": true,
+          "unsafe_sites": 113
+        },
+        {
+          "name": "libc",
+          "version": "0.2.191",
+          "sloc": 118894,
+          "size_known": true,
+          "unsafe_sites": 800
+        },
+        {
+          "name": "libcrux-chacha20poly1305",
+          "version": "0.0.10",
+          "sloc": 1606,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-curve25519",
+          "version": "0.0.9",
+          "sloc": 133,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-ecdsa",
+          "version": "0.0.9",
+          "sloc": 840,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-hacl-rs",
+          "version": "0.0.6",
+          "sloc": 10122,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-hkdf",
+          "version": "0.0.9",
+          "sloc": 1372,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-hmac",
+          "version": "0.0.9",
+          "sloc": 769,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-intrinsics",
+          "version": "0.0.9",
+          "sloc": 2215,
+          "size_known": true,
+          "unsafe_sites": 192
+        },
+        {
+          "name": "libcrux-p256",
+          "version": "0.0.9",
+          "sloc": 3684,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-platform",
+          "version": "0.0.4",
+          "sloc": 498,
+          "size_known": true,
+          "unsafe_sites": 2
+        },
+        {
+          "name": "libcrux-poly1305",
+          "version": "0.0.7",
+          "sloc": 756,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-secrets",
+          "version": "0.0.7",
+          "sloc": 1323,
+          "size_known": true,
+          "unsafe_sites": 18
+        },
+        {
+          "name": "libcrux-sha2",
+          "version": "0.0.9",
+          "sloc": 1582,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-sha3",
+          "version": "0.0.11",
+          "sloc": 4652,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-traits",
+          "version": "0.0.9",
+          "sloc": 2413,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "once_cell",
+          "version": "1.21.4",
+          "sloc": 3405,
+          "size_known": true,
+          "unsafe_sites": 49
+        },
+        {
+          "name": "pkcs8",
+          "version": "0.10.2",
+          "sloc": 1169,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "rand",
+          "version": "0.10.3",
+          "sloc": 8699,
+          "size_known": true,
+          "unsafe_sites": 16
+        },
+        {
+          "name": "rand_core",
+          "version": "0.10.1",
+          "sloc": 1205,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "rustls",
+          "version": "0.23.46",
+          "sloc": 42386,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "rustls-pki-types",
+          "version": "1.15.1",
+          "sloc": 3535,
+          "size_known": true,
+          "unsafe_sites": 1
+        },
+        {
+          "name": "rustls-webpki",
+          "version": "0.103.16",
+          "sloc": 7874,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "sec1",
+          "version": "0.7.3",
+          "sloc": 1217,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "spki",
+          "version": "0.7.3",
+          "sloc": 886,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "subtle",
+          "version": "2.6.1",
+          "sloc": 1233,
+          "size_known": true,
+          "unsafe_sites": 2
+        },
+        {
+          "name": "typenum",
+          "version": "1.20.1",
+          "sloc": 35003,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "untrusted",
+          "version": "0.9.0",
+          "sloc": 428,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "verus_builtin",
+          "version": "0.0.0-2026-10-11-0230",
+          "sloc": 2097,
+          "size_known": true,
+          "unsafe_sites": 54
+        },
+        {
+          "name": "vstd",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 49663,
+          "size_known": true,
+          "unsafe_sites": 31
+        },
+        {
+          "name": "zeroize",
+          "version": "1.9.1",
+          "sloc": 1521,
+          "size_known": true,
+          "unsafe_sites": 38
+        }
+      ],
+      "build_dependencies": [
+        {
+          "name": "convert_case",
+          "version": "0.4.0",
+          "sloc": 836,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "equivalent",
+          "version": "1.0.3",
+          "sloc": 113,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "hashbrown",
+          "version": "0.17.1",
+          "sloc": 22052,
+          "size_known": true,
+          "unsafe_sites": 451
+        },
+        {
+          "name": "indexmap",
+          "version": "2.14.2",
+          "sloc": 13629,
+          "size_known": true,
+          "unsafe_sites": 13
+        },
+        {
+          "name": "libcrux-macros",
+          "version": "0.0.4",
+          "sloc": 120,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "proc-macro2",
+          "version": "1.0.107",
+          "sloc": 6662,
+          "size_known": true,
+          "unsafe_sites": 6
+        },
+        {
+          "name": "quote",
+          "version": "1.0.47",
+          "sloc": 2804,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "syn",
+          "version": "2.0.119",
+          "sloc": 61443,
+          "size_known": true,
+          "unsafe_sites": 69
+        },
+        {
+          "name": "syn",
+          "version": "3.0.9",
+          "sloc": 63168,
+          "size_known": true,
+          "unsafe_sites": 78
+        },
+        {
+          "name": "synstructure",
+          "version": "0.13.2",
+          "sloc": 2641,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "unicode-ident",
+          "version": "1.0.27",
+          "sloc": 2046,
+          "size_known": true,
+          "unsafe_sites": 2
+        },
+        {
+          "name": "version_check",
+          "version": "0.9.5",
+          "sloc": 1136,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "verus_builtin_macros",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 14883,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "verus_prettyplease",
+          "version": "0.0.0-2026-09-06-0133",
+          "sloc": 10128,
+          "size_known": true,
+          "unsafe_sites": 23
+        },
+        {
+          "name": "verus_state_machines_macros",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 9734,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "verus_syn",
+          "version": "0.0.0-2026-09-06-0133",
+          "sloc": 77054,
+          "size_known": true,
+          "unsafe_sites": 73
+        }
+      ]
+    },
+    {
+      "closure": "cargo metadata (runtime)",
+      "closure_reason": null,
+      "target": "aarch64-apple-darwin",
+      "cargo_version": "cargo 1.99.1 (5f94df478 2026-08-27) (Homebrew)",
+      "dev_dependencies_excluded": 16,
+      "summary": {
+        "all": {
+          "everything_else": {
+            "sloc": 1022,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 937,
+              "trusted": 0,
+              "unverified": 85
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 337506,
+            "statuses": {
+              "hazard": 0,
+              "proven": 316,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 204,
+              "trusted": 0,
+              "unverified": 336986
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "escape_sites": 2472,
+        "first_party": {
+          "everything_else": {
+            "sloc": 1022,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 937,
+              "trusted": 0,
+              "unverified": 85
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 852,
+            "statuses": {
+              "hazard": 0,
+              "proven": 316,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 204,
+              "trusted": 0,
+              "unverified": 332
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "proof_code": {
+          "everything_else": {
+            "hazard_units": 0,
+            "sloc": 0,
+            "units": 0,
+            "unverified": 0,
+            "verified": 0
+          },
+          "security_relevant": {
+            "hazard_units": 0,
+            "sloc": 131,
+            "units": 17,
+            "unverified": 0,
+            "verified": 17
+          },
+          "total": {
+            "hazard_units": 0,
+            "sloc": 131,
+            "units": 17,
+            "unverified": 0,
+            "verified": 17
+          }
+        },
+        "security_first_party_hazard_units": 0,
+        "third_party": {
+          "everything_else": {
+            "sloc": 0,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 0
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 336654,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 336654
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "trusted_items": 0,
+        "trusted_sloc": 0
+      },
+      "branch": "firefox-headers",
+      "commit": "39a1d28397229e50d5614dc407722e45fc6c59bf",
+      "receipts": [
+        "firefox-headers.verus.log",
+        "firefox-headers.root-2.verus.log",
+        "firefox-headers.root-3.verus.log"
+      ],
+      "runtime_dependencies": [
+        {
+          "name": "base16ct",
+          "version": "0.2.0",
+          "sloc": 509,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "cfg-if",
+          "version": "1.0.5",
+          "sloc": 189,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "chacha20",
+          "version": "0.10.2",
+          "sloc": 2986,
+          "size_known": true,
+          "unsafe_sites": 66
+        },
+        {
+          "name": "const-oid",
+          "version": "0.9.6",
+          "sloc": 5217,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "der",
+          "version": "0.7.10",
+          "sloc": 10135,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "generic-array",
+          "version": "0.14.9",
+          "sloc": 1745,
+          "size_known": true,
+          "unsafe_sites": 78
+        },
+        {
+          "name": "getrandom",
+          "version": "0.3.4",
+          "sloc": 2318,
+          "size_known": true,
+          "unsafe_sites": 97
+        },
+        {
+          "name": "getrandom",
+          "version": "0.4.3",
+          "sloc": 2375,
+          "size_known": true,
+          "unsafe_sites": 113
+        },
+        {
+          "name": "libc",
+          "version": "0.2.191",
+          "sloc": 118894,
+          "size_known": true,
+          "unsafe_sites": 800
+        },
+        {
+          "name": "libcrux-chacha20poly1305",
+          "version": "0.0.10",
+          "sloc": 1606,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-curve25519",
+          "version": "0.0.9",
+          "sloc": 133,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-ecdsa",
+          "version": "0.0.9",
+          "sloc": 840,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-hacl-rs",
+          "version": "0.0.6",
+          "sloc": 10122,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-hkdf",
+          "version": "0.0.9",
+          "sloc": 1372,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-hmac",
+          "version": "0.0.9",
+          "sloc": 769,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-intrinsics",
+          "version": "0.0.9",
+          "sloc": 2215,
+          "size_known": true,
+          "unsafe_sites": 192
+        },
+        {
+          "name": "libcrux-p256",
+          "version": "0.0.9",
+          "sloc": 3684,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-platform",
+          "version": "0.0.4",
+          "sloc": 498,
+          "size_known": true,
+          "unsafe_sites": 2
+        },
+        {
+          "name": "libcrux-poly1305",
+          "version": "0.0.7",
+          "sloc": 756,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-secrets",
+          "version": "0.0.7",
+          "sloc": 1323,
+          "size_known": true,
+          "unsafe_sites": 18
+        },
+        {
+          "name": "libcrux-sha2",
+          "version": "0.0.9",
+          "sloc": 1582,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-sha3",
+          "version": "0.0.11",
+          "sloc": 4652,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-traits",
+          "version": "0.0.9",
+          "sloc": 2413,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "once_cell",
+          "version": "1.21.4",
+          "sloc": 3405,
+          "size_known": true,
+          "unsafe_sites": 49
+        },
+        {
+          "name": "pkcs8",
+          "version": "0.10.2",
+          "sloc": 1169,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "rand",
+          "version": "0.10.3",
+          "sloc": 8699,
+          "size_known": true,
+          "unsafe_sites": 16
+        },
+        {
+          "name": "rand_core",
+          "version": "0.10.1",
+          "sloc": 1205,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "rustls",
+          "version": "0.23.46",
+          "sloc": 42386,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "rustls-pki-types",
+          "version": "1.15.1",
+          "sloc": 3535,
+          "size_known": true,
+          "unsafe_sites": 1
+        },
+        {
+          "name": "rustls-webpki",
+          "version": "0.103.16",
+          "sloc": 7874,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "sec1",
+          "version": "0.7.3",
+          "sloc": 1217,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "spki",
+          "version": "0.7.3",
+          "sloc": 886,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "subtle",
+          "version": "2.6.1",
+          "sloc": 1233,
+          "size_known": true,
+          "unsafe_sites": 2
+        },
+        {
+          "name": "typenum",
+          "version": "1.20.1",
+          "sloc": 35003,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "untrusted",
+          "version": "0.9.0",
+          "sloc": 428,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "verus_builtin",
+          "version": "0.0.0-2026-10-11-0230",
+          "sloc": 2097,
+          "size_known": true,
+          "unsafe_sites": 54
+        },
+        {
+          "name": "vstd",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 49663,
+          "size_known": true,
+          "unsafe_sites": 31
+        },
+        {
+          "name": "zeroize",
+          "version": "1.9.1",
+          "sloc": 1521,
+          "size_known": true,
+          "unsafe_sites": 38
+        }
+      ],
+      "build_dependencies": [
+        {
+          "name": "convert_case",
+          "version": "0.4.0",
+          "sloc": 836,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "equivalent",
+          "version": "1.0.3",
+          "sloc": 113,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "hashbrown",
+          "version": "0.17.1",
+          "sloc": 22052,
+          "size_known": true,
+          "unsafe_sites": 451
+        },
+        {
+          "name": "indexmap",
+          "version": "2.14.2",
+          "sloc": 13629,
+          "size_known": true,
+          "unsafe_sites": 13
+        },
+        {
+          "name": "libcrux-macros",
+          "version": "0.0.4",
+          "sloc": 120,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "proc-macro2",
+          "version": "1.0.107",
+          "sloc": 6662,
+          "size_known": true,
+          "unsafe_sites": 6
+        },
+        {
+          "name": "quote",
+          "version": "1.0.47",
+          "sloc": 2804,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "syn",
+          "version": "2.0.119",
+          "sloc": 61443,
+          "size_known": true,
+          "unsafe_sites": 69
+        },
+        {
+          "name": "syn",
+          "version": "3.0.9",
+          "sloc": 63168,
+          "size_known": true,
+          "unsafe_sites": 78
+        },
+        {
+          "name": "synstructure",
+          "version": "0.13.2",
+          "sloc": 2641,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "unicode-ident",
+          "version": "1.0.27",
+          "sloc": 2046,
+          "size_known": true,
+          "unsafe_sites": 2
+        },
+        {
+          "name": "version_check",
+          "version": "0.9.5",
+          "sloc": 1136,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "verus_builtin_macros",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 14883,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "verus_prettyplease",
+          "version": "0.0.0-2026-09-06-0133",
+          "sloc": 10128,
+          "size_known": true,
+          "unsafe_sites": 23
+        },
+        {
+          "name": "verus_state_machines_macros",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 9734,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "verus_syn",
+          "version": "0.0.0-2026-09-06-0133",
+          "sloc": 77054,
+          "size_known": true,
+          "unsafe_sites": 73
+        }
+      ]
+    },
+    {
+      "closure": "cargo metadata (runtime)",
+      "closure_reason": null,
+      "target": "aarch64-apple-darwin",
+      "cargo_version": "cargo 1.99.1 (5f94df478 2026-08-27) (Homebrew)",
+      "dev_dependencies_excluded": 16,
+      "summary": {
+        "all": {
+          "everything_else": {
+            "sloc": 1195,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 1110,
+              "trusted": 0,
+              "unverified": 85
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 337542,
+            "statuses": {
+              "hazard": 0,
+              "proven": 343,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 213,
+              "trusted": 0,
+              "unverified": 336986
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "escape_sites": 2472,
+        "first_party": {
+          "everything_else": {
+            "sloc": 1195,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 1110,
+              "trusted": 0,
+              "unverified": 85
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 888,
+            "statuses": {
+              "hazard": 0,
+              "proven": 343,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 213,
+              "trusted": 0,
+              "unverified": 332
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "proof_code": {
+          "everything_else": {
+            "hazard_units": 0,
+            "sloc": 0,
+            "units": 0,
+            "unverified": 0,
+            "verified": 0
+          },
+          "security_relevant": {
+            "hazard_units": 0,
+            "sloc": 144,
+            "units": 19,
+            "unverified": 0,
+            "verified": 19
+          },
+          "total": {
+            "hazard_units": 0,
+            "sloc": 144,
+            "units": 19,
+            "unverified": 0,
+            "verified": 19
+          }
+        },
+        "security_first_party_hazard_units": 0,
+        "third_party": {
+          "everything_else": {
+            "sloc": 0,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 0
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 336654,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 336654
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "trusted_items": 0,
+        "trusted_sloc": 0
+      },
+      "branch": "chromium-headers",
+      "commit": "df3f49ef9303e196d3822bd29acb71c8c17f9f1e",
+      "receipts": [
+        "chromium-headers.verus.log",
+        "chromium-headers.root-2.verus.log",
+        "chromium-headers.root-3.verus.log"
+      ],
+      "runtime_dependencies": [
+        {
+          "name": "base16ct",
+          "version": "0.2.0",
+          "sloc": 509,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "cfg-if",
+          "version": "1.0.5",
+          "sloc": 189,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "chacha20",
+          "version": "0.10.2",
+          "sloc": 2986,
+          "size_known": true,
+          "unsafe_sites": 66
+        },
+        {
+          "name": "const-oid",
+          "version": "0.9.6",
+          "sloc": 5217,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "der",
+          "version": "0.7.10",
+          "sloc": 10135,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "generic-array",
+          "version": "0.14.9",
+          "sloc": 1745,
+          "size_known": true,
+          "unsafe_sites": 78
+        },
+        {
+          "name": "getrandom",
+          "version": "0.3.4",
+          "sloc": 2318,
+          "size_known": true,
+          "unsafe_sites": 97
+        },
+        {
+          "name": "getrandom",
+          "version": "0.4.3",
+          "sloc": 2375,
+          "size_known": true,
+          "unsafe_sites": 113
+        },
+        {
+          "name": "libc",
+          "version": "0.2.191",
+          "sloc": 118894,
+          "size_known": true,
+          "unsafe_sites": 800
+        },
+        {
+          "name": "libcrux-chacha20poly1305",
+          "version": "0.0.10",
+          "sloc": 1606,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-curve25519",
+          "version": "0.0.9",
+          "sloc": 133,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-ecdsa",
+          "version": "0.0.9",
+          "sloc": 840,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-hacl-rs",
+          "version": "0.0.6",
+          "sloc": 10122,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-hkdf",
+          "version": "0.0.9",
+          "sloc": 1372,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-hmac",
+          "version": "0.0.9",
+          "sloc": 769,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-intrinsics",
+          "version": "0.0.9",
+          "sloc": 2215,
+          "size_known": true,
+          "unsafe_sites": 192
+        },
+        {
+          "name": "libcrux-p256",
+          "version": "0.0.9",
+          "sloc": 3684,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-platform",
+          "version": "0.0.4",
+          "sloc": 498,
+          "size_known": true,
+          "unsafe_sites": 2
+        },
+        {
+          "name": "libcrux-poly1305",
+          "version": "0.0.7",
+          "sloc": 756,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-secrets",
+          "version": "0.0.7",
+          "sloc": 1323,
+          "size_known": true,
+          "unsafe_sites": 18
+        },
+        {
+          "name": "libcrux-sha2",
+          "version": "0.0.9",
+          "sloc": 1582,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-sha3",
+          "version": "0.0.11",
+          "sloc": 4652,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-traits",
+          "version": "0.0.9",
+          "sloc": 2413,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "once_cell",
+          "version": "1.21.4",
+          "sloc": 3405,
+          "size_known": true,
+          "unsafe_sites": 49
+        },
+        {
+          "name": "pkcs8",
+          "version": "0.10.2",
+          "sloc": 1169,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "rand",
+          "version": "0.10.3",
+          "sloc": 8699,
+          "size_known": true,
+          "unsafe_sites": 16
+        },
+        {
+          "name": "rand_core",
+          "version": "0.10.1",
+          "sloc": 1205,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "rustls",
+          "version": "0.23.46",
+          "sloc": 42386,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "rustls-pki-types",
+          "version": "1.15.1",
+          "sloc": 3535,
+          "size_known": true,
+          "unsafe_sites": 1
+        },
+        {
+          "name": "rustls-webpki",
+          "version": "0.103.16",
+          "sloc": 7874,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "sec1",
+          "version": "0.7.3",
+          "sloc": 1217,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "spki",
+          "version": "0.7.3",
+          "sloc": 886,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "subtle",
+          "version": "2.6.1",
+          "sloc": 1233,
+          "size_known": true,
+          "unsafe_sites": 2
+        },
+        {
+          "name": "typenum",
+          "version": "1.20.1",
+          "sloc": 35003,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "untrusted",
+          "version": "0.9.0",
+          "sloc": 428,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "verus_builtin",
+          "version": "0.0.0-2026-10-11-0230",
+          "sloc": 2097,
+          "size_known": true,
+          "unsafe_sites": 54
+        },
+        {
+          "name": "vstd",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 49663,
+          "size_known": true,
+          "unsafe_sites": 31
+        },
+        {
+          "name": "zeroize",
+          "version": "1.9.1",
+          "sloc": 1521,
+          "size_known": true,
+          "unsafe_sites": 38
+        }
+      ],
+      "build_dependencies": [
+        {
+          "name": "convert_case",
+          "version": "0.4.0",
+          "sloc": 836,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "equivalent",
+          "version": "1.0.3",
+          "sloc": 113,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "hashbrown",
+          "version": "0.17.1",
+          "sloc": 22052,
+          "size_known": true,
+          "unsafe_sites": 451
+        },
+        {
+          "name": "indexmap",
+          "version": "2.14.2",
+          "sloc": 13629,
+          "size_known": true,
+          "unsafe_sites": 13
+        },
+        {
+          "name": "libcrux-macros",
+          "version": "0.0.4",
+          "sloc": 120,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "proc-macro2",
+          "version": "1.0.107",
+          "sloc": 6662,
+          "size_known": true,
+          "unsafe_sites": 6
+        },
+        {
+          "name": "quote",
+          "version": "1.0.47",
+          "sloc": 2804,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "syn",
+          "version": "2.0.119",
+          "sloc": 61443,
+          "size_known": true,
+          "unsafe_sites": 69
+        },
+        {
+          "name": "syn",
+          "version": "3.0.9",
+          "sloc": 63168,
+          "size_known": true,
+          "unsafe_sites": 78
+        },
+        {
+          "name": "synstructure",
+          "version": "0.13.2",
+          "sloc": 2641,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "unicode-ident",
+          "version": "1.0.27",
+          "sloc": 2046,
+          "size_known": true,
+          "unsafe_sites": 2
+        },
+        {
+          "name": "version_check",
+          "version": "0.9.5",
+          "sloc": 1136,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "verus_builtin_macros",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 14883,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "verus_prettyplease",
+          "version": "0.0.0-2026-09-06-0133",
+          "sloc": 10128,
+          "size_known": true,
+          "unsafe_sites": 23
+        },
+        {
+          "name": "verus_state_machines_macros",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 9734,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "verus_syn",
+          "version": "0.0.0-2026-09-06-0133",
+          "sloc": 77054,
+          "size_known": true,
+          "unsafe_sites": 73
+        }
+      ]
+    },
+    {
+      "closure": "cargo metadata (runtime)",
+      "closure_reason": null,
+      "target": "aarch64-apple-darwin",
+      "cargo_version": "cargo 1.99.1 (5f94df478 2026-08-27) (Homebrew)",
+      "dev_dependencies_excluded": 16,
+      "summary": {
+        "all": {
+          "everything_else": {
+            "sloc": 1218,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 1133,
+              "trusted": 0,
+              "unverified": 85
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 337544,
+            "statuses": {
+              "hazard": 0,
+              "proven": 344,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 214,
+              "trusted": 0,
+              "unverified": 336986
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "escape_sites": 2472,
+        "first_party": {
+          "everything_else": {
+            "sloc": 1218,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 1133,
+              "trusted": 0,
+              "unverified": 85
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 890,
+            "statuses": {
+              "hazard": 0,
+              "proven": 344,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 214,
+              "trusted": 0,
+              "unverified": 332
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "proof_code": {
+          "everything_else": {
+            "hazard_units": 0,
+            "sloc": 0,
+            "units": 0,
+            "unverified": 0,
+            "verified": 0
+          },
+          "security_relevant": {
+            "hazard_units": 0,
+            "sloc": 145,
+            "units": 19,
+            "unverified": 0,
+            "verified": 19
+          },
+          "total": {
+            "hazard_units": 0,
+            "sloc": 145,
+            "units": 19,
+            "unverified": 0,
+            "verified": 19
+          }
+        },
+        "security_first_party_hazard_units": 0,
+        "third_party": {
+          "everything_else": {
+            "sloc": 0,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 0
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 336654,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 336654
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "trusted_items": 0,
+        "trusted_sloc": 0
+      },
+      "branch": "pragma-header",
+      "commit": "6ee509803195af5e5d77cfd124079f2984e1717d",
+      "receipts": [
+        "pragma-header.verus.log",
+        "pragma-header.root-2.verus.log",
+        "pragma-header.root-3.verus.log"
+      ],
+      "runtime_dependencies": [
+        {
+          "name": "base16ct",
+          "version": "0.2.0",
+          "sloc": 509,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "cfg-if",
+          "version": "1.0.5",
+          "sloc": 189,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "chacha20",
+          "version": "0.10.2",
+          "sloc": 2986,
+          "size_known": true,
+          "unsafe_sites": 66
+        },
+        {
+          "name": "const-oid",
+          "version": "0.9.6",
+          "sloc": 5217,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "der",
+          "version": "0.7.10",
+          "sloc": 10135,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "generic-array",
+          "version": "0.14.9",
+          "sloc": 1745,
+          "size_known": true,
+          "unsafe_sites": 78
+        },
+        {
+          "name": "getrandom",
+          "version": "0.3.4",
+          "sloc": 2318,
+          "size_known": true,
+          "unsafe_sites": 97
+        },
+        {
+          "name": "getrandom",
+          "version": "0.4.3",
+          "sloc": 2375,
+          "size_known": true,
+          "unsafe_sites": 113
+        },
+        {
+          "name": "libc",
+          "version": "0.2.191",
+          "sloc": 118894,
+          "size_known": true,
+          "unsafe_sites": 800
+        },
+        {
+          "name": "libcrux-chacha20poly1305",
+          "version": "0.0.10",
+          "sloc": 1606,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-curve25519",
+          "version": "0.0.9",
+          "sloc": 133,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-ecdsa",
+          "version": "0.0.9",
+          "sloc": 840,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-hacl-rs",
+          "version": "0.0.6",
+          "sloc": 10122,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-hkdf",
+          "version": "0.0.9",
+          "sloc": 1372,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-hmac",
+          "version": "0.0.9",
+          "sloc": 769,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-intrinsics",
+          "version": "0.0.9",
+          "sloc": 2215,
+          "size_known": true,
+          "unsafe_sites": 192
+        },
+        {
+          "name": "libcrux-p256",
+          "version": "0.0.9",
+          "sloc": 3684,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-platform",
+          "version": "0.0.4",
+          "sloc": 498,
+          "size_known": true,
+          "unsafe_sites": 2
+        },
+        {
+          "name": "libcrux-poly1305",
+          "version": "0.0.7",
+          "sloc": 756,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-secrets",
+          "version": "0.0.7",
+          "sloc": 1323,
+          "size_known": true,
+          "unsafe_sites": 18
+        },
+        {
+          "name": "libcrux-sha2",
+          "version": "0.0.9",
+          "sloc": 1582,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-sha3",
+          "version": "0.0.11",
+          "sloc": 4652,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-traits",
+          "version": "0.0.9",
+          "sloc": 2413,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "once_cell",
+          "version": "1.21.4",
+          "sloc": 3405,
+          "size_known": true,
+          "unsafe_sites": 49
+        },
+        {
+          "name": "pkcs8",
+          "version": "0.10.2",
+          "sloc": 1169,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "rand",
+          "version": "0.10.3",
+          "sloc": 8699,
+          "size_known": true,
+          "unsafe_sites": 16
+        },
+        {
+          "name": "rand_core",
+          "version": "0.10.1",
+          "sloc": 1205,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "rustls",
+          "version": "0.23.46",
+          "sloc": 42386,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "rustls-pki-types",
+          "version": "1.15.1",
+          "sloc": 3535,
+          "size_known": true,
+          "unsafe_sites": 1
+        },
+        {
+          "name": "rustls-webpki",
+          "version": "0.103.16",
+          "sloc": 7874,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "sec1",
+          "version": "0.7.3",
+          "sloc": 1217,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "spki",
+          "version": "0.7.3",
+          "sloc": 886,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "subtle",
+          "version": "2.6.1",
+          "sloc": 1233,
+          "size_known": true,
+          "unsafe_sites": 2
+        },
+        {
+          "name": "typenum",
+          "version": "1.20.1",
+          "sloc": 35003,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "untrusted",
+          "version": "0.9.0",
+          "sloc": 428,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "verus_builtin",
+          "version": "0.0.0-2026-10-11-0230",
+          "sloc": 2097,
+          "size_known": true,
+          "unsafe_sites": 54
+        },
+        {
+          "name": "vstd",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 49663,
+          "size_known": true,
+          "unsafe_sites": 31
+        },
+        {
+          "name": "zeroize",
+          "version": "1.9.1",
+          "sloc": 1521,
+          "size_known": true,
+          "unsafe_sites": 38
+        }
+      ],
+      "build_dependencies": [
+        {
+          "name": "convert_case",
+          "version": "0.4.0",
+          "sloc": 836,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "equivalent",
+          "version": "1.0.3",
+          "sloc": 113,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "hashbrown",
+          "version": "0.17.1",
+          "sloc": 22052,
+          "size_known": true,
+          "unsafe_sites": 451
+        },
+        {
+          "name": "indexmap",
+          "version": "2.14.2",
+          "sloc": 13629,
+          "size_known": true,
+          "unsafe_sites": 13
+        },
+        {
+          "name": "libcrux-macros",
+          "version": "0.0.4",
+          "sloc": 120,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "proc-macro2",
+          "version": "1.0.107",
+          "sloc": 6662,
+          "size_known": true,
+          "unsafe_sites": 6
+        },
+        {
+          "name": "quote",
+          "version": "1.0.47",
+          "sloc": 2804,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "syn",
+          "version": "2.0.119",
+          "sloc": 61443,
+          "size_known": true,
+          "unsafe_sites": 69
+        },
+        {
+          "name": "syn",
+          "version": "3.0.9",
+          "sloc": 63168,
+          "size_known": true,
+          "unsafe_sites": 78
+        },
+        {
+          "name": "synstructure",
+          "version": "0.13.2",
+          "sloc": 2641,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "unicode-ident",
+          "version": "1.0.27",
+          "sloc": 2046,
+          "size_known": true,
+          "unsafe_sites": 2
+        },
+        {
+          "name": "version_check",
+          "version": "0.9.5",
+          "sloc": 1136,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "verus_builtin_macros",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 14883,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "verus_prettyplease",
+          "version": "0.0.0-2026-09-06-0133",
+          "sloc": 10128,
+          "size_known": true,
+          "unsafe_sites": 23
+        },
+        {
+          "name": "verus_state_machines_macros",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 9734,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "verus_syn",
+          "version": "0.0.0-2026-09-06-0133",
+          "sloc": 77054,
+          "size_known": true,
+          "unsafe_sites": 73
+        }
+      ]
+    },
+    {
+      "closure": "cargo metadata (runtime)",
+      "closure_reason": null,
+      "target": "aarch64-apple-darwin",
+      "cargo_version": "cargo 1.99.1 (5f94df478 2026-08-27) (Homebrew)",
+      "dev_dependencies_excluded": 16,
+      "summary": {
+        "all": {
+          "everything_else": {
+            "sloc": 1546,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 1442,
+              "trusted": 0,
+              "unverified": 104
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 338017,
+            "statuses": {
+              "hazard": 0,
+              "proven": 644,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 300,
+              "trusted": 0,
+              "unverified": 337073
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "escape_sites": 2472,
+        "first_party": {
+          "everything_else": {
+            "sloc": 1546,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 1442,
+              "trusted": 0,
+              "unverified": 104
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 1363,
+            "statuses": {
+              "hazard": 0,
+              "proven": 644,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 300,
+              "trusted": 0,
+              "unverified": 419
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "proof_code": {
+          "everything_else": {
+            "hazard_units": 0,
+            "sloc": 0,
+            "units": 0,
+            "unverified": 0,
+            "verified": 0
+          },
+          "security_relevant": {
+            "hazard_units": 0,
+            "sloc": 322,
+            "units": 39,
+            "unverified": 0,
+            "verified": 39
+          },
+          "total": {
+            "hazard_units": 0,
+            "sloc": 322,
+            "units": 39,
+            "unverified": 0,
+            "verified": 39
+          }
+        },
+        "security_first_party_hazard_units": 0,
+        "third_party": {
+          "everything_else": {
+            "sloc": 0,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 0
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 336654,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 336654
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "trusted_items": 0,
+        "trusted_sloc": 0
+      },
+      "branch": "header-policy",
+      "commit": "3fe444ddf1c46f08335c3a4513f633ed7b07219c",
+      "receipts": [
+        "header-policy.verus.log",
+        "header-policy.root-2.verus.log",
+        "header-policy.root-3.verus.log"
+      ],
+      "runtime_dependencies": [
+        {
+          "name": "base16ct",
+          "version": "0.2.0",
+          "sloc": 509,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "cfg-if",
+          "version": "1.0.5",
+          "sloc": 189,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "chacha20",
+          "version": "0.10.2",
+          "sloc": 2986,
+          "size_known": true,
+          "unsafe_sites": 66
+        },
+        {
+          "name": "const-oid",
+          "version": "0.9.6",
+          "sloc": 5217,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "der",
+          "version": "0.7.10",
+          "sloc": 10135,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "generic-array",
+          "version": "0.14.9",
+          "sloc": 1745,
+          "size_known": true,
+          "unsafe_sites": 78
+        },
+        {
+          "name": "getrandom",
+          "version": "0.3.4",
+          "sloc": 2318,
+          "size_known": true,
+          "unsafe_sites": 97
+        },
+        {
+          "name": "getrandom",
+          "version": "0.4.3",
+          "sloc": 2375,
+          "size_known": true,
+          "unsafe_sites": 113
+        },
+        {
+          "name": "libc",
+          "version": "0.2.191",
+          "sloc": 118894,
+          "size_known": true,
+          "unsafe_sites": 800
+        },
+        {
+          "name": "libcrux-chacha20poly1305",
+          "version": "0.0.10",
+          "sloc": 1606,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-curve25519",
+          "version": "0.0.9",
+          "sloc": 133,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-ecdsa",
+          "version": "0.0.9",
+          "sloc": 840,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-hacl-rs",
+          "version": "0.0.6",
+          "sloc": 10122,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-hkdf",
+          "version": "0.0.9",
+          "sloc": 1372,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-hmac",
+          "version": "0.0.9",
+          "sloc": 769,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-intrinsics",
+          "version": "0.0.9",
+          "sloc": 2215,
+          "size_known": true,
+          "unsafe_sites": 192
+        },
+        {
+          "name": "libcrux-p256",
+          "version": "0.0.9",
+          "sloc": 3684,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-platform",
+          "version": "0.0.4",
+          "sloc": 498,
+          "size_known": true,
+          "unsafe_sites": 2
+        },
+        {
+          "name": "libcrux-poly1305",
+          "version": "0.0.7",
+          "sloc": 756,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-secrets",
+          "version": "0.0.7",
+          "sloc": 1323,
+          "size_known": true,
+          "unsafe_sites": 18
+        },
+        {
+          "name": "libcrux-sha2",
+          "version": "0.0.9",
+          "sloc": 1582,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-sha3",
+          "version": "0.0.11",
+          "sloc": 4652,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-traits",
+          "version": "0.0.9",
+          "sloc": 2413,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "once_cell",
+          "version": "1.21.4",
+          "sloc": 3405,
+          "size_known": true,
+          "unsafe_sites": 49
+        },
+        {
+          "name": "pkcs8",
+          "version": "0.10.2",
+          "sloc": 1169,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "rand",
+          "version": "0.10.3",
+          "sloc": 8699,
+          "size_known": true,
+          "unsafe_sites": 16
+        },
+        {
+          "name": "rand_core",
+          "version": "0.10.1",
+          "sloc": 1205,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "rustls",
+          "version": "0.23.46",
+          "sloc": 42386,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "rustls-pki-types",
+          "version": "1.15.1",
+          "sloc": 3535,
+          "size_known": true,
+          "unsafe_sites": 1
+        },
+        {
+          "name": "rustls-webpki",
+          "version": "0.103.16",
+          "sloc": 7874,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "sec1",
+          "version": "0.7.3",
+          "sloc": 1217,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "spki",
+          "version": "0.7.3",
+          "sloc": 886,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "subtle",
+          "version": "2.6.1",
+          "sloc": 1233,
+          "size_known": true,
+          "unsafe_sites": 2
+        },
+        {
+          "name": "typenum",
+          "version": "1.20.1",
+          "sloc": 35003,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "untrusted",
+          "version": "0.9.0",
+          "sloc": 428,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "verus_builtin",
+          "version": "0.0.0-2026-10-11-0230",
+          "sloc": 2097,
+          "size_known": true,
+          "unsafe_sites": 54
+        },
+        {
+          "name": "vstd",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 49663,
+          "size_known": true,
+          "unsafe_sites": 31
+        },
+        {
+          "name": "zeroize",
+          "version": "1.9.1",
+          "sloc": 1521,
+          "size_known": true,
+          "unsafe_sites": 38
+        }
+      ],
+      "build_dependencies": [
+        {
+          "name": "convert_case",
+          "version": "0.4.0",
+          "sloc": 836,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "equivalent",
+          "version": "1.0.3",
+          "sloc": 113,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "hashbrown",
+          "version": "0.17.1",
+          "sloc": 22052,
+          "size_known": true,
+          "unsafe_sites": 451
+        },
+        {
+          "name": "indexmap",
+          "version": "2.14.2",
+          "sloc": 13629,
+          "size_known": true,
+          "unsafe_sites": 13
+        },
+        {
+          "name": "libcrux-macros",
+          "version": "0.0.4",
+          "sloc": 120,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "proc-macro2",
+          "version": "1.0.107",
+          "sloc": 6662,
+          "size_known": true,
+          "unsafe_sites": 6
+        },
+        {
+          "name": "quote",
+          "version": "1.0.47",
+          "sloc": 2804,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "syn",
+          "version": "2.0.119",
+          "sloc": 61443,
+          "size_known": true,
+          "unsafe_sites": 69
+        },
+        {
+          "name": "syn",
+          "version": "3.0.9",
+          "sloc": 63168,
+          "size_known": true,
+          "unsafe_sites": 78
+        },
+        {
+          "name": "synstructure",
+          "version": "0.13.2",
+          "sloc": 2641,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "unicode-ident",
+          "version": "1.0.27",
+          "sloc": 2046,
+          "size_known": true,
+          "unsafe_sites": 2
+        },
+        {
+          "name": "version_check",
+          "version": "0.9.5",
+          "sloc": 1136,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "verus_builtin_macros",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 14883,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "verus_prettyplease",
+          "version": "0.0.0-2026-09-06-0133",
+          "sloc": 10128,
+          "size_known": true,
+          "unsafe_sites": 23
+        },
+        {
+          "name": "verus_state_machines_macros",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 9734,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "verus_syn",
+          "version": "0.0.0-2026-09-06-0133",
+          "sloc": 77054,
+          "size_known": true,
+          "unsafe_sites": 73
+        }
+      ]
+    },
+    {
+      "closure": "cargo metadata (runtime)",
+      "closure_reason": null,
+      "target": "aarch64-apple-darwin",
+      "cargo_version": "cargo 1.99.1 (5f94df478 2026-08-27) (Homebrew)",
+      "dev_dependencies_excluded": 16,
+      "summary": {
+        "all": {
+          "everything_else": {
+            "sloc": 1642,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 1534,
+              "trusted": 0,
+              "unverified": 108
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 338017,
+            "statuses": {
+              "hazard": 0,
+              "proven": 644,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 300,
+              "trusted": 0,
+              "unverified": 337073
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "escape_sites": 2472,
+        "first_party": {
+          "everything_else": {
+            "sloc": 1642,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 1534,
+              "trusted": 0,
+              "unverified": 108
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 1363,
+            "statuses": {
+              "hazard": 0,
+              "proven": 644,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 300,
+              "trusted": 0,
+              "unverified": 419
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "proof_code": {
+          "everything_else": {
+            "hazard_units": 0,
+            "sloc": 0,
+            "units": 0,
+            "unverified": 0,
+            "verified": 0
+          },
+          "security_relevant": {
+            "hazard_units": 0,
+            "sloc": 4732,
+            "units": 200,
+            "unverified": 0,
+            "verified": 200
+          },
+          "total": {
+            "hazard_units": 0,
+            "sloc": 4732,
+            "units": 200,
+            "unverified": 0,
+            "verified": 200
+          }
+        },
+        "security_first_party_hazard_units": 0,
+        "third_party": {
+          "everything_else": {
+            "sloc": 0,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 0
+            },
+            "unknown_dependency_sizes": 0
+          },
+          "security_relevant": {
+            "sloc": 336654,
+            "statuses": {
+              "hazard": 0,
+              "proven": 0,
+              "proven-bounded": 0,
+              "proven-upstream": 0,
+              "tested": 0,
+              "trusted": 0,
+              "unverified": 336654
+            },
+            "unknown_dependency_sizes": 0
+          }
+        },
+        "trusted_items": 0,
+        "trusted_sloc": 0
+      },
+      "branch": "spec-lemmas",
+      "commit": "2fa5eb78a6f96a8433229dc64ec4b82c3e5f9bc2",
+      "receipts": [
+        "spec-lemmas.verus.log",
+        "spec-lemmas.root-2.verus.log",
+        "spec-lemmas.root-3.verus.log"
+      ],
+      "runtime_dependencies": [
+        {
+          "name": "base16ct",
+          "version": "0.2.0",
+          "sloc": 509,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "cfg-if",
+          "version": "1.0.5",
+          "sloc": 189,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "chacha20",
+          "version": "0.10.2",
+          "sloc": 2986,
+          "size_known": true,
+          "unsafe_sites": 66
+        },
+        {
+          "name": "const-oid",
+          "version": "0.9.6",
+          "sloc": 5217,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "der",
+          "version": "0.7.10",
+          "sloc": 10135,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "generic-array",
+          "version": "0.14.9",
+          "sloc": 1745,
+          "size_known": true,
+          "unsafe_sites": 78
+        },
+        {
+          "name": "getrandom",
+          "version": "0.3.4",
+          "sloc": 2318,
+          "size_known": true,
+          "unsafe_sites": 97
+        },
+        {
+          "name": "getrandom",
+          "version": "0.4.3",
+          "sloc": 2375,
+          "size_known": true,
+          "unsafe_sites": 113
+        },
+        {
+          "name": "libc",
+          "version": "0.2.191",
+          "sloc": 118894,
+          "size_known": true,
+          "unsafe_sites": 800
+        },
+        {
+          "name": "libcrux-chacha20poly1305",
+          "version": "0.0.10",
+          "sloc": 1606,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-curve25519",
+          "version": "0.0.9",
+          "sloc": 133,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-ecdsa",
+          "version": "0.0.9",
+          "sloc": 840,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-hacl-rs",
+          "version": "0.0.6",
+          "sloc": 10122,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-hkdf",
+          "version": "0.0.9",
+          "sloc": 1372,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-hmac",
+          "version": "0.0.9",
+          "sloc": 769,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-intrinsics",
+          "version": "0.0.9",
+          "sloc": 2215,
+          "size_known": true,
+          "unsafe_sites": 192
+        },
+        {
+          "name": "libcrux-p256",
+          "version": "0.0.9",
+          "sloc": 3684,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-platform",
+          "version": "0.0.4",
+          "sloc": 498,
+          "size_known": true,
+          "unsafe_sites": 2
+        },
+        {
+          "name": "libcrux-poly1305",
+          "version": "0.0.7",
+          "sloc": 756,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-secrets",
+          "version": "0.0.7",
+          "sloc": 1323,
+          "size_known": true,
+          "unsafe_sites": 18
+        },
+        {
+          "name": "libcrux-sha2",
+          "version": "0.0.9",
+          "sloc": 1582,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-sha3",
+          "version": "0.0.11",
+          "sloc": 4652,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "libcrux-traits",
+          "version": "0.0.9",
+          "sloc": 2413,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "once_cell",
+          "version": "1.21.4",
+          "sloc": 3405,
+          "size_known": true,
+          "unsafe_sites": 49
+        },
+        {
+          "name": "pkcs8",
+          "version": "0.10.2",
+          "sloc": 1169,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "rand",
+          "version": "0.10.3",
+          "sloc": 8699,
+          "size_known": true,
+          "unsafe_sites": 16
+        },
+        {
+          "name": "rand_core",
+          "version": "0.10.1",
+          "sloc": 1205,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "rustls",
+          "version": "0.23.46",
+          "sloc": 42386,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "rustls-pki-types",
+          "version": "1.15.1",
+          "sloc": 3535,
+          "size_known": true,
+          "unsafe_sites": 1
+        },
+        {
+          "name": "rustls-webpki",
+          "version": "0.103.16",
+          "sloc": 7874,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "sec1",
+          "version": "0.7.3",
+          "sloc": 1217,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "spki",
+          "version": "0.7.3",
+          "sloc": 886,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "subtle",
+          "version": "2.6.1",
+          "sloc": 1233,
+          "size_known": true,
+          "unsafe_sites": 2
+        },
+        {
+          "name": "typenum",
+          "version": "1.20.1",
+          "sloc": 35003,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "untrusted",
+          "version": "0.9.0",
+          "sloc": 428,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "verus_builtin",
+          "version": "0.0.0-2026-10-11-0230",
+          "sloc": 2097,
+          "size_known": true,
+          "unsafe_sites": 54
+        },
+        {
+          "name": "vstd",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 49663,
+          "size_known": true,
+          "unsafe_sites": 31
+        },
+        {
+          "name": "zeroize",
+          "version": "1.9.1",
+          "sloc": 1521,
+          "size_known": true,
+          "unsafe_sites": 38
+        }
+      ],
+      "build_dependencies": [
+        {
+          "name": "convert_case",
+          "version": "0.4.0",
+          "sloc": 836,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "equivalent",
+          "version": "1.0.3",
+          "sloc": 113,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "hashbrown",
+          "version": "0.17.1",
+          "sloc": 22052,
+          "size_known": true,
+          "unsafe_sites": 451
+        },
+        {
+          "name": "indexmap",
+          "version": "2.14.2",
+          "sloc": 13629,
+          "size_known": true,
+          "unsafe_sites": 13
+        },
+        {
+          "name": "libcrux-macros",
+          "version": "0.0.4",
+          "sloc": 120,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "proc-macro2",
+          "version": "1.0.107",
+          "sloc": 6662,
+          "size_known": true,
+          "unsafe_sites": 6
+        },
+        {
+          "name": "quote",
+          "version": "1.0.47",
+          "sloc": 2804,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "syn",
+          "version": "2.0.119",
+          "sloc": 61443,
+          "size_known": true,
+          "unsafe_sites": 69
+        },
+        {
+          "name": "syn",
+          "version": "3.0.9",
+          "sloc": 63168,
+          "size_known": true,
+          "unsafe_sites": 78
+        },
+        {
+          "name": "synstructure",
+          "version": "0.13.2",
+          "sloc": 2641,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "unicode-ident",
+          "version": "1.0.27",
+          "sloc": 2046,
+          "size_known": true,
+          "unsafe_sites": 2
+        },
+        {
+          "name": "version_check",
+          "version": "0.9.5",
+          "sloc": 1136,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "verus_builtin_macros",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 14883,
+          "size_known": true,
+          "unsafe_sites": 4
+        },
+        {
+          "name": "verus_prettyplease",
+          "version": "0.0.0-2026-09-06-0133",
+          "sloc": 10128,
+          "size_known": true,
+          "unsafe_sites": 23
+        },
+        {
+          "name": "verus_state_machines_macros",
+          "version": "0.0.0-2026-10-25-0158",
+          "sloc": 9734,
+          "size_known": true,
+          "unsafe_sites": 0
+        },
+        {
+          "name": "verus_syn",
+          "version": "0.0.0-2026-09-06-0133",
+          "sloc": 77054,
+          "size_known": true,
+          "unsafe_sites": 73
+        }
+      ]
+    }
+  ],
+  "acceptance_c": {
+    "command": [
+      "cargo",
+      "tree",
+      "-e",
+      "normal",
+      "--target",
+      "aarch64-apple-darwin",
+      "--frozen",
+      "--prefix",
+      "none",
+      "--manifest-path",
+      "<checkout>/target/v1.2-scratch/spec-lemmas/Cargo.toml"
+    ],
+    "exit_code": 0,
+    "tree": [
+      "base16ct@0.2.0",
+      "cfg-if@1.0.5",
+      "const-oid@0.9.6",
+      "convert_case@0.4.0",
+      "der@0.7.10",
+      "equivalent@1.0.3",
+      "generic-array@0.14.9",
+      "getrandom@0.3.4",
+      "hashbrown@0.17.1",
+      "indexmap@2.14.2",
+      "libc@0.2.191",
+      "libcrux-chacha20poly1305@0.0.10",
+      "libcrux-curve25519@0.0.9",
+      "libcrux-ecdsa@0.0.9",
+      "libcrux-hacl-rs@0.0.6",
+      "libcrux-hkdf@0.0.9",
+      "libcrux-hmac@0.0.9",
+      "libcrux-intrinsics@0.0.9",
+      "libcrux-macros@0.0.4",
+      "libcrux-p256@0.0.9",
+      "libcrux-platform@0.0.4",
+      "libcrux-poly1305@0.0.7",
+      "libcrux-secrets@0.0.7",
+      "libcrux-sha2@0.0.9",
+      "libcrux-sha3@0.0.11",
+      "libcrux-traits@0.0.9",
+      "once_cell@1.21.4",
+      "pkcs8@0.10.2",
+      "proc-macro2@1.0.107",
+      "quote@1.0.47",
+      "rand@0.10.3",
+      "rand_core@0.10.1",
+      "rustls-pki-types@1.15.1",
+      "rustls-webpki@0.103.16",
+      "rustls@0.23.46",
+      "sec1@0.7.3",
+      "spki@0.7.3",
+      "subtle@2.6.1",
+      "syn@2.0.119",
+      "syn@3.0.9",
+      "synstructure@0.13.2",
+      "typenum@1.20.1",
+      "unicode-ident@1.0.27",
+      "untrusted@0.9.0",
+      "verus_builtin@0.0.0-2026-10-11-0230",
+      "verus_builtin_macros@0.0.0-2026-10-25-0158",
+      "verus_prettyplease@0.0.0-2026-09-06-0133",
+      "verus_state_machines_macros@0.0.0-2026-10-25-0158",
+      "verus_syn@0.0.0-2026-09-06-0133",
+      "vstd@0.0.0-2026-10-25-0158",
+      "zeroize@1.9.1"
+    ],
+    "runtime": [
+      "base16ct@0.2.0",
+      "cfg-if@1.0.5",
+      "chacha20@0.10.2",
+      "const-oid@0.9.6",
+      "der@0.7.10",
+      "generic-array@0.14.9",
+      "getrandom@0.3.4",
+      "getrandom@0.4.3",
+      "libc@0.2.191",
+      "libcrux-chacha20poly1305@0.0.10",
+      "libcrux-curve25519@0.0.9",
+      "libcrux-ecdsa@0.0.9",
+      "libcrux-hacl-rs@0.0.6",
+      "libcrux-hkdf@0.0.9",
+      "libcrux-hmac@0.0.9",
+      "libcrux-intrinsics@0.0.9",
+      "libcrux-p256@0.0.9",
+      "libcrux-platform@0.0.4",
+      "libcrux-poly1305@0.0.7",
+      "libcrux-secrets@0.0.7",
+      "libcrux-sha2@0.0.9",
+      "libcrux-sha3@0.0.11",
+      "libcrux-traits@0.0.9",
+      "once_cell@1.21.4",
+      "pkcs8@0.10.2",
+      "rand@0.10.3",
+      "rand_core@0.10.1",
+      "rustls-pki-types@1.15.1",
+      "rustls-webpki@0.103.16",
+      "rustls@0.23.46",
+      "sec1@0.7.3",
+      "spki@0.7.3",
+      "subtle@2.6.1",
+      "typenum@1.20.1",
+      "untrusted@0.9.0",
+      "verus_builtin@0.0.0-2026-10-11-0230",
+      "vstd@0.0.0-2026-10-25-0158",
+      "zeroize@1.9.1"
+    ],
+    "tree_only": [
+      "convert_case@0.4.0",
+      "equivalent@1.0.3",
+      "hashbrown@0.17.1",
+      "indexmap@2.14.2",
+      "libcrux-macros@0.0.4",
+      "proc-macro2@1.0.107",
+      "quote@1.0.47",
+      "syn@2.0.119",
+      "syn@3.0.9",
+      "synstructure@0.13.2",
+      "unicode-ident@1.0.27",
+      "verus_builtin_macros@0.0.0-2026-10-25-0158",
+      "verus_prettyplease@0.0.0-2026-09-06-0133",
+      "verus_state_machines_macros@0.0.0-2026-10-25-0158",
+      "verus_syn@0.0.0-2026-09-06-0133"
+    ],
+    "metadata_runtime_only": [
+      "chacha20@0.10.2",
+      "getrandom@0.4.3"
+    ],
+    "first_line": "SECURITY-RELEVANT First-party  1363 measured SLoC   proven 47.25%  proven-bounded 0.00%  proven-upstream 0.00%  tested 22.01%  unverified 30.74%  hazard 0.00%  trusted 0.00%; proven, relying on 0 trusted items (0 SLoC) and 2472 escapes",
+    "third_party_security_sloc": 336654,
+    "equal": false
+  }
+}

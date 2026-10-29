@@ -1,0 +1,9 @@
+[package]
+name = "classification"
+version = "0.1.0"
+edition = "2021"
+[workspace]
+exclude = ["vendor/external-parser"]
+
+[dependencies]
+external-parser = { path = "vendor/external-parser" }

@@ -1,0 +1,43 @@
+{
+  "project": "anvil",
+  "steps": [
+    {
+      "label": "m3-fetch",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "fc-verify-anvil-m3-fetch",
+        "--platform",
+        "linux/arm64",
+        "--mount",
+        "type=bind,source=<temporary-export>/anvil,target=<temporary-export>/anvil,readonly",
+        "--mount",
+        "type=bind,source=<checkout>/runs/v1.4/anvil,target=/out",
+        "--workdir",
+        "<temporary-export>/anvil",
+        "--env",
+        "CARGO_HOME=/out/cargo-home",
+        "--env",
+        "CARGO_TARGET_DIR=/out/target",
+        "--env",
+        "TMPDIR=/out/tmp",
+        "--env",
+        "CARGO_BUILD_JOBS=2",
+        "sha256:620dbcd124499c59e2406d3741574b5c5838cf9eb9656f0c3a03948f79b02959",
+        "bash",
+        "-c",
+        "mkdir -p /out/tmp; cargo +1.98.0 fetch --locked"
+      ],
+      "script": "cargo +1.98.0 fetch --locked",
+      "image_id": "sha256:620dbcd124499c59e2406d3741574b5c5838cf9eb9656f0c3a03948f79b02959",
+      "exit_code": 0,
+      "seconds": 0.708313750103116,
+      "timeout_seconds": 1200,
+      "log": "m3-fetch.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "lockfile_sha256": "1fe68c8ac987aff474a0d663c5c2543efd04c8a03474a1ca6c05f06cae59b3ba"
+}

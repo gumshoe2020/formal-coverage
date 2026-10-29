@@ -1,0 +1,21 @@
+{
+  "tool": "verus",
+  "tool_version": "Verus\n  Version: 0.2026.10.26.d17fbd0\n  Profile: release\n  Platform: macos_aarch64\n  Toolchain: 1.99.1-aarch64-apple-darwin (overridden by environment variable RUSTUP_TOOLCHAIN)",
+  "command": [
+    "verus",
+    "--crate-type",
+    "lib",
+    "crates/http-subset/src/lib.rs"
+  ],
+  "exit_code": 0,
+  "files": {
+    "tests/boundary.rs": "cab74b3565536039a5dd322a871770700be80abbdd72137720fbe1994921de83",
+    "tests/differential.rs": "3082cae7801e0b33c7b78b9c060e3da84578909a18f95704d009ee93541ef250",
+    "src/lib.rs": "fa1eb68481efe9bc4aee24146ef32d35a93fae4d480ef765f5eeae027379661e",
+    "src/main.rs": "13a1538b75795f8b3b063c019ca98987826aef89bcbc4574cdea96f8cf561b90",
+    "src/tls.rs": "bcb413c5119014a11ff2cd6b762fd8153121b8c674b81318072aab61b74b2f5c",
+    "crates/http-subset/src/lib.rs": "6c66bb8944754366c94e4b1679839a6aaf3cd429964ef05647a7c29d0a2c3657"
+  },
+  "log_sha256": "4b388fe161f8b775271f1fee14452b66b968c0b7db56b9ca56f3356563120497",
+  "harnesses": []
+}

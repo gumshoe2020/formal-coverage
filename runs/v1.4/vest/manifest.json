@@ -1,0 +1,73 @@
+{
+  "project": "vest",
+  "commit": "ce6705fad1af476e828feae6621d0bcf4d0c1665",
+  "archive_sha256": "f235db6c6d501f6bcbf1d8ff587f80621917cfc0d038b7263366f24cb5c8b8c6",
+  "export": "<temporary-export>/vest",
+  "platform": "linux/aarch64",
+  "base_image": "rust@sha256:620dbcd124499c59e2406d3741574b5c5838cf9eb9656f0c3a03948f79b02959",
+  "image_id": "sha256:620dbcd124499c59e2406d3741574b5c5838cf9eb9656f0c3a03948f79b02959",
+  "verus_commit": null,
+  "kani_version": null,
+  "z3_version": null,
+  "rust_toolchains": [
+    "1.98.0-aarch64-unknown-linux-gnu (fetch only; pinned base image)"
+  ],
+  "steps": [
+    {
+      "label": "fetch",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "fc-verify-vest-fetch",
+        "--platform",
+        "linux/arm64",
+        "--mount",
+        "type=bind,source=<temporary-export>/vest,target=<temporary-export>/vest,readonly",
+        "--mount",
+        "type=bind,source=<checkout>/runs/v1.4/vest,target=/out",
+        "--workdir",
+        "<temporary-export>/vest",
+        "--env",
+        "CARGO_HOME=/out/cargo-home",
+        "--env",
+        "CARGO_TARGET_DIR=/out/target",
+        "--env",
+        "TMPDIR=/out/tmp",
+        "--env",
+        "CARGO_BUILD_JOBS=2",
+        "sha256:620dbcd124499c59e2406d3741574b5c5838cf9eb9656f0c3a03948f79b02959",
+        "bash",
+        "-c",
+        "mkdir -p /out/tmp; cargo +1.98.0 fetch --locked"
+      ],
+      "script": "cargo +1.98.0 fetch --locked",
+      "image_id": "sha256:620dbcd124499c59e2406d3741574b5c5838cf9eb9656f0c3a03948f79b02959",
+      "exit_code": 0,
+      "seconds": 13.741409749956802,
+      "timeout_seconds": 1800,
+      "log": "fetch.log",
+      "log_sha256": "4b8c7be8843146b6b1528b07f043c6009a876a128c90d918dd5c90dc5c4908ab"
+    }
+  ],
+  "z3_applicability": "not applicable (Kani uses bundled CBMC/SAT; Vest replays retained evidence)",
+  "artifact_hashes": {},
+  "tool_build_lockfiles": {},
+  "lockfile_sha256": "3b138c05d0aeea7130031eef114023a5a4bb7df195bd0567388accd97faabda9",
+  "git_dependencies": [],
+  "lockfile_origin": "git archive",
+  "retained_verification": {
+    "tool_version": "Verus\n  Version: 0.2026.10.26.d17fbd0\n  Profile: release\n  Platform: macos_aarch64\n  Toolchain: 1.99.1-aarch64-apple-darwin (overridden by environment variable RUSTUP_TOOLCHAIN)\n\n",
+    "command": [
+      "verus",
+      "--crate-type",
+      "lib",
+      "vest_lib/src/lib.rs"
+    ],
+    "exit_code": 0,
+    "cfg": [],
+    "log_sha256": "8e37e6b38464a241a7df0c7b13e9ee821752db2fb81695de4017d506ae3ccc99",
+    "receipt_sha256": "d8ea95d6ed10c68ca5bd8bd50084867cc96dbd7e41c1265f3468937c69208cb1"
+  }
+}

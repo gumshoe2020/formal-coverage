@@ -1,0 +1,59 @@
+[
+  {
+    "project": "vest",
+    "target": "aarch64-unknown-linux-gnu",
+    "closure": "cargo metadata (runtime)",
+    "closure_reason": null,
+    "dependency_before": {
+      "count": 207,
+      "sloc": 0,
+      "unknown": 207,
+      "complete": true
+    },
+    "dependency_count": 121,
+    "dependency_sloc": 1035488,
+    "unknown_dependencies": [],
+    "build_dependency_count": 40,
+    "build_dependency_sloc": 544353,
+    "build_unknown_dependencies": [],
+    "dev_dependencies_excluded": 0
+  },
+  {
+    "project": "anvil",
+    "target": "aarch64-unknown-linux-gnu",
+    "closure": "cargo metadata (runtime)",
+    "closure_reason": null,
+    "dependency_before": {
+      "count": 0,
+      "sloc": 0,
+      "unknown": 0,
+      "complete": false
+    },
+    "dependency_count": 209,
+    "dependency_sloc": 2974275,
+    "unknown_dependencies": [],
+    "build_dependency_count": 65,
+    "build_dependency_sloc": 757393,
+    "build_unknown_dependencies": [],
+    "dev_dependencies_excluded": 0
+  },
+  {
+    "project": "firecracker",
+    "target": "aarch64-unknown-linux-gnu",
+    "closure": "cargo metadata (runtime)",
+    "closure_reason": null,
+    "dependency_before": {
+      "count": 181,
+      "sloc": 0,
+      "unknown": 181,
+      "complete": true
+    },
+    "dependency_count": 78,
+    "dependency_sloc": 1718910,
+    "unknown_dependencies": [],
+    "build_dependency_count": 69,
+    "build_dependency_sloc": 741286,
+    "build_unknown_dependencies": [],
+    "dev_dependencies_excluded": 29
+  }
+]

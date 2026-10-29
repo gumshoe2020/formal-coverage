@@ -1,0 +1,2214 @@
+[
+  {
+    "branch": "main",
+    "commit": "ce8baf1da131e41e548cbf863fcc81e9fc0fdc21",
+    "seconds": 2.6072946249041706,
+    "receipts": [],
+    "summary": {
+      "all": {
+        "everything_else": {
+          "sloc": 15,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 15
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 980075,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 980075
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "escape_sites": 16370,
+      "first_party": {
+        "everything_else": {
+          "sloc": 15,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 15
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 31,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 31
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "proof_code": {
+        "everything_else": {
+          "hazard_units": 0,
+          "sloc": 0,
+          "units": 0,
+          "unverified": 0,
+          "verified": 0
+        },
+        "security_relevant": {
+          "hazard_units": 0,
+          "sloc": 0,
+          "units": 0,
+          "unverified": 0,
+          "verified": 0
+        },
+        "total": {
+          "hazard_units": 0,
+          "sloc": 0,
+          "units": 0,
+          "unverified": 0,
+          "verified": 0
+        }
+      },
+      "security_first_party_hazard_units": 0,
+      "third_party": {
+        "everything_else": {
+          "sloc": 0,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 0
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 980044,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 980044
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "trusted_items": 0,
+      "trusted_sloc": 0
+    },
+    "first_party_hazards": 0,
+    "dependency_unsafe": {
+      "security_relevant": {
+        "before": 16363,
+        "distinct": 16358
+      },
+      "everything_else": {
+        "before": 0,
+        "distinct": 0
+      }
+    },
+    "dependency_site_count_changes": [
+      {
+        "name": "futures-util",
+        "version": "0.3.34",
+        "before": 136,
+        "distinct": 135
+      },
+      {
+        "name": "http",
+        "version": "1.5.0",
+        "before": 65,
+        "distinct": 64
+      },
+      {
+        "name": "httparse",
+        "version": "1.10.1",
+        "before": 78,
+        "distinct": 75
+      }
+    ]
+  },
+  {
+    "branch": "nix-scratch",
+    "commit": "3747f1e0782230042d81cc93a02a379be127e8f4",
+    "seconds": 2.701969665940851,
+    "receipts": [],
+    "summary": {
+      "all": {
+        "everything_else": {
+          "sloc": 15,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 15
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 980075,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 980075
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "escape_sites": 16370,
+      "first_party": {
+        "everything_else": {
+          "sloc": 15,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 15
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 31,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 31
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "proof_code": {
+        "everything_else": {
+          "hazard_units": 0,
+          "sloc": 0,
+          "units": 0,
+          "unverified": 0,
+          "verified": 0
+        },
+        "security_relevant": {
+          "hazard_units": 0,
+          "sloc": 0,
+          "units": 0,
+          "unverified": 0,
+          "verified": 0
+        },
+        "total": {
+          "hazard_units": 0,
+          "sloc": 0,
+          "units": 0,
+          "unverified": 0,
+          "verified": 0
+        }
+      },
+      "security_first_party_hazard_units": 0,
+      "third_party": {
+        "everything_else": {
+          "sloc": 0,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 0
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 980044,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 980044
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "trusted_items": 0,
+      "trusted_sloc": 0
+    },
+    "first_party_hazards": 0,
+    "dependency_unsafe": {
+      "security_relevant": {
+        "before": 16363,
+        "distinct": 16358
+      },
+      "everything_else": {
+        "before": 0,
+        "distinct": 0
+      }
+    },
+    "dependency_site_count_changes": [
+      {
+        "name": "futures-util",
+        "version": "0.3.34",
+        "before": 136,
+        "distinct": 135
+      },
+      {
+        "name": "http",
+        "version": "1.5.0",
+        "before": 65,
+        "distinct": 64
+      },
+      {
+        "name": "httparse",
+        "version": "1.10.1",
+        "before": 78,
+        "distinct": 75
+      }
+    ]
+  },
+  {
+    "branch": "verified-boundary",
+    "commit": "bc2c73b03b6e346cd0acf96badaa0d6ec7bed814",
+    "seconds": 1.132751125143841,
+    "receipts": [
+      "verified-boundary.verus.log"
+    ],
+    "summary": {
+      "all": {
+        "everything_else": {
+          "sloc": 291,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 254,
+            "trusted": 0,
+            "unverified": 37
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 515023,
+          "statuses": {
+            "hazard": 0,
+            "proven": 120,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 38,
+            "trusted": 0,
+            "unverified": 514865
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "escape_sites": 3135,
+      "first_party": {
+        "everything_else": {
+          "sloc": 291,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 254,
+            "trusted": 0,
+            "unverified": 37
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 228,
+          "statuses": {
+            "hazard": 0,
+            "proven": 120,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 38,
+            "trusted": 0,
+            "unverified": 70
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "proof_code": {
+        "everything_else": {
+          "hazard_units": 0,
+          "sloc": 0,
+          "units": 0,
+          "unverified": 0,
+          "verified": 0
+        },
+        "security_relevant": {
+          "hazard_units": 0,
+          "sloc": 68,
+          "units": 9,
+          "unverified": 0,
+          "verified": 9
+        },
+        "total": {
+          "hazard_units": 0,
+          "sloc": 68,
+          "units": 9,
+          "unverified": 0,
+          "verified": 9
+        }
+      },
+      "security_first_party_hazard_units": 0,
+      "third_party": {
+        "everything_else": {
+          "sloc": 0,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 0
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 514795,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 514795
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "trusted_items": 0,
+      "trusted_sloc": 0
+    },
+    "first_party_hazards": 0,
+    "dependency_unsafe": {
+      "security_relevant": {
+        "before": 2177,
+        "distinct": 2166
+      },
+      "everything_else": {
+        "before": 0,
+        "distinct": 0
+      }
+    },
+    "dependency_site_count_changes": [
+      {
+        "name": "hashbrown",
+        "version": "0.17.1",
+        "before": 455,
+        "distinct": 451
+      },
+      {
+        "name": "httparse",
+        "version": "1.10.1",
+        "before": 78,
+        "distinct": 75
+      },
+      {
+        "name": "r-efi",
+        "version": "6.0.0",
+        "before": 332,
+        "distinct": 331
+      },
+      {
+        "name": "verus_prettyplease",
+        "version": "0.0.0-2026-09-06-0133",
+        "before": 26,
+        "distinct": 23
+      }
+    ]
+  },
+  {
+    "branch": "browser-whitelist",
+    "commit": "3a3cf20dad01a2d00c4b10c28f9f9ea975ad683a",
+    "seconds": 1.1289330411236733,
+    "receipts": [
+      "browser-whitelist.verus.log"
+    ],
+    "summary": {
+      "all": {
+        "everything_else": {
+          "sloc": 403,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 366,
+            "trusted": 0,
+            "unverified": 37
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 515072,
+          "statuses": {
+            "hazard": 0,
+            "proven": 125,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 78,
+            "trusted": 0,
+            "unverified": 514869
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "escape_sites": 3135,
+      "first_party": {
+        "everything_else": {
+          "sloc": 403,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 366,
+            "trusted": 0,
+            "unverified": 37
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 277,
+          "statuses": {
+            "hazard": 0,
+            "proven": 125,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 78,
+            "trusted": 0,
+            "unverified": 74
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "proof_code": {
+        "everything_else": {
+          "hazard_units": 0,
+          "sloc": 0,
+          "units": 0,
+          "unverified": 0,
+          "verified": 0
+        },
+        "security_relevant": {
+          "hazard_units": 0,
+          "sloc": 73,
+          "units": 9,
+          "unverified": 0,
+          "verified": 9
+        },
+        "total": {
+          "hazard_units": 0,
+          "sloc": 73,
+          "units": 9,
+          "unverified": 0,
+          "verified": 9
+        }
+      },
+      "security_first_party_hazard_units": 0,
+      "third_party": {
+        "everything_else": {
+          "sloc": 0,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 0
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 514795,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 514795
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "trusted_items": 0,
+      "trusted_sloc": 0
+    },
+    "first_party_hazards": 0,
+    "dependency_unsafe": {
+      "security_relevant": {
+        "before": 2177,
+        "distinct": 2166
+      },
+      "everything_else": {
+        "before": 0,
+        "distinct": 0
+      }
+    },
+    "dependency_site_count_changes": [
+      {
+        "name": "hashbrown",
+        "version": "0.17.1",
+        "before": 455,
+        "distinct": 451
+      },
+      {
+        "name": "httparse",
+        "version": "1.10.1",
+        "before": 78,
+        "distinct": 75
+      },
+      {
+        "name": "r-efi",
+        "version": "6.0.0",
+        "before": 332,
+        "distinct": 331
+      },
+      {
+        "name": "verus_prettyplease",
+        "version": "0.0.0-2026-09-06-0133",
+        "before": 26,
+        "distinct": 23
+      }
+    ]
+  },
+  {
+    "branch": "https",
+    "commit": "969540cf8dd5e7b2223105fbab8272514702f0c2",
+    "seconds": 3.8249780000187457,
+    "receipts": [
+      "https.verus.log"
+    ],
+    "summary": {
+      "all": {
+        "everything_else": {
+          "sloc": 651,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 579,
+            "trusted": 0,
+            "unverified": 72
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 1625400,
+          "statuses": {
+            "hazard": 0,
+            "proven": 125,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 193,
+            "trusted": 0,
+            "unverified": 1625082
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "escape_sites": 10734,
+      "first_party": {
+        "everything_else": {
+          "sloc": 651,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 579,
+            "trusted": 0,
+            "unverified": 72
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 592,
+          "statuses": {
+            "hazard": 0,
+            "proven": 125,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 193,
+            "trusted": 0,
+            "unverified": 274
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "proof_code": {
+        "everything_else": {
+          "hazard_units": 0,
+          "sloc": 0,
+          "units": 0,
+          "unverified": 0,
+          "verified": 0
+        },
+        "security_relevant": {
+          "hazard_units": 0,
+          "sloc": 73,
+          "units": 9,
+          "unverified": 0,
+          "verified": 9
+        },
+        "total": {
+          "hazard_units": 0,
+          "sloc": 73,
+          "units": 9,
+          "unverified": 0,
+          "verified": 9
+        }
+      },
+      "security_first_party_hazard_units": 0,
+      "third_party": {
+        "everything_else": {
+          "sloc": 0,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 0
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 1624808,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 1624808
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "trusted_items": 0,
+      "trusted_sloc": 0
+    },
+    "first_party_hazards": 0,
+    "dependency_unsafe": {
+      "security_relevant": {
+        "before": 9765,
+        "distinct": 9749
+      },
+      "everything_else": {
+        "before": 0,
+        "distinct": 0
+      }
+    },
+    "dependency_site_count_changes": [
+      {
+        "name": "futures-util",
+        "version": "0.3.34",
+        "before": 136,
+        "distinct": 135
+      },
+      {
+        "name": "hashbrown",
+        "version": "0.17.1",
+        "before": 455,
+        "distinct": 451
+      },
+      {
+        "name": "httparse",
+        "version": "1.10.1",
+        "before": 78,
+        "distinct": 75
+      },
+      {
+        "name": "prettyplease",
+        "version": "0.2.37",
+        "before": 26,
+        "distinct": 23
+      },
+      {
+        "name": "r-efi",
+        "version": "5.3.0",
+        "before": 15,
+        "distinct": 14
+      },
+      {
+        "name": "r-efi",
+        "version": "6.0.0",
+        "before": 332,
+        "distinct": 331
+      },
+      {
+        "name": "verus_prettyplease",
+        "version": "0.0.0-2026-09-06-0133",
+        "before": 26,
+        "distinct": 23
+      }
+    ]
+  },
+  {
+    "branch": "https-headers",
+    "commit": "131f109a5b5a0ac87db3ac44bef4260e7be8ce74",
+    "seconds": 3.830805083969608,
+    "receipts": [
+      "https-headers.verus.log"
+    ],
+    "summary": {
+      "all": {
+        "everything_else": {
+          "sloc": 681,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 609,
+            "trusted": 0,
+            "unverified": 72
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 1625406,
+          "statuses": {
+            "hazard": 0,
+            "proven": 128,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 196,
+            "trusted": 0,
+            "unverified": 1625082
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "escape_sites": 10734,
+      "first_party": {
+        "everything_else": {
+          "sloc": 681,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 609,
+            "trusted": 0,
+            "unverified": 72
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 598,
+          "statuses": {
+            "hazard": 0,
+            "proven": 128,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 196,
+            "trusted": 0,
+            "unverified": 274
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "proof_code": {
+        "everything_else": {
+          "hazard_units": 0,
+          "sloc": 0,
+          "units": 0,
+          "unverified": 0,
+          "verified": 0
+        },
+        "security_relevant": {
+          "hazard_units": 0,
+          "sloc": 76,
+          "units": 9,
+          "unverified": 0,
+          "verified": 9
+        },
+        "total": {
+          "hazard_units": 0,
+          "sloc": 76,
+          "units": 9,
+          "unverified": 0,
+          "verified": 9
+        }
+      },
+      "security_first_party_hazard_units": 0,
+      "third_party": {
+        "everything_else": {
+          "sloc": 0,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 0
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 1624808,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 1624808
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "trusted_items": 0,
+      "trusted_sloc": 0
+    },
+    "first_party_hazards": 0,
+    "dependency_unsafe": {
+      "security_relevant": {
+        "before": 9765,
+        "distinct": 9749
+      },
+      "everything_else": {
+        "before": 0,
+        "distinct": 0
+      }
+    },
+    "dependency_site_count_changes": [
+      {
+        "name": "futures-util",
+        "version": "0.3.34",
+        "before": 136,
+        "distinct": 135
+      },
+      {
+        "name": "hashbrown",
+        "version": "0.17.1",
+        "before": 455,
+        "distinct": 451
+      },
+      {
+        "name": "httparse",
+        "version": "1.10.1",
+        "before": 78,
+        "distinct": 75
+      },
+      {
+        "name": "prettyplease",
+        "version": "0.2.37",
+        "before": 26,
+        "distinct": 23
+      },
+      {
+        "name": "r-efi",
+        "version": "5.3.0",
+        "before": 15,
+        "distinct": 14
+      },
+      {
+        "name": "r-efi",
+        "version": "6.0.0",
+        "before": 332,
+        "distinct": 331
+      },
+      {
+        "name": "verus_prettyplease",
+        "version": "0.0.0-2026-09-06-0133",
+        "before": 26,
+        "distinct": 23
+      }
+    ]
+  },
+  {
+    "branch": "idle-connections",
+    "commit": "a3952e45725d37ef6600a60266567a6bfab8c2de",
+    "seconds": 3.845977667020634,
+    "receipts": [
+      "idle-connections.verus.log"
+    ],
+    "summary": {
+      "all": {
+        "everything_else": {
+          "sloc": 803,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 734,
+            "trusted": 0,
+            "unverified": 69
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 1625469,
+          "statuses": {
+            "hazard": 0,
+            "proven": 128,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 205,
+            "trusted": 0,
+            "unverified": 1625136
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "escape_sites": 10734,
+      "first_party": {
+        "everything_else": {
+          "sloc": 803,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 734,
+            "trusted": 0,
+            "unverified": 69
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 661,
+          "statuses": {
+            "hazard": 0,
+            "proven": 128,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 205,
+            "trusted": 0,
+            "unverified": 328
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "proof_code": {
+        "everything_else": {
+          "hazard_units": 0,
+          "sloc": 0,
+          "units": 0,
+          "unverified": 0,
+          "verified": 0
+        },
+        "security_relevant": {
+          "hazard_units": 0,
+          "sloc": 76,
+          "units": 9,
+          "unverified": 0,
+          "verified": 9
+        },
+        "total": {
+          "hazard_units": 0,
+          "sloc": 76,
+          "units": 9,
+          "unverified": 0,
+          "verified": 9
+        }
+      },
+      "security_first_party_hazard_units": 0,
+      "third_party": {
+        "everything_else": {
+          "sloc": 0,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 0
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 1624808,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 1624808
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "trusted_items": 0,
+      "trusted_sloc": 0
+    },
+    "first_party_hazards": 0,
+    "dependency_unsafe": {
+      "security_relevant": {
+        "before": 9765,
+        "distinct": 9749
+      },
+      "everything_else": {
+        "before": 0,
+        "distinct": 0
+      }
+    },
+    "dependency_site_count_changes": [
+      {
+        "name": "futures-util",
+        "version": "0.3.34",
+        "before": 136,
+        "distinct": 135
+      },
+      {
+        "name": "hashbrown",
+        "version": "0.17.1",
+        "before": 455,
+        "distinct": 451
+      },
+      {
+        "name": "httparse",
+        "version": "1.10.1",
+        "before": 78,
+        "distinct": 75
+      },
+      {
+        "name": "prettyplease",
+        "version": "0.2.37",
+        "before": 26,
+        "distinct": 23
+      },
+      {
+        "name": "r-efi",
+        "version": "5.3.0",
+        "before": 15,
+        "distinct": 14
+      },
+      {
+        "name": "r-efi",
+        "version": "6.0.0",
+        "before": 332,
+        "distinct": 331
+      },
+      {
+        "name": "verus_prettyplease",
+        "version": "0.0.0-2026-09-06-0133",
+        "before": 26,
+        "distinct": 23
+      }
+    ]
+  },
+  {
+    "branch": "proven-transport",
+    "commit": "42b6565a2b6906b9ad84dd8854a5c719f5186049",
+    "seconds": 3.919250125065446,
+    "receipts": [
+      "proven-transport.verus.log",
+      "proven-transport.root-2.verus.log",
+      "proven-transport.root-3.verus.log"
+    ],
+    "summary": {
+      "all": {
+        "everything_else": {
+          "sloc": 1005,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 920,
+            "trusted": 0,
+            "unverified": 85
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 1625659,
+          "statuses": {
+            "hazard": 0,
+            "proven": 315,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 204,
+            "trusted": 0,
+            "unverified": 1625140
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "escape_sites": 10734,
+      "first_party": {
+        "everything_else": {
+          "sloc": 1005,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 920,
+            "trusted": 0,
+            "unverified": 85
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 851,
+          "statuses": {
+            "hazard": 0,
+            "proven": 315,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 204,
+            "trusted": 0,
+            "unverified": 332
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "proof_code": {
+        "everything_else": {
+          "hazard_units": 0,
+          "sloc": 0,
+          "units": 0,
+          "unverified": 0,
+          "verified": 0
+        },
+        "security_relevant": {
+          "hazard_units": 0,
+          "sloc": 130,
+          "units": 17,
+          "unverified": 0,
+          "verified": 17
+        },
+        "total": {
+          "hazard_units": 0,
+          "sloc": 130,
+          "units": 17,
+          "unverified": 0,
+          "verified": 17
+        }
+      },
+      "security_first_party_hazard_units": 0,
+      "third_party": {
+        "everything_else": {
+          "sloc": 0,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 0
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 1624808,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 1624808
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "trusted_items": 0,
+      "trusted_sloc": 0
+    },
+    "first_party_hazards": 0,
+    "dependency_unsafe": {
+      "security_relevant": {
+        "before": 9765,
+        "distinct": 9749
+      },
+      "everything_else": {
+        "before": 0,
+        "distinct": 0
+      }
+    },
+    "dependency_site_count_changes": [
+      {
+        "name": "futures-util",
+        "version": "0.3.34",
+        "before": 136,
+        "distinct": 135
+      },
+      {
+        "name": "hashbrown",
+        "version": "0.17.1",
+        "before": 455,
+        "distinct": 451
+      },
+      {
+        "name": "httparse",
+        "version": "1.10.1",
+        "before": 78,
+        "distinct": 75
+      },
+      {
+        "name": "prettyplease",
+        "version": "0.2.37",
+        "before": 26,
+        "distinct": 23
+      },
+      {
+        "name": "r-efi",
+        "version": "5.3.0",
+        "before": 15,
+        "distinct": 14
+      },
+      {
+        "name": "r-efi",
+        "version": "6.0.0",
+        "before": 332,
+        "distinct": 331
+      },
+      {
+        "name": "verus_prettyplease",
+        "version": "0.0.0-2026-09-06-0133",
+        "before": 26,
+        "distinct": 23
+      }
+    ]
+  },
+  {
+    "branch": "firefox-headers",
+    "commit": "39a1d28397229e50d5614dc407722e45fc6c59bf",
+    "seconds": 3.9211264168843627,
+    "receipts": [
+      "firefox-headers.verus.log",
+      "firefox-headers.root-2.verus.log",
+      "firefox-headers.root-3.verus.log"
+    ],
+    "summary": {
+      "all": {
+        "everything_else": {
+          "sloc": 1022,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 937,
+            "trusted": 0,
+            "unverified": 85
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 1625660,
+          "statuses": {
+            "hazard": 0,
+            "proven": 316,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 204,
+            "trusted": 0,
+            "unverified": 1625140
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "escape_sites": 10734,
+      "first_party": {
+        "everything_else": {
+          "sloc": 1022,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 937,
+            "trusted": 0,
+            "unverified": 85
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 852,
+          "statuses": {
+            "hazard": 0,
+            "proven": 316,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 204,
+            "trusted": 0,
+            "unverified": 332
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "proof_code": {
+        "everything_else": {
+          "hazard_units": 0,
+          "sloc": 0,
+          "units": 0,
+          "unverified": 0,
+          "verified": 0
+        },
+        "security_relevant": {
+          "hazard_units": 0,
+          "sloc": 131,
+          "units": 17,
+          "unverified": 0,
+          "verified": 17
+        },
+        "total": {
+          "hazard_units": 0,
+          "sloc": 131,
+          "units": 17,
+          "unverified": 0,
+          "verified": 17
+        }
+      },
+      "security_first_party_hazard_units": 0,
+      "third_party": {
+        "everything_else": {
+          "sloc": 0,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 0
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 1624808,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 1624808
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "trusted_items": 0,
+      "trusted_sloc": 0
+    },
+    "first_party_hazards": 0,
+    "dependency_unsafe": {
+      "security_relevant": {
+        "before": 9765,
+        "distinct": 9749
+      },
+      "everything_else": {
+        "before": 0,
+        "distinct": 0
+      }
+    },
+    "dependency_site_count_changes": [
+      {
+        "name": "futures-util",
+        "version": "0.3.34",
+        "before": 136,
+        "distinct": 135
+      },
+      {
+        "name": "hashbrown",
+        "version": "0.17.1",
+        "before": 455,
+        "distinct": 451
+      },
+      {
+        "name": "httparse",
+        "version": "1.10.1",
+        "before": 78,
+        "distinct": 75
+      },
+      {
+        "name": "prettyplease",
+        "version": "0.2.37",
+        "before": 26,
+        "distinct": 23
+      },
+      {
+        "name": "r-efi",
+        "version": "5.3.0",
+        "before": 15,
+        "distinct": 14
+      },
+      {
+        "name": "r-efi",
+        "version": "6.0.0",
+        "before": 332,
+        "distinct": 331
+      },
+      {
+        "name": "verus_prettyplease",
+        "version": "0.0.0-2026-09-06-0133",
+        "before": 26,
+        "distinct": 23
+      }
+    ]
+  },
+  {
+    "branch": "chromium-headers",
+    "commit": "df3f49ef9303e196d3822bd29acb71c8c17f9f1e",
+    "seconds": 4.057035875041038,
+    "receipts": [
+      "chromium-headers.verus.log",
+      "chromium-headers.root-2.verus.log",
+      "chromium-headers.root-3.verus.log"
+    ],
+    "summary": {
+      "all": {
+        "everything_else": {
+          "sloc": 1195,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 1110,
+            "trusted": 0,
+            "unverified": 85
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 1625696,
+          "statuses": {
+            "hazard": 0,
+            "proven": 343,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 213,
+            "trusted": 0,
+            "unverified": 1625140
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "escape_sites": 10734,
+      "first_party": {
+        "everything_else": {
+          "sloc": 1195,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 1110,
+            "trusted": 0,
+            "unverified": 85
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 888,
+          "statuses": {
+            "hazard": 0,
+            "proven": 343,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 213,
+            "trusted": 0,
+            "unverified": 332
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "proof_code": {
+        "everything_else": {
+          "hazard_units": 0,
+          "sloc": 0,
+          "units": 0,
+          "unverified": 0,
+          "verified": 0
+        },
+        "security_relevant": {
+          "hazard_units": 0,
+          "sloc": 144,
+          "units": 19,
+          "unverified": 0,
+          "verified": 19
+        },
+        "total": {
+          "hazard_units": 0,
+          "sloc": 144,
+          "units": 19,
+          "unverified": 0,
+          "verified": 19
+        }
+      },
+      "security_first_party_hazard_units": 0,
+      "third_party": {
+        "everything_else": {
+          "sloc": 0,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 0
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 1624808,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 1624808
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "trusted_items": 0,
+      "trusted_sloc": 0
+    },
+    "first_party_hazards": 0,
+    "dependency_unsafe": {
+      "security_relevant": {
+        "before": 9765,
+        "distinct": 9749
+      },
+      "everything_else": {
+        "before": 0,
+        "distinct": 0
+      }
+    },
+    "dependency_site_count_changes": [
+      {
+        "name": "futures-util",
+        "version": "0.3.34",
+        "before": 136,
+        "distinct": 135
+      },
+      {
+        "name": "hashbrown",
+        "version": "0.17.1",
+        "before": 455,
+        "distinct": 451
+      },
+      {
+        "name": "httparse",
+        "version": "1.10.1",
+        "before": 78,
+        "distinct": 75
+      },
+      {
+        "name": "prettyplease",
+        "version": "0.2.37",
+        "before": 26,
+        "distinct": 23
+      },
+      {
+        "name": "r-efi",
+        "version": "5.3.0",
+        "before": 15,
+        "distinct": 14
+      },
+      {
+        "name": "r-efi",
+        "version": "6.0.0",
+        "before": 332,
+        "distinct": 331
+      },
+      {
+        "name": "verus_prettyplease",
+        "version": "0.0.0-2026-09-06-0133",
+        "before": 26,
+        "distinct": 23
+      }
+    ]
+  },
+  {
+    "branch": "pragma-header",
+    "commit": "6ee509803195af5e5d77cfd124079f2984e1717d",
+    "seconds": 3.9606167080346495,
+    "receipts": [
+      "pragma-header.verus.log",
+      "pragma-header.root-2.verus.log",
+      "pragma-header.root-3.verus.log"
+    ],
+    "summary": {
+      "all": {
+        "everything_else": {
+          "sloc": 1218,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 1133,
+            "trusted": 0,
+            "unverified": 85
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 1625698,
+          "statuses": {
+            "hazard": 0,
+            "proven": 344,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 214,
+            "trusted": 0,
+            "unverified": 1625140
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "escape_sites": 10734,
+      "first_party": {
+        "everything_else": {
+          "sloc": 1218,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 1133,
+            "trusted": 0,
+            "unverified": 85
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 890,
+          "statuses": {
+            "hazard": 0,
+            "proven": 344,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 214,
+            "trusted": 0,
+            "unverified": 332
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "proof_code": {
+        "everything_else": {
+          "hazard_units": 0,
+          "sloc": 0,
+          "units": 0,
+          "unverified": 0,
+          "verified": 0
+        },
+        "security_relevant": {
+          "hazard_units": 0,
+          "sloc": 145,
+          "units": 19,
+          "unverified": 0,
+          "verified": 19
+        },
+        "total": {
+          "hazard_units": 0,
+          "sloc": 145,
+          "units": 19,
+          "unverified": 0,
+          "verified": 19
+        }
+      },
+      "security_first_party_hazard_units": 0,
+      "third_party": {
+        "everything_else": {
+          "sloc": 0,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 0
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 1624808,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 1624808
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "trusted_items": 0,
+      "trusted_sloc": 0
+    },
+    "first_party_hazards": 0,
+    "dependency_unsafe": {
+      "security_relevant": {
+        "before": 9765,
+        "distinct": 9749
+      },
+      "everything_else": {
+        "before": 0,
+        "distinct": 0
+      }
+    },
+    "dependency_site_count_changes": [
+      {
+        "name": "futures-util",
+        "version": "0.3.34",
+        "before": 136,
+        "distinct": 135
+      },
+      {
+        "name": "hashbrown",
+        "version": "0.17.1",
+        "before": 455,
+        "distinct": 451
+      },
+      {
+        "name": "httparse",
+        "version": "1.10.1",
+        "before": 78,
+        "distinct": 75
+      },
+      {
+        "name": "prettyplease",
+        "version": "0.2.37",
+        "before": 26,
+        "distinct": 23
+      },
+      {
+        "name": "r-efi",
+        "version": "5.3.0",
+        "before": 15,
+        "distinct": 14
+      },
+      {
+        "name": "r-efi",
+        "version": "6.0.0",
+        "before": 332,
+        "distinct": 331
+      },
+      {
+        "name": "verus_prettyplease",
+        "version": "0.0.0-2026-09-06-0133",
+        "before": 26,
+        "distinct": 23
+      }
+    ]
+  },
+  {
+    "branch": "header-policy",
+    "commit": "3fe444ddf1c46f08335c3a4513f633ed7b07219c",
+    "seconds": 4.047909583197907,
+    "receipts": [
+      "header-policy.verus.log",
+      "header-policy.root-2.verus.log",
+      "header-policy.root-3.verus.log"
+    ],
+    "summary": {
+      "all": {
+        "everything_else": {
+          "sloc": 1546,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 1442,
+            "trusted": 0,
+            "unverified": 104
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 1626171,
+          "statuses": {
+            "hazard": 0,
+            "proven": 644,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 300,
+            "trusted": 0,
+            "unverified": 1625227
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "escape_sites": 10734,
+      "first_party": {
+        "everything_else": {
+          "sloc": 1546,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 1442,
+            "trusted": 0,
+            "unverified": 104
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 1363,
+          "statuses": {
+            "hazard": 0,
+            "proven": 644,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 300,
+            "trusted": 0,
+            "unverified": 419
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "proof_code": {
+        "everything_else": {
+          "hazard_units": 0,
+          "sloc": 0,
+          "units": 0,
+          "unverified": 0,
+          "verified": 0
+        },
+        "security_relevant": {
+          "hazard_units": 0,
+          "sloc": 322,
+          "units": 39,
+          "unverified": 0,
+          "verified": 39
+        },
+        "total": {
+          "hazard_units": 0,
+          "sloc": 322,
+          "units": 39,
+          "unverified": 0,
+          "verified": 39
+        }
+      },
+      "security_first_party_hazard_units": 0,
+      "third_party": {
+        "everything_else": {
+          "sloc": 0,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 0
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 1624808,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 1624808
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "trusted_items": 0,
+      "trusted_sloc": 0
+    },
+    "first_party_hazards": 0,
+    "dependency_unsafe": {
+      "security_relevant": {
+        "before": 9765,
+        "distinct": 9749
+      },
+      "everything_else": {
+        "before": 0,
+        "distinct": 0
+      }
+    },
+    "dependency_site_count_changes": [
+      {
+        "name": "futures-util",
+        "version": "0.3.34",
+        "before": 136,
+        "distinct": 135
+      },
+      {
+        "name": "hashbrown",
+        "version": "0.17.1",
+        "before": 455,
+        "distinct": 451
+      },
+      {
+        "name": "httparse",
+        "version": "1.10.1",
+        "before": 78,
+        "distinct": 75
+      },
+      {
+        "name": "prettyplease",
+        "version": "0.2.37",
+        "before": 26,
+        "distinct": 23
+      },
+      {
+        "name": "r-efi",
+        "version": "5.3.0",
+        "before": 15,
+        "distinct": 14
+      },
+      {
+        "name": "r-efi",
+        "version": "6.0.0",
+        "before": 332,
+        "distinct": 331
+      },
+      {
+        "name": "verus_prettyplease",
+        "version": "0.0.0-2026-09-06-0133",
+        "before": 26,
+        "distinct": 23
+      }
+    ]
+  },
+  {
+    "branch": "spec-lemmas",
+    "commit": "2fa5eb78a6f96a8433229dc64ec4b82c3e5f9bc2",
+    "seconds": 4.335011875024065,
+    "receipts": [
+      "spec-lemmas.verus.log",
+      "spec-lemmas.root-2.verus.log",
+      "spec-lemmas.root-3.verus.log"
+    ],
+    "summary": {
+      "all": {
+        "everything_else": {
+          "sloc": 1642,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 1534,
+            "trusted": 0,
+            "unverified": 108
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 1626171,
+          "statuses": {
+            "hazard": 0,
+            "proven": 644,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 300,
+            "trusted": 0,
+            "unverified": 1625227
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "escape_sites": 10734,
+      "first_party": {
+        "everything_else": {
+          "sloc": 1642,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 1534,
+            "trusted": 0,
+            "unverified": 108
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 1363,
+          "statuses": {
+            "hazard": 0,
+            "proven": 644,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 300,
+            "trusted": 0,
+            "unverified": 419
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "proof_code": {
+        "everything_else": {
+          "hazard_units": 0,
+          "sloc": 0,
+          "units": 0,
+          "unverified": 0,
+          "verified": 0
+        },
+        "security_relevant": {
+          "hazard_units": 0,
+          "sloc": 4732,
+          "units": 200,
+          "unverified": 0,
+          "verified": 200
+        },
+        "total": {
+          "hazard_units": 0,
+          "sloc": 4732,
+          "units": 200,
+          "unverified": 0,
+          "verified": 200
+        }
+      },
+      "security_first_party_hazard_units": 0,
+      "third_party": {
+        "everything_else": {
+          "sloc": 0,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 0
+          },
+          "unknown_dependency_sizes": 0
+        },
+        "security_relevant": {
+          "sloc": 1624808,
+          "statuses": {
+            "hazard": 0,
+            "proven": 0,
+            "proven-bounded": 0,
+            "proven-upstream": 0,
+            "tested": 0,
+            "trusted": 0,
+            "unverified": 1624808
+          },
+          "unknown_dependency_sizes": 0
+        }
+      },
+      "trusted_items": 0,
+      "trusted_sloc": 0
+    },
+    "first_party_hazards": 0,
+    "dependency_unsafe": {
+      "security_relevant": {
+        "before": 9765,
+        "distinct": 9749
+      },
+      "everything_else": {
+        "before": 0,
+        "distinct": 0
+      }
+    },
+    "dependency_site_count_changes": [
+      {
+        "name": "futures-util",
+        "version": "0.3.34",
+        "before": 136,
+        "distinct": 135
+      },
+      {
+        "name": "hashbrown",
+        "version": "0.17.1",
+        "before": 455,
+        "distinct": 451
+      },
+      {
+        "name": "httparse",
+        "version": "1.10.1",
+        "before": 78,
+        "distinct": 75
+      },
+      {
+        "name": "prettyplease",
+        "version": "0.2.37",
+        "before": 26,
+        "distinct": 23
+      },
+      {
+        "name": "r-efi",
+        "version": "5.3.0",
+        "before": 15,
+        "distinct": 14
+      },
+      {
+        "name": "r-efi",
+        "version": "6.0.0",
+        "before": 332,
+        "distinct": 331
+      },
+      {
+        "name": "verus_prettyplease",
+        "version": "0.0.0-2026-09-06-0133",
+        "before": 26,
+        "distinct": 23
+      }
+    ]
+  }
+]

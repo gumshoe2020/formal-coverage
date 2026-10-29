@@ -1,0 +1,569 @@
+{
+  "scope": "aarch64; VMM package after workspace build-script EROFS",
+  "harnesses": [
+    {
+      "id": "vmm::arch::aarch64::verification::verify_arch_memory_regions",
+      "file": "src/vmm/src/arch/aarch64/mod.rs",
+      "line": 296,
+      "unwind": 3,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-00.log",
+      "exit_code": 0,
+      "seconds": 13.419075082987547,
+      "checked_harnesses": [
+        "arch::aarch64::verification::verify_arch_memory_regions"
+      ]
+    },
+    {
+      "id": "vmm::arch::x86_64::verification::verify_arch_memory_regions",
+      "file": "src/vmm/src/arch/x86_64/mod.rs",
+      "line": 578,
+      "unwind": 4,
+      "outcome": "not-compiled-on-aarch64",
+      "reason": "x86_64-only source",
+      "log": null
+    },
+    {
+      "id": "vmm::devices::virtio::iovec::verification::verify_read_from_iovec",
+      "file": "src/vmm/src/devices/virtio/iovec.rs",
+      "line": 1257,
+      "unwind": 5,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-02.log",
+      "exit_code": 0,
+      "seconds": 25.00146795785986,
+      "checked_harnesses": [
+        "devices::virtio::iovec::verification::verify_read_from_iovec"
+      ]
+    },
+    {
+      "id": "vmm::devices::virtio::iovec::verification::verify_write_to_iovec_0",
+      "file": "src/vmm/src/devices/virtio/iovec.rs",
+      "line": 1326,
+      "unwind": 5,
+      "outcome": "fail",
+      "reason": "CBMC out of memory",
+      "log": "kani-harness-03.log",
+      "exit_code": 1,
+      "seconds": 87.18993379082531,
+      "checked_harnesses": [
+        "devices::virtio::iovec::verification::verify_write_to_iovec_0"
+      ],
+      "failure_kind": "OOM"
+    },
+    {
+      "id": "vmm::devices::virtio::iovec::verification::verify_write_to_iovec_1",
+      "file": "src/vmm/src/devices/virtio/iovec.rs",
+      "line": 1335,
+      "unwind": 5,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-04.log",
+      "exit_code": 0,
+      "seconds": 165.58572633378208,
+      "checked_harnesses": [
+        "devices::virtio::iovec::verification::verify_write_to_iovec_1"
+      ]
+    },
+    {
+      "id": "vmm::devices::virtio::iovec::verification::verify_write_to_iovec_2",
+      "file": "src/vmm/src/devices/virtio/iovec.rs",
+      "line": 1344,
+      "unwind": 5,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-05.log",
+      "exit_code": 0,
+      "seconds": 154.6179911668878,
+      "checked_harnesses": [
+        "devices::virtio::iovec::verification::verify_write_to_iovec_2"
+      ]
+    },
+    {
+      "id": "vmm::devices::virtio::iovec::verification::verify_write_to_iovec_3",
+      "file": "src/vmm/src/devices/virtio/iovec.rs",
+      "line": 1353,
+      "unwind": 5,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-06.log",
+      "exit_code": 0,
+      "seconds": 229.32599037489854,
+      "checked_harnesses": [
+        "devices::virtio::iovec::verification::verify_write_to_iovec_3"
+      ]
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_spec_2_6_7_2",
+      "file": "src/vmm/src/devices/virtio/queue.rs",
+      "line": 898,
+      "unwind": 0,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-07.log",
+      "exit_code": 0,
+      "seconds": 104.4607179579325,
+      "checked_harnesses": [
+        "devices::virtio::queue::verification::verify_spec_2_6_7_2"
+      ]
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_prepare_kick",
+      "file": "src/vmm/src/devices/virtio/queue.rs",
+      "line": 940,
+      "unwind": 0,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-08.log",
+      "exit_code": 0,
+      "seconds": 91.54706875002012,
+      "checked_harnesses": [
+        "devices::virtio::queue::verification::verify_prepare_kick"
+      ]
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_size_raised_after_initialize",
+      "file": "src/vmm/src/devices/virtio/queue.rs",
+      "line": 980,
+      "unwind": 0,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-09.log",
+      "exit_code": 0,
+      "seconds": 27.87220983300358,
+      "checked_harnesses": [
+        "devices::virtio::queue::verification::verify_size_raised_after_initialize"
+      ]
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_add_used",
+      "file": "src/vmm/src/devices/virtio/queue.rs",
+      "line": 1010,
+      "unwind": 0,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-10.log",
+      "exit_code": 0,
+      "seconds": 32.81747979205102,
+      "checked_harnesses": [
+        "devices::virtio::queue::verification::verify_add_used"
+      ]
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_is_empty",
+      "file": "src/vmm/src/devices/virtio/queue.rs",
+      "line": 1046,
+      "unwind": 0,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-11.log",
+      "exit_code": 0,
+      "seconds": 111.00105408299714,
+      "checked_harnesses": [
+        "devices::virtio::queue::verification::verify_is_empty"
+      ]
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_initialize",
+      "file": "src/vmm/src/devices/virtio/queue.rs",
+      "line": 1054,
+      "unwind": 0,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-12.log",
+      "exit_code": 0,
+      "seconds": 41.669540458125994,
+      "checked_harnesses": [
+        "devices::virtio::queue::verification::verify_initialize"
+      ]
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_avail_ring_idx_get",
+      "file": "src/vmm/src/devices/virtio/queue.rs",
+      "line": 1077,
+      "unwind": 0,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-13.log",
+      "exit_code": 0,
+      "seconds": 21.13003870798275,
+      "checked_harnesses": [
+        "devices::virtio::queue::verification::verify_avail_ring_idx_get"
+      ]
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_avail_ring_ring_get",
+      "file": "src/vmm/src/devices/virtio/queue.rs",
+      "line": 1084,
+      "unwind": 0,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-14.log",
+      "exit_code": 0,
+      "seconds": 22.01823604106903,
+      "checked_harnesses": [
+        "devices::virtio::queue::verification::verify_avail_ring_ring_get"
+      ]
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_avail_ring_used_event_get",
+      "file": "src/vmm/src/devices/virtio/queue.rs",
+      "line": 1092,
+      "unwind": 0,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-15.log",
+      "exit_code": 0,
+      "seconds": 20.769713416928425,
+      "checked_harnesses": [
+        "devices::virtio::queue::verification::verify_avail_ring_used_event_get"
+      ]
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_used_ring_idx_set",
+      "file": "src/vmm/src/devices/virtio/queue.rs",
+      "line": 1099,
+      "unwind": 0,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-16.log",
+      "exit_code": 0,
+      "seconds": 22.463356709107757,
+      "checked_harnesses": [
+        "devices::virtio::queue::verification::verify_used_ring_idx_set"
+      ]
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_used_ring_ring_set",
+      "file": "src/vmm/src/devices/virtio/queue.rs",
+      "line": 1106,
+      "unwind": 0,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-17.log",
+      "exit_code": 0,
+      "seconds": 23.308485249988735,
+      "checked_harnesses": [
+        "devices::virtio::queue::verification::verify_used_ring_ring_set"
+      ]
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_used_ring_avail_event",
+      "file": "src/vmm/src/devices/virtio/queue.rs",
+      "line": 1118,
+      "unwind": 0,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-18.log",
+      "exit_code": 0,
+      "seconds": 66.80771395820193,
+      "checked_harnesses": [
+        "devices::virtio::queue::verification::verify_used_ring_avail_event"
+      ]
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_pop",
+      "file": "src/vmm/src/devices/virtio/queue.rs",
+      "line": 1127,
+      "unwind": 0,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-19.log",
+      "exit_code": 0,
+      "seconds": 175.7506638749037,
+      "checked_harnesses": [
+        "devices::virtio::queue::verification::verify_pop"
+      ]
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_undo_pop",
+      "file": "src/vmm/src/devices/virtio/queue.rs",
+      "line": 1150,
+      "unwind": 0,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-20.log",
+      "exit_code": 0,
+      "seconds": 159.82999416603707,
+      "checked_harnesses": [
+        "devices::virtio::queue::verification::verify_undo_pop"
+      ]
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_try_enable_notification",
+      "file": "src/vmm/src/devices/virtio/queue.rs",
+      "line": 1168,
+      "unwind": 0,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-21.log",
+      "exit_code": 0,
+      "seconds": 18.80474641593173,
+      "checked_harnesses": [
+        "devices::virtio::queue::verification::verify_try_enable_notification"
+      ]
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_checked_new",
+      "file": "src/vmm/src/devices/virtio/queue.rs",
+      "line": 1184,
+      "unwind": 0,
+      "outcome": "fail",
+      "reason": "CBMC out of memory",
+      "log": "kani-harness-22.log",
+      "exit_code": 1,
+      "seconds": 26.192838290939108,
+      "checked_harnesses": [
+        "devices::virtio::queue::verification::verify_checked_new"
+      ],
+      "failure_kind": "OOM"
+    },
+    {
+      "id": "vmm::dumbo::pdu::ethernet::kani_proofs::verify_from_bytes_unchecked",
+      "file": "src/vmm/src/dumbo/pdu/ethernet.rs",
+      "line": 258,
+      "unwind": null,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-23.log",
+      "exit_code": 0,
+      "seconds": 6.492591166868806,
+      "checked_harnesses": [
+        "dumbo::pdu::ethernet::kani_proofs::verify_from_bytes_unchecked"
+      ]
+    },
+    {
+      "id": "vmm::dumbo::pdu::ethernet::kani_proofs::verify_from_bytes",
+      "file": "src/vmm/src/dumbo/pdu/ethernet.rs",
+      "line": 274,
+      "unwind": null,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-24.log",
+      "exit_code": 0,
+      "seconds": 7.319782959064469,
+      "checked_harnesses": [
+        "dumbo::pdu::ethernet::kani_proofs::verify_from_bytes",
+        "dumbo::pdu::ethernet::kani_proofs::verify_from_bytes_unchecked"
+      ]
+    },
+    {
+      "id": "vmm::dumbo::pdu::ethernet::kani_proofs::verify_dst_mac",
+      "file": "src/vmm/src/dumbo/pdu/ethernet.rs",
+      "line": 294,
+      "unwind": null,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-25.log",
+      "exit_code": 0,
+      "seconds": 7.2847852918785065,
+      "checked_harnesses": [
+        "dumbo::pdu::ethernet::kani_proofs::verify_dst_mac"
+      ]
+    },
+    {
+      "id": "vmm::dumbo::pdu::ethernet::kani_proofs::verify_src_mac",
+      "file": "src/vmm/src/dumbo/pdu/ethernet.rs",
+      "line": 323,
+      "unwind": null,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-26.log",
+      "exit_code": 0,
+      "seconds": 8.455969499889761,
+      "checked_harnesses": [
+        "dumbo::pdu::ethernet::kani_proofs::verify_src_mac_isolation",
+        "dumbo::pdu::ethernet::kani_proofs::verify_src_mac"
+      ]
+    },
+    {
+      "id": "vmm::dumbo::pdu::ethernet::kani_proofs::verify_src_mac_isolation",
+      "file": "src/vmm/src/dumbo/pdu/ethernet.rs",
+      "line": 352,
+      "unwind": null,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-27.log",
+      "exit_code": 0,
+      "seconds": 7.5507229170762,
+      "checked_harnesses": [
+        "dumbo::pdu::ethernet::kani_proofs::verify_src_mac_isolation"
+      ]
+    },
+    {
+      "id": "vmm::dumbo::pdu::ethernet::kani_proofs::verify_ethertype",
+      "file": "src/vmm/src/dumbo/pdu/ethernet.rs",
+      "line": 396,
+      "unwind": null,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-28.log",
+      "exit_code": 0,
+      "seconds": 7.293307959102094,
+      "checked_harnesses": [
+        "dumbo::pdu::ethernet::kani_proofs::verify_ethertype"
+      ]
+    },
+    {
+      "id": "vmm::dumbo::pdu::ethernet::kani_proofs::verify_payload",
+      "file": "src/vmm/src/dumbo/pdu/ethernet.rs",
+      "line": 419,
+      "unwind": 1515,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-29.log",
+      "exit_code": 0,
+      "seconds": 7.180998666910455,
+      "checked_harnesses": [
+        "dumbo::pdu::ethernet::kani_proofs::verify_payload"
+      ]
+    },
+    {
+      "id": "vmm::dumbo::pdu::ethernet::kani_proofs::verify_new_with_header",
+      "file": "src/vmm/src/dumbo/pdu/ethernet.rs",
+      "line": 448,
+      "unwind": null,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-30.log",
+      "exit_code": 0,
+      "seconds": 7.632513541961089,
+      "checked_harnesses": [
+        "dumbo::pdu::ethernet::kani_proofs::verify_new_with_header"
+      ]
+    },
+    {
+      "id": "vmm::dumbo::pdu::ethernet::kani_proofs::verify_write_incomplete",
+      "file": "src/vmm/src/dumbo/pdu/ethernet.rs",
+      "line": 479,
+      "unwind": null,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-31.log",
+      "exit_code": 0,
+      "seconds": 7.98762970790267,
+      "checked_harnesses": [
+        "dumbo::pdu::ethernet::kani_proofs::verify_write_incomplete"
+      ]
+    },
+    {
+      "id": "vmm::dumbo::pdu::ethernet::kani_proofs::verify_with_payload_len_unchecked",
+      "file": "src/vmm/src/dumbo/pdu/ethernet.rs",
+      "line": 507,
+      "unwind": null,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-32.log",
+      "exit_code": 0,
+      "seconds": 8.031061707995832,
+      "checked_harnesses": [
+        "dumbo::pdu::ethernet::kani_proofs::verify_with_payload_len_unchecked"
+      ]
+    },
+    {
+      "id": "vmm::rate_limiter::verification::verify_instant_stub_non_decreasing",
+      "file": "src/vmm/src/rate_limiter/mod.rs",
+      "line": 692,
+      "unwind": null,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-33.log",
+      "exit_code": 0,
+      "seconds": 6.4473977079615,
+      "checked_harnesses": [
+        "rate_limiter::verification::verify_instant_stub_non_decreasing"
+      ]
+    },
+    {
+      "id": "vmm::rate_limiter::verification::gcd_contract_harness",
+      "file": "src/vmm/src/rate_limiter/mod.rs",
+      "line": 701,
+      "unwind": 64,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-34.log",
+      "exit_code": 0,
+      "seconds": 20.238581582903862,
+      "checked_harnesses": [
+        "rate_limiter::verification::gcd_contract_harness"
+      ]
+    },
+    {
+      "id": "vmm::rate_limiter::verification::verify_token_bucket_new",
+      "file": "src/vmm/src/rate_limiter/mod.rs",
+      "line": 719,
+      "unwind": null,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-35.log",
+      "exit_code": 0,
+      "seconds": 6.530232625082135,
+      "checked_harnesses": [
+        "rate_limiter::verification::verify_token_bucket_new"
+      ]
+    },
+    {
+      "id": "vmm::rate_limiter::verification::verify_token_bucket_auto_replenish",
+      "file": "src/vmm/src/rate_limiter/mod.rs",
+      "line": 739,
+      "unwind": 1,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-36.log",
+      "exit_code": 0,
+      "seconds": 26.056059582857415,
+      "checked_harnesses": [
+        "rate_limiter::verification::verify_token_bucket_auto_replenish"
+      ]
+    },
+    {
+      "id": "vmm::rate_limiter::verification::verify_token_bucket_reduce",
+      "file": "src/vmm/src/rate_limiter/mod.rs",
+      "line": 761,
+      "unwind": null,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-37.log",
+      "exit_code": 0,
+      "seconds": 33.739509749924764,
+      "checked_harnesses": [
+        "rate_limiter::verification::verify_token_bucket_reduce"
+      ]
+    },
+    {
+      "id": "vmm::rate_limiter::verification::verify_token_bucket_force_replenish",
+      "file": "src/vmm/src/rate_limiter/mod.rs",
+      "line": 796,
+      "unwind": null,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-38.log",
+      "exit_code": 0,
+      "seconds": 33.13484891690314,
+      "checked_harnesses": [
+        "rate_limiter::verification::verify_token_bucket_force_replenish"
+      ]
+    },
+    {
+      "id": "vmm::vstate::memory_slice::verification::verify_dirty_pages",
+      "file": "src/vmm/src/vstate/memory_slice.rs",
+      "line": 319,
+      "unwind": 5,
+      "outcome": "pass",
+      "reason": null,
+      "log": "kani-harness-39.log",
+      "exit_code": 0,
+      "seconds": 6.603330000070855,
+      "checked_harnesses": [
+        "vstate::memory_slice::verification::verify_dirty_pages"
+      ]
+    }
+  ],
+  "counts": {
+    "pass": 37,
+    "not-compiled-on-aarch64": 1,
+    "fail": 2
+  }
+}

@@ -1,0 +1,84 @@
+# Primary archives read 2026-10-27; see docs/evidence.md. Operation-level claims only.
+# Exact release-to-proof and target correspondence is unconfirmed for every entry,
+# matching scratch-server TLS-PROVIDER.md. No whole-crate promotion is warranted.
+
+[[claims]]
+crate_name = "libcrux-chacha20poly1305"
+version = "=0.0.10"
+operations = "ChaCha20Poly1305 seal/open (not XChaCha)"
+property = "HACL-derived primitive claim; memory safety, functional correctness, secret independence; wrappers and exact release/target correspondence unconfirmed"
+tool = "F* (upstream claim; not rerun locally)"
+source = "https://static.crates.io/crates/libcrux-chacha20poly1305/libcrux-chacha20poly1305-0.0.10.crate"
+confirmation = "unconfirmed"
+
+[[claims]]
+crate_name = "libcrux-curve25519"
+version = "=0.0.9"
+operations = "X25519 curve25519_51"
+property = "HACL-derived primitive claim; memory safety, functional correctness, secret independence; wrappers and exact release/target correspondence unconfirmed"
+tool = "F* (upstream claim; not rerun locally)"
+source = "https://static.crates.io/crates/libcrux-curve25519/libcrux-curve25519-0.0.9.crate"
+confirmation = "unconfirmed"
+
+[[claims]]
+crate_name = "libcrux-sha2"
+version = "=0.0.9"
+operations = "SHA-256"
+property = "HACL-derived primitive claim; memory safety, functional correctness, secret independence; wrappers and exact release/target correspondence unconfirmed"
+tool = "F* (upstream claim; not rerun locally)"
+source = "https://static.crates.io/crates/libcrux-sha2/libcrux-sha2-0.0.9.crate"
+confirmation = "unconfirmed"
+
+[[claims]]
+crate_name = "libcrux-hmac"
+version = "=0.0.9"
+operations = "HMAC-SHA256"
+property = "HACL-derived primitive claim; memory safety, functional correctness, secret independence; wrappers and exact release/target correspondence unconfirmed"
+tool = "F* (upstream claim; not rerun locally)"
+source = "https://static.crates.io/crates/libcrux-hmac/libcrux-hmac-0.0.9.crate"
+confirmation = "unconfirmed"
+
+[[claims]]
+crate_name = "libcrux-hkdf"
+version = "=0.0.9"
+operations = "HKDF-SHA256 extract/expand"
+property = "HACL-derived primitive claim; memory safety, functional correctness, secret independence; wrappers and exact release/target correspondence unconfirmed"
+tool = "F* (upstream claim; not rerun locally)"
+source = "https://static.crates.io/crates/libcrux-hkdf/libcrux-hkdf-0.0.9.crate"
+confirmation = "unconfirmed"
+
+[[claims]]
+crate_name = "libcrux-ecdsa"
+version = "=0.0.9"
+operations = "P256 signatures; nonce wrapper and DER codec unconfirmed"
+property = "HACL-derived primitive claim; memory safety, functional correctness, secret independence; wrappers and exact release/target correspondence unconfirmed"
+tool = "F* (upstream claim; not rerun locally)"
+source = "https://static.crates.io/crates/libcrux-ecdsa/libcrux-ecdsa-0.0.9.crate"
+confirmation = "unconfirmed"
+
+[[claims]]
+crate_name = "libcrux-p256"
+version = "=0.0.9"
+operations = "P256 primitives"
+property = "HACL-derived primitive claim; memory safety, functional correctness, secret independence; wrappers and exact release/target correspondence unconfirmed"
+tool = "F* (upstream claim; not rerun locally)"
+source = "https://static.crates.io/crates/libcrux-p256/libcrux-p256-0.0.9.crate"
+confirmation = "unconfirmed"
+
+[[claims]]
+crate_name = "libcrux-poly1305"
+version = "=0.0.7"
+operations = "Poly1305 primitive"
+property = "HACL-derived primitive claim; memory safety, functional correctness, secret independence; wrappers and exact release/target correspondence unconfirmed"
+tool = "F* (upstream claim; not rerun locally)"
+source = "https://static.crates.io/crates/libcrux-poly1305/libcrux-poly1305-0.0.7.crate"
+confirmation = "unconfirmed"
+
+[[claims]]
+crate_name = "libcrux-hacl-rs"
+version = "=0.0.6"
+operations = "HACL primitive implementations"
+property = "HACL-derived primitive claim; memory safety, functional correctness, secret independence; wrappers and exact release/target correspondence unconfirmed"
+tool = "F* (upstream claim; not rerun locally)"
+source = "https://static.crates.io/crates/libcrux-hacl-rs/libcrux-hacl-rs-0.0.6.crate"
+confirmation = "unconfirmed"

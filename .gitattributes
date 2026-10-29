@@ -1,0 +1,2 @@
+# Verifier evidence is byte-exact, including whitespace emitted by tools.
+*.log -whitespace

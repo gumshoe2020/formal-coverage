@@ -1,0 +1,12 @@
+error[E0433]: cannot find module or crate `verus_temporal_logic` in this scope
+error[E0433]: cannot find module or crate `verus_temporal_logic` in this scope
+error[E0433]: cannot find module or crate `verus_temporal_logic` in this scope
+error[E0432]: unresolved import `anyhow`
+error[E0433]: cannot find module or crate `k8s_openapi` in this scope
+error[E0433]: cannot find module or crate `kube` in this scope
+error[E0432]: unresolved import `futures`
+error[E0432]: unresolved import `kube`
+error[E0433]: cannot find module or crate `serde` in this scope
+error[E0432]: unresolved import `kube_core`
+error[E0432]: unresolved import `serde`
+error[E0432]: unresolved import `tracing`

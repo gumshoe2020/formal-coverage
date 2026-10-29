@@ -1,0 +1,5 @@
+FROM rust@sha256:620dbcd124499c59e2406d3741574b5c5838cf9eb9656f0c3a03948f79b02959
+RUN apt-get update && apt-get install -y --no-install-recommends clang cmake libclang-dev libssl-dev pkg-config python3 unzip && rm -rf /var/lib/apt/lists/*
+RUN cargo install --locked kani-verifier --version 0.67.0 && cargo kani setup
+RUN rustup toolchain install 1.97.0 --profile minimal --target x86_64-unknown-linux-musl,aarch64-unknown-linux-musl
+RUN cargo kani --version && rustup toolchain list && dpkg-query -W > /packages.txt

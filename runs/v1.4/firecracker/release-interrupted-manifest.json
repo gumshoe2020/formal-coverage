@@ -1,0 +1,59 @@
+{
+  "date": "2026-10-29",
+  "previous_outcome": {
+    "id": "vmm::devices::virtio::iovec::verification::verify_write_to_iovec_0",
+    "file": "src/vmm/src/devices/virtio/iovec.rs",
+    "line": 1326,
+    "unwind": 5,
+    "outcome": "fail",
+    "reason": "CBMC out of memory",
+    "log": "kani-harness-03.log",
+    "exit_code": 1,
+    "seconds": 87.18993379082531,
+    "checked_harnesses": [
+      "devices::virtio::iovec::verification::verify_write_to_iovec_0"
+    ],
+    "failure_kind": "OOM"
+  },
+  "steps": [
+    {
+      "label": "release-iovec-rerun",
+      "command": [
+        "docker",
+        "run",
+        "--rm",
+        "--name",
+        "fc-verify-firecracker-release-iovec",
+        "--platform",
+        "linux/arm64",
+        "--network",
+        "none",
+        "--mount",
+        "type=bind,source=<temporary-export>/firecracker,target=<temporary-export>/firecracker,readonly",
+        "--mount",
+        "type=bind,source=<checkout>/runs/v1.4/firecracker,target=/out",
+        "--workdir",
+        "<temporary-export>/firecracker",
+        "--env",
+        "CARGO_HOME=/out/cargo-home",
+        "--env",
+        "CARGO_TARGET_DIR=/out/target",
+        "--env",
+        "TMPDIR=/out/tmp",
+        "--env",
+        "CARGO_BUILD_JOBS=2",
+        "sha256:07252577f6970a9acd106f521ea8f1ad0534d7220826e5e3bd96363ecf84cad0",
+        "bash",
+        "-c",
+        "mkdir -p /out/tmp; cargo kani -Z unstable-options -Z stubbing -Z function-contracts -Z restrict-vtable --output-format terse --harness-timeout 40m --package vmm --harness devices::virtio::iovec::verification::verify_write_to_iovec_0"
+      ],
+      "script": "cargo kani -Z unstable-options -Z stubbing -Z function-contracts -Z restrict-vtable --output-format terse --harness-timeout 40m --package vmm --harness devices::virtio::iovec::verification::verify_write_to_iovec_0",
+      "image_id": "sha256:07252577f6970a9acd106f521ea8f1ad0534d7220826e5e3bd96363ecf84cad0",
+      "exit_code": 137,
+      "seconds": 74.7983442498371,
+      "timeout_seconds": 2700,
+      "log": "release-iovec-interrupted.log",
+      "log_sha256": "8ad99dea70952d717a517d0c5488ad7434824da3a5ab46678e99980c222bfa25"
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+# Coverage-survey config (Dudley, 2026-10-27). vest_lib is the verified parser/serializer
+# library that handles untrusted bytes; everything else is the DSL compiler, ASN.1 frontend,
+# tests, benches and docs, which Vest's README states are not verified.
+security = ["vest_lib::*"]
+not_security = ["vest::*", "vest_asn1::*", "synta_codegen::*", "vest_tests::*", "vest_asn1_tests::*", "vest_dev::*", "vest_bench::*", "guide::*", "*::tests::*"]

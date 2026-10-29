@@ -1,0 +1,6 @@
+entry_points = ["classification::entry"]
+security = ["classification::helper"]
+not_security = ["classification::unrelated"]
+
+[dependency_sources]
+"external-parser@1.0.0" = "vendor/external-parser"

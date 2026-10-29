@@ -1,0 +1,85 @@
+{
+  "schema": 1,
+  "tool_commit": "4685da4841e9f9bf2e74442d2e9d24e82317ead3",
+  "summary": {
+    "all": {
+      "everything_else": {
+        "sloc": 803,
+        "statuses": {
+          "hazard": 0,
+          "proven": 0,
+          "proven-bounded": 0,
+          "proven-upstream": 0,
+          "tested": 734,
+          "unverified": 69
+        },
+        "unknown_dependency_sizes": 0
+      },
+      "security_relevant": {
+        "sloc": 1625545,
+        "statuses": {
+          "hazard": 0,
+          "proven": 128,
+          "proven-bounded": 0,
+          "proven-upstream": 0,
+          "tested": 205,
+          "unverified": 1625212
+        },
+        "unknown_dependency_sizes": 0
+      }
+    },
+    "first_party": {
+      "everything_else": {
+        "sloc": 803,
+        "statuses": {
+          "hazard": 0,
+          "proven": 0,
+          "proven-bounded": 0,
+          "proven-upstream": 0,
+          "tested": 734,
+          "unverified": 69
+        },
+        "unknown_dependency_sizes": 0
+      },
+      "security_relevant": {
+        "sloc": 737,
+        "statuses": {
+          "hazard": 0,
+          "proven": 128,
+          "proven-bounded": 0,
+          "proven-upstream": 0,
+          "tested": 205,
+          "unverified": 404
+        },
+        "unknown_dependency_sizes": 0
+      }
+    },
+    "security_first_party_hazard_units": 0,
+    "third_party": {
+      "everything_else": {
+        "sloc": 0,
+        "statuses": {
+          "hazard": 0,
+          "proven": 0,
+          "proven-bounded": 0,
+          "proven-upstream": 0,
+          "tested": 0,
+          "unverified": 0
+        },
+        "unknown_dependency_sizes": 0
+      },
+      "security_relevant": {
+        "sloc": 1624808,
+        "statuses": {
+          "hazard": 0,
+          "proven": 0,
+          "proven-bounded": 0,
+          "proven-upstream": 0,
+          "tested": 0,
+          "unverified": 1624808
+        },
+        "unknown_dependency_sizes": 0
+      }
+    }
+  }
+}

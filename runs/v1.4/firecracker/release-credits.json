@@ -1,0 +1,611 @@
+{
+  "passing": 38,
+  "credited": 35,
+  "harnesses": [
+    {
+      "id": "vmm::arch::aarch64::verification::verify_arch_memory_regions",
+      "outcome": "pass",
+      "original_log": "kani-harness-00.log",
+      "log": "m2b/kani-harness-00.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::arch::aarch64::verification::verify_arch_memory_regions: unwind bound 3; assertions under the harness input model only; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-00.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "c1020b27b50640c83a2e6a26a156c47cff02f716e67be47c0cff5495c1eafaac",
+      "receipt_sha256": "6d90f01f43c1ec258122ad1fbbc321e410bcb4a2723f50b4a2db0ca967f6ec55",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-00.log"
+    },
+    {
+      "id": "vmm::devices::virtio::iovec::verification::verify_read_from_iovec",
+      "outcome": "pass",
+      "original_log": "kani-harness-02.log",
+      "log": "m2b/kani-harness-02.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::devices::virtio::iovec::verification::verify_read_from_iovec: unwind bound 5; assertions under the harness input model only; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-02.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "dbfb717cc46a26cfa2f6d84f28e9d477b90ffec0545f24bd9178e9a6f6f36b8b",
+      "receipt_sha256": "98042e4346b61483af31557cc9f6d2ea26913f8e5e99ff9ebcb5fcbbb963e10b",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-02.log"
+    },
+    {
+      "id": "vmm::devices::virtio::iovec::verification::verify_write_to_iovec_1",
+      "outcome": "pass",
+      "original_log": "kani-harness-04.log",
+      "log": "m2b/kani-harness-04.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::devices::virtio::iovec::verification::verify_write_to_iovec_1: unwind bound 5; assertions under the harness input model only; IovDeque::push_back replaced by stub stubs::push_back; crate::vstate::memory::mark_dirty_host replaced by stub stubs::mark_dirty_host; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-04.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "5f0405f507252bd11dde9b8af77c67486267be0b9784397fb9317d1d5e177d48",
+      "receipt_sha256": "a2fb0e4eb4ee71744d39683a111a98553196f974ae2303ce90d2f0bb6c780db9",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-04.log"
+    },
+    {
+      "id": "vmm::devices::virtio::iovec::verification::verify_write_to_iovec_2",
+      "outcome": "pass",
+      "original_log": "kani-harness-05.log",
+      "log": "m2b/kani-harness-05.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::devices::virtio::iovec::verification::verify_write_to_iovec_2: unwind bound 5; assertions under the harness input model only; IovDeque::push_back replaced by stub stubs::push_back; crate::vstate::memory::mark_dirty_host replaced by stub stubs::mark_dirty_host; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-05.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "62792db5245a86f20cd600a8300940fef8d00c7d48aa007ea1579f90b4c04c8a",
+      "receipt_sha256": "e4470d59620ff2cd86bfb5fbaeee6e50966fefbf314a29245ee82cf8c6acf959",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-05.log"
+    },
+    {
+      "id": "vmm::devices::virtio::iovec::verification::verify_write_to_iovec_3",
+      "outcome": "pass",
+      "original_log": "kani-harness-06.log",
+      "log": "m2b/kani-harness-06.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::devices::virtio::iovec::verification::verify_write_to_iovec_3: unwind bound 5; assertions under the harness input model only; IovDeque::push_back replaced by stub stubs::push_back; crate::vstate::memory::mark_dirty_host replaced by stub stubs::mark_dirty_host; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-06.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "1274bd4bd7162a8ad6631262d1968f2af12a698347637fa9d0c344650bd62655",
+      "receipt_sha256": "abe091a403e05760188db0d07bf4efae7434f08fc3db6c8186c998bdf694f3d4",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-06.log"
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_spec_2_6_7_2",
+      "outcome": "pass",
+      "original_log": "kani-harness-07.log",
+      "log": "m2b/kani-harness-07.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::devices::virtio::queue::verification::verify_spec_2_6_7_2: unwind bound 0; assertions under the harness input model only; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-07.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "5efd1731a5cd682a292cb3027a303102d28a31b13036aacd5b51657d94779030",
+      "receipt_sha256": "3cc1b14b64f4f73f50278e92aed4d9b1cb3a59a24a07cb05cd7d0ae76019a78e",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-07.log"
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_prepare_kick",
+      "outcome": "pass",
+      "original_log": "kani-harness-08.log",
+      "log": "m2b/kani-harness-08.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::devices::virtio::queue::verification::verify_prepare_kick: unwind bound 0; assertions under the harness input model only; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-08.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "86bd4c444221e954179d6832fb594dd68f930b6b35b47a4f9cd9bb3c693affdf",
+      "receipt_sha256": "4f59f0e1eb51e37f4903ce8f2e31823d3d9273a3900024e728e603a0ff804339",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-08.log"
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_size_raised_after_initialize",
+      "outcome": "pass",
+      "original_log": "kani-harness-09.log",
+      "log": "m2b/kani-harness-09.log",
+      "credited": false,
+      "status": "hazard",
+      "proof_scope": null,
+      "reasons": [
+        "kani evidence unconfirmed: Kani harness result missing, ambiguous or failed"
+      ],
+      "log_sha256": "5e6cc8acdca2dcf3a6bf7cd43aa702d6772cc6e3b76805b9cfcabf877f672a71",
+      "receipt_sha256": "36375f0b0b862c22b638e6c011ac790092654f7012792b3cc3df732e813fe2d0",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-09.log"
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_add_used",
+      "outcome": "pass",
+      "original_log": "kani-harness-10.log",
+      "log": "m2b/kani-harness-10.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::devices::virtio::queue::verification::verify_add_used: unwind bound 0; assertions under the harness input model only; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-10.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "7b6e215f53500b4b554f04cf8190427496f3cf6e4e4034d8cc5ffeedcd7da081",
+      "receipt_sha256": "4172cfe4d2fa8cc3427f750edf1ed518f0e6ee8e215715152713e9433b9a6a6b",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-10.log"
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_is_empty",
+      "outcome": "pass",
+      "original_log": "kani-harness-11.log",
+      "log": "m2b/kani-harness-11.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::devices::virtio::queue::verification::verify_is_empty: unwind bound 0; assertions under the harness input model only; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-11.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "04ccc3a0294d0c5df9fda8e9426b6dc286322510bedcddb31c9facb12c524d20",
+      "receipt_sha256": "e174c1d803a123598979bf8fd02f465ca7906683581bbab338bc1e6a83f52c59",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-11.log"
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_initialize",
+      "outcome": "pass",
+      "original_log": "kani-harness-12.log",
+      "log": "m2b/kani-harness-12.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::devices::virtio::queue::verification::verify_initialize: unwind bound 0; assertions under the harness input model only; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-12.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "57f97db6955828873687e6d1506bd7fe1765d2169f59fead02973283e8ea5b57",
+      "receipt_sha256": "52600f79ccdc89f34a46b362f57865dd792ad5346ee905a41586f901c8b19a8d",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-12.log"
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_avail_ring_idx_get",
+      "outcome": "pass",
+      "original_log": "kani-harness-13.log",
+      "log": "m2b/kani-harness-13.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::devices::virtio::queue::verification::verify_avail_ring_idx_get: unwind bound 0; assertions under the harness input model only; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-13.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "9ae2b45ca62f26d6365d7258629eaecd78da10633ed8fcc7571d7d39d16e2fe2",
+      "receipt_sha256": "30d18f6b3ade8c64b4e62d4392d7cfbc9ed5fbce4c21a9cd038fb0ff5e9bb60b",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-13.log"
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_avail_ring_ring_get",
+      "outcome": "pass",
+      "original_log": "kani-harness-14.log",
+      "log": "m2b/kani-harness-14.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::devices::virtio::queue::verification::verify_avail_ring_ring_get: unwind bound 0; assertions under the harness input model only; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-14.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "7048cf5d5d253f6add7491a67f9afc1e2c8504238b33a1b339cbb57ce23b2cdf",
+      "receipt_sha256": "6966c3438778fac4a4f3364668f8d472f5d6a9c635a3f1e5bd3b2bbb124b8a24",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-14.log"
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_avail_ring_used_event_get",
+      "outcome": "pass",
+      "original_log": "kani-harness-15.log",
+      "log": "m2b/kani-harness-15.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::devices::virtio::queue::verification::verify_avail_ring_used_event_get: unwind bound 0; assertions under the harness input model only; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-15.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "8a819788d036aaab29a9ec89ea42186cb47a56bd196bf29d270eb59d583851a9",
+      "receipt_sha256": "468946c2b485233ca872d8eb56537966aea7b1e89a97ce3ee163ed6416500cd0",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-15.log"
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_used_ring_idx_set",
+      "outcome": "pass",
+      "original_log": "kani-harness-16.log",
+      "log": "m2b/kani-harness-16.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::devices::virtio::queue::verification::verify_used_ring_idx_set: unwind bound 0; assertions under the harness input model only; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-16.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "8505fdef6fe8da90d076ec5aea0a0e9584ac93345a02eed9ff9c0f9ea9855daf",
+      "receipt_sha256": "3a263513ef2747aad42c1f0f1803d4c38fd59b07ac00132876cf47636160f01e",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-16.log"
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_used_ring_ring_set",
+      "outcome": "pass",
+      "original_log": "kani-harness-17.log",
+      "log": "m2b/kani-harness-17.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::devices::virtio::queue::verification::verify_used_ring_ring_set: unwind bound 0; assertions under the harness input model only; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-17.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "012cec034bf6db83e85333867a99da5c01925ce62a85956c43a1f029c2a6b44f",
+      "receipt_sha256": "916d44ad06a208aec51c6151daa96a9d4b8cc2d3b02712a8c96e6af1c4168181",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-17.log"
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_used_ring_avail_event",
+      "outcome": "pass",
+      "original_log": "kani-harness-18.log",
+      "log": "m2b/kani-harness-18.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::devices::virtio::queue::verification::verify_used_ring_avail_event: unwind bound 0; assertions under the harness input model only; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-18.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "cc312fd951c71cbdf52336a83798083e95f0bf1d8fd437b7d2c10996c66b8882",
+      "receipt_sha256": "a871a8d21b894f4733597bdc27a997a7e04b362b09fc762abb24f28bada20291",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-18.log"
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_pop",
+      "outcome": "pass",
+      "original_log": "kani-harness-19.log",
+      "log": "m2b/kani-harness-19.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::devices::virtio::queue::verification::verify_pop: unwind bound 0; assertions under the harness input model only; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-19.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "21460c95bc995eacf35e0cb7ae492a4d36d1ede302fd1ee748cbcf75232e33c8",
+      "receipt_sha256": "648ec90b945b0ce28c0a1e21b1b191e497db6f2ff1146084e47509edeeb73e13",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-19.log"
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_undo_pop",
+      "outcome": "pass",
+      "original_log": "kani-harness-20.log",
+      "log": "m2b/kani-harness-20.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::devices::virtio::queue::verification::verify_undo_pop: unwind bound 0; assertions under the harness input model only; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-20.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "545b4a02d3108818289c5f9484539732d2cd838be0bfe7cd79e4c68f4c414557",
+      "receipt_sha256": "55e35390a2647286694744c9d2a6cbf23702288873e6ef2e9599e90b742f3b22",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-20.log"
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_try_enable_notification",
+      "outcome": "pass",
+      "original_log": "kani-harness-21.log",
+      "log": "m2b/kani-harness-21.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::devices::virtio::queue::verification::verify_try_enable_notification: unwind bound 0; assertions under the harness input model only; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-21.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "48e7e6b942b82a7bb78e748ad0508bdcf2e2d9960e205ba54bf7acf618a82a8d",
+      "receipt_sha256": "c9b9849c1b3daec64f77b5269a7b9e82ff2440707cfe40c6d117087219fc9a12",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-21.log"
+    },
+    {
+      "id": "vmm::dumbo::pdu::ethernet::kani_proofs::verify_from_bytes_unchecked",
+      "outcome": "pass",
+      "original_log": "kani-harness-23.log",
+      "log": "m2b/kani-harness-23.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::dumbo::pdu::ethernet::kani_proofs::verify_from_bytes_unchecked: Kani default: no unwind limit, unwinding assertions on; assertions under the harness input model only; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-23.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "f76d9b77afced5a21de4e629d308a4129cdb81c31048e73957ac5b328c4f8f68",
+      "receipt_sha256": "bf18118904b8ad7fa53026bb13deeef63db6c5ff1c5bfb8ca7a3bae5a9e61f34",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-23.log"
+    },
+    {
+      "id": "vmm::dumbo::pdu::ethernet::kani_proofs::verify_from_bytes",
+      "outcome": "pass",
+      "original_log": "kani-harness-24.log",
+      "log": "m2b/kani-harness-24.log",
+      "credited": false,
+      "status": "unverified",
+      "proof_scope": null,
+      "reasons": [
+        "kani evidence unconfirmed: Kani harness result missing, ambiguous or failed"
+      ],
+      "log_sha256": "dbaa9ad3e91d5aaa668eddeba4a013ef7532502e05596959d6b56a411f0ee98f",
+      "receipt_sha256": "4ad157b52d0bb9d27573465e7ca55181214c93e02c6784ccdded4e0e650c20eb",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-24.log"
+    },
+    {
+      "id": "vmm::dumbo::pdu::ethernet::kani_proofs::verify_dst_mac",
+      "outcome": "pass",
+      "original_log": "kani-harness-25.log",
+      "log": "m2b/kani-harness-25.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::dumbo::pdu::ethernet::kani_proofs::verify_dst_mac: Kani default: no unwind limit, unwinding assertions on; assertions under the harness input model only; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-25.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "5930212f60058af62f601fa20e929d9fbff73a33404d6615974a7837ebc3b607",
+      "receipt_sha256": "42f2acd281a8893e9631c70b59ba60cbe60e8e8a36ce13e919cb2d172540edfc",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-25.log"
+    },
+    {
+      "id": "vmm::dumbo::pdu::ethernet::kani_proofs::verify_src_mac",
+      "outcome": "pass",
+      "original_log": "kani-harness-26.log",
+      "log": "m2b/kani-harness-26.log",
+      "credited": false,
+      "status": "unverified",
+      "proof_scope": null,
+      "reasons": [
+        "kani evidence unconfirmed: Kani harness result missing, ambiguous or failed"
+      ],
+      "log_sha256": "b2b4ee7771e3e2be218594b19891785cd824202582628cf46a9ca871b4d97270",
+      "receipt_sha256": "47c67e31a1b7bbe0ad8d1330bff42c3fbec2bdb48686b04dd116547504bfdb72",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-26.log"
+    },
+    {
+      "id": "vmm::dumbo::pdu::ethernet::kani_proofs::verify_src_mac_isolation",
+      "outcome": "pass",
+      "original_log": "kani-harness-27.log",
+      "log": "m2b/kani-harness-27.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::dumbo::pdu::ethernet::kani_proofs::verify_src_mac_isolation: Kani default: no unwind limit, unwinding assertions on; assertions under the harness input model only; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-27.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "4cb89f9ac9c7be3c91ba6e8fcb63259e2f3e0745670c9e6ef5bda0d5ecd81fed",
+      "receipt_sha256": "894168929241cbcc4ce600e03c9387b7b6ae6f2c000355b79ec40abb7f71ff29",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-27.log"
+    },
+    {
+      "id": "vmm::dumbo::pdu::ethernet::kani_proofs::verify_ethertype",
+      "outcome": "pass",
+      "original_log": "kani-harness-28.log",
+      "log": "m2b/kani-harness-28.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::dumbo::pdu::ethernet::kani_proofs::verify_ethertype: Kani default: no unwind limit, unwinding assertions on; assertions under the harness input model only; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-28.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "53701d83cf45253370f7c3e5c5d182e50d96c82cba88adf4654c44bde8e3fd0e",
+      "receipt_sha256": "1c1bf3965b547d2a5d5f73f9ec5e15b2ad69b87806d7c4b09a925edf07a9658c",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-28.log"
+    },
+    {
+      "id": "vmm::dumbo::pdu::ethernet::kani_proofs::verify_payload",
+      "outcome": "pass",
+      "original_log": "kani-harness-29.log",
+      "log": "m2b/kani-harness-29.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::dumbo::pdu::ethernet::kani_proofs::verify_payload: unwind bound 1515; assertions under the harness input model only; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-29.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "eea91bb6872d5275016188a346ef5ac231cefc4aa840febe12c0c90188fea406",
+      "receipt_sha256": "1cec4929adc90c05153806b673627fbc8904b4108b557fb619ed47ab049a3ebf",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-29.log"
+    },
+    {
+      "id": "vmm::dumbo::pdu::ethernet::kani_proofs::verify_new_with_header",
+      "outcome": "pass",
+      "original_log": "kani-harness-30.log",
+      "log": "m2b/kani-harness-30.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::dumbo::pdu::ethernet::kani_proofs::verify_new_with_header: Kani default: no unwind limit, unwinding assertions on; assertions under the harness input model only; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-30.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "6fd4b2ec7eee542ee83c50436053b3ea08a572d1851ba2d5b13ff02f8be46374",
+      "receipt_sha256": "fcae94d767ef798193303faf225f94d07edc9196ea7e1096f885cf514feb37f4",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-30.log"
+    },
+    {
+      "id": "vmm::dumbo::pdu::ethernet::kani_proofs::verify_write_incomplete",
+      "outcome": "pass",
+      "original_log": "kani-harness-31.log",
+      "log": "m2b/kani-harness-31.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::dumbo::pdu::ethernet::kani_proofs::verify_write_incomplete: Kani default: no unwind limit, unwinding assertions on; assertions under the harness input model only; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-31.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "8837f031d8c04090b4a4b059f907c4b168cc6a4441e6fcd05770227739c298d3",
+      "receipt_sha256": "05edec913609b684ff4ef0c529e4c3341f82ce689937e5c938faec314370b89c",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-31.log"
+    },
+    {
+      "id": "vmm::dumbo::pdu::ethernet::kani_proofs::verify_with_payload_len_unchecked",
+      "outcome": "pass",
+      "original_log": "kani-harness-32.log",
+      "log": "m2b/kani-harness-32.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::dumbo::pdu::ethernet::kani_proofs::verify_with_payload_len_unchecked: Kani default: no unwind limit, unwinding assertions on; assertions under the harness input model only; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-32.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "11263390451b40141ab6f0a63a5888c59edbbe891362e1eefeba83c250c9243d",
+      "receipt_sha256": "1ac0576910f2f03cb1cea746a4000db8cf23cfe0e42d0a8e06c2d7980cc2d42c",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-32.log"
+    },
+    {
+      "id": "vmm::rate_limiter::verification::verify_instant_stub_non_decreasing",
+      "outcome": "pass",
+      "original_log": "kani-harness-33.log",
+      "log": "m2b/kani-harness-33.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::rate_limiter::verification::verify_instant_stub_non_decreasing: Kani default: no unwind limit, unwinding assertions on; assertions under the harness input model only; std::time::Instant::now replaced by stub stubs::instant_now; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-33.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "c5c6b324ffb4a0421d27cde824bad6f324b57440b776b375a378ef3636bedc10",
+      "receipt_sha256": "b5f12f14704d6a7bdf8852d9eadc9b3b44a5ac1de33b3e8d693cf3fd5725237a",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-33.log"
+    },
+    {
+      "id": "vmm::rate_limiter::verification::gcd_contract_harness",
+      "outcome": "pass",
+      "original_log": "kani-harness-34.log",
+      "log": "m2b/kani-harness-34.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::rate_limiter::verification::gcd_contract_harness: unwind bound 64; assertions under the harness input model only; scope: gcd's contract (requires/ensures); dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-34.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "971132b4725470271a0a89da9c1cc6849e1aa1d4455d20eaa5a26b3710b50eac",
+      "receipt_sha256": "76d311ac65b4eeb5662f8bba7dae68b6ab6b2abc56c61383b96ad3eda926392c",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-34.log"
+    },
+    {
+      "id": "vmm::rate_limiter::verification::verify_token_bucket_new",
+      "outcome": "pass",
+      "original_log": "kani-harness-35.log",
+      "log": "m2b/kani-harness-35.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::rate_limiter::verification::verify_token_bucket_new: Kani default: no unwind limit, unwinding assertions on; assertions under the harness input model only; std::time::Instant::now replaced by stub stubs::instant_now; gcd assumed to meet its contract; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-35.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "8aaefb8b6593e3400932859d1723798c3af1cc3aaa4836c96ee0f8998c5917d8",
+      "receipt_sha256": "60d0985b7d4da9fddbc7d46cad1f1609c9a2bf95a299b6eaad6e37917bad279e",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-35.log"
+    },
+    {
+      "id": "vmm::rate_limiter::verification::verify_token_bucket_auto_replenish",
+      "outcome": "pass",
+      "original_log": "kani-harness-36.log",
+      "log": "m2b/kani-harness-36.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::rate_limiter::verification::verify_token_bucket_auto_replenish: unwind bound 1; assertions under the harness input model only; std::time::Instant::now replaced by stub stubs::instant_now; gcd assumed to meet its contract; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-36.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "2c7e3cf07a9caf885f5efd8dff5fb356eb32e11d708c57fc1799e9d2ccb9eb84",
+      "receipt_sha256": "b5a4bec5ad0f98370e17aa5af140aa409729e4d709c2640f13bea1e13cc6325b",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-36.log"
+    },
+    {
+      "id": "vmm::rate_limiter::verification::verify_token_bucket_reduce",
+      "outcome": "pass",
+      "original_log": "kani-harness-37.log",
+      "log": "m2b/kani-harness-37.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::rate_limiter::verification::verify_token_bucket_reduce: Kani default: no unwind limit, unwinding assertions on; assertions under the harness input model only; std::time::Instant::now replaced by stub stubs::instant_now; TokenBucket::auto_replenish replaced by stub stubs::token_bucket_auto_replenish; gcd assumed to meet its contract; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-37.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "8f11b9ef20687da3f1e86e3c873d73fc2d35222918fb741aca9b5e01e76e1c78",
+      "receipt_sha256": "e8d688e6f58856a3ce4c750a1294368edc50a2a06367adf787b2e2960741862c",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-37.log"
+    },
+    {
+      "id": "vmm::rate_limiter::verification::verify_token_bucket_force_replenish",
+      "outcome": "pass",
+      "original_log": "kani-harness-38.log",
+      "log": "m2b/kani-harness-38.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::rate_limiter::verification::verify_token_bucket_force_replenish: Kani default: no unwind limit, unwinding assertions on; assertions under the harness input model only; std::time::Instant::now replaced by stub stubs::instant_now; gcd assumed to meet its contract; TokenBucket::auto_replenish replaced by stub stubs::token_bucket_auto_replenish; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-38.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "84befa9c5806c76c48f55e05cbf33c12ad0a426ddd04c6369c8d4ffe3b71f397",
+      "receipt_sha256": "6107cf9386240d67d409f2aedc4639d50a3489877ceabb770cb3e44d895f45f7",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-38.log"
+    },
+    {
+      "id": "vmm::vstate::memory_slice::verification::verify_dirty_pages",
+      "outcome": "pass",
+      "original_log": "kani-harness-39.log",
+      "log": "m2b/kani-harness-39.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::vstate::memory_slice::verification::verify_dirty_pages: unwind bound 5; assertions under the harness input model only; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/m2b/kani-harness-39.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "log_sha256": "f46119063ffc499bb0202ea62ec40a96ffde31ba3351b134e4177d3e8571772e",
+      "receipt_sha256": "94bc0c3add8cd51dce15833f3f565a69bdc218a60c76d2b99b57a793ccf0aa89",
+      "report_log": "runs/v1.4/firecracker/m2b/kani-harness-39.log"
+    },
+    {
+      "id": "vmm::arch::x86_64::verification::verify_arch_memory_regions",
+      "outcome": "not-compiled-on-aarch64",
+      "original_log": null,
+      "log": null,
+      "credited": false,
+      "status": "unverified",
+      "proof_scope": null,
+      "reasons": [
+        "x86_64-only source"
+      ],
+      "report_log": null
+    },
+    {
+      "id": "vmm::devices::virtio::iovec::verification::verify_write_to_iovec_0",
+      "outcome": "pass",
+      "original_log": "kani-harness-03.log",
+      "log": "release-iovec-rerun.log",
+      "credited": true,
+      "status": "proven-bounded",
+      "proof_scope": "Kani harness vmm::devices::virtio::iovec::verification::verify_write_to_iovec_0: unwind bound 5; assertions under the harness input model only; IovDeque::push_back replaced by stub stubs::push_back; crate::vstate::memory::mark_dirty_host replaced by stub stubs::mark_dirty_host; dyn calls restricted to type-compatible vtable targets",
+      "reasons": [
+        "kani: accepted caller-supplied run receipt runs/v1.4/firecracker/release-iovec-rerun.log; receipts are evidence, not cryptographic attestation of execution"
+      ],
+      "report_log": "runs/v1.4/firecracker/release-iovec-rerun.log",
+      "log_sha256": "98ef921e7059ba6f0e6474fbd6ee488a5d97f4cd390fd10e851a4e90f5a52055",
+      "receipt_sha256": "ca7f5a416f5e2da901d60f753bda9e4293d12952a287afbf902d1fd8a3337ee5"
+    },
+    {
+      "id": "vmm::devices::virtio::queue::verification::verify_checked_new",
+      "outcome": "fail",
+      "original_log": "kani-harness-22.log",
+      "log": "kani-harness-22.log",
+      "credited": false,
+      "status": "hazard",
+      "proof_scope": null,
+      "reasons": [
+        "CBMC out of memory"
+      ],
+      "report_log": "runs/v1.4/firecracker/kani-harness-22.log"
+    }
+  ],
+  "runtime_targets_credited": 0,
+  "assumptions": [
+    "source stubs replace named functions",
+    "verified stubs assume contracts",
+    "proof-for-contract scopes cover requires/ensures",
+    "type-compatible vtable restriction"
+  ],
+  "report_artifact": "release/report.json",
+  "report_sha256": "bbb2f0d9f90e5c6713dec8a8f3551d487ad7a42953fea79f41046bf3e18bd6ee"
+}
