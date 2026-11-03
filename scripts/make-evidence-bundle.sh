@@ -13,7 +13,11 @@ root = Path.cwd()
 destination = Path(sys.argv[1]) if len(sys.argv) > 1 else root.parent / 'release'
 destination.mkdir(parents=True, exist_ok=True)
 index = json.loads((root / 'logs/release-evidence.json').read_text())
-paths = set(index['required']) | {'logs/release-evidence.json'}
+paths = set(index['required']) | {
+    'logs/release-evidence.json', 'logs/path-normalization.json',
+    'logs/release-v1.4.2/archive-redactions.log',
+    'logs/release-v1.4.2/archive-member-proof.json',
+}
 for base in ['logs/evidence', '.cargo-home']:
     paths.update(str(p.relative_to(root)) for p in (root / base).rglob('*') if p.is_file())
 for project in ['vest', 'anvil', 'firecracker']:
@@ -26,7 +30,7 @@ for project in ['vest', 'anvil', 'firecracker']:
 paths.update(str(p.relative_to(root)) for p in (root / 'logs').glob('v1.1-c-*') if p.is_file())
 for path in paths:
     assert not Path(path).is_absolute() and '..' not in Path(path).parts
-bundle = destination / 'formal-coverage-evidence-v1.4.1.tar.zst'
+bundle = destination / 'formal-coverage-evidence-v1.4.2.tar.zst'
 with tempfile.TemporaryFile(mode='w+') as listing:
     listing.write(''.join(p + '\n' for p in sorted(paths)))
     listing.seek(0)

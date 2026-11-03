@@ -136,3 +136,32 @@ Final v1.4: Anvil 11 fresh subtrees / raw verifier count 935 verified (formal-co
 - [x] M5 public hygiene, MIT license and final checks: denylist/key scan 0; 51 tests pass/1 ignored; clippy/fmt/diff checks pass; package includes LICENSE; fresh temporary clone with staged candidate + SHA-verified bundle builds frozen and all three checkers pass. External independent acceptance not run.
 
 Final v1.4.1 local acceptance (2026-10-29): final idle-VM Kani rerun 96.58 s, 38 raw passes / 1 OOM / 1 architecture skip; 35 bounded harnesses credited, runtime targets 0. Published proven percentages preserved. All 16 final clone replays preserve coverage and receipt decisions. Build/check logs retained under ignored logs/release-pass/fresh-clone-*.log; final bundle and SHA-256 are in ../release. Tracked tree about 3.5 MB. No push or history rewrite.
+
+## v1.4.2 public evidence pass
+
+- Baseline main 0bbf2b3 and original v1.4.1 bundle retained; no verifiers or Docker started.
+- Probe found plain author prefixes in evidence and 11 pinned source archives; no JSON slash, Unicode slash/dot or URL-encoded variants found. Debug-quoted and Kani/Verus output use plain prefixes.
+- **Round 1, superseded by round 2 authorization:** pinned source archives contain private paths in upstream documentation. Source-archive bytes/hashes must remain unchanged, while the bundle scan may exclude only Cargo registry sources. Preserving the explicit archive fence leaves public-scan failures; v1.4.2 cannot be declared public-safe.
+- [x] Deterministic normalization and transitive re-hash; bundled old/new SHA-256 table. 305 complete JSON/report/summary outputs match v1.4.1 after only path and mapped-hash substitutions; the retained diff is empty.
+- [x] Cargo package/lock bumped from 0.1.0 to 1.4.2; current docs, fetch URL and bundle generator use v1.4.2. Original v1.4.1 bundle checksum verified unchanged.
+- [x] Fresh clone under TMPDIR with staged candidate and bundle: frozen release build, survey/dogfood checks and all 16 full replays pass. Before extraction all three checkers give one-line v1.4.2 fetch failures.
+- [x] Local frozen tests: 51 passed, 1 ignored; clippy all targets with warnings denied, fmt and diff checks pass; tree public scan passes. 55,518 immutable archive/third-party/cache files (1,543,868,226 bytes) verified byte-identical.
+- Round 1 bundle public scan: **failed**, 645 matching lines: 428 source archives, 99 third-party Git sources, 13 CI runner paths, 105 GitHub API URLs. Only registry sources excluded as requested. These findings cannot be resolved with only author-prefix substitution while preserving archives/third-party files and the specified exclusion. Candidate must not be published as public-safe.
+- Acceptance logs retained under logs/release-v1.4.2/. All verification was run locally by Codex; independent external acceptance has not run. One combined commit because version/source-provenance changes are coupled to evidence hashes; no push or tag.
+
+## v1.4.2 round 2
+
+- Archive preservation fence relaxed only for eleven affected scratch exports.
+- Deterministic raw-record rebuild preserves tar metadata; substitutions use private runtime inputs. Audit lists every replacement position/rule and every changed member; protected source/Cargo bytes checked independently.
+- Bundle scanner adds only the two specified substring masks and Git checkout path exclusion; tree mode retains its original behavior.
+- Codex stopped on a usage limit before final integrity; round 2 left 33 bundle-scan hits (28 in the unchanged Firecracker export, 5 public PGP signature headers in pinned Anvil metadata).
+
+## v1.4.2 round 3 (Claude Code takes over from Codex)
+
+- [x] Codex's staged work reverified: archive redaction rerun from the SHA-verified v1.4.1 baseline reproduces all 13 archives, the 421-replacement log and the member proof byte-for-byte.
+- [x] Firecracker exclusion justified first by scripts/check-upstream-archive.py: pin metadata, PAX commit and v1.4.1 SHA-256 agree; no author path, private LAN address or private term in the raw bytes (logs/release-v1.4.2/firecracker-provenance.log).
+- [x] Exactly two new bundle-mode allowances, printed at scan start: Firecracker export exclusion; exact PGP signature/public key block armor masks. Regression cases: private-key armor still fails, exclusion is exact-path, tree mode unchanged.
+- [x] Bundle rebuilt with .sha256; bundle scan 0 hits after six printed allowances (33 without the two new ones, matching round 2); tree scan 0.
+- [x] No .rs/Cargo.* member changed (138 protected instances byte-identical); deterministic double rebuild of all 13 scratch archives matches the final archives; v1.4.1 bundle checksum unchanged.
+- [x] Fresh TMPDIR clone: one-line v1.4.2 fetch failures without the bundle; frozen release build; survey, dogfood and perf checkers pass with 16 identical full replays. 305 v1.4.1 report/summary outputs compare with an empty diff.
+- [x] cargo test --frozen 51 passed/1 ignored; clippy --all-targets -D warnings, fmt --check and git diff --check pass. Local acceptance only; no push, tag or publication.

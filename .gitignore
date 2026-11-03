@@ -27,7 +27,7 @@ runs/**/*.log
 !/runs/v1.4/firecracker/release-iovec-rerun.log
 !/runs/v1.4/firecracker/release-iovec-rerun.log.evidence.json
 
-# Full reports are distributed in the v1.4.1 evidence bundle.
+# Full reports are distributed in the v1.4.2 evidence bundle.
 /docs/scratch-server/main.json
 /docs/scratch-server/nix-scratch.json
 /docs/scratch-server/verified-boundary.json

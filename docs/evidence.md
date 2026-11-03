@@ -224,21 +224,21 @@ No claim of exact equality is made. See [scratch-server results](scratch-server.
 for the numbers and [survey results](survey.md) for actual pinned verifier runs.
 Self-measurement remains later work.
 
-## Reproduce the numbers (v1.4.1)
+## Reproduce the numbers (v1.4.2)
 
 The small survey and scratch summaries are in git. Full reports, exact source
-archives, raw verifier logs, receipts and offline Cargo source caches are in
-`formal-coverage-evidence-v1.4.1.tar.zst`. The bundle restores paths relative to
+archives, path-normalized verifier logs, receipts and offline Cargo source caches are in
+`formal-coverage-evidence-v1.4.2.tar.zst`. The bundle restores paths relative to
 the checkout root. It contains caller-supplied evidence, not an attestation.
 
 ```sh
 git clone https://github.com/gumshoe2020/formal-coverage.git
 cd formal-coverage
-git checkout v1.4.1
-curl -fLO https://github.com/gumshoe2020/formal-coverage/releases/download/v1.4.1/formal-coverage-evidence-v1.4.1.tar.zst
-curl -fLO https://github.com/gumshoe2020/formal-coverage/releases/download/v1.4.1/formal-coverage-evidence-v1.4.1.tar.zst.sha256
-shasum -a 256 -c formal-coverage-evidence-v1.4.1.tar.zst.sha256
-tar --zstd -xf formal-coverage-evidence-v1.4.1.tar.zst
+git checkout v1.4.2
+curl -fLO https://github.com/gumshoe2020/formal-coverage/releases/download/v1.4.2/formal-coverage-evidence-v1.4.2.tar.zst
+curl -fLO https://github.com/gumshoe2020/formal-coverage/releases/download/v1.4.2/formal-coverage-evidence-v1.4.2.tar.zst.sha256
+shasum -a 256 -c formal-coverage-evidence-v1.4.2.tar.zst.sha256
+tar --zstd -xf formal-coverage-evidence-v1.4.2.tar.zst
 mkdir -p .tmp logs
 CARGO_HOME="$PWD/.cargo-home" TMPDIR="$PWD/.tmp" cargo build --release --frozen > logs/build-release.log 2>&1
 python3 scripts/check_survey.py > logs/check-survey.log 2>&1
@@ -277,8 +277,94 @@ recorded; their generic helper did not explicitly disable container networking.
 Do not mistake receipt replay for rerunning a verifier or fetching dependencies.
 
 Maintainers regenerate the bundle with `scripts/make-evidence-bundle.sh`; its
-default output is `../release/formal-coverage-evidence-v1.4.1.tar.zst` and the
+default output is `../release/formal-coverage-evidence-v1.4.2.tar.zst` and the
 adjacent `.sha256`. Regeneration of the pinned measurements is documented by
 `scripts/prepare_release.py --help` and requires the original read-only clones,
 the pinned branch list, and retained checksum-verified crate archives. No upload
 or host installation is part of these scripts.
+
+## Path normalization in v1.4.2
+
+The author-specific project-directory prefix in retained logs and evidence
+metadata is replaced with the fixed `/work/projects` placeholder. The
+normalizer also probes user-home and agent-directory spellings, JSON slash
+and Unicode escapes, URL encoding, Debug-quoted text, and Kani/Verus output.
+Only plain prefixes occurred in this snapshot. Relative suffixes are retained;
+logs are otherwise byte-identical to v1.4.1. Receipt, manifest, report and
+summary hashes covering changed files are refreshed transitively. Cargo
+manifest/lock source-provenance hashes also reflect the package version bump
+from 0.1.0 to 1.4.2; no measurement code or rule changed.
+
+The bundled `logs/path-normalization.json` maps each changed file to its old
+and new SHA-256 and lists the complete reports/summaries compared.
+`scripts/normalize-paths.py --before SNAPSHOT --author-prefix PREFIX` probes a
+checkout with the original evidence extracted; add `--apply` to normalize and
+rehash. SNAPSHOT is a separate v1.4.1 tree with the original bundle extracted.
+The private PREFIX is supplied locally and never written into the mapping.
+The script preserves formatting and compares complete report/summary bytes,
+allowing only the substitution and mapped hashes.
+
+The scratch archives are `git archive` exports of the pinned commits in
+`runs.json`. Eleven exports have non-Rust files redacted by
+`scripts/redact-archives.py`; the other two scratch exports are unchanged.
+The changed members are top-level specs (`BROWSER-WHITELIST.md`,
+`CHROMIUM-HEADERS.md`, `FIREFOX-HEADERS.md`, `HTTPS-HEADERS.md`, `HTTPS.md`,
+`IDLE-CONNECTIONS.md`, `PRAGMA-HEADER.md`, `PROVEN-TRANSPORT.md`,
+`VERIFIED-BOUNDARY.md`), `CODEX_PROMPT.md`, `NOTES.md`, `PROGRESS.md`, `README.md`,
+`scripts/acceptance.py`, `scripts/make-lan-cert.py`, and
+`tests/safari-{favicon,https-favicon,https-root,root}.http`.
+Only these rules change contents: author prefix to `/work/projects`, private
+LAN addresses to the documentation range `192.0.2.x` preserving the last octet,
+and case-sensitive whole private terms to `[private]` (workstation phrases to
+`[workstation]`). Private rule inputs come from `<notes>/public-denylist.txt`.
+No Rust source, Cargo manifest or lockfile changed; their hashes are as recorded
+in the receipts. Member order, modes, mtimes, tar format and git commit PAX
+metadata are preserved. Size and checksum header fields reflect changed bytes.
+
+The bundle includes `logs/release-v1.4.2/archive-redactions.log` (archive, member,
+original line/column and rule ID, never original text) and
+`logs/release-v1.4.2/archive-member-proof.json` (every changed member with old/new
+hashes and a protected-member check for every scratch archive).
+`logs/path-normalization.json` maps file names to v1.4.1 and current SHA-256
+values, including rebuilt archives and transitively refreshed metadata hashes.
+Every source-bound receipt retains its source hashes. All third-party source archives
+and cached dependency sources remain byte-identical.
+
+Scan the checkout and an extracted bundle with the same private denylist:
+
+```sh
+scripts/check-public.sh <notes>/public-denylist.txt
+scripts/check-public.sh <notes>/public-denylist.txt EXTRACTED_BUNDLE
+```
+
+The bundle scan prints these allowances before scanning, and has no others:
+
+- Excluded `*/cargo-home/registry/src/**`: byte-identical third-party crate sources.
+- Excluded `*/cargo-home/git/checkouts/**`: byte-identical third-party Git
+  dependency sources.
+- Excluded `logs/evidence/archives/firecracker.tar`: the unmodified `git archive`
+  export of public upstream Firecracker at the pinned commit.
+- Masked the upstream CI runner work-path substring: build paths inside the
+  Verus binary's panic output.
+- Masked the GitHub API user-URL prefix: API URLs in pinned metadata.
+- Masked the exact PGP signature and PGP public key block armor headers:
+  public commit signatures in pinned Anvil metadata.
+
+Masks remove only the exact substring, so any other hit on the same line still
+counts, including every other armor header such as a private key marker. All
+other archives, including the scratch exports and the Vest and Anvil exports,
+are scanned. Tree mode (no bundle argument) has no allowances.
+
+Before relying on the Firecracker exclusion, `scripts/check-upstream-archive.py`
+checks the extracted bundle: the pinned commit in `logs/release-evidence.json`
+and the Firecracker run manifests matches the archive's git PAX comment header;
+the archive SHA-256 equals the v1.4.1 record; the archive is not in the rebuild
+mapping; and the raw archive bytes contain no author path, no private LAN
+address and no private term as a whole case-sensitive word. Private inputs are
+supplied at runtime and the log names only rule IDs. Without the exclusion,
+its scan hits are upstream example network addresses, a documentation URL,
+case-insensitive substring matches in a test binary and a C header, and
+upstream's public signing key.
+
+With these allowances the v1.4.2 bundle scan reports 0 matching lines, and the
+tree scan reports 0. The original v1.4.1 bundle and checksum are left untouched.

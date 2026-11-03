@@ -1,6 +1,6 @@
 {
-  "Cargo.toml": "b3475b9f63b894a5944b1ed67b71abc99c60b7640f036cd6f605b66b27d8eb77",
-  "Cargo.lock": "7eb4b4721948367be8c65b783d1736a76abf59fb341afb7a10dd2779e22371f0",
+  "Cargo.toml": "b873e6273c1eaf62527ce3391bdbceaf154f88934f7aca294fc96bbd1a6dbcc0",
+  "Cargo.lock": "4dc65d1b590b110ea97c8e8b8f92630093398c1181016cafb76c06af7dc26cd5",
   "registry/upstream.toml": "f0dc682f534a4e6d3cdef2f8b4bba312bedd5f1f83dd88e9050787fb7c4804eb",
   "src/cfg.rs": "fa7ebe5e6651168df23ba3198dea12ef3b6ade77a2a478fd42c896e12c55992c",
   "src/classify.rs": "fbb286aa01e5f0facac5d11a52d9f7451ae3a73ab4c7715f12728ea011f5bfe0",

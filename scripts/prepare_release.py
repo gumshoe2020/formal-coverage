@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate v1.4.1 evidence from pinned archives; no verifier or target build runs."""
+"""Regenerate v1.4.2 evidence from pinned archives; no verifier or target build runs."""
 import argparse
 import io
 import json
@@ -40,7 +40,7 @@ def main():
     p.add_argument('--survey-only', action='store_true')
     args = p.parse_args()
     pins = dict(line.split() for line in args.pins.read_text().splitlines() if line.strip())
-    index = dict(version='1.4.1', tool_sources=source_identity(), survey=[], scratch=[], required=[])
+    index = dict(version='1.4.2', tool_sources=source_identity(), survey=[], scratch=[], required=[])
     binary = REPO / 'target/release/formal-coverage'
     scratch_runs = json.loads((REPO / 'docs/scratch-server/runs.json').read_text())
     assert {r['branch']: r['commit'] for r in scratch_runs} == pins

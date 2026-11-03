@@ -9,8 +9,8 @@ import subprocess
 import tarfile
 
 REPO = Path(__file__).resolve().parents[1]
-BUNDLE = 'formal-coverage-evidence-v1.4.1.tar.zst'
-FETCH = f'Missing {BUNDLE}; fetch it and its .sha256 from https://github.com/gumshoe2020/formal-coverage/releases/tag/v1.4.1 and extract it in the checkout.'
+BUNDLE = 'formal-coverage-evidence-v1.4.2.tar.zst'
+FETCH = f'Missing {BUNDLE}; fetch it and its .sha256 from https://github.com/gumshoe2020/formal-coverage/releases/download/v1.4.2/{BUNDLE} and extract it in the checkout.'
 
 
 def arguments(description, scratch=False):
