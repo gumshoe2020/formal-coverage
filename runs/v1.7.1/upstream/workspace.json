@@ -1,0 +1,64 @@
+{
+  "scratch_export": "<repo>/.tmp/v1.7.1-sources/scratch-server",
+  "bertie_export": "<repo>/.tmp/v1.7.1-sources/upstream",
+  "edits": {
+    "Cargo.toml": {
+      "before": "ee314206dc2b75cc0a252c6cf788f4767fcdf6e3bb8b0ec8423258574457873b",
+      "after": "7c99352f0192f5a163daa99f01bbb288346fbe264166f63e0fec186c507412c8",
+      "diff": [
+        "--- a/Cargo.toml",
+        "+++ b/Cargo.toml",
+        "@@ -6,7 +6,7 @@",
+        " publish = false",
+        " ",
+        " [workspace]",
+        "-members = [\"crates/http-subset\", \"crates/transport-core\"]",
+        "+members = [\"crates/http-subset\", \"crates/transport-core\", \"bertie\"]",
+        " ",
+        " [dependencies]",
+        " transport-core = { version = \"=0.1.0\", path = \"crates/transport-core\" }",
+        "@@ -42,3 +42,6 @@",
+        " rcgen = { version = \"=0.14.5\", default-features = false }",
+        " httparse = \"1\"",
+        " proptest = { version = \"1\", default-features = false, features = [\"std\"] }",
+        "+",
+        "+[patch.\"https://github.com/gumshoe2020/bertie\"]",
+        "+bertie = { path = \"bertie\" }"
+      ]
+    },
+    "bertie/Cargo.toml": {
+      "before": "7b7672f4f26a5f2014a1419547df82bac0329b59b50fbb041c6aa327fbc46d51",
+      "after": "92f9314544b974b7a0773bbf880e115a981e7c1fe0883a57da68be8cbe4381ab",
+      "diff": [
+        "--- a/bertie/Cargo.toml",
+        "+++ b/bertie/Cargo.toml",
+        "@@ -59,24 +59,5 @@",
+        " name = \"server\"",
+        " harness = false",
+        " ",
+        "-[workspace]",
+        "-members = [",
+        "-    \".\",",
+        "-    \"record\",",
+        "-    \"simple_https_client\",",
+        "-    \"simple_https_server\",",
+        "-    \"bogo_shim\",",
+        "-    \"integration_tests\",",
+        "-]",
+        "-",
+        "-default-members = [",
+        "-    \".\",",
+        "-    \"record\",",
+        "-    \"simple_https_client\",",
+        "-    \"simple_https_server\",",
+        "-    \"bogo_shim\",",
+        "-    \"integration_tests\",",
+        "-]",
+        "-",
+        " [lints.rust]",
+        " unexpected_cfgs = { level = \"warn\", check-cfg = ['cfg(bench)', 'cfg(hax)'] }"
+      ]
+    }
+  },
+  "shipped_lock_sha256": "8040adf76d94ab852cbe553bbfebeda3b0462e2a9bec87e6f08cbe88ca6d5ea2"
+}

@@ -34,6 +34,7 @@ struct ManifestDependency {
 }
 #[derive(Deserialize)]
 struct Target {
+    name: String,
     kind: Vec<String>,
 }
 #[derive(Deserialize)]
@@ -102,8 +103,13 @@ fn enabled(parent: &Package, node: &Node, edge: &Edge, child: &Package, kind: &K
     false
 }
 
-fn version(program: &str, args: &[&str]) -> Result<String> {
-    let out = Command::new(program).args(args).output()?;
+/// Run in the project root, like cargo metadata/check, so a rustup toolchain override
+/// (rust-toolchain.toml) selects the same toolchain that is reported.
+fn version(root: &Path, program: &str, args: &[&str]) -> Result<String> {
+    let out = Command::new(program)
+        .args(args)
+        .current_dir(root)
+        .output()?;
     anyhow::ensure!(
         out.status.success(),
         "{program}: {}",
@@ -121,19 +127,28 @@ fn dependency(name: String, version: String, security: bool) -> Dependency {
         source: None,
         unsafe_sites: None,
         status: "unverified".into(),
+        size_mode: crate::SizeMode::WholeCrate.as_str().into(),
+        size_reason: None,
+        whole_crate_sloc: 0,
+        default_security: None,
+        default_sloc: None,
+        default_size_unknown: false,
+        override_reason: None,
+        package_id: None,
+        lib_name: None,
     }
 }
 pub(crate) fn resolve(root: &Path, target: Option<&str>, report: &mut Report) -> Result<()> {
     report.target = match target {
         Some(target) => target.to_string(),
-        None => version("rustc", &["-vV"])?
+        None => version(root, "rustc", &["-vV"])?
             .lines()
             .find_map(|l| l.strip_prefix("host: "))
             .context("rustc host triple missing")?
             .into(),
     };
     report.cargo_version =
-        version("cargo", &["--version"]).unwrap_or_else(|e| format!("unconfirmed: {e}"));
+        version(root, "cargo", &["--version"]).unwrap_or_else(|e| format!("unconfirmed: {e}"));
     match metadata(root, &report.target).and_then(|m| closure(m, report)) {
         Ok(()) => {
             report.closure = "cargo metadata (runtime)".into();
@@ -295,7 +310,19 @@ fn closure(m: Metadata, report: &mut Report) -> Result<()> {
                 .iter()
                 .sum();
             d.size_known = true;
+            d.whole_crate_sloc = d.sloc;
             d.source = Some(source.to_string_lossy().into());
+            d.package_id = Some(id.to_string());
+            d.lib_name = p
+                .targets
+                .iter()
+                .find(|t| {
+                    t.kind.iter().any(|k| {
+                        ["lib", "rlib", "dylib", "cdylib", "staticlib", "proc-macro"]
+                            .contains(&k.as_str())
+                    })
+                })
+                .map(|t| t.name.replace('-', "_"));
             output.push(d);
         }
         output.sort_by(|a, b| (&a.name, &a.version).cmp(&(&b.name, &b.version)));

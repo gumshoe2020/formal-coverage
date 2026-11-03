@@ -1,0 +1,298 @@
+bertie v0.1.0-pre.2 (<repo>/runs/v1.7.1/shipped/ws/bertie)
+├── backtrace feature "default"
+│   ├── backtrace v0.3.77
+│   │   ├── addr2line v0.27.1
+│   │   │   └── gimli feature "read"
+│   │   │       ├── gimli v0.34.0
+│   │   │       └── gimli feature "read-core"
+│   │   │           └── gimli v0.34.0
+│   │   ├── libc v0.2.191
+│   │   ├── miniz_oxide v0.9.1
+│   │   │   └── adler2 v2.0.1
+│   │   ├── cfg-if feature "default"
+│   │   │   └── cfg-if v1.0.5
+│   │   ├── object feature "archive"
+│   │   │   └── object v0.40.0
+│   │   │       └── memchr v2.8.3
+│   │   ├── object feature "elf"
+│   │   │   └── object v0.40.0 (*)
+│   │   ├── object feature "macho"
+│   │   │   └── object v0.40.0 (*)
+│   │   ├── object feature "pe"
+│   │   │   ├── object v0.40.0 (*)
+│   │   │   └── object feature "coff"
+│   │   │       └── object v0.40.0 (*)
+│   │   ├── object feature "read_core"
+│   │   │   └── object v0.40.0 (*)
+│   │   ├── object feature "unaligned"
+│   │   │   └── object v0.40.0 (*)
+│   │   ├── object feature "xcoff"
+│   │   │   └── object v0.40.0 (*)
+│   │   └── rustc-demangle feature "default"
+│   │       └── rustc-demangle v0.1.28
+│   └── backtrace feature "std"
+│       └── backtrace v0.3.77 (*)
+├── hax-lib feature "default"
+│   ├── hax-lib v0.4.2
+│   │   └── hax-lib-macros feature "default"
+│   │       └── hax-lib-macros v0.4.2 (proc-macro)
+│   │           ├── proc-macro2 feature "default"
+│   │           │   ├── proc-macro2 v1.0.107
+│   │           │   │   └── unicode-ident feature "default"
+│   │           │   │       └── unicode-ident v1.0.27
+│   │           │   └── proc-macro2 feature "proc-macro"
+│   │           │       └── proc-macro2 v1.0.107 (*)
+│   │           ├── quote feature "default"
+│   │           │   ├── quote v1.0.47
+│   │           │   │   └── proc-macro2 v1.0.107 (*)
+│   │           │   └── quote feature "proc-macro"
+│   │           │       ├── quote v1.0.47 (*)
+│   │           │       └── proc-macro2 feature "proc-macro" (*)
+│   │           ├── syn feature "default"
+│   │           │   ├── syn v2.0.119
+│   │           │   │   ├── proc-macro2 v1.0.107 (*)
+│   │           │   │   ├── quote v1.0.47 (*)
+│   │           │   │   └── unicode-ident feature "default" (*)
+│   │           │   ├── syn feature "clone-impls"
+│   │           │   │   └── syn v2.0.119 (*)
+│   │           │   ├── syn feature "derive"
+│   │           │   │   └── syn v2.0.119 (*)
+│   │           │   ├── syn feature "parsing"
+│   │           │   │   └── syn v2.0.119 (*)
+│   │           │   ├── syn feature "printing"
+│   │           │   │   └── syn v2.0.119 (*)
+│   │           │   └── syn feature "proc-macro"
+│   │           │       ├── syn v2.0.119 (*)
+│   │           │       ├── proc-macro2 feature "proc-macro" (*)
+│   │           │       └── quote feature "proc-macro" (*)
+│   │           ├── syn feature "full"
+│   │           │   └── syn v2.0.119 (*)
+│   │           ├── syn feature "visit"
+│   │           │   └── syn v2.0.119 (*)
+│   │           └── syn feature "visit-mut"
+│   │               └── syn v2.0.119 (*)
+│   └── hax-lib feature "macros"
+│       └── hax-lib v0.4.2 (*)
+├── hex feature "default"
+│   ├── hex v0.4.3
+│   └── hex feature "std"
+│       ├── hex v0.4.3
+│       └── hex feature "alloc"
+│           └── hex v0.4.3
+├── libcrux-chacha20poly1305 feature "default"
+│   └── libcrux-chacha20poly1305 v0.0.2
+│       ├── libcrux-hacl-rs feature "default"
+│       │   └── libcrux-hacl-rs v0.0.2
+│       │       └── libcrux-macros feature "default"
+│       │           └── libcrux-macros v0.0.2 (proc-macro)
+│       │               ├── quote feature "default" (*)
+│       │               ├── syn feature "default" (*)
+│       │               └── syn feature "full" (*)
+│       ├── libcrux-macros feature "default" (*)
+│       ├── libcrux-poly1305 feature "default"
+│       │   └── libcrux-poly1305 v0.0.2
+│       │       ├── libcrux-hacl-rs feature "default" (*)
+│       │       └── libcrux-macros feature "default" (*)
+│       └── libcrux-poly1305 feature "expose-hacl"
+│           └── libcrux-poly1305 v0.0.2 (*)
+├── libcrux-ecdsa feature "default"
+│   ├── libcrux-ecdsa v0.0.3
+│   │   ├── libcrux-p256 feature "default"
+│   │   │   └── libcrux-p256 v0.0.3
+│   │   │       ├── libcrux-hacl-rs feature "default"
+│   │   │       │   └── libcrux-hacl-rs v0.0.3
+│   │   │       │       └── libcrux-macros feature "default"
+│   │   │       │           └── libcrux-macros v0.0.3 (proc-macro)
+│   │   │       │               ├── quote feature "default" (*)
+│   │   │       │               ├── syn feature "default" (*)
+│   │   │       │               └── syn feature "full" (*)
+│   │   │       ├── libcrux-macros feature "default" (*)
+│   │   │       ├── libcrux-sha2 feature "default"
+│   │   │       │   └── libcrux-sha2 v0.0.3
+│   │   │       │       ├── libcrux-hacl-rs feature "default" (*)
+│   │   │       │       ├── libcrux-macros feature "default" (*)
+│   │   │       │       └── libcrux-traits feature "default"
+│   │   │       │           └── libcrux-traits v0.0.3
+│   │   │       │               └── rand v0.9.5
+│   │   │       │                   ├── rand_chacha v0.9.0
+│   │   │       │                   │   ├── ppv-lite86 feature "simd"
+│   │   │       │                   │   │   └── ppv-lite86 v0.2.21
+│   │   │       │                   │   │       ├── zerocopy feature "default"
+│   │   │       │                   │   │       │   └── zerocopy v0.8.63
+│   │   │       │                   │   │       └── zerocopy feature "simd"
+│   │   │       │                   │   │           └── zerocopy v0.8.63
+│   │   │       │                   │   └── rand_core feature "default"
+│   │   │       │                   │       └── rand_core v0.9.5
+│   │   │       │                   │           └── getrandom feature "default"
+│   │   │       │                   │               └── getrandom v0.3.4
+│   │   │       │                   │                   ├── libc v0.2.191
+│   │   │       │                   │                   └── cfg-if feature "default" (*)
+│   │   │       │                   └── rand_core v0.9.5 (*)
+│   │   │       └── libcrux-sha2 feature "expose-hacl"
+│   │   │           └── libcrux-sha2 v0.0.3 (*)
+│   │   ├── libcrux-p256 feature "expose-hacl"
+│   │   │   └── libcrux-p256 v0.0.3 (*)
+│   │   ├── libcrux-sha2 feature "default" (*)
+│   │   └── rand feature "default"
+│   │       ├── rand v0.9.5 (*)
+│   │       ├── rand feature "os_rng"
+│   │       │   ├── rand v0.9.5 (*)
+│   │       │   └── rand_core feature "os_rng"
+│   │       │       └── rand_core v0.9.5 (*)
+│   │       ├── rand feature "small_rng"
+│   │       │   └── rand v0.9.5 (*)
+│   │       ├── rand feature "std"
+│   │       │   ├── rand v0.9.5 (*)
+│   │       │   ├── rand feature "alloc"
+│   │       │   │   └── rand v0.9.5 (*)
+│   │       │   ├── rand_chacha feature "std"
+│   │       │   │   ├── rand_chacha v0.9.0 (*)
+│   │       │   │   ├── ppv-lite86 feature "std"
+│   │       │   │   │   └── ppv-lite86 v0.2.21 (*)
+│   │       │   │   └── rand_core feature "std"
+│   │       │   │       ├── rand_core v0.9.5 (*)
+│   │       │   │       └── getrandom feature "std"
+│   │       │   │           └── getrandom v0.3.4 (*)
+│   │       │   └── rand_core feature "std" (*)
+│   │       ├── rand feature "std_rng"
+│   │       │   └── rand v0.9.5 (*)
+│   │       └── rand feature "thread_rng"
+│   │           ├── rand v0.9.5 (*)
+│   │           ├── rand feature "os_rng" (*)
+│   │           ├── rand feature "std" (*)
+│   │           └── rand feature "std_rng" (*)
+│   └── libcrux-ecdsa feature "rand"
+│       └── libcrux-ecdsa v0.0.3 (*)
+├── libcrux-ecdsa feature "rand" (*)
+├── libcrux-sha2 feature "default" (*)
+├── rand feature "default" (*)
+├── libcrux-ed25519 feature "default"
+│   └── libcrux-ed25519 v0.0.3
+│       ├── libcrux-hacl-rs feature "default" (*)
+│       ├── libcrux-macros feature "default" (*)
+│       ├── libcrux-sha2 feature "default" (*)
+│       └── libcrux-sha2 feature "expose-hacl" (*)
+├── libcrux-hkdf feature "default"
+│   └── libcrux-hkdf v0.0.3
+│       ├── libcrux-hacl-rs feature "default" (*)
+│       ├── libcrux-hmac feature "default"
+│       │   └── libcrux-hmac v0.0.3
+│       │       ├── libcrux-hacl-rs feature "default" (*)
+│       │       ├── libcrux-macros feature "default" (*)
+│       │       ├── libcrux-sha2 feature "default" (*)
+│       │       └── libcrux-sha2 feature "expose-hacl" (*)
+│       └── libcrux-hmac feature "expose-hacl"
+│           └── libcrux-hmac v0.0.3 (*)
+├── libcrux-hmac feature "default" (*)
+├── libcrux-kem feature "default"
+│   └── libcrux-kem v0.0.2
+│       ├── rand feature "default" (*)
+│       ├── libcrux-ecdh feature "default"
+│       │   └── libcrux-ecdh v0.0.2
+│       │       ├── rand feature "default" (*)
+│       │       ├── libcrux-curve25519 feature "default"
+│       │       │   └── libcrux-curve25519 v0.0.2
+│       │       │       ├── libcrux-hacl-rs feature "default" (*)
+│       │       │       └── libcrux-macros feature "default" (*)
+│       │       ├── libcrux-p256 feature "default"
+│       │       │   └── libcrux-p256 v0.0.2
+│       │       │       ├── libcrux-hacl-rs feature "default" (*)
+│       │       │       ├── libcrux-macros feature "default" (*)
+│       │       │       ├── libcrux-sha2 feature "default"
+│       │       │       │   └── libcrux-sha2 v0.0.2
+│       │       │       │       ├── libcrux-hacl-rs feature "default" (*)
+│       │       │       │       ├── libcrux-macros feature "default" (*)
+│       │       │       │       └── libcrux-traits feature "default"
+│       │       │       │           └── libcrux-traits v0.0.2
+│       │       │       │               └── rand feature "default" (*)
+│       │       │       └── libcrux-sha2 feature "expose-hacl"
+│       │       │           └── libcrux-sha2 v0.0.2 (*)
+│       │       └── libcrux-p256 feature "expose-hacl"
+│       │           └── libcrux-p256 v0.0.2 (*)
+│       ├── libcrux-traits feature "default" (*)
+│       ├── libcrux-ml-kem feature "default"
+│       │   ├── libcrux-ml-kem v0.0.2
+│       │   │   ├── rand feature "default" (*)
+│       │   │   ├── hax-lib feature "default"
+│       │   │   │   ├── hax-lib v0.2.0
+│       │   │   │   │   └── hax-lib-macros feature "default"
+│       │   │   │   │       └── hax-lib-macros v0.2.0 (proc-macro)
+│       │   │   │   │           ├── proc-macro2 feature "default" (*)
+│       │   │   │   │           ├── quote feature "default" (*)
+│       │   │   │   │           ├── syn feature "default" (*)
+│       │   │   │   │           ├── syn feature "full" (*)
+│       │   │   │   │           └── syn feature "visit-mut" (*)
+│       │   │   │   └── hax-lib feature "macros"
+│       │   │   │       └── hax-lib v0.2.0 (*)
+│       │   │   ├── libcrux-intrinsics feature "default"
+│       │   │   │   └── libcrux-intrinsics v0.0.2
+│       │   │   │       └── hax-lib feature "default" (*)
+│       │   │   ├── libcrux-platform feature "default"
+│       │   │   │   └── libcrux-platform v0.0.2
+│       │   │   │       └── libc feature "default"
+│       │   │   │           ├── libc v0.2.191
+│       │   │   │           └── libc feature "std"
+│       │   │   │               └── libc v0.2.191
+│       │   │   └── libcrux-sha3 feature "default"
+│       │   │       └── libcrux-sha3 v0.0.2
+│       │   │           ├── libcrux-intrinsics feature "default" (*)
+│       │   │           └── libcrux-platform feature "default" (*)
+│       │   ├── libcrux-ml-kem feature "mlkem1024"
+│       │   │   └── libcrux-ml-kem v0.0.2 (*)
+│       │   ├── libcrux-ml-kem feature "mlkem512"
+│       │   │   └── libcrux-ml-kem v0.0.2 (*)
+│       │   ├── libcrux-ml-kem feature "mlkem768"
+│       │   │   └── libcrux-ml-kem v0.0.2 (*)
+│       │   ├── libcrux-ml-kem feature "rand"
+│       │   │   └── libcrux-ml-kem v0.0.2 (*)
+│       │   └── libcrux-ml-kem feature "std"
+│       │       ├── libcrux-ml-kem v0.0.2 (*)
+│       │       └── libcrux-ml-kem feature "alloc"
+│       │           └── libcrux-ml-kem v0.0.2 (*)
+│       └── libcrux-sha3 feature "default" (*)
+├── libcrux-kem feature "kyber"
+│   ├── libcrux-kem v0.0.2 (*)
+│   └── libcrux-ml-kem feature "kyber"
+│       └── libcrux-ml-kem v0.0.2 (*)
+├── libcrux-rsa feature "default"
+│   └── libcrux-rsa v0.0.2
+│       ├── libcrux-hacl-rs feature "default" (*)
+│       ├── libcrux-macros feature "default" (*)
+│       ├── libcrux-sha2 feature "default" (*)
+│       ├── libcrux-sha2 feature "expose-hacl" (*)
+│       └── libcrux-traits feature "default" (*)
+└── tracing feature "default"
+    ├── tracing v0.1.44
+    │   ├── tracing-core v0.1.36
+    │   │   └── once_cell feature "default"
+    │   │       ├── once_cell v1.21.4
+    │   │       └── once_cell feature "std"
+    │   │           ├── once_cell v1.21.4
+    │   │           └── once_cell feature "alloc"
+    │   │               ├── once_cell v1.21.4
+    │   │               └── once_cell feature "race"
+    │   │                   └── once_cell v1.21.4
+    │   ├── pin-project-lite feature "default"
+    │   │   └── pin-project-lite v0.2.17
+    │   └── tracing-attributes feature "default"
+    │       └── tracing-attributes v0.1.31 (proc-macro)
+    │           ├── proc-macro2 feature "default" (*)
+    │           ├── quote feature "default" (*)
+    │           ├── syn feature "clone-impls" (*)
+    │           ├── syn feature "extra-traits"
+    │           │   └── syn v2.0.119 (*)
+    │           ├── syn feature "full" (*)
+    │           ├── syn feature "parsing" (*)
+    │           ├── syn feature "printing" (*)
+    │           ├── syn feature "proc-macro" (*)
+    │           └── syn feature "visit-mut" (*)
+    ├── tracing feature "attributes"
+    │   ├── tracing v0.1.44 (*)
+    │   └── tracing feature "tracing-attributes"
+    │       └── tracing v0.1.44 (*)
+    └── tracing feature "std"
+        ├── tracing v0.1.44 (*)
+        └── tracing-core feature "std"
+            ├── tracing-core v0.1.36 (*)
+            └── tracing-core feature "once_cell"
+                └── tracing-core v0.1.36 (*)

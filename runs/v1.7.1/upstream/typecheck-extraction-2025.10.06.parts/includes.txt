@@ -1,0 +1,10 @@
+--include
+libs/rust_primitives
+--include
+libs/core
+--include
+libs/hax-lib
+--include
+libs/libcrux-models
+--include
+proofs/fstar/extraction

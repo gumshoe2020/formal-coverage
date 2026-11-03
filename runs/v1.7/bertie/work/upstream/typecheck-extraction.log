@@ -1,0 +1,2547 @@
+make: Entering directory '/out/work/upstream/proofs/fstar/extraction'
+Bertie.Server.fst Bertie.Tls13api.fst Bertie.Tls13formats.Handshake_data.fst Bertie.Tls13formats.fst Bertie.Tls13handshake.fst Bertie.Tls13keyscheduler.Key_schedule.fst Bertie.Tls13keyscheduler.fst Bertie.Tls13record.fst
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models --cmi --dep full Bertie.Server.fst Bertie.Tls13api.fst Bertie.Tls13formats.Handshake_data.fst Bertie.Tls13formats.fst Bertie.Tls13handshake.fst Bertie.Tls13keyscheduler.Key_schedule.fst Bertie.Tls13keyscheduler.fst Bertie.Tls13record.fst --extract '* -Prims -LowStar -FStar' > .depend
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+* Warning 285 at Bertie.Server.fst(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 321:
+  - Did not expect module Prims to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/Prims.fst.checked
+    instead of .cache/Prims.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Pervasives.Native to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Pervasives.Native.fst.checked
+    instead of .cache/FStar.Pervasives.Native.fst.checked
+
+* Warning 285 at Bertie.Tls13crypto.fsti(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.Typeclasses to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.Typeclasses.fsti.checked
+    instead of .cache/FStar.Tactics.Typeclasses.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Stubs.Reflection.Types to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.Reflection.Types.fsti.checked
+    instead of .cache/FStar.Stubs.Reflection.Types.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Sealed to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Sealed.fsti.checked
+    instead of .cache/FStar.Sealed.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Prelude to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Prelude.fsti.checked
+    instead of .cache/FStar.Prelude.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Attributes to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Attributes.fsti.checked
+    instead of .cache/FStar.Attributes.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.NormSteps to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.NormSteps.fsti.checked
+    instead of .cache/FStar.NormSteps.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.NormSteps to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.NormSteps.fst.checked
+    instead of .cache/FStar.NormSteps.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Pervasives to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Pervasives.fsti.checked
+    instead of .cache/FStar.Pervasives.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Pervasives to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Pervasives.fst.checked
+    instead of .cache/FStar.Pervasives.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Range to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Range.fsti.checked
+    instead of .cache/FStar.Range.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.Effect to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.Effect.fsti.checked
+    instead of .cache/FStar.Tactics.Effect.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Stubs.Tactics.Types to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.Tactics.Types.fsti.checked
+    instead of .cache/FStar.Stubs.Tactics.Types.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Issue to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Issue.fsti.checked
+    instead of .cache/FStar.Issue.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Pprint to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Pprint.fsti.checked
+    instead of .cache/FStar.Pprint.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Float to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Float.fsti.checked
+    instead of .cache/FStar.Float.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Char to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Char.fsti.checked
+    instead of .cache/FStar.Char.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.UInt32 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.UInt32.fsti.checked
+    instead of .cache/FStar.UInt32.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Mul to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Mul.fst.checked
+    instead of .cache/FStar.Mul.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.UInt to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.UInt.fsti.checked
+    instead of .cache/FStar.UInt.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Seq.Base to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Seq.Base.fsti.checked
+    instead of .cache/FStar.Seq.Base.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.List.Tot.Base to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.List.Tot.Base.fst.checked
+    instead of .cache/FStar.List.Tot.Base.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Classical.Sugar to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Classical.Sugar.fsti.checked
+    instead of .cache/FStar.Classical.Sugar.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Classical.Sugar to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Classical.Sugar.fst.checked
+    instead of .cache/FStar.Classical.Sugar.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Squash to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Squash.fsti.checked
+    instead of .cache/FStar.Squash.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Squash to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Squash.fst.checked
+    instead of .cache/FStar.Squash.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.IndefiniteDescription to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.IndefiniteDescription.fsti.checked
+    instead of .cache/FStar.IndefiniteDescription.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Ghost to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Ghost.fsti.checked
+    instead of .cache/FStar.Ghost.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Ghost to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Ghost.fst.checked
+    instead of .cache/FStar.Ghost.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.IndefiniteDescription to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.IndefiniteDescription.fst.checked
+    instead of .cache/FStar.IndefiniteDescription.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Seq.Base to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Seq.Base.fst.checked
+    instead of .cache/FStar.Seq.Base.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.List.Tot to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.List.Tot.fst.checked
+    instead of .cache/FStar.List.Tot.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.List.Tot.Properties to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.List.Tot.Properties.fsti.checked
+    instead of .cache/FStar.List.Tot.Properties.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.StrongExcludedMiddle to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.StrongExcludedMiddle.fst.checked
+    instead of .cache/FStar.StrongExcludedMiddle.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.List.Tot.Properties to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.List.Tot.Properties.fst.checked
+    instead of .cache/FStar.List.Tot.Properties.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Classical to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Classical.fsti.checked
+    instead of .cache/FStar.Classical.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Classical to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Classical.fst.checked
+    instead of .cache/FStar.Classical.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Math.Lemmas to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Math.Lemmas.fsti.checked
+    instead of .cache/FStar.Math.Lemmas.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Math.Lemmas to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Math.Lemmas.fst.checked
+    instead of .cache/FStar.Math.Lemmas.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Calc to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Calc.fsti.checked
+    instead of .cache/FStar.Calc.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Preorder to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Preorder.fst.checked
+    instead of .cache/FStar.Preorder.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Calc to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Calc.fst.checked
+    instead of .cache/FStar.Calc.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Math.Lib to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Math.Lib.fst.checked
+    instead of .cache/FStar.Math.Lib.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.BitVector to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.BitVector.fsti.checked
+    instead of .cache/FStar.BitVector.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.BitVector to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.BitVector.fst.checked
+    instead of .cache/FStar.BitVector.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Seq to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Seq.fst.checked
+    instead of .cache/FStar.Seq.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Seq.Properties to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Seq.Properties.fsti.checked
+    instead of .cache/FStar.Seq.Properties.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Seq.Properties to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Seq.Properties.fst.checked
+    instead of .cache/FStar.Seq.Properties.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.UInt to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.UInt.fst.checked
+    instead of .cache/FStar.UInt.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.UInt32 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.UInt32.fst.checked
+    instead of .cache/FStar.UInt32.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Stubs.Tactics.Common to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.Tactics.Common.fsti.checked
+    instead of .cache/FStar.Stubs.Tactics.Common.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Stubs.Errors.Msg to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.Errors.Msg.fsti.checked
+    instead of .cache/FStar.Stubs.Errors.Msg.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Monotonic.Pure to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Monotonic.Pure.fst.checked
+    instead of .cache/FStar.Monotonic.Pure.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.Effect to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.Effect.fst.checked
+    instead of .cache/FStar.Tactics.Effect.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.Typeclasses to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.Typeclasses.fst.checked
+    instead of .cache/FStar.Tactics.Typeclasses.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.Util to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.Util.fst.checked
+    instead of .cache/FStar.Tactics.Util.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Stubs.Reflection.V2.Data to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.Reflection.V2.Data.fsti.checked
+    instead of .cache/FStar.Stubs.Reflection.V2.Data.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Sealed.Inhabited to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Sealed.Inhabited.fst.checked
+    instead of .cache/FStar.Sealed.Inhabited.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Stubs.Syntax.Syntax to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.Syntax.Syntax.fsti.checked
+    instead of .cache/FStar.Stubs.Syntax.Syntax.fsti.checked
+
+* Warning 321:
+  - Did not expect module
+    FStar.Stubs.Reflection.V2.Builtins
+    to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.Reflection.V2.Builtins.fsti.checked
+    instead of .cache/FStar.Stubs.Reflection.V2.Builtins.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Stubs.VConfig to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.VConfig.fsti.checked
+    instead of .cache/FStar.Stubs.VConfig.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Order to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Order.fst.checked
+    instead of .cache/FStar.Order.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.TermEq.Simple to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.TermEq.Simple.fsti.checked
+    instead of .cache/FStar.Reflection.TermEq.Simple.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.TermEq.Simple to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.TermEq.Simple.fst.checked
+    instead of .cache/FStar.Reflection.TermEq.Simple.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.TermEq to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.TermEq.fsti.checked
+    instead of .cache/FStar.Reflection.TermEq.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.TermEq to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.TermEq.fst.checked
+    instead of .cache/FStar.Reflection.TermEq.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.NamedView to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.NamedView.fsti.checked
+    instead of .cache/FStar.Tactics.NamedView.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.NamedView to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.NamedView.fst.checked
+    instead of .cache/FStar.Tactics.NamedView.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.V2 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.V2.fst.checked
+    instead of .cache/FStar.Reflection.V2.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.V2.Collect to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.V2.Collect.fst.checked
+    instead of .cache/FStar.Reflection.V2.Collect.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.V2.Compare to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.V2.Compare.fsti.checked
+    instead of .cache/FStar.Reflection.V2.Compare.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.V2.Compare to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.V2.Compare.fst.checked
+    instead of .cache/FStar.Reflection.V2.Compare.fst.checked
+
+* Warning 321:
+  - Did not expect module
+    FStar.Reflection.V2.Derived.Lemmas
+    to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.V2.Derived.Lemmas.fst.checked
+    instead of .cache/FStar.Reflection.V2.Derived.Lemmas.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.V2.Derived to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.V2.Derived.fst.checked
+    instead of .cache/FStar.Reflection.V2.Derived.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.Const to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.Const.fst.checked
+    instead of .cache/FStar.Reflection.Const.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Stubs.Tactics.V2.Builtins to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.Tactics.V2.Builtins.fsti.checked
+    instead of .cache/FStar.Stubs.Tactics.V2.Builtins.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Stubs.Tactics.Unseal to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.Tactics.Unseal.fsti.checked
+    instead of .cache/FStar.Stubs.Tactics.Unseal.fsti.checked
+
+* Warning 321:
+  - Did not expect module
+    FStar.Stubs.Tactics.Types.Reflection
+    to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.Tactics.Types.Reflection.fsti.checked
+    instead of .cache/FStar.Stubs.Tactics.Types.Reflection.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Stubs.TypeChecker.Core to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.TypeChecker.Core.fsti.checked
+    instead of .cache/FStar.Stubs.TypeChecker.Core.fsti.checked
+
+* Warning 321:
+  - Did not expect module
+    FStar.Tactics.V2.SyntaxCoercions
+    to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.V2.SyntaxCoercions.fst.checked
+    instead of .cache/FStar.Tactics.V2.SyntaxCoercions.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.V2.Derived to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.V2.Derived.fst.checked
+    instead of .cache/FStar.Tactics.V2.Derived.fst.checked
+
+* Warning 321:
+  - Did not expect module
+    FStar.PropositionalExtensionality
+    to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.PropositionalExtensionality.fst.checked
+    instead of .cache/FStar.PropositionalExtensionality.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.Names to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.Names.fsti.checked
+    instead of .cache/FStar.Tactics.Names.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.Names to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.Names.fst.checked
+    instead of .cache/FStar.Tactics.Names.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.Visit to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.Visit.fst.checked
+    instead of .cache/FStar.Tactics.Visit.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.V2.SyntaxHelpers to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.V2.SyntaxHelpers.fsti.checked
+    instead of .cache/FStar.Tactics.V2.SyntaxHelpers.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.V2.SyntaxHelpers to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.V2.SyntaxHelpers.fst.checked
+    instead of .cache/FStar.Tactics.V2.SyntaxHelpers.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.V2.Formula to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.V2.Formula.fst.checked
+    instead of .cache/FStar.Reflection.V2.Formula.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.FunctionalExtensionality to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.FunctionalExtensionality.fsti.checked
+    instead of .cache/FStar.FunctionalExtensionality.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.FunctionalExtensionality to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.FunctionalExtensionality.fst.checked
+    instead of .cache/FStar.FunctionalExtensionality.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Int128 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Int128.fsti.checked
+    instead of .cache/FStar.Int128.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Int64 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Int64.fsti.checked
+    instead of .cache/FStar.Int64.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Int to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Int.fsti.checked
+    instead of .cache/FStar.Int.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Int to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Int.fst.checked
+    instead of .cache/FStar.Int.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Int64 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Int64.fst.checked
+    instead of .cache/FStar.Int64.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Int128 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Int128.fst.checked
+    instead of .cache/FStar.Int128.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.UInt128 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.UInt128.fsti.checked
+    instead of .cache/FStar.UInt128.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.UInt64 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.UInt64.fsti.checked
+    instead of .cache/FStar.UInt64.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.UInt64 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.UInt64.fst.checked
+    instead of .cache/FStar.UInt64.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.UInt128 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.UInt128.fst.checked
+    instead of .cache/FStar.UInt128.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Int.Cast to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Int.Cast.fst.checked
+    instead of .cache/FStar.Int.Cast.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Int32 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Int32.fsti.checked
+    instead of .cache/FStar.Int32.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Int32 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Int32.fst.checked
+    instead of .cache/FStar.Int32.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Int16 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Int16.fsti.checked
+    instead of .cache/FStar.Int16.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Int16 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Int16.fst.checked
+    instead of .cache/FStar.Int16.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Int8 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Int8.fsti.checked
+    instead of .cache/FStar.Int8.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Int8 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Int8.fst.checked
+    instead of .cache/FStar.Int8.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.UInt16 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.UInt16.fsti.checked
+    instead of .cache/FStar.UInt16.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.UInt16 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.UInt16.fst.checked
+    instead of .cache/FStar.UInt16.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.UInt8 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.UInt8.fsti.checked
+    instead of .cache/FStar.UInt8.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.UInt8 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.UInt8.fst.checked
+    instead of .cache/FStar.UInt8.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.BV.Lemmas to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.BV.Lemmas.fsti.checked
+    instead of .cache/FStar.Tactics.BV.Lemmas.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.BV to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.BV.fsti.checked
+    instead of .cache/FStar.BV.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.List to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.List.fst.checked
+    instead of .cache/FStar.List.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.All to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.All.fsti.checked
+    instead of .cache/FStar.All.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Exn to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Exn.fst.checked
+    instead of .cache/FStar.Exn.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.ST to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.ST.fst.checked
+    instead of .cache/FStar.ST.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Set to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Set.fsti.checked
+    instead of .cache/FStar.Set.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Set to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Set.fst.checked
+    instead of .cache/FStar.Set.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Monotonic.Witnessed to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Monotonic.Witnessed.fsti.checked
+    instead of .cache/FStar.Monotonic.Witnessed.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Monotonic.Witnessed to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Monotonic.Witnessed.fst.checked
+    instead of .cache/FStar.Monotonic.Witnessed.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Heap to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Heap.fst.checked
+    instead of .cache/FStar.Heap.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Monotonic.Heap to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Monotonic.Heap.fsti.checked
+    instead of .cache/FStar.Monotonic.Heap.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.TSet to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.TSet.fsti.checked
+    instead of .cache/FStar.TSet.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.TSet to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.TSet.fst.checked
+    instead of .cache/FStar.TSet.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.PredicateExtensionality to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.PredicateExtensionality.fst.checked
+    instead of .cache/FStar.PredicateExtensionality.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Monotonic.Heap to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Monotonic.Heap.fst.checked
+    instead of .cache/FStar.Monotonic.Heap.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.ErasedLogic to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.ErasedLogic.fst.checked
+    instead of .cache/FStar.ErasedLogic.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.BV to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.BV.fst.checked
+    instead of .cache/FStar.BV.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.BV.Lemmas to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.BV.Lemmas.fst.checked
+    instead of .cache/FStar.Tactics.BV.Lemmas.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.BV to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.BV.fsti.checked
+    instead of .cache/FStar.Tactics.BV.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.BV to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.BV.fst.checked
+    instead of .cache/FStar.Tactics.BV.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.V2.Arith to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.V2.Arith.fst.checked
+    instead of .cache/FStar.Reflection.V2.Arith.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.V2.Bare to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.V2.Bare.fsti.checked
+    instead of .cache/FStar.Tactics.V2.Bare.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.SMT to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.SMT.fsti.checked
+    instead of .cache/FStar.Tactics.SMT.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.SMT to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.SMT.fst.checked
+    instead of .cache/FStar.Tactics.SMT.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.Print to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.Print.fsti.checked
+    instead of .cache/FStar.Tactics.Print.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.Print to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.Print.fst.checked
+    instead of .cache/FStar.Tactics.Print.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.String to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.String.fsti.checked
+    instead of .cache/FStar.String.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.V2.Logic to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.V2.Logic.fsti.checked
+    instead of .cache/FStar.Tactics.V2.Logic.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.Logic.Lemmas to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.Logic.Lemmas.fsti.checked
+    instead of .cache/FStar.Tactics.Logic.Lemmas.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.Logic.Lemmas to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.Logic.Lemmas.fst.checked
+    instead of .cache/FStar.Tactics.Logic.Lemmas.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.V2.Logic to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.V2.Logic.fst.checked
+    instead of .cache/FStar.Tactics.V2.Logic.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.MApply0 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.MApply0.fsti.checked
+    instead of .cache/FStar.Tactics.MApply0.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.MApply0 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.MApply0.fst.checked
+    instead of .cache/FStar.Tactics.MApply0.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.MApply to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.MApply.fsti.checked
+    instead of .cache/FStar.Tactics.MApply.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.MApply to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.MApply.fst.checked
+    instead of .cache/FStar.Tactics.MApply.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.fsti.checked
+    instead of .cache/FStar.Tactics.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.V1 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.V1.fsti.checked
+    instead of .cache/FStar.Tactics.V1.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.Easy to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.Easy.fsti.checked
+    instead of .cache/FStar.Tactics.Easy.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.Easy to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.Easy.fst.checked
+    instead of .cache/FStar.Tactics.Easy.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.V1.Logic to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.V1.Logic.fsti.checked
+    instead of .cache/FStar.Tactics.V1.Logic.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Stubs.Tactics.V1.Builtins to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.Tactics.V1.Builtins.fsti.checked
+    instead of .cache/FStar.Stubs.Tactics.V1.Builtins.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Stubs.Reflection.V1.Data to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.Reflection.V1.Data.fsti.checked
+    instead of .cache/FStar.Stubs.Reflection.V1.Data.fsti.checked
+
+* Warning 321:
+  - Did not expect module
+    FStar.Stubs.Reflection.V1.Builtins
+    to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.Reflection.V1.Builtins.fsti.checked
+    instead of .cache/FStar.Stubs.Reflection.V1.Builtins.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.V1.Formula to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.V1.Formula.fst.checked
+    instead of .cache/FStar.Reflection.V1.Formula.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.V1.Derived to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.V1.Derived.fst.checked
+    instead of .cache/FStar.Reflection.V1.Derived.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.V1 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.V1.fst.checked
+    instead of .cache/FStar.Reflection.V1.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.V1.Compare to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.V1.Compare.fsti.checked
+    instead of .cache/FStar.Reflection.V1.Compare.fsti.checked
+
+* Warning 321:
+  - Did not expect module
+    FStar.Reflection.V1.Derived.Lemmas
+    to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.V1.Derived.Lemmas.fst.checked
+    instead of .cache/FStar.Reflection.V1.Derived.Lemmas.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.V1.Logic to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.V1.Logic.fst.checked
+    instead of .cache/FStar.Tactics.V1.Logic.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.V1.Derived to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.V1.Derived.fst.checked
+    instead of .cache/FStar.Tactics.V1.Derived.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.V1.SyntaxHelpers to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.V1.SyntaxHelpers.fst.checked
+    instead of .cache/FStar.Tactics.V1.SyntaxHelpers.fst.checked
+
+* Warning 285 at Bertie.Tls13utils.fsti(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Server.fsti(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13api.fst(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13formats.fsti(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13formats.Handshake_data.fsti(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13formats.Handshake_data.fst(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13formats.fst(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13record.fsti(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13keyscheduler.Key_schedule.fsti(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13keyscheduler.Key_schedule.fst(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13record.fst(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13handshake.fsti(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13handshake.fst(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13cert.fsti(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13keyscheduler.fsti(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13keyscheduler.fst(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13api.fsti(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+rm -f .depend && make .depend
+make[1]: Entering directory '/out/work/upstream/proofs/fstar/extraction'
+Bertie.Server.fst Bertie.Tls13api.fst Bertie.Tls13formats.Handshake_data.fst Bertie.Tls13formats.fst Bertie.Tls13handshake.fst Bertie.Tls13keyscheduler.Key_schedule.fst Bertie.Tls13keyscheduler.fst Bertie.Tls13record.fst
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models --cmi --dep full Bertie.Server.fst Bertie.Tls13api.fst Bertie.Tls13formats.Handshake_data.fst Bertie.Tls13formats.fst Bertie.Tls13handshake.fst Bertie.Tls13keyscheduler.Key_schedule.fst Bertie.Tls13keyscheduler.fst Bertie.Tls13record.fst --extract '* -Prims -LowStar -FStar' > .depend
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+* Warning 285 at Bertie.Server.fst(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 321:
+  - Did not expect module Prims to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/Prims.fst.checked
+    instead of .cache/Prims.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Pervasives.Native to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Pervasives.Native.fst.checked
+    instead of .cache/FStar.Pervasives.Native.fst.checked
+
+* Warning 285 at Bertie.Tls13crypto.fsti(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.Typeclasses to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.Typeclasses.fsti.checked
+    instead of .cache/FStar.Tactics.Typeclasses.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Stubs.Reflection.Types to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.Reflection.Types.fsti.checked
+    instead of .cache/FStar.Stubs.Reflection.Types.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Sealed to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Sealed.fsti.checked
+    instead of .cache/FStar.Sealed.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Prelude to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Prelude.fsti.checked
+    instead of .cache/FStar.Prelude.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Attributes to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Attributes.fsti.checked
+    instead of .cache/FStar.Attributes.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.NormSteps to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.NormSteps.fsti.checked
+    instead of .cache/FStar.NormSteps.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.NormSteps to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.NormSteps.fst.checked
+    instead of .cache/FStar.NormSteps.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Pervasives to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Pervasives.fsti.checked
+    instead of .cache/FStar.Pervasives.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Pervasives to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Pervasives.fst.checked
+    instead of .cache/FStar.Pervasives.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Range to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Range.fsti.checked
+    instead of .cache/FStar.Range.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.Effect to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.Effect.fsti.checked
+    instead of .cache/FStar.Tactics.Effect.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Stubs.Tactics.Types to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.Tactics.Types.fsti.checked
+    instead of .cache/FStar.Stubs.Tactics.Types.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Issue to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Issue.fsti.checked
+    instead of .cache/FStar.Issue.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Pprint to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Pprint.fsti.checked
+    instead of .cache/FStar.Pprint.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Float to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Float.fsti.checked
+    instead of .cache/FStar.Float.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Char to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Char.fsti.checked
+    instead of .cache/FStar.Char.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.UInt32 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.UInt32.fsti.checked
+    instead of .cache/FStar.UInt32.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Mul to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Mul.fst.checked
+    instead of .cache/FStar.Mul.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.UInt to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.UInt.fsti.checked
+    instead of .cache/FStar.UInt.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Seq.Base to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Seq.Base.fsti.checked
+    instead of .cache/FStar.Seq.Base.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.List.Tot.Base to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.List.Tot.Base.fst.checked
+    instead of .cache/FStar.List.Tot.Base.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Classical.Sugar to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Classical.Sugar.fsti.checked
+    instead of .cache/FStar.Classical.Sugar.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Classical.Sugar to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Classical.Sugar.fst.checked
+    instead of .cache/FStar.Classical.Sugar.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Squash to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Squash.fsti.checked
+    instead of .cache/FStar.Squash.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Squash to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Squash.fst.checked
+    instead of .cache/FStar.Squash.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.IndefiniteDescription to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.IndefiniteDescription.fsti.checked
+    instead of .cache/FStar.IndefiniteDescription.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Ghost to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Ghost.fsti.checked
+    instead of .cache/FStar.Ghost.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Ghost to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Ghost.fst.checked
+    instead of .cache/FStar.Ghost.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.IndefiniteDescription to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.IndefiniteDescription.fst.checked
+    instead of .cache/FStar.IndefiniteDescription.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Seq.Base to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Seq.Base.fst.checked
+    instead of .cache/FStar.Seq.Base.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.List.Tot to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.List.Tot.fst.checked
+    instead of .cache/FStar.List.Tot.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.List.Tot.Properties to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.List.Tot.Properties.fsti.checked
+    instead of .cache/FStar.List.Tot.Properties.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.StrongExcludedMiddle to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.StrongExcludedMiddle.fst.checked
+    instead of .cache/FStar.StrongExcludedMiddle.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.List.Tot.Properties to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.List.Tot.Properties.fst.checked
+    instead of .cache/FStar.List.Tot.Properties.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Classical to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Classical.fsti.checked
+    instead of .cache/FStar.Classical.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Classical to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Classical.fst.checked
+    instead of .cache/FStar.Classical.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Math.Lemmas to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Math.Lemmas.fsti.checked
+    instead of .cache/FStar.Math.Lemmas.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Math.Lemmas to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Math.Lemmas.fst.checked
+    instead of .cache/FStar.Math.Lemmas.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Calc to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Calc.fsti.checked
+    instead of .cache/FStar.Calc.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Preorder to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Preorder.fst.checked
+    instead of .cache/FStar.Preorder.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Calc to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Calc.fst.checked
+    instead of .cache/FStar.Calc.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Math.Lib to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Math.Lib.fst.checked
+    instead of .cache/FStar.Math.Lib.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.BitVector to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.BitVector.fsti.checked
+    instead of .cache/FStar.BitVector.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.BitVector to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.BitVector.fst.checked
+    instead of .cache/FStar.BitVector.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Seq to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Seq.fst.checked
+    instead of .cache/FStar.Seq.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Seq.Properties to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Seq.Properties.fsti.checked
+    instead of .cache/FStar.Seq.Properties.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Seq.Properties to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Seq.Properties.fst.checked
+    instead of .cache/FStar.Seq.Properties.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.UInt to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.UInt.fst.checked
+    instead of .cache/FStar.UInt.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.UInt32 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.UInt32.fst.checked
+    instead of .cache/FStar.UInt32.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Stubs.Tactics.Common to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.Tactics.Common.fsti.checked
+    instead of .cache/FStar.Stubs.Tactics.Common.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Stubs.Errors.Msg to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.Errors.Msg.fsti.checked
+    instead of .cache/FStar.Stubs.Errors.Msg.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Monotonic.Pure to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Monotonic.Pure.fst.checked
+    instead of .cache/FStar.Monotonic.Pure.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.Effect to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.Effect.fst.checked
+    instead of .cache/FStar.Tactics.Effect.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.Typeclasses to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.Typeclasses.fst.checked
+    instead of .cache/FStar.Tactics.Typeclasses.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.Util to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.Util.fst.checked
+    instead of .cache/FStar.Tactics.Util.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Stubs.Reflection.V2.Data to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.Reflection.V2.Data.fsti.checked
+    instead of .cache/FStar.Stubs.Reflection.V2.Data.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Sealed.Inhabited to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Sealed.Inhabited.fst.checked
+    instead of .cache/FStar.Sealed.Inhabited.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Stubs.Syntax.Syntax to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.Syntax.Syntax.fsti.checked
+    instead of .cache/FStar.Stubs.Syntax.Syntax.fsti.checked
+
+* Warning 321:
+  - Did not expect module
+    FStar.Stubs.Reflection.V2.Builtins
+    to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.Reflection.V2.Builtins.fsti.checked
+    instead of .cache/FStar.Stubs.Reflection.V2.Builtins.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Stubs.VConfig to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.VConfig.fsti.checked
+    instead of .cache/FStar.Stubs.VConfig.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Order to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Order.fst.checked
+    instead of .cache/FStar.Order.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.TermEq.Simple to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.TermEq.Simple.fsti.checked
+    instead of .cache/FStar.Reflection.TermEq.Simple.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.TermEq.Simple to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.TermEq.Simple.fst.checked
+    instead of .cache/FStar.Reflection.TermEq.Simple.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.TermEq to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.TermEq.fsti.checked
+    instead of .cache/FStar.Reflection.TermEq.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.TermEq to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.TermEq.fst.checked
+    instead of .cache/FStar.Reflection.TermEq.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.NamedView to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.NamedView.fsti.checked
+    instead of .cache/FStar.Tactics.NamedView.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.NamedView to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.NamedView.fst.checked
+    instead of .cache/FStar.Tactics.NamedView.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.V2 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.V2.fst.checked
+    instead of .cache/FStar.Reflection.V2.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.V2.Collect to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.V2.Collect.fst.checked
+    instead of .cache/FStar.Reflection.V2.Collect.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.V2.Compare to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.V2.Compare.fsti.checked
+    instead of .cache/FStar.Reflection.V2.Compare.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.V2.Compare to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.V2.Compare.fst.checked
+    instead of .cache/FStar.Reflection.V2.Compare.fst.checked
+
+* Warning 321:
+  - Did not expect module
+    FStar.Reflection.V2.Derived.Lemmas
+    to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.V2.Derived.Lemmas.fst.checked
+    instead of .cache/FStar.Reflection.V2.Derived.Lemmas.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.V2.Derived to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.V2.Derived.fst.checked
+    instead of .cache/FStar.Reflection.V2.Derived.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.Const to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.Const.fst.checked
+    instead of .cache/FStar.Reflection.Const.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Stubs.Tactics.V2.Builtins to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.Tactics.V2.Builtins.fsti.checked
+    instead of .cache/FStar.Stubs.Tactics.V2.Builtins.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Stubs.Tactics.Unseal to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.Tactics.Unseal.fsti.checked
+    instead of .cache/FStar.Stubs.Tactics.Unseal.fsti.checked
+
+* Warning 321:
+  - Did not expect module
+    FStar.Stubs.Tactics.Types.Reflection
+    to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.Tactics.Types.Reflection.fsti.checked
+    instead of .cache/FStar.Stubs.Tactics.Types.Reflection.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Stubs.TypeChecker.Core to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.TypeChecker.Core.fsti.checked
+    instead of .cache/FStar.Stubs.TypeChecker.Core.fsti.checked
+
+* Warning 321:
+  - Did not expect module
+    FStar.Tactics.V2.SyntaxCoercions
+    to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.V2.SyntaxCoercions.fst.checked
+    instead of .cache/FStar.Tactics.V2.SyntaxCoercions.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.V2.Derived to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.V2.Derived.fst.checked
+    instead of .cache/FStar.Tactics.V2.Derived.fst.checked
+
+* Warning 321:
+  - Did not expect module
+    FStar.PropositionalExtensionality
+    to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.PropositionalExtensionality.fst.checked
+    instead of .cache/FStar.PropositionalExtensionality.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.Names to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.Names.fsti.checked
+    instead of .cache/FStar.Tactics.Names.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.Names to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.Names.fst.checked
+    instead of .cache/FStar.Tactics.Names.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.Visit to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.Visit.fst.checked
+    instead of .cache/FStar.Tactics.Visit.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.V2.SyntaxHelpers to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.V2.SyntaxHelpers.fsti.checked
+    instead of .cache/FStar.Tactics.V2.SyntaxHelpers.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.V2.SyntaxHelpers to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.V2.SyntaxHelpers.fst.checked
+    instead of .cache/FStar.Tactics.V2.SyntaxHelpers.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.V2.Formula to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.V2.Formula.fst.checked
+    instead of .cache/FStar.Reflection.V2.Formula.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.FunctionalExtensionality to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.FunctionalExtensionality.fsti.checked
+    instead of .cache/FStar.FunctionalExtensionality.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.FunctionalExtensionality to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.FunctionalExtensionality.fst.checked
+    instead of .cache/FStar.FunctionalExtensionality.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Int128 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Int128.fsti.checked
+    instead of .cache/FStar.Int128.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Int64 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Int64.fsti.checked
+    instead of .cache/FStar.Int64.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Int to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Int.fsti.checked
+    instead of .cache/FStar.Int.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Int to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Int.fst.checked
+    instead of .cache/FStar.Int.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Int64 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Int64.fst.checked
+    instead of .cache/FStar.Int64.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Int128 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Int128.fst.checked
+    instead of .cache/FStar.Int128.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.UInt128 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.UInt128.fsti.checked
+    instead of .cache/FStar.UInt128.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.UInt64 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.UInt64.fsti.checked
+    instead of .cache/FStar.UInt64.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.UInt64 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.UInt64.fst.checked
+    instead of .cache/FStar.UInt64.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.UInt128 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.UInt128.fst.checked
+    instead of .cache/FStar.UInt128.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Int.Cast to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Int.Cast.fst.checked
+    instead of .cache/FStar.Int.Cast.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Int32 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Int32.fsti.checked
+    instead of .cache/FStar.Int32.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Int32 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Int32.fst.checked
+    instead of .cache/FStar.Int32.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Int16 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Int16.fsti.checked
+    instead of .cache/FStar.Int16.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Int16 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Int16.fst.checked
+    instead of .cache/FStar.Int16.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Int8 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Int8.fsti.checked
+    instead of .cache/FStar.Int8.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Int8 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Int8.fst.checked
+    instead of .cache/FStar.Int8.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.UInt16 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.UInt16.fsti.checked
+    instead of .cache/FStar.UInt16.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.UInt16 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.UInt16.fst.checked
+    instead of .cache/FStar.UInt16.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.UInt8 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.UInt8.fsti.checked
+    instead of .cache/FStar.UInt8.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.UInt8 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.UInt8.fst.checked
+    instead of .cache/FStar.UInt8.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.BV.Lemmas to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.BV.Lemmas.fsti.checked
+    instead of .cache/FStar.Tactics.BV.Lemmas.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.BV to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.BV.fsti.checked
+    instead of .cache/FStar.BV.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.List to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.List.fst.checked
+    instead of .cache/FStar.List.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.All to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.All.fsti.checked
+    instead of .cache/FStar.All.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Exn to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Exn.fst.checked
+    instead of .cache/FStar.Exn.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.ST to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.ST.fst.checked
+    instead of .cache/FStar.ST.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Set to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Set.fsti.checked
+    instead of .cache/FStar.Set.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Set to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Set.fst.checked
+    instead of .cache/FStar.Set.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Monotonic.Witnessed to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Monotonic.Witnessed.fsti.checked
+    instead of .cache/FStar.Monotonic.Witnessed.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Monotonic.Witnessed to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Monotonic.Witnessed.fst.checked
+    instead of .cache/FStar.Monotonic.Witnessed.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Heap to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Heap.fst.checked
+    instead of .cache/FStar.Heap.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Monotonic.Heap to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Monotonic.Heap.fsti.checked
+    instead of .cache/FStar.Monotonic.Heap.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.TSet to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.TSet.fsti.checked
+    instead of .cache/FStar.TSet.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.TSet to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.TSet.fst.checked
+    instead of .cache/FStar.TSet.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.PredicateExtensionality to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.PredicateExtensionality.fst.checked
+    instead of .cache/FStar.PredicateExtensionality.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Monotonic.Heap to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Monotonic.Heap.fst.checked
+    instead of .cache/FStar.Monotonic.Heap.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.ErasedLogic to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.ErasedLogic.fst.checked
+    instead of .cache/FStar.ErasedLogic.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.BV to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.BV.fst.checked
+    instead of .cache/FStar.BV.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.BV.Lemmas to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.BV.Lemmas.fst.checked
+    instead of .cache/FStar.Tactics.BV.Lemmas.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.BV to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.BV.fsti.checked
+    instead of .cache/FStar.Tactics.BV.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.BV to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.BV.fst.checked
+    instead of .cache/FStar.Tactics.BV.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.V2.Arith to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.V2.Arith.fst.checked
+    instead of .cache/FStar.Reflection.V2.Arith.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.V2.Bare to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.V2.Bare.fsti.checked
+    instead of .cache/FStar.Tactics.V2.Bare.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.SMT to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.SMT.fsti.checked
+    instead of .cache/FStar.Tactics.SMT.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.SMT to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.SMT.fst.checked
+    instead of .cache/FStar.Tactics.SMT.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.Print to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.Print.fsti.checked
+    instead of .cache/FStar.Tactics.Print.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.Print to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.Print.fst.checked
+    instead of .cache/FStar.Tactics.Print.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.String to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.String.fsti.checked
+    instead of .cache/FStar.String.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.V2.Logic to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.V2.Logic.fsti.checked
+    instead of .cache/FStar.Tactics.V2.Logic.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.Logic.Lemmas to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.Logic.Lemmas.fsti.checked
+    instead of .cache/FStar.Tactics.Logic.Lemmas.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.Logic.Lemmas to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.Logic.Lemmas.fst.checked
+    instead of .cache/FStar.Tactics.Logic.Lemmas.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.V2.Logic to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.V2.Logic.fst.checked
+    instead of .cache/FStar.Tactics.V2.Logic.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.MApply0 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.MApply0.fsti.checked
+    instead of .cache/FStar.Tactics.MApply0.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.MApply0 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.MApply0.fst.checked
+    instead of .cache/FStar.Tactics.MApply0.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.MApply to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.MApply.fsti.checked
+    instead of .cache/FStar.Tactics.MApply.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.MApply to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.MApply.fst.checked
+    instead of .cache/FStar.Tactics.MApply.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.fsti.checked
+    instead of .cache/FStar.Tactics.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.V1 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.V1.fsti.checked
+    instead of .cache/FStar.Tactics.V1.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.Easy to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.Easy.fsti.checked
+    instead of .cache/FStar.Tactics.Easy.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.Easy to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.Easy.fst.checked
+    instead of .cache/FStar.Tactics.Easy.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.V1.Logic to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.V1.Logic.fsti.checked
+    instead of .cache/FStar.Tactics.V1.Logic.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Stubs.Tactics.V1.Builtins to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.Tactics.V1.Builtins.fsti.checked
+    instead of .cache/FStar.Stubs.Tactics.V1.Builtins.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Stubs.Reflection.V1.Data to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.Reflection.V1.Data.fsti.checked
+    instead of .cache/FStar.Stubs.Reflection.V1.Data.fsti.checked
+
+* Warning 321:
+  - Did not expect module
+    FStar.Stubs.Reflection.V1.Builtins
+    to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Stubs.Reflection.V1.Builtins.fsti.checked
+    instead of .cache/FStar.Stubs.Reflection.V1.Builtins.fsti.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.V1.Formula to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.V1.Formula.fst.checked
+    instead of .cache/FStar.Reflection.V1.Formula.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.V1.Derived to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.V1.Derived.fst.checked
+    instead of .cache/FStar.Reflection.V1.Derived.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.V1 to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.V1.fst.checked
+    instead of .cache/FStar.Reflection.V1.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Reflection.V1.Compare to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.V1.Compare.fsti.checked
+    instead of .cache/FStar.Reflection.V1.Compare.fsti.checked
+
+* Warning 321:
+  - Did not expect module
+    FStar.Reflection.V1.Derived.Lemmas
+    to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Reflection.V1.Derived.Lemmas.fst.checked
+    instead of .cache/FStar.Reflection.V1.Derived.Lemmas.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.V1.Logic to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.V1.Logic.fst.checked
+    instead of .cache/FStar.Tactics.V1.Logic.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.V1.Derived to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.V1.Derived.fst.checked
+    instead of .cache/FStar.Tactics.V1.Derived.fst.checked
+
+* Warning 321:
+  - Did not expect module FStar.Tactics.V1.SyntaxHelpers to be already checked.
+  - Found it in an unexpected location:
+      /out/fstar-bin-2025.10.06/fstar/lib/fstar/ulib.checked/FStar.Tactics.V1.SyntaxHelpers.fst.checked
+    instead of .cache/FStar.Tactics.V1.SyntaxHelpers.fst.checked
+
+* Warning 285 at Bertie.Tls13utils.fsti(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Server.fsti(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13api.fst(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13formats.fsti(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13formats.Handshake_data.fsti(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13formats.Handshake_data.fst(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13formats.fst(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13record.fsti(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13keyscheduler.Key_schedule.fsti(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13keyscheduler.Key_schedule.fst(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13record.fst(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13handshake.fsti(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13handshake.fst(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13cert.fsti(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13keyscheduler.fsti(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13keyscheduler.fst(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Warning 285 at Bertie.Tls13api.fsti(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+make[1]: '.depend' is up to date.
+make[1]: Leaving directory '/out/work/upstream/proofs/fstar/extraction'
+make verify
+make[1]: Entering directory '/out/work/upstream/proofs/fstar/extraction'
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/rust_primitives/Rust_primitives.Char.fsti  --hint_file .hints/Rust_primitives.Char.fsti.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified i'face (or impl+i'face): Rust_primitives.Char
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/rust_primitives/Rust_primitives.Float.fsti  --hint_file .hints/Rust_primitives.Float.fsti.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+* Warning 239 at /out/hax/proof-libs/fstar/rust_primitives/Rust_primitives.Float.fsti(5,5-5,10):
+  - Adding an implicit 'assume new' qualifier on Rust_primitives.Float.float
+
+Verified i'face (or impl+i'face): Rust_primitives.Float
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/rust_primitives/Rust_primitives.Integers.fsti  --hint_file .hints/Rust_primitives.Integers.fsti.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified i'face (or impl+i'face): Rust_primitives.Integers
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/rust_primitives/Rust_primitives.Arrays.fsti  --hint_file .hints/Rust_primitives.Arrays.fsti.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified i'face (or impl+i'face): Rust_primitives.Arrays
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/rust_primitives/Rust_primitives.BitVectors.fsti  --hint_file .hints/Rust_primitives.BitVectors.fsti.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified i'face (or impl+i'face): Rust_primitives.BitVectors
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/rust_primitives/Rust_primitives.fst  --hint_file .hints/Rust_primitives.fst.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified module: Rust_primitives
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Core_models.Clone.fst  --hint_file .hints/Core_models.Clone.fst.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified module: Core_models.Clone
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Alloc.Alloc.fst  --hint_file .hints/Alloc.Alloc.fst.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified module: Alloc.Alloc
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/hax-lib/proofs/fstar/extraction/Hax_lib.fst  --hint_file .hints/Hax_lib.fst.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified module: Hax_lib
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Core_models.Marker.fst  --hint_file .hints/Core_models.Marker.fst.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified module: Core_models.Marker
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Core_models.Num.Error.fsti  --hint_file .hints/Core_models.Num.Error.fsti.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified i'face (or impl+i'face): Core_models.Num.Error
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Core_models.Ops.Control_flow.fst  --hint_file .hints/Core_models.Ops.Control_flow.fst.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified module: Core_models.Ops.Control_flow
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Core_models.Ops.Try_trait.fst  --hint_file .hints/Core_models.Ops.Try_trait.fst.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified module: Core_models.Ops.Try_trait
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/hax-lib/proofs/fstar/extraction/Hax_lib.Int.fst  --hint_file .hints/Hax_lib.Int.fst.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified module: Hax_lib.Int
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/rust_primitives/Rust_primitives.Hax.Int.fst  --hint_file .hints/Rust_primitives.Hax.Int.fst.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified module: Rust_primitives.Hax.Int
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/rust_primitives/Rust_primitives.Hax.Folds.fsti  --hint_file .hints/Rust_primitives.Hax.Folds.fsti.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified i'face (or impl+i'face): Rust_primitives.Hax.Folds
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/rust_primitives/Rust_primitives.Arithmetic.fsti  --hint_file .hints/Rust_primitives.Arithmetic.fsti.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified i'face (or impl+i'face): Rust_primitives.Arithmetic
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Core_models.Panicking.Internal.fsti  --hint_file .hints/Core_models.Panicking.Internal.fsti.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified i'face (or impl+i'face): Core_models.Panicking.Internal
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/rust_primitives/Rust_primitives.Slice.fsti  --hint_file .hints/Rust_primitives.Slice.fsti.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified i'face (or impl+i'face): Rust_primitives.Slice
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/rust_primitives/Rust_primitives.Sequence.fst  --hint_file .hints/Rust_primitives.Sequence.fst.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified module: Rust_primitives.Sequence
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Core_models.Default.fsti  --hint_file .hints/Core_models.Default.fsti.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified i'face (or impl+i'face): Core_models.Default
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Core_models.Ops.Index.fst  --hint_file .hints/Core_models.Ops.Index.fst.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified module: Core_models.Ops.Index
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Core_models.Ops.Function.fst  --hint_file .hints/Core_models.Ops.Function.fst.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified module: Core_models.Ops.Function
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Core_models.Bundle.fst  --hint_file .hints/Core_models.Bundle.fst.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified module: Core_models.Bundle
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Core_models.Iter.Traits.Collect.fst  --hint_file .hints/Core_models.Iter.Traits.Collect.fst.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified module: Core_models.Iter.Traits.Collect
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Core_models.Ops.Deref.fst  --hint_file .hints/Core_models.Ops.Deref.fst.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified module: Core_models.Ops.Deref
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Core_models.Ops.Range.fst  --hint_file .hints/Core_models.Ops.Range.fst.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified module: Core_models.Ops.Range
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Core_models.Option.fst  --hint_file .hints/Core_models.Option.fst.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified module: Core_models.Option
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Core_models.Num.fst  --hint_file .hints/Core_models.Num.fst.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified module: Core_models.Num
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Core_models.Slice.Index.fst  --hint_file .hints/Core_models.Slice.Index.fst.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified module: Core_models.Slice.Index
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Core_models.Result.fst  --hint_file .hints/Core_models.Result.fst.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified module: Core_models.Result
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Core_models.Cmp.fst  --hint_file .hints/Core_models.Cmp.fst.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified module: Core_models.Cmp
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Core_models.Iter.Traits.Iterator.fst  --hint_file .hints/Core_models.Iter.Traits.Iterator.fst.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified module: Core_models.Iter.Traits.Iterator
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Core_models.Slice.Iter.fst  --hint_file .hints/Core_models.Slice.Iter.fst.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified module: Core_models.Slice.Iter
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Core_models.Slice.fst  --hint_file .hints/Core_models.Slice.fst.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified module: Core_models.Slice
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Alloc.Vec.Drain.fst  --hint_file .hints/Alloc.Vec.Drain.fst.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified module: Alloc.Vec.Drain
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/rust_primitives/Rust_primitives.Notations.fsti  --hint_file .hints/Rust_primitives.Notations.fsti.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified i'face (or impl+i'face): Rust_primitives.Notations
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Alloc.Vec.fst  --hint_file .hints/Alloc.Vec.fst.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified module: Alloc.Vec
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/work/upstream/proofs/fstar/libcrux-models/Libcrux_hkdf.fsti  --hint_file .hints/Libcrux_hkdf.fsti.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+* Warning 239 at ../libcrux-models/Libcrux_hkdf.fsti(3,5-3,16):
+  - Adding an implicit 'assume new' qualifier on Libcrux_hkdf.t_Algorithm
+
+Verified i'face (or impl+i'face): Libcrux_hkdf
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/work/upstream/proofs/fstar/libcrux-models/Libcrux_hmac.fsti  --hint_file .hints/Libcrux_hmac.fsti.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+* Warning 239 at ../libcrux-models/Libcrux_hmac.fsti(3,5-3,16):
+  - Adding an implicit 'assume new' qualifier on Libcrux_hmac.t_Algorithm
+
+Verified i'face (or impl+i'face): Libcrux_hmac
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/work/upstream/proofs/fstar/libcrux-models/Libcrux_sha2.Impl_hacl.fsti  --hint_file .hints/Libcrux_sha2.Impl_hacl.fsti.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+* Warning 239 at ../libcrux-models/Libcrux_sha2.Impl_hacl.fsti(3,5-3,16):
+  - Adding an implicit 'assume new' qualifier on Libcrux_sha2.Impl_hacl.t_Algorithm
+
+Verified i'face (or impl+i'face): Libcrux_sha2.Impl_hacl
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Core_models.Fmt.fsti  --hint_file .hints/Core_models.Fmt.fsti.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified i'face (or impl+i'face): Core_models.Fmt
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Core_models.Error.fsti  --hint_file .hints/Core_models.Error.fsti.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified i'face (or impl+i'face): Core_models.Error
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Rand_core.fsti  --hint_file .hints/Rand_core.fsti.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified i'face (or impl+i'face): Rand_core
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Rand.Rng.fsti  --hint_file .hints/Rand.Rng.fsti.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified i'face (or impl+i'face): Rand.Rng
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/work/upstream/proofs/fstar/libcrux-models/Libcrux_rsa.Impl_hacl.fsti  --hint_file .hints/Libcrux_rsa.Impl_hacl.fsti.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified i'face (or impl+i'face): Libcrux_rsa.Impl_hacl
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/work/upstream/proofs/fstar/libcrux-models/Libcrux_kem.fsti  --hint_file .hints/Libcrux_kem.fsti.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+* Warning 239 at ../libcrux-models/Libcrux_kem.fsti(3,5-3,16):
+  - Adding an implicit 'assume new' qualifier on Libcrux_kem.t_Algorithm
+
+Verified i'face (or impl+i'face): Libcrux_kem
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/work/upstream/proofs/fstar/libcrux-models/Libcrux_ecdsa.P256.Conversions.fsti  --hint_file .hints/Libcrux_ecdsa.P256.Conversions.fsti.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified i'face (or impl+i'face): Libcrux_ecdsa.P256.Conversions
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Core_models.Array.fst  --hint_file .hints/Core_models.Array.fst.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified module: Core_models.Array
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/rust_primitives/Rust_primitives.Hax.fst  --hint_file .hints/Rust_primitives.Hax.fst.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified module: Rust_primitives.Hax
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/rust_primitives/Rust_primitives.String.fsti  --hint_file .hints/Rust_primitives.String.fsti.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified i'face (or impl+i'face): Rust_primitives.String
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Alloc.String.fst  --hint_file .hints/Alloc.String.fst.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified module: Alloc.String
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Rand.Distr.Integer.fsti  --hint_file .hints/Rand.Distr.Integer.fsti.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified i'face (or impl+i'face): Rand.Distr.Integer
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  /out/hax/proof-libs/fstar/core/Rand.Distr.Distribution.fsti  --hint_file .hints/Rand.Distr.Distribution.fsti.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+Verified i'face (or impl+i'face): Rand.Distr.Distribution
+All verification conditions discharged successfully
+/out/fstar-bin-2025.10.06/fstar/bin/fstar.exe
+fstar.exe --cmi --warn_error -331 --z3version 4.13.3 --cache_checked_modules --cache_dir .cache --already_cached "+Prims+FStar+LowStar+C+Spec.Loops+TestLib" --include /out/hacl-star/lib --include /out/hax/proof-libs/fstar/rust_primitives --include /out/hax/proof-libs/fstar/core --include /out/hax/hax-lib/proofs/fstar/extraction --include ../libcrux-models  Bertie.Tls13utils.fsti  --hint_file .hints/Bertie.Tls13utils.fsti.hints
+* Warning 152:
+  - Not a valid include directory: /out/hacl-star/lib
+
+* Warning 285 at Bertie.Tls13utils.fsti(3,5-3,9):
+  - No modules in namespace Core and no file with that name either
+
+* Error 134 at Bertie.Tls13utils.fsti(3,5-3,9):
+  - Namespace 'Core' cannot be found.
+
+1 error was reported (see above)
+make[1]: *** [Makefile:83: .cache/Bertie.Tls13utils.fsti.checked] Error 1
+make[1]: Leaving directory '/out/work/upstream/proofs/fstar/extraction'
+make: *** [Makefile:50: all] Error 2
+make: Leaving directory '/out/work/upstream/proofs/fstar/extraction'
+Env: {}
+Command: make -C proofs/fstar/extraction/ 
+Directory: None
+Traceback (most recent call last):
+  File "/out/work/upstream/hax-driver.py", line 220, in <module>
+    shell(["make", "-C", "proofs/fstar/extraction/"], env=custom_env)
+  File "/out/work/upstream/hax-driver.py", line 27, in shell
+    raise Exception("Error {}. Expected {}.".format(ret, expect))
+Exception: Error CompletedProcess(args=['make', '-C', 'proofs/fstar/extraction/'], returncode=2). Expected 0.

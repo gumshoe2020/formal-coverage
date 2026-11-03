@@ -1,0 +1,183 @@
+{
+  "date": "2026-11-02",
+  "target": "aarch64-unknown-linux-gnu",
+  "base_image": "rust@sha256:82150a52ec202c1b14d7817e14516c392bb7f5cfebd88f1ed531cb37ebd39922",
+  "hax_commit": "5ccf89dd2e996c9f88f2267eaa2a64739c4ca41a",
+  "hax_reference": "hax-lib-v0.4.2",
+  "rust_toolchain": "nightly-2025-11-08",
+  "fstar_version": "2025.03.25",
+  "fstar_commit": "71d8221589d4d438af3706d89cb653cf53e18aab",
+  "fstar_source_sha256": "361115fa5b6016c1bc8d5e9789ee9a1c8644ee2df6b6e901f14cb0a32de401f0",
+  "bertie": {
+    "upstream": "ef65f76b4f86e96b9c273628739686f5506873b1",
+    "shipped": "fbbcc131de30d7e8f1599f66a83f16e694fe1997"
+  },
+  "shipped_lock_sha256": "8040adf76d94ab852cbe553bbfebeda3b0462e2a9bec87e6f08cbe88ca6d5ea2",
+  "scratch_server_commit": "e51db51950f15adcd3b4834af70faec28b5940da",
+  "shipped_libcrux_versions": [
+    {
+      "name": "libcrux-chacha20poly1305",
+      "version": "0.0.2"
+    },
+    {
+      "name": "libcrux-chacha20poly1305",
+      "version": "0.0.10"
+    },
+    {
+      "name": "libcrux-curve25519",
+      "version": "0.0.2"
+    },
+    {
+      "name": "libcrux-curve25519",
+      "version": "0.0.9"
+    },
+    {
+      "name": "libcrux-ecdh",
+      "version": "0.0.2"
+    },
+    {
+      "name": "libcrux-ecdsa",
+      "version": "0.0.3"
+    },
+    {
+      "name": "libcrux-ecdsa",
+      "version": "0.0.9"
+    },
+    {
+      "name": "libcrux-ed25519",
+      "version": "0.0.3"
+    },
+    {
+      "name": "libcrux-hacl-rs",
+      "version": "0.0.2"
+    },
+    {
+      "name": "libcrux-hacl-rs",
+      "version": "0.0.3"
+    },
+    {
+      "name": "libcrux-hacl-rs",
+      "version": "0.0.6"
+    },
+    {
+      "name": "libcrux-hkdf",
+      "version": "0.0.3"
+    },
+    {
+      "name": "libcrux-hkdf",
+      "version": "0.0.9"
+    },
+    {
+      "name": "libcrux-hmac",
+      "version": "0.0.3"
+    },
+    {
+      "name": "libcrux-hmac",
+      "version": "0.0.9"
+    },
+    {
+      "name": "libcrux-intrinsics",
+      "version": "0.0.2"
+    },
+    {
+      "name": "libcrux-intrinsics",
+      "version": "0.0.9"
+    },
+    {
+      "name": "libcrux-kem",
+      "version": "0.0.2"
+    },
+    {
+      "name": "libcrux-macros",
+      "version": "0.0.2"
+    },
+    {
+      "name": "libcrux-macros",
+      "version": "0.0.3"
+    },
+    {
+      "name": "libcrux-macros",
+      "version": "0.0.4"
+    },
+    {
+      "name": "libcrux-ml-kem",
+      "version": "0.0.2"
+    },
+    {
+      "name": "libcrux-p256",
+      "version": "0.0.2"
+    },
+    {
+      "name": "libcrux-p256",
+      "version": "0.0.3"
+    },
+    {
+      "name": "libcrux-p256",
+      "version": "0.0.9"
+    },
+    {
+      "name": "libcrux-platform",
+      "version": "0.0.2"
+    },
+    {
+      "name": "libcrux-platform",
+      "version": "0.0.4"
+    },
+    {
+      "name": "libcrux-poly1305",
+      "version": "0.0.2"
+    },
+    {
+      "name": "libcrux-poly1305",
+      "version": "0.0.7"
+    },
+    {
+      "name": "libcrux-rsa",
+      "version": "0.0.2"
+    },
+    {
+      "name": "libcrux-secrets",
+      "version": "0.0.7"
+    },
+    {
+      "name": "libcrux-sha2",
+      "version": "0.0.2"
+    },
+    {
+      "name": "libcrux-sha2",
+      "version": "0.0.3"
+    },
+    {
+      "name": "libcrux-sha2",
+      "version": "0.0.9"
+    },
+    {
+      "name": "libcrux-sha3",
+      "version": "0.0.2"
+    },
+    {
+      "name": "libcrux-sha3",
+      "version": "0.0.11"
+    },
+    {
+      "name": "libcrux-traits",
+      "version": "0.0.2"
+    },
+    {
+      "name": "libcrux-traits",
+      "version": "0.0.3"
+    },
+    {
+      "name": "libcrux-traits",
+      "version": "0.0.9"
+    }
+  ],
+  "attempts": [
+    {
+      "hax": "5ccf89dd2e996c9f88f2267eaa2a64739c4ca41a",
+      "fstar": "2025.03.25",
+      "status": "building",
+      "log": "logs/v1.7/setup.log"
+    }
+  ]
+}

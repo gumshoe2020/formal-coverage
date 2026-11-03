@@ -1,0 +1,22 @@
+# Worked schema-3 config for scratch-server (spec-lemmas, 2fa5eb78a6f9).
+# Every input below is justified from the code; debatable candidates (startup port
+# parsing, the --healthcheck client, type-level or ghost-code dependencies) stay
+# security-relevant and are listed for review in dev/NOTES.md instead.
+# Test code (#[test], #[cfg(test)] items, integration tests) is detected structurally.
+# Reports print each security figure with these inputs and under default rules only.
+
+# main reaches transport, parsing, dispatch and TLS setup.
+entry_points = ["scratch_server::main"]
+
+[[security.include]]
+pattern = "http_subset::parse"
+reason = "request parser: every byte read from a client connection is passed to it before framing or dispatch"
+
+[[security.include]]
+pattern = "scratch_server::serve_connection"
+reason = "reads attacker-controlled bytes from each accepted TCP/TLS stream and writes the response"
+
+[proof_ratio]
+min = 1.0
+max = 10.0
+reason = "review proof maintenance outside one to ten proof lines per proven runtime line; this is a cost signal, not a quality score"

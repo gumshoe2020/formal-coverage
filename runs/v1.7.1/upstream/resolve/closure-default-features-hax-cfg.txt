@@ -1,0 +1,158 @@
+bertie v0.1.0-pre.2 (<repo>/runs/v1.7.1/upstream/ws/bertie)
+backtrace v0.3.77
+addr2line v0.27.1
+gimli v0.34.0
+cfg-if v1.0.5
+libc v0.2.191
+miniz_oxide v0.9.1
+adler2 v2.0.1
+object v0.40.0
+memchr v2.8.3
+rustc-demangle v0.1.28
+hax-lib v0.4.2
+hax-lib-macros v0.4.2 (proc-macro)
+hax-lib-macros-types v0.4.2
+proc-macro2 v1.0.107
+unicode-ident v1.0.27
+quote v1.0.47
+proc-macro2 v1.0.107 (*)
+serde v1.0.229
+serde_core v1.0.229
+serde_derive v1.0.229 (proc-macro)
+proc-macro2 v1.0.107 (*)
+quote v1.0.47 (*)
+syn v3.0.9
+proc-macro2 v1.0.107 (*)
+quote v1.0.47 (*)
+unicode-ident v1.0.27
+serde_json v1.0.154
+itoa v1.0.18
+memchr v2.8.3
+serde_core v1.0.229
+zmij v1.0.23
+uuid v1.29.0
+getrandom v0.4.3
+cfg-if v1.0.5
+libc v0.2.191
+proc-macro2 v1.0.107 (*)
+quote v1.0.47 (*)
+syn v2.0.119
+proc-macro2 v1.0.107 (*)
+quote v1.0.47 (*)
+unicode-ident v1.0.27
+num-bigint v0.4.8
+num-integer v0.1.47
+num-traits v0.2.19
+autocfg v1.5.1
+num-traits v0.2.19 (*)
+num-traits v0.2.19 (*)
+hex v0.4.3
+libcrux-chacha20poly1305 v0.0.2
+libcrux-hacl-rs v0.0.2
+libcrux-macros v0.0.2 (proc-macro)
+quote v1.0.47 (*)
+syn v2.0.119 (*)
+libcrux-macros v0.0.2 (proc-macro) (*)
+libcrux-poly1305 v0.0.2
+libcrux-hacl-rs v0.0.2 (*)
+libcrux-macros v0.0.2 (proc-macro) (*)
+libcrux-ecdsa v0.0.3
+libcrux-p256 v0.0.3
+libcrux-hacl-rs v0.0.3
+libcrux-macros v0.0.3 (proc-macro)
+quote v1.0.47 (*)
+syn v2.0.119 (*)
+libcrux-macros v0.0.3 (proc-macro) (*)
+libcrux-sha2 v0.0.3
+libcrux-hacl-rs v0.0.3 (*)
+libcrux-macros v0.0.3 (proc-macro) (*)
+libcrux-traits v0.0.3
+rand v0.9.5
+rand_chacha v0.9.0
+ppv-lite86 v0.2.21
+zerocopy v0.8.63
+rand_core v0.9.5
+getrandom v0.3.4
+cfg-if v1.0.5
+libc v0.2.191
+rand_core v0.9.5 (*)
+libcrux-sha2 v0.0.3 (*)
+rand v0.9.5 (*)
+libcrux-ed25519 v0.0.3
+libcrux-hacl-rs v0.0.3 (*)
+libcrux-macros v0.0.3 (proc-macro) (*)
+libcrux-sha2 v0.0.3 (*)
+libcrux-hkdf v0.0.3
+libcrux-hacl-rs v0.0.3 (*)
+libcrux-hmac v0.0.3
+libcrux-hacl-rs v0.0.3 (*)
+libcrux-macros v0.0.3 (proc-macro) (*)
+libcrux-sha2 v0.0.3 (*)
+libcrux-hmac v0.0.3 (*)
+libcrux-kem v0.0.2
+libcrux-ecdh v0.0.2
+libcrux-curve25519 v0.0.2
+libcrux-hacl-rs v0.0.2 (*)
+libcrux-macros v0.0.2 (proc-macro) (*)
+libcrux-p256 v0.0.2
+libcrux-hacl-rs v0.0.2 (*)
+libcrux-macros v0.0.2 (proc-macro) (*)
+libcrux-sha2 v0.0.2
+libcrux-hacl-rs v0.0.2 (*)
+libcrux-macros v0.0.2 (proc-macro) (*)
+libcrux-traits v0.0.2
+rand v0.9.5 (*)
+rand v0.9.5 (*)
+libcrux-ml-kem v0.0.2
+hax-lib v0.2.0
+hax-lib-macros v0.2.0 (proc-macro)
+hax-lib-macros-types v0.2.0
+proc-macro2 v1.0.107 (*)
+quote v1.0.47 (*)
+serde v1.0.229 (*)
+serde_json v1.0.154 (*)
+uuid v1.29.0 (*)
+paste v1.0.15 (proc-macro)
+proc-macro-error v1.0.4
+proc-macro-error-attr v1.0.4 (proc-macro)
+proc-macro2 v1.0.107 (*)
+quote v1.0.47 (*)
+version_check v0.9.5
+proc-macro2 v1.0.107 (*)
+quote v1.0.47 (*)
+syn v1.0.109
+proc-macro2 v1.0.107 (*)
+unicode-ident v1.0.27
+version_check v0.9.5
+proc-macro2 v1.0.107 (*)
+quote v1.0.47 (*)
+syn v2.0.119 (*)
+num-bigint v0.4.8 (*)
+num-traits v0.2.19 (*)
+libcrux-intrinsics v0.0.2
+hax-lib v0.2.0 (*)
+libcrux-platform v0.0.2
+libc v0.2.191
+libcrux-sha3 v0.0.2
+hax-lib v0.2.0 (*)
+libcrux-intrinsics v0.0.2 (*)
+libcrux-platform v0.0.2 (*)
+rand v0.9.5 (*)
+libcrux-sha3 v0.0.2 (*)
+libcrux-traits v0.0.2 (*)
+rand v0.9.5 (*)
+libcrux-rsa v0.0.2
+libcrux-hacl-rs v0.0.2 (*)
+libcrux-macros v0.0.2 (proc-macro) (*)
+libcrux-sha2 v0.0.2 (*)
+libcrux-traits v0.0.2 (*)
+libcrux-sha2 v0.0.3 (*)
+rand v0.9.5 (*)
+tracing v0.1.44
+pin-project-lite v0.2.17
+tracing-attributes v0.1.31 (proc-macro)
+proc-macro2 v1.0.107 (*)
+quote v1.0.47 (*)
+syn v2.0.119 (*)
+tracing-core v0.1.36
+once_cell v1.21.4

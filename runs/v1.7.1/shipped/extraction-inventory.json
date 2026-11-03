@@ -1,0 +1,138 @@
+{
+  "fresh_files": {
+    "Bertie.Server.fst": {
+      "sha256": "0e6ea9f81ff2f0c0f576fea2b3966a30f91f7d22f8b521e35bcaad806894d1b9",
+      "snapshot_sha256": "8eca1e4fab8480449beb5691e6ab863fc9c2083a0ed3c631d1dd9d176a436865",
+      "changed_from_snapshot": true,
+      "added": 37,
+      "removed": 35
+    },
+    "Bertie.Server.fsti": {
+      "sha256": "1ef41615ffcfdf7072ab5c66de082ccf09c80fc2483c41ce275f99dc99daea99",
+      "snapshot_sha256": "1fac5689c0f3f67febe200fa8b7588d34347823bb0afbbbc69c4495f8e204efb",
+      "changed_from_snapshot": true,
+      "added": 21,
+      "removed": 11
+    },
+    "Bertie.Tls13api.fst": {
+      "sha256": "7de4ca26cd1762767d4b047ebb774885de8209806dc4b8a1adf663d4e16f4695",
+      "snapshot_sha256": "8dc323ff6e0b0da8809acf5a3b9577c1d43aafe558b46f4339bc3710d56236fd",
+      "changed_from_snapshot": true,
+      "added": 278,
+      "removed": 208
+    },
+    "Bertie.Tls13api.fsti": {
+      "sha256": "53bba9ec37f1c94602ef31c5a1f9e8425435f21f365a83be79c071e0782f680c",
+      "snapshot_sha256": "d7adf56c38e39be76497945c562662a0f05f82d6f76479d3ab21c94fc40041c9",
+      "changed_from_snapshot": true,
+      "added": 40,
+      "removed": 17
+    },
+    "Bertie.Tls13cert.fsti": {
+      "sha256": "ecde3aedbc85042cf354a02d41172f2d0698f15a2dd2f24ff7fd66cd5fa70fc2",
+      "snapshot_sha256": "0ae49669cdcaafba6a0a7950fa9e642705925b141b6104a57167a61c49ca2b1d",
+      "changed_from_snapshot": true,
+      "added": 70,
+      "removed": 57
+    },
+    "Bertie.Tls13crypto.fsti": {
+      "sha256": "ffd3fccab631f862151c8f734901fbba149cda06a9cde9fb96d1f3627f1208b4",
+      "snapshot_sha256": "2644731caf8c2ae6e1dcbbbd1da5897dd83d0733db3255450525d9d4120b33bb",
+      "changed_from_snapshot": true,
+      "added": 137,
+      "removed": 130
+    },
+    "Bertie.Tls13formats.Handshake_data.fst": {
+      "sha256": "2eea14688f0a9e5020d62ab52dcbb91545942af45d500bcfb636d36190efda89",
+      "snapshot_sha256": "a99ef729923d4d56352f06342e4c9c7ced2d01ffd850557cfa8649cbb180c54b",
+      "changed_from_snapshot": true,
+      "added": 132,
+      "removed": 131
+    },
+    "Bertie.Tls13formats.Handshake_data.fsti": {
+      "sha256": "0afaee42a99f127b292b3f8862faa2472e13363b73d01ecf113ca7b2dd346ca4",
+      "snapshot_sha256": "b04d19d368187a3d01bc423a9620a86b9fe5e7d034d8937d15f27f29006c825b",
+      "changed_from_snapshot": true,
+      "added": 60,
+      "removed": 54
+    },
+    "Bertie.Tls13formats.fst": {
+      "sha256": "8df23f505eebfdaf47064f815e148253d23d8c7726a737b05a8dbcbfca001f36",
+      "snapshot_sha256": "e0eb9037a1ad9720d401abfc9c6fdf0bd94d5707f35a91920ba7a0050ddddf61",
+      "changed_from_snapshot": true,
+      "added": 1763,
+      "removed": 1496
+    },
+    "Bertie.Tls13formats.fsti": {
+      "sha256": "ae13762c624d1abeff9bdce0a17544c64b5b7b6189df67814dd014e867e12092",
+      "snapshot_sha256": "efd80e33aa44be2311cdb592d7929a981f148d7f772f2ce545dadc6cf4db290c",
+      "changed_from_snapshot": true,
+      "added": 323,
+      "removed": 392
+    },
+    "Bertie.Tls13handshake.fst": {
+      "sha256": "880e5dcda9e09fe9dcf301da8ec628aa159835da1bee33c7529a3e6fa4b09da3",
+      "snapshot_sha256": "6b797347942eb0c06907274c014db79f8f82269d479c117f9f60393075ba4378",
+      "changed_from_snapshot": true,
+      "added": 1138,
+      "removed": 910
+    },
+    "Bertie.Tls13handshake.fsti": {
+      "sha256": "e464e11737943c1b0cf52db1e7c7c2657b8357f1bac10f30c4f1622e754bea68",
+      "snapshot_sha256": "377961854dd819376e738d3d7bb75002a5ddbede00ec253c018a3521bfdb0c12",
+      "changed_from_snapshot": true,
+      "added": 94,
+      "removed": 70
+    },
+    "Bertie.Tls13keyscheduler.Key_schedule.fst": {
+      "sha256": "b3282c280b5824dcc51c88092aa2b0c777a16785cd3e1a88660bbf63120f00e0",
+      "snapshot_sha256": "b03bbfad7f12a4e37c47ee55a51ab2423dc0e6d692e7e4d8813a6a86a3ebd156",
+      "changed_from_snapshot": true,
+      "added": 585,
+      "removed": 600
+    },
+    "Bertie.Tls13keyscheduler.Key_schedule.fsti": {
+      "sha256": "fc6f6d3684fe6e525bb0231c6d2893e3c52c1aadc73218cdef0c1d45261e8466",
+      "snapshot_sha256": "50cd66b66f8d71990a9ae30916391623c49afe7531357402cc27956c2b034164",
+      "changed_from_snapshot": true,
+      "added": 59,
+      "removed": 58
+    },
+    "Bertie.Tls13keyscheduler.fst": {
+      "sha256": "7e50d57c14831701658f84bcd6661f725fd34fdf1b0ba4471af925181cb2d5e2",
+      "snapshot_sha256": "e5fb2db5d7711860529fa2010b3c6101ec60fb12e75c97db8954051a0077c085",
+      "changed_from_snapshot": true,
+      "added": 356,
+      "removed": 287
+    },
+    "Bertie.Tls13keyscheduler.fsti": {
+      "sha256": "397fc85d2e0250e6e822ed2d549e84cef5ff20a0d3a1318bb4aaee9a70514c87",
+      "snapshot_sha256": "b833124dbae83a86ef667fef28ceb08e4c46867151979cc84145383c7e88a2ef",
+      "changed_from_snapshot": true,
+      "added": 18,
+      "removed": 13
+    },
+    "Bertie.Tls13record.fst": {
+      "sha256": "fa00505585f201d9d5b28e3e3f8d85b3abe5137b7396c8b5fbda5258fde44522",
+      "snapshot_sha256": "ffc51717d31c2632611dafbba57d1bde7205340fc87ca26372ebf23882d82714",
+      "changed_from_snapshot": true,
+      "added": 260,
+      "removed": 220
+    },
+    "Bertie.Tls13record.fsti": {
+      "sha256": "cea7e01c3b785a34a51acfa7397e61a71a656e80c16e6a8c8e3002787f46d3cb",
+      "snapshot_sha256": "e196b2d583ae5f8545bf8ad7e97e0e77cf529700212b97c4d631ce16692cf331",
+      "changed_from_snapshot": true,
+      "added": 22,
+      "removed": 12
+    },
+    "Bertie.Tls13utils.fsti": {
+      "sha256": "341cbf48596971958797809982fe7aec43a5c7acfca7aa602cd5647c5b710395",
+      "snapshot_sha256": "1add7034cdfd2c7161964bd5b3a16660ed7f8020703e7d3e06ffe74e495e789c",
+      "changed_from_snapshot": true,
+      "added": 381,
+      "removed": 312
+    }
+  },
+  "snapshot_only": []
+}

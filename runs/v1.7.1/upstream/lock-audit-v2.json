@@ -1,0 +1,313 @@
+{
+  "verdict": "pass",
+  "blocking": [],
+  "additions": [
+    {
+      "kind": "package",
+      "package": "anes 0.1.6",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "anstyle 1.0.14",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "ar_archive_writer 0.5.3",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "bytesize 1.3.3",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "cast 0.3.0",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "ciborium 0.2.2",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "ciborium-io 0.2.2",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "ciborium-ll 0.2.2",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "clap 4.6.7",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "clap_builder 4.6.7",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "clap_lex 1.1.1",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "criterion 0.5.1",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "criterion-plot 0.5.0",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "crossbeam-deque 0.8.8",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "crossbeam-epoch 0.9.21",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "crossbeam-utils 0.8.23",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "crunchy 0.2.4",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "dhat 0.3.3",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "half 2.7.1",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "hermit-abi 0.5.3",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "is-terminal 0.4.17",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "itertools 0.10.5",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "lazy_static 1.5.1",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "lock_api 0.4.14",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "mintex 0.1.4",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "object 0.39.1",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "oorandom 11.1.5",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "parking_lot 0.12.5",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "parking_lot_core 0.9.12",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "plotters 0.3.7",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "plotters-backend 0.3.7",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "plotters-svg 0.3.7",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "psm 0.1.32",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "rayon 1.12.0",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "rayon-core 1.13.0",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "redox_syscall 0.5.18",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "rustc-hash 1.1.0",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "same-file 1.0.6",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "scopeguard 1.2.0",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "smallvec 1.16.4",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "thousands 0.2.0",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "tinytemplate 1.2.1",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "walkdir 2.5.0",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "web-sys 0.3.106",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "package",
+      "package": "winapi-util 0.1.11",
+      "detail": "registry+https://github.com/rust-lang/crates.io-index"
+    },
+    {
+      "kind": "bertie-dev-edge",
+      "package": "bertie",
+      "detail": "bertie 0.1.0-pre.2"
+    },
+    {
+      "kind": "bertie-dev-edge",
+      "package": "bertie",
+      "detail": "bytesize 1.3.3"
+    },
+    {
+      "kind": "bertie-dev-edge",
+      "package": "bertie",
+      "detail": "criterion 0.5.1"
+    },
+    {
+      "kind": "bertie-dev-edge",
+      "package": "bertie",
+      "detail": "dhat 0.3.3"
+    },
+    {
+      "kind": "bertie-dev-edge",
+      "package": "bertie",
+      "detail": "psm 0.1.32"
+    },
+    {
+      "kind": "bertie-dev-edge",
+      "package": "bertie",
+      "detail": "rayon 1.12.0"
+    },
+    {
+      "kind": "bertie-dev-edge",
+      "package": "bertie",
+      "detail": "serde 1.0.229"
+    },
+    {
+      "kind": "bertie-dev-edge",
+      "package": "bertie",
+      "detail": "serde_json 1.0.154"
+    }
+  ],
+  "libcrux": [
+    "libcrux-chacha20poly1305 0.0.10",
+    "libcrux-chacha20poly1305 0.0.2",
+    "libcrux-curve25519 0.0.2",
+    "libcrux-curve25519 0.0.9",
+    "libcrux-ecdh 0.0.2",
+    "libcrux-ecdsa 0.0.3",
+    "libcrux-ecdsa 0.0.9",
+    "libcrux-ed25519 0.0.3",
+    "libcrux-hacl-rs 0.0.2",
+    "libcrux-hacl-rs 0.0.3",
+    "libcrux-hacl-rs 0.0.6",
+    "libcrux-hkdf 0.0.3",
+    "libcrux-hkdf 0.0.9",
+    "libcrux-hmac 0.0.3",
+    "libcrux-hmac 0.0.9",
+    "libcrux-intrinsics 0.0.2",
+    "libcrux-intrinsics 0.0.9",
+    "libcrux-kem 0.0.2",
+    "libcrux-macros 0.0.2",
+    "libcrux-macros 0.0.3",
+    "libcrux-macros 0.0.4",
+    "libcrux-ml-kem 0.0.2",
+    "libcrux-p256 0.0.2",
+    "libcrux-p256 0.0.3",
+    "libcrux-p256 0.0.9",
+    "libcrux-platform 0.0.2",
+    "libcrux-platform 0.0.4",
+    "libcrux-poly1305 0.0.2",
+    "libcrux-poly1305 0.0.7",
+    "libcrux-rsa 0.0.2",
+    "libcrux-secrets 0.0.7",
+    "libcrux-sha2 0.0.2",
+    "libcrux-sha2 0.0.3",
+    "libcrux-sha2 0.0.9",
+    "libcrux-sha3 0.0.11",
+    "libcrux-sha3 0.0.2",
+    "libcrux-traits 0.0.2",
+    "libcrux-traits 0.0.3",
+    "libcrux-traits 0.0.9"
+  ],
+  "closure_size": 75
+}

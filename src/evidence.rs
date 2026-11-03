@@ -108,8 +108,27 @@ pub fn apply_evidence_many(
     let files: BTreeSet<_> = report.source_files.iter().cloned().collect();
     for file in files {
         let source = fs::read_to_string(root.join(&file))?;
-        let stream: proc_macro2::TokenStream =
-            source.parse().map_err(|e| anyhow::anyhow!("{e}"))?;
+        let Ok(stream) = source.parse::<proc_macro2::TokenStream>() else {
+            // An unreadable token grammar cannot establish absence of escapes.
+            // Keep a file-scope hazard, which blocks gates and credit in this file.
+            let ids = report
+                .units
+                .iter()
+                .filter(|u| u.file == file)
+                .map(|u| u.id.clone())
+                .collect();
+            report.escape_hatches.push(Escape {
+                unit: format!("{file}::<file-scope>"),
+                affected_units: ids,
+                file: file.clone(),
+                line: 1,
+                kind: "unparseable source; escape scan unconfirmed".into(),
+                security: true,
+                first_party: true,
+            });
+            report.warnings.push(format!("{file}: unparseable source; every nonblank line retained as runtime; escape scan unconfirmed"));
+            continue;
+        };
         let mut found = Vec::new();
         escapes(stream, &mut found);
         found.sort();
@@ -138,7 +157,10 @@ pub fn apply_evidence_many(
                     // Standalone assume_specification, or an attributed non-function trusted item.
                     trusted_item_sloc(&source, line)
                 } else {
-                    affected.iter().map(|u| u.sloc).sum()
+                    // Trust includes the full unchecked source, including ghost lines
+                    // separated from runtime accounting. Changing the denominator must
+                    // never make the reported trust footprint smaller.
+                    affected.iter().map(|u| u.sloc + u.inline_proof_sloc).sum()
                 };
                 report.trusted_items.push(TrustedItem {
                     file: file.clone(),
@@ -721,9 +743,10 @@ fn verus_success(line: &str) -> bool {
 }
 
 // Keep the status vocabulary explicit: operation-only upstream claims are never whole-crate proof.
-pub const STATUSES: [&str; 7] = [
+pub const STATUSES: [&str; 8] = [
     "proven",
     "proven-bounded",
+    "proven-extracted",
     "proven-upstream",
     "tested",
     "unverified",

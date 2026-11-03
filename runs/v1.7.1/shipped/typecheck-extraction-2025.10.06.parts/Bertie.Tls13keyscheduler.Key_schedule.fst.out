@@ -1,0 +1,49 @@
++ fstar.exe --include libs/rust_primitives --include libs/core --include libs/hax-lib --include libs/libcrux-models --include proofs/fstar/extraction proofs/fstar/extraction/Bertie.Tls13keyscheduler.Key_schedule.fst
+* Warning 241 at libs/rust_primitives/Rust_primitives.Char.fsti(0,0-0,0):
+  - Unable to load
+    <repo>/runs/v1.7.1/shipped/libs/rust_primitives/Rust_primitives.Char.fsti.checked
+    since checked file
+    <repo>/runs/v1.7.1/shipped/libs/rust_primitives/Rust_primitives.Char.fsti.checked
+    does not exist; will recheck
+    <repo>/runs/v1.7.1/shipped/libs/rust_primitives/Rust_primitives.Char.fsti
+    (suppressing this warning for further modules)
+
+* Warning 239 at libs/rust_primitives/Rust_primitives.Float.fsti(5,5-5,10):
+  - Adding an implicit 'assume new' qualifier on Rust_primitives.Float.float
+
+* Warning 331 at libs/rust_primitives/Rust_primitives.Integers.fsti(280,24-280,25):
+  - This name is being ignored
+
+* Warning 331 at libs/rust_primitives/Rust_primitives.Integers.fsti(284,24-284,25):
+  - This name is being ignored
+
+* Warning 331 at libs/rust_primitives/Rust_primitives.Arrays.fsti(37,11-37,12):
+  - This name is being ignored
+
+* Warning 331 at libs/rust_primitives/Rust_primitives.Arrays.fsti(49,11-49,12):
+  - This name is being ignored
+
+* Warning 331 at libs/rust_primitives/Rust_primitives.Hax.Folds.fsti(113,21-113,26):
+  - This name is being ignored
+
+* Warning 331 at libs/rust_primitives/Rust_primitives.Hax.Folds.fsti(145,128-145,132):
+  - This name is being ignored
+
+* Warning 331 at libs/rust_primitives/Rust_primitives.Hax.Folds.fsti(146,4-146,10):
+  - This name is being ignored
+
+* Warning 239 at libs/libcrux-models/Libcrux_hkdf.fsti(3,5-3,16):
+  - Adding an implicit 'assume new' qualifier on Libcrux_hkdf.t_Algorithm
+
+* Warning 239 at libs/libcrux-models/Libcrux_hmac.fsti(3,5-3,16):
+  - Adding an implicit 'assume new' qualifier on Libcrux_hmac.t_Algorithm
+
+* Warning 239 at libs/libcrux-models/Libcrux_sha2.Impl_hacl.fsti(3,5-3,16):
+  - Adding an implicit 'assume new' qualifier on Libcrux_sha2.Impl_hacl.t_Algorithm
+
+* Warning 239 at libs/libcrux-models/Libcrux_kem.fsti(3,5-3,16):
+  - Adding an implicit 'assume new' qualifier on Libcrux_kem.t_Algorithm
+
+Verified module: Bertie.Tls13keyscheduler.Key_schedule
+All verification conditions discharged successfully
+exit=0

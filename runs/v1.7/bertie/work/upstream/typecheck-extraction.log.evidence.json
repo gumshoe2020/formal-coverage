@@ -1,0 +1,18 @@
+{
+  "tool": "hax-fstar",
+  "hax_version": "0.4.2",
+  "hax_commit": "5ccf89dd2e996c9f88f2267eaa2a64739c4ca41a",
+  "fstar_version": "2025.10.06",
+  "extraction_command": [
+    "python3",
+    "hax-driver.py",
+    "extract-fstar"
+  ],
+  "extraction_exit_code": 125,
+  "files": {},
+  "fresh": {},
+  "checked": {},
+  "patches": {},
+  "log_sha256": "2113febd338da521aeecac1689c8277f9a2c2f03a4287ac67082905d0691cf3b",
+  "modules": []
+}

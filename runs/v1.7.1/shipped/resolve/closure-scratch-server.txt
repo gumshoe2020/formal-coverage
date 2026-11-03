@@ -1,0 +1,210 @@
+scratch-server v0.1.0 (<repo>/runs/v1.7.1/shipped/ws)
+bertie v0.1.0-pre.2 (<repo>/runs/v1.7.1/shipped/ws/bertie)
+backtrace v0.3.77
+addr2line v0.27.1
+gimli v0.34.0
+cfg-if v1.0.5
+libc v0.2.191
+miniz_oxide v0.9.1
+adler2 v2.0.1
+object v0.40.0
+memchr v2.8.3
+rustc-demangle v0.1.28
+hax-lib v0.4.2
+hax-lib-macros v0.4.2 (proc-macro)
+proc-macro2 v1.0.107
+unicode-ident v1.0.27
+quote v1.0.47
+proc-macro2 v1.0.107 (*)
+syn v2.0.119
+proc-macro2 v1.0.107 (*)
+quote v1.0.47 (*)
+unicode-ident v1.0.27
+hex v0.4.3
+libcrux-chacha20poly1305 v0.0.2
+libcrux-hacl-rs v0.0.2
+libcrux-macros v0.0.2 (proc-macro)
+quote v1.0.47 (*)
+syn v2.0.119 (*)
+libcrux-macros v0.0.2 (proc-macro) (*)
+libcrux-poly1305 v0.0.2
+libcrux-hacl-rs v0.0.2 (*)
+libcrux-macros v0.0.2 (proc-macro) (*)
+libcrux-ecdsa v0.0.3
+libcrux-p256 v0.0.3
+libcrux-hacl-rs v0.0.3
+libcrux-macros v0.0.3 (proc-macro)
+quote v1.0.47 (*)
+syn v2.0.119 (*)
+libcrux-macros v0.0.3 (proc-macro) (*)
+libcrux-sha2 v0.0.3
+libcrux-hacl-rs v0.0.3 (*)
+libcrux-macros v0.0.3 (proc-macro) (*)
+libcrux-traits v0.0.3
+rand v0.9.5
+rand_chacha v0.9.0
+ppv-lite86 v0.2.21
+zerocopy v0.8.63
+rand_core v0.9.5
+getrandom v0.3.4
+cfg-if v1.0.5
+libc v0.2.191
+rand_core v0.9.5 (*)
+libcrux-sha2 v0.0.3 (*)
+rand v0.9.5 (*)
+libcrux-ed25519 v0.0.3
+libcrux-hacl-rs v0.0.3 (*)
+libcrux-macros v0.0.3 (proc-macro) (*)
+libcrux-sha2 v0.0.3 (*)
+libcrux-hkdf v0.0.3
+libcrux-hacl-rs v0.0.3 (*)
+libcrux-hmac v0.0.3
+libcrux-hacl-rs v0.0.3 (*)
+libcrux-macros v0.0.3 (proc-macro) (*)
+libcrux-sha2 v0.0.3 (*)
+libcrux-hmac v0.0.3 (*)
+libcrux-kem v0.0.2
+libcrux-ecdh v0.0.2
+libcrux-curve25519 v0.0.2
+libcrux-hacl-rs v0.0.2 (*)
+libcrux-macros v0.0.2 (proc-macro) (*)
+libcrux-p256 v0.0.2
+libcrux-hacl-rs v0.0.2 (*)
+libcrux-macros v0.0.2 (proc-macro) (*)
+libcrux-sha2 v0.0.2
+libcrux-hacl-rs v0.0.2 (*)
+libcrux-macros v0.0.2 (proc-macro) (*)
+libcrux-traits v0.0.2
+rand v0.9.5 (*)
+rand v0.9.5 (*)
+libcrux-ml-kem v0.0.2
+hax-lib v0.2.0
+hax-lib-macros v0.2.0 (proc-macro)
+proc-macro2 v1.0.107 (*)
+quote v1.0.47 (*)
+syn v2.0.119 (*)
+libcrux-intrinsics v0.0.2
+hax-lib v0.2.0 (*)
+libcrux-platform v0.0.2
+libc v0.2.191
+libcrux-sha3 v0.0.2
+libcrux-intrinsics v0.0.2 (*)
+libcrux-platform v0.0.2 (*)
+rand v0.9.5 (*)
+libcrux-sha3 v0.0.2 (*)
+libcrux-traits v0.0.2 (*)
+rand v0.9.5 (*)
+libcrux-rsa v0.0.2
+libcrux-hacl-rs v0.0.2 (*)
+libcrux-macros v0.0.2 (proc-macro) (*)
+libcrux-sha2 v0.0.2 (*)
+libcrux-traits v0.0.2 (*)
+libcrux-sha2 v0.0.3 (*)
+rand v0.9.5 (*)
+tracing v0.1.44
+pin-project-lite v0.2.17
+tracing-attributes v0.1.31 (proc-macro)
+proc-macro2 v1.0.107 (*)
+quote v1.0.47 (*)
+syn v2.0.119 (*)
+tracing-core v0.1.36
+once_cell v1.21.4
+http-subset v0.1.0 (<repo>/runs/v1.7.1/shipped/ws/crates/http-subset)
+vstd v0.0.0-2026-10-25-0158
+verus_builtin v0.0.0-2026-10-11-0230
+verus_builtin_macros v0.0.0-2026-10-25-0158 (proc-macro)
+convert_case v0.4.0
+proc-macro2 v1.0.107 (*)
+quote v1.0.47 (*)
+syn v2.0.119 (*)
+synstructure v0.13.2
+proc-macro2 v1.0.107 (*)
+quote v1.0.47 (*)
+syn v2.0.119 (*)
+verus_prettyplease v0.0.0-2026-09-06-0133
+proc-macro2 v1.0.107 (*)
+verus_syn v0.0.0-2026-09-06-0133
+proc-macro2 v1.0.107 (*)
+quote v1.0.47 (*)
+unicode-ident v1.0.27
+verus_syn v0.0.0-2026-09-06-0133 (*)
+verus_state_machines_macros v0.0.0-2026-10-25-0158 (proc-macro)
+indexmap v2.14.2
+equivalent v1.0.3
+hashbrown v0.17.1
+proc-macro2 v1.0.107 (*)
+quote v1.0.47 (*)
+verus_syn v0.0.0-2026-09-06-0133 (*)
+p256 v0.13.2
+ecdsa v0.16.9
+der v0.7.10
+const-oid v0.9.6
+pem-rfc7468 v0.7.0
+base64ct v1.8.3
+zeroize v1.9.1
+digest v0.10.7
+block-buffer v0.10.4
+generic-array v0.14.9
+typenum v1.20.1
+zeroize v1.9.1
+version_check v0.9.5
+const-oid v0.9.6
+crypto-common v0.1.6
+generic-array v0.14.9 (*)
+typenum v1.20.1
+subtle v2.6.1
+elliptic-curve v0.13.8
+base16ct v0.2.0
+crypto-bigint v0.5.5
+generic-array v0.14.9 (*)
+rand_core v0.6.4
+getrandom v0.2.17
+cfg-if v1.0.5
+libc v0.2.191
+subtle v2.6.1
+zeroize v1.9.1
+digest v0.10.7 (*)
+ff v0.13.1
+rand_core v0.6.4 (*)
+subtle v2.6.1
+generic-array v0.14.9 (*)
+group v0.13.0
+ff v0.13.1 (*)
+rand_core v0.6.4 (*)
+subtle v2.6.1
+pem-rfc7468 v0.7.0 (*)
+pkcs8 v0.10.2
+der v0.7.10 (*)
+spki v0.7.3
+der v0.7.10 (*)
+rand_core v0.6.4 (*)
+sec1 v0.7.3
+base16ct v0.2.0
+der v0.7.10 (*)
+generic-array v0.14.9 (*)
+pkcs8 v0.10.2 (*)
+subtle v2.6.1
+zeroize v1.9.1
+subtle v2.6.1
+zeroize v1.9.1
+rfc6979 v0.4.0
+hmac v0.12.1
+digest v0.10.7 (*)
+subtle v2.6.1
+signature v2.2.0
+digest v0.10.7 (*)
+rand_core v0.6.4 (*)
+spki v0.7.3 (*)
+elliptic-curve v0.13.8 (*)
+primeorder v0.13.6
+elliptic-curve v0.13.8 (*)
+sha2 v0.10.9
+cfg-if v1.0.5
+cpufeatures v0.2.17
+libc v0.2.191
+digest v0.10.7 (*)
+pem-rfc7468 v0.7.0 (*)
+rand v0.9.5 (*)
+transport-core v0.1.0 (<repo>/runs/v1.7.1/shipped/ws/crates/transport-core)
+vstd v0.0.0-2026-10-25-0158 (*)
+zeroize v1.9.1

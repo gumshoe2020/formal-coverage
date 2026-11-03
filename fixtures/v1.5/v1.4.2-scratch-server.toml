@@ -1,0 +1,9 @@
+# Both SECURITY-RELEVANT and EVERYTHING ELSE are reported.
+# main conservatively roots transport, parser, dispatch and TLS setup on every branch.
+entry_points = ["scratch_server::main"]
+security = ["http_subset::parse", "scratch_server::serve_connection"]
+# Explicit exclusions: startup port parsing, standalone health probe, test-only modules.
+# Every matched unit is listed in reports. Unknown calls otherwise include all functions.
+not_security = ["scratch_server::port", "scratch_server::healthcheck", "*::tests::*"]
+# The dogfood runner appends version-specific dependency_sources for downloaded,
+# checksum-checked lockfile archives inside each exported workspace.

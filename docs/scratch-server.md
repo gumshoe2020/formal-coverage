@@ -1,5 +1,155 @@
 # Scratch-server formal coverage
 
+<!-- v1.6 measurements -->
+## v1.6 proof cost and ghost lines
+
+2026-10-31. Spec-lemmas (`2fa5eb78a6f9`) replayed offline with its three retained,
+source-bound Verus receipts in both ghost modes. The bundle and host-metadata
+exports agree on the figures below. These runs use **whole-crate** sizing and the
+unchanged v1.4.2 config (`fixtures/v1.5/v1.4.2-scratch-server.toml`), as in the
+v1.5 byte-regression cases, to isolate the ghost accounting change. Historical
+compiled-files/linked-lines dependency measurements below remain v1.5 results.
+No Docker, application, dependency build or verifier execution was needed.
+
+Default range: **1.0:10.0**, source `default`, ratio gate enabled. The headline
+covers first-party security-relevant code; bounded runtime is zero in both modes.
+Proof cost is an inventory signal, not a claim about specification quality.
+
+| Ghost mode | Standalone proof | Inline proof | Total proof | Proven runtime / runtime SLoC | Ratio | Status |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| runtime | 4,732 | 0 | 4,732 | 644 / 1,363 | 7.35 | within |
+| separate (default) | 4,732 | 198 | 4,930 | 446 / 1,165 | 11.05 | above |
+
+Sanity: **1,363 − 1,165 = 198** inline proof lines; **4,732 + 198 = 4,930** total
+proof lines. Proven runtime falls by the same 198 (644 → 446). All-first-party
+runtime falls from 3,005 to 2,807; its standalone/inline proof, proven runtime,
+ratios and statuses equal the security headline. Receipt decisions, credited
+unit identities, statuses, trust footprints and escapes are unchanged. The
+new default security ratio is **above** the range and would fail its ratio gate;
+no acceptance range or detector rule was adjusted to avoid that result.
+
+Per-crate and per-module rows cover all first-party units of each scope.
+`<unattributed>` lists crate-root proof cost. Proof-only modules have `n/a`
+ratios, but their proof lines still count toward crate and overall ratios.
+Module exceptions warn only; they never independently fail a gate.
+
+| Crate | Standalone | Inline (separate) | Proof (separate) | Proven runtime (runtime → separate) | Ratio (runtime → separate) | Status (runtime → separate) |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| `http_subset` | 4678 | 117 | 4795 | 453 → 336 | 10.33 → 14.27 | above → above |
+| `scratch_server` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `transport_core` | 54 | 81 | 135 | 191 → 110 | 0.28 → 1.23 | below → within |
+
+<details>
+<summary>All 79 per-module rows (bounded runtime is zero throughout)</summary>
+
+| Module | Standalone | Inline (separate) | Proof (separate) | Proven runtime (runtime → separate) | Ratio (runtime → separate) | Status (runtime → separate) |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| `http_subset::<unattributed>` | 266 | 116 | 382 | 448 → 332 | 0.59 → 1.15 | below → within |
+| `http_subset::Policy` | 2 | 1 | 3 | 5 → 4 | 0.40 → 0.75 | below → below |
+| `http_subset::intent` | 387 | 0 | 387 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::brave` | 491 | 0 | 491 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::brave_cache_disabled` | 517 | 0 | 517 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::brave_dnt` | 548 | 0 | 548 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::firefox` | 341 | 0 | 341 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::reject_absolute` | 28 | 0 | 28 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::reject_bare_lf` | 30 | 0 | 30 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::reject_body` | 37 | 0 | 37 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::reject_cl_te` | 57 | 0 | 57 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::reject_cl_zero` | 46 | 0 | 46 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::reject_colon_space` | 40 | 0 | 40 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::reject_duplicate_connection` | 58 | 0 | 58 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::reject_duplicate_host` | 58 | 0 | 58 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::reject_empty_value` | 40 | 0 | 40 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::reject_fragment` | 32 | 0 | 32 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::reject_h2_preface` | 28 | 0 | 28 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::reject_headers25` | 649 | 0 | 649 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::reject_http12` | 31 | 0 | 31 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::reject_http20` | 31 | 0 | 31 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::reject_lower_get` | 27 | 0 | 27 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::reject_name65` | 48 | 0 | 48 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::reject_obs_space` | 39 | 0 | 39 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::reject_obs_tab` | 39 | 0 | 39 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::reject_path257` | 96 | 0 | 96 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::reject_percent` | 32 | 0 | 32 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::reject_pipeline` | 41 | 0 | 41 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::reject_post` | 27 | 0 | 27 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::reject_query` | 32 | 0 | 32 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::reject_star` | 28 | 0 | 28 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::reject_te` | 47 | 0 | 47 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::reject_value257` | 106 | 0 | 106 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::reject_value_cr` | 42 | 0 | 42 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::reject_value_nul` | 42 | 0 | 42 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `http_subset::intent::safari` | 315 | 0 | 315 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::<unattributed>` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::DefaultforServerState` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::ServerState` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::UnknownLog` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::policy_tests` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tests::boundary` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tests::boundary::ReadforWire` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tests::boundary::WriteforWire` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tests::differential` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tests::intent` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tests::intent::ReadforWire` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tests::intent::WriteforWire` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tests::policy` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tests::transport` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tests::transport::ReadforScript` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tests::transport::WriteforScript` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tls` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tls::HkdfExpanderforExpander` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tls::MessageDecrypterforRecordCipher` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tls::MessageEncrypterforRecordCipher` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tls::SignatureVerificationAlgorithmforP256Verify` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tls::SignerforP256Signer` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tls::SigningKeyforP256SigningKey` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tls::Tls13AeadAlgorithmforChaCha` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tls::crypto::ActiveKeyExchangeforExchange` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tls::crypto::KeyProviderforP256KeyProvider` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tls::crypto::SecureRandomforOsRandom` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tls::crypto::SupportedKxGroupforX25519` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tls::crypto::tls13::HkdfforHkdf` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tls::fmt::DebugforP256Signer` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tls::fmt::DebugforP256SigningKey` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tls::hash::ContextforHashContext` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tls::hash::HashforSha256` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tls::rand_core::TryRngforOsRandom` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tls::tests` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tls::tests::rcgen::PublicKeyDataforCertificateKey` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::tls::tests::rcgen::SigningKeyforCertificateKey` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::transport` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::transport::ReadforDeadlineSocket` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `scratch_server::transport::WriteforDeadlineSocket` | 0 | 0 | 0 | 0 → 0 | n/a → n/a | n/a → n/a |
+| `transport_core::<unattributed>` | 41 | 27 | 68 | 67 → 40 | 0.61 → 1.70 | below → within |
+| `transport_core::Machine` | 9 | 30 | 39 | 71 → 41 | 0.13 → 0.95 | below → below |
+| `transport_core::aead` | 4 | 24 | 28 | 53 → 29 | 0.08 → 0.97 | below → below |
+
+</details>
+
+Portable results, tool-source hashes, all rows and both exports:
+[v1.6 results](scratch-server/v1.6-results.json). Local reports and exact logs
+are under `logs/v1.6/M4/{runtime,separate}/`; the strict paired audit is
+`logs/v1.6/M4.log`. Reproduce after a frozen offline release build:
+
+```sh
+for mode in runtime separate; do
+  python3 scripts/v15_replay.py --binary target/release/formal-coverage \
+    --out logs/v1.6/M4/$mode \
+    --host-config fixtures/v1.5/v1.4.2-scratch-server.toml \
+    -- --size-mode whole-crate --ghost-lines "$mode" \
+    > logs/v1.6/M4-$mode.log 2>&1
+done
+python3 scripts/v16_regression.py logs/v1.6/baseline logs/v1.6/M4/runtime \
+  > logs/v1.6/M2.log 2>&1
+python3 scripts/v16_measure.py logs/v1.6/M4/runtime logs/v1.6/M4/separate \
+  --out docs/scratch-server/v1.6-results.json > logs/v1.6/M4.log 2>&1
+```
+
+The M2 baseline is a pre-change v1.5 binary replay with the same config and
+whole-crate mode; it is not a replay of v1.6 with its new fields hidden.
+
+<!-- /v1.6 measurements -->
+
 2026-10-28 v1.2. All thirteen pinned branch tips re-exported with `git archive`
 under this repository's `target/v1.2-scratch/`; original scratch-server checkouts
 and containers remain unchanged. Retained source-bound verifier receipts were
@@ -12,6 +162,80 @@ third-party runtime security is **336,654 SLoC**, below the old combined
 1,626,171 total; combined runtime security is 338,017 SLoC. Build-time code is
 listed separately and can affect the binary: it is trusted, not measured by
 runtime coverage. Full package source SLoC still includes cfg/test/platform code.
+
+## v1.5 dependency size modes (spec-lemmas)
+
+2026-10-29, v1.5. Spec-lemmas (`2fa5eb78a6f9`) re-exported read-only with `git
+archive` (all 67 files byte-identical to the commit), measured for the target
+scratch-server ships: **aarch64-unknown-linux-musl**, a static binary. The runs
+used an aarch64 Linux container (`rust:1.98.0-bookworm`, rustc 1.98.0, the musl
+target added by rustup) running a Linux build of this tool, so `cargo metadata`,
+`cargo check` and the release build all ran on Linux. They share the same 38-package
+`cargo metadata` runtime closure as macOS, the same receipts, and the worked schema-3
+config
+[`examples/scratch-server.formal-coverage.toml`](../examples/scratch-server.formal-coverage.toml).
+Third-party sizes are SLoC except in linked-lines mode, where they are distinct
+DWARF linked lines. The earlier macOS figures (`aarch64-apple-darwin`) are kept
+as labelled comparison rows.
+
+| Target | Mode | First-party security proven / SLoC | Third-party runtime security | libc | Fallbacks | Top 5 dependencies by size |
+| --- | --- | ---: | ---: | ---: | ---: | --- |
+| **Linux musl** | whole-crate | 644 / 3,005 (21.43%) | 336,654 SLoC | 118,894 | 0 | libc 118,894; vstd 49,663; rustls 42,386; typenum 35,003; der 10,135 |
+| **Linux musl** | compiled-files | 644 / 1,348 (47.77%) | **144,872 SLoC** | **15,868** | 2 | rustls 30,938; libc 15,868; vstd 13,940; typenum 13,460; libcrux-hacl-rs 10,122 |
+| **Linux musl** | linked-lines | 644 / 1,348 (47.77%) | **8,873 linked lines** | 0 | 1 | rustls 3,667; getrandom@0.4.3 2,375 (fallback, whole-crate); libcrux-p256 795; rustls-webpki 677; libcrux-hacl-rs 335 |
+| macOS (comparison) | whole-crate | 644 / 3,005 (21.43%) | 336,654 SLoC | 118,894 | 0 | libc 118,894; vstd 49,663; rustls 42,386; typenum 35,003; der 10,135 |
+| macOS (comparison) | compiled-files | 644 / 1,348 (47.77%) | 140,348 SLoC | 11,645 | 2 | rustls 30,938; vstd 13,940; typenum 13,460; libc 11,645; libcrux-hacl-rs 10,122 |
+| macOS (comparison) | linked-lines | 644 / 1,348 (47.77%) | 8,721 linked lines | 0 | 1 | rustls 3,603; getrandom@0.4.3 2,375 (fallback, whole-crate); libcrux-p256 771; rustls-webpki 666; libcrux-hacl-rs 334 |
+
+The plan's bounds hold on Linux: libc 15,868 < 20,000 and third-party 144,872 <
+150,000 (compiled-files). rustc reads a different, larger set of libc's files for
+musl than for darwin, so libc rises by 4,223 lines. Two other dependencies change
+for the same reason (target-specific modules): getrandom@0.3.4 (656 → 929) and
+libcrux-platform (186 → 214). The other 35 dependencies, and every whole-crate
+size, are identical. First-party figures are identical in every mode.
+
+- **First-party.** whole-crate keeps the v1.4.2 categories, and the worked config
+  has no `*::tests::*` input, so 1,657 SLoC of test code counts as runtime
+  security there. With the v1.4.2 config, whole-crate reproduces 644/1,363 (47.25%)
+  byte-for-byte. compiled-files and linked-lines detect that test code
+  structurally (55 units, 1,657 SLoC, reported separately). Both inputs of the
+  worked config include functions `main` already reaches, so the default-rules-only
+  figure equals the with-inputs figure. The v1.4.2 config's exclusions of `port`
+  (6 SLoC) and `healthcheck` (41) are not carried over because neither is
+  justified from the code (see `dev/NOTES.md`). With the v1.4.2 config in
+  compiled-files mode the figures are 644/1,301 (49.50%) with inputs and 644/1,348
+  (47.77%) under default rules only.
+- **compiled-files.** `cargo check --frozen --workspace --keep-going --target
+  aarch64-unknown-linux-musl` dep-info, minus spec/proof functions: libc 15,868
+  lines against 118,894 whole-crate; vstd 13,940 against 49,663; typenum 13,460
+  against 35,003. chacha20@0.10.2 and getrandom@0.4.3 fall back to whole-crate,
+  with reason "no library artifact from cargo check", on Linux as on macOS: they
+  are in the metadata runtime closure (dev-feature unification of `rand`), but
+  `cargo check` (exit 0) never builds them.
+- **linked-lines.** The binary is a Linux musl release build of the export with
+  the shipped profile (opt-level `z`, LTO, one codegen unit, panic abort) plus
+  only `CARGO_PROFILE_RELEASE_DEBUG=true CARGO_PROFILE_RELEASE_STRIP=false`:
+  `cargo build --release --frozen --bin scratch-server --target
+  aarch64-unknown-linux-musl`, a static ELF, sha256
+  `4b3940edb56d2e94a64f3bbe86116f8d65afb188e92025ec50a460923f9ec7d9`. libc, vstd,
+  typenum and 13 other packages have no line rows and no symbols in it, so they
+  count 0. getrandom@0.4.3 falls back with reason "symbols from this package are
+  linked but have no line rows": `getrandom` symbols are present from
+  getrandom@0.3.4 (54 linked lines), and symbols cannot be told apart by version.
+  The macOS comparison binary was a host build with the same overrides (sha256
+  `7ff3d9c47ce05dbdc8bca4bd1dedd68e1ae1850fd16218ec2b677a3f6e3cfbc6`).
+- **Static musl is not in these figures.** The libc *crate* is bindings, and
+  counts 0 linked lines. The musl C library that Rust links statically adds
+  ~3,479 distinct linked C lines (175 compile units, by `readelf`) to the binary.
+  It is not a cargo package, and every mode counts `.rs` files only.
+- **Checks.** For every dependency, compiled-files ≤ whole-crate and linked-lines
+  ≤ compiled-files, with no exception (`scripts/v15_size_check.py`).
+- **Reproduce** (container and Linux tool build as in [the survey](survey.md)):
+  `python3 scripts/v15_replay.py --binary target/linux-tool/release/formal-coverage
+  --container fcsurvey-main --target aarch64-unknown-linux-musl --host-config
+  examples/scratch-server.formal-coverage.toml --case spec-lemmas-host --out
+  logs/v1.5-linux/spec-lemmas/compiled-files -- --size-mode compiled-files
+  --check-target-dir target/v1.5-linux/spec-lemmas-check`.
 
 Closure `metadata` below means `cargo metadata --format-version 1 --frozen
 --filter-platform aarch64-apple-darwin`, walked from all workspace members over

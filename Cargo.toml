@@ -1,6 +1,6 @@
 [package]
 name = "formal-coverage"
-version = "1.4.2"
+version = "1.5.0"
 edition = "2021"
 license = "MIT"
 
@@ -14,6 +14,9 @@ toml = "0.8"
 glob = "0.3"
 semver = "1"
 sha2 = "0.10"
+object = { version = "0.37", default-features = false, features = ["std", "read_core", "elf", "macho", "unaligned"] }
+gimli = { version = "0.32", default-features = false, features = ["std", "read"] }
+rustc-demangle = "0.1"
 
 [workspace]
 exclude = ["fixtures/inventory", "fixtures/classification", "fixtures/evidence"]

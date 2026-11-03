@@ -59,6 +59,19 @@ pub struct ProofCode {
     pub security_relevant: ProofTotals,
     pub everything_else: ProofTotals,
 }
+/// First-party structural test code, excluded from runtime totals.
+#[derive(Debug, Default, Serialize, Deserialize, PartialEq, Eq)]
+pub struct TestTotals {
+    pub sloc: usize,
+    pub units: usize,
+    pub security_reachable_sloc: usize,
+    pub security_reachable_units: usize,
+}
+impl TestTotals {
+    pub fn is_empty(&self) -> bool {
+        *self == Self::default()
+    }
+}
 #[derive(Debug, Default, Serialize, Deserialize)]
 pub struct Summary {
     pub security_first_party_hazard_units: usize,
@@ -66,6 +79,8 @@ pub struct Summary {
     pub trusted_sloc: usize,
     pub escape_sites: usize,
     pub proof_code: ProofCode,
+    #[serde(default, skip_serializing_if = "TestTotals::is_empty")]
+    pub test_code: TestTotals,
     pub all: Split,
     pub first_party: Split,
     pub third_party: Split,
@@ -78,6 +93,14 @@ fn side(split: &mut Split, security: bool) -> &mut Totals {
     }
 }
 pub fn summarize(r: &Report) -> Summary {
+    summarize_rules(r, false)
+}
+/// The same figures under default rules only: every explicit input undone, as if the
+/// config had no `[security.*]`, `[dependencies.*]` or schema-2 override entries.
+pub fn summarize_default_rules(r: &Report) -> Summary {
+    summarize_rules(r, true)
+}
+fn summarize_rules(r: &Report, defaults: bool) -> Summary {
     let mut summary = Summary {
         trusted_items: r.trusted_items.len(),
         trusted_sloc: r.trusted_items.iter().map(|t| t.sloc).sum(),
@@ -85,29 +108,54 @@ pub fn summarize(r: &Report) -> Summary {
         ..Summary::default()
     };
     for u in &r.units {
-        summary.security_first_party_hazard_units +=
-            usize::from(u.security && u.status == "hazard");
+        let security = if defaults {
+            u.default_security.unwrap_or(u.security)
+        } else {
+            u.security
+        };
+        summary.security_first_party_hazard_units += usize::from(security && u.status == "hazard");
         if u.category == Category::ProofCode {
             summary.proof_code.total.add(u);
-            if u.security {
+            if security {
                 summary.proof_code.security_relevant.add(u);
             } else {
                 summary.proof_code.everything_else.add(u);
             }
             continue;
         }
-        side(&mut summary.all, u.security).add(u.sloc, &u.status, false);
-        side(&mut summary.first_party, u.security).add(u.sloc, &u.status, false);
+        if u.category == Category::Test {
+            summary.test_code.sloc += u.sloc;
+            summary.test_code.units += 1;
+            if security {
+                summary.test_code.security_reachable_sloc += u.sloc;
+                summary.test_code.security_reachable_units += 1;
+            }
+            continue;
+        }
+        side(&mut summary.all, security).add(u.sloc, &u.status, false);
+        side(&mut summary.first_party, security).add(u.sloc, &u.status, false);
     }
     for d in &r.dependencies {
-        side(&mut summary.all, d.security).add(d.sloc, &d.status, !d.size_known);
-        side(&mut summary.third_party, d.security).add(d.sloc, &d.status, !d.size_known);
+        let (security, sloc, known) = if defaults {
+            (
+                d.default_security.unwrap_or(d.security),
+                d.default_sloc.unwrap_or(d.sloc),
+                d.size_known && !d.default_size_unknown,
+            )
+        } else {
+            (d.security, d.sloc, d.size_known)
+        };
+        side(&mut summary.all, security).add(sloc, &d.status, !known);
+        side(&mut summary.third_party, security).add(sloc, &d.status, !known);
     }
     summary
 }
 fn headline(label: &str, totals: &Totals, trust: &str) -> String {
+    headline_unit(label, totals, trust, "SLoC")
+}
+fn headline_unit(label: &str, totals: &Totals, trust: &str, unit: &str) -> String {
     format!(
-        "{label}  {} measured SLoC   {}{}; {trust}",
+        "{label}  {} measured {unit}   {}{}; {trust}",
         totals.sloc,
         STATUSES
             .iter()
@@ -124,35 +172,135 @@ fn headline(label: &str, totals: &Totals, trust: &str) -> String {
         }
     )
 }
+fn linked(r: &Report) -> bool {
+    r.size_mode == crate::SizeMode::LinkedLines.as_str()
+}
+/// First Markdown line: how runtime dependencies were sized.
+fn size_line(r: &Report) -> String {
+    format!(
+        "Size mode: `{}`; target: `{}`; profile: `{}`; binary sha256: {}.{}",
+        cell(&r.size_mode),
+        cell(&r.target),
+        cell(&r.size_profile),
+        r.binary_sha256
+            .as_deref()
+            .map(|s| format!("`{s}`"))
+            .unwrap_or_else(|| "n/a".into()),
+        if linked(r) {
+            " Third-party sizes are linked lines (distinct DWARF file:line pairs), not SLoC."
+        } else {
+            ""
+        }
+    )
+}
+fn fallback_block(r: &Report) -> String {
+    if r.size_fallbacks.is_empty() {
+        return String::new();
+    }
+    format!(
+        "**SIZE FALLBACKS: {} runtime dependencies keep whole-crate sizes because {} evidence was missing:** {}\n\n",
+        r.size_fallbacks.len(),
+        cell(&r.size_mode),
+        r.size_fallbacks
+            .iter()
+            .map(|f| format!("{}@{} ({})", cell(&f.name), cell(&f.version), cell(&f.reason)))
+            .collect::<Vec<_>>()
+            .join("; ")
+    )
+}
+fn dependency_sizes(r: &Report) -> String {
+    if r.size_mode.is_empty() || r.size_mode == crate::SizeMode::WholeCrate.as_str() {
+        return String::new();
+    }
+    let unit = if linked(r) { "linked lines" } else { "SLoC" };
+    let mut out = format!("## Dependency sizes\n\nRuntime dependencies measured in `{}` mode. Size is in {unit}; whole-crate SLoC is the v1.4.2 measure, kept for comparison. Fallbacks keep the whole-crate size.\n\n| Crate | Size mode | Size ({unit}) | Whole-crate SLoC | Note |\n| --- | --- | ---: | ---: | --- |\n", cell(&r.size_mode));
+    for d in &r.dependencies {
+        out.push_str(&format!(
+            "| {}@{} | {} | {} | {} | {} |\n",
+            cell(&d.name),
+            cell(&d.version),
+            cell(&d.size_mode),
+            if d.size_known {
+                d.sloc.to_string()
+            } else {
+                "unknown".into()
+            },
+            d.whole_crate_sloc,
+            cell(d.size_reason.as_deref().unwrap_or(""))
+        ));
+    }
+    out.push('\n');
+    out
+}
 pub fn markdown(r: &Report) -> String {
     let s = summarize(r);
     let trust = format!(
         "proven, relying on {} trusted items ({} SLoC) and {} escapes",
         s.trusted_items, s.trusted_sloc, s.escape_sites
     );
+    let trust = if r.evidence_runs.iter().any(|run| run.tool == "hax-fstar") {
+        format!("{trust}; proven-extracted relies on trusted hax extraction")
+    } else {
+        trust
+    };
+    let (third_unit, combined_unit) = if linked(r) {
+        ("linked lines", "SLoC + linked lines")
+    } else {
+        ("SLoC", "SLoC")
+    };
+    let d = summarize_default_rules(r);
     let mut lines = Vec::new();
-    for (label, first, third, combined) in [
+    // Each security figure twice: with explicit inputs, then under default rules only.
+    for (origin, unit, with, without) in [
         (
-            "SECURITY-RELEVANT",
+            "First-party",
+            "SLoC",
             &s.first_party.security_relevant,
-            &s.third_party.security_relevant,
-            &s.all.security_relevant,
+            &d.first_party.security_relevant,
         ),
         (
-            "EVERYTHING ELSE",
-            &s.first_party.everything_else,
-            &s.third_party.everything_else,
-            &s.all.everything_else,
+            "Third-party (runtime)",
+            third_unit,
+            &s.third_party.security_relevant,
+            &d.third_party.security_relevant,
+        ),
+        (
+            "Combined",
+            combined_unit,
+            &s.all.security_relevant,
+            &d.all.security_relevant,
         ),
     ] {
-        lines.push(headline(&format!("{label} First-party"), first, &trust));
-        lines.push(headline(
-            &format!("{label} Third-party (runtime)"),
-            third,
+        lines.push(headline_unit(
+            &format!("SECURITY-RELEVANT {origin} (with inputs)"),
+            with,
             &trust,
+            unit,
         ));
-        lines.push(headline(&format!("{label} Combined"), combined, &trust));
+        lines.push(headline_unit(
+            &format!("SECURITY-RELEVANT {origin} (default rules only)"),
+            without,
+            &trust,
+            unit,
+        ));
     }
+    lines.push(headline(
+        "EVERYTHING ELSE First-party",
+        &s.first_party.everything_else,
+        &trust,
+    ));
+    lines.push(headline_unit(
+        "EVERYTHING ELSE Third-party (runtime)",
+        &s.third_party.everything_else,
+        &trust,
+        third_unit,
+    ));
+    lines.push(headline_unit(
+        "EVERYTHING ELSE Combined",
+        &s.all.everything_else,
+        &trust,
+        combined_unit,
+    ));
     let mut out = format!("# Formal coverage\n\n```text\n{}\n```\n\nPercentages are SLoC-weighted, mutually exclusive statuses over measured runtime code. First-party, third-party runtime and combined figures are also in JSON summary.first_party, summary.third_party and summary.all for each block. Headline trust/escape counts conservatively list the whole runtime inventory, including outside verified scope; each receipt lists its cfg-active scope separately. Unknown sizes are excluded and prominently flagged; gates fail closed when security dependency sizes are unknown.\n\n{}\n\n", lines.join("\n"), r.approximation);
     if s.escape_sites > 0 {
         out = out.replacen("# Formal coverage\n\n", &format!("# Formal coverage\n\n**ESCAPES: {} distinct sites, including outside verified scope; all remain gate-visible.**\n\n",s.escape_sites),1);
@@ -174,6 +322,7 @@ pub fn markdown(r: &Report) -> String {
             ""
         }
     ));
+    out.push_str(&inputs_section(r, &s, &d));
     out.push_str("## Build-time dependencies\n\nBuild-time code can affect the binary and is trusted, not measured by runtime coverage. Build scripts, proc macros and their dependencies are excluded from runtime denominators; their source SLoC and unsafe counts are listed separately. A package used at runtime and build time appears in both inventories.\n\n| Crate | SLoC | Unsafe sites |\n| --- | ---: | ---: |\n");
     for d in &r.build_dependencies {
         out.push_str(&format!(
@@ -190,7 +339,8 @@ pub fn markdown(r: &Report) -> String {
                 .unwrap_or_else(|| "unconfirmed".into())
         ));
     }
-    out.push_str(&format!("Combined runtime security: {}/{} proven SLoC ({:.2}%); {trust}; proof-code: {} SLoC alongside, excluded from both runtime denominators.\n\n## PROOF CODE\n\n| Classification | SLoC | Units | verified | unverified (including hazards, trusted and bounded) | Hazard units |\n| --- | ---: | ---: | ---: | ---: | ---: |\n",
+    out.push_str(&dependency_sizes(r));
+    out.push_str(&format!("Combined runtime security: {}/{} proven {combined_unit} ({:.2}%); {trust}; proof-code: {} SLoC alongside, excluded from both runtime denominators.\n\n## PROOF CODE\n\n| Classification | SLoC | Units | verified | unverified (including hazards, trusted and bounded) | Hazard units |\n| --- | ---: | ---: | ---: | ---: | ---: |\n",
         s.all.security_relevant.statuses["proven"], s.all.security_relevant.sloc,
         s.all.security_relevant.percent("proven"), s.proof_code.total.sloc));
     for (label, totals) in [
@@ -202,6 +352,10 @@ pub fn markdown(r: &Report) -> String {
             "| {label} | {} | {} | {} | {} | {} |\n",
             totals.sloc, totals.units, totals.verified, totals.unverified, totals.hazard_units
         ));
+    }
+    if !s.test_code.is_empty() {
+        out.push_str(&format!("\nTEST CODE: {} SLoC in {} first-party units ({} SLoC in {} units reachable from security entry points), detected structurally and excluded from both runtime denominators.\n",
+            s.test_code.sloc, s.test_code.units, s.test_code.security_reachable_sloc, s.test_code.security_reachable_units));
     }
     if r.escape_hatches
         .iter()
@@ -225,6 +379,7 @@ pub fn markdown(r: &Report) -> String {
             split.everything_else.percent("proven")
         ));
     }
+    out.push_str(&crate::ratio::markdown(r));
     out.push_str("\n## Units\n\n| Function / crate | Location | SLoC | Classification | Status | Proof scope | Third-party unsafe sites |\n| --- | --- | ---: | --- | --- | --- | ---: |\n");
     for u in &r.units {
         out.push_str(&format!(
@@ -233,10 +388,10 @@ pub fn markdown(r: &Report) -> String {
             cell(&u.file),
             u.line,
             u.sloc,
-            if u.category == Category::ProofCode {
-                "proof-code"
-            } else {
-                label(u.security)
+            match u.category {
+                Category::ProofCode => "proof-code",
+                Category::Test => "test-code",
+                Category::Runtime => label(u.security),
             },
             u.status,
             cell(u.proof_scope.as_deref().unwrap_or("none"))
@@ -329,6 +484,33 @@ pub fn markdown(r: &Report) -> String {
             }
         ));
     }
+    let models: Vec<_> = r
+        .warnings
+        .iter()
+        .filter(|w| w.starts_with("Upstream model (uncredited):"))
+        .collect();
+    if !models.is_empty() {
+        out.push_str("\n## Upstream claims, uncredited\n\nProVerif and SSProve artifacts model the protocol/key schedule; this run gives them no Rust line credit.\n\n");
+        for model in models {
+            out.push_str(&format!("- {}\n", cell(model)));
+        }
+    }
+    if !r.fstar_definitions.is_empty() {
+        out.push_str("\n## hax/F* definitions\n\nSelf-consistency is a heuristic: consistent with its own parser; not checked against an external spec. Postconditions are shown verbatim from checked interfaces. Patch differences conservatively trust the whole module.\n\n| Definition | F* location | Rust unit | Classification | Contract kind | Self-consistency heuristic | Postcondition |\n| --- | --- | --- | --- | --- | --- | --- |\n");
+        for d in &r.fstar_definitions {
+            out.push_str(&format!(
+                "| {} | {}:{} | {} | {} | {} | {} | {} |\n",
+                cell(&d.name),
+                cell(&d.file),
+                d.line,
+                cell(d.rust_unit.as_deref().unwrap_or("unmapped")),
+                cell(&d.classification),
+                cell(&d.contract_kind),
+                d.self_consistency_heuristic,
+                cell(&d.postcondition)
+            ));
+        }
+    }
     out.push_str("\n## Run receipts\n\n");
     for run in &r.evidence_runs {
         out.push_str(&format!(
@@ -368,7 +550,63 @@ pub fn markdown(r: &Report) -> String {
         ),
         1,
     );
-    format!("{}\n\n{out}", lines[0])
+    format!(
+        "{} Ghost lines: `{}`;\n\n{}{}\n\n{out}",
+        size_line(r),
+        r.ghost_lines.as_str(),
+        fallback_block(r),
+        lines[0]
+    )
+}
+fn inputs_section(r: &Report, s: &Summary, d: &Summary) -> String {
+    let (a, b) = (
+        &s.first_party.security_relevant,
+        &d.first_party.security_relevant,
+    );
+    let mut out = format!(
+        "## Inputs\n\nConfig schema {}. Every explicit input is listed with its reason. The \"default rules only\" headline figures drop all of them: the same analysis with no `[security.*]`, `[dependencies.*]` or schema-2 override entries. First-party security with inputs {}/{} proven SLoC ({:.2}%); default rules only {}/{} ({:.2}%); shift {:.2} percentage points. Runtime SLoC moved is credited to the input that decided each unit (the last match; excludes apply after includes). A dependency input moves that dependency's size.\n\n",
+        if r.config_schema == 0 {
+            "none (no config file)".to_string()
+        } else {
+            r.config_schema.to_string()
+        },
+        a.statuses["proven"],
+        a.sloc,
+        a.percent("proven"),
+        b.statuses["proven"],
+        b.sloc,
+        b.percent("proven"),
+        (a.percent("proven") - b.percent("proven")).abs()
+    );
+    if r.inputs.is_empty() {
+        out.push_str("None.\n\n");
+        return out;
+    }
+    out.push_str("| Input | Pattern / key | Direction | Reason | Matched | SLoC into security | SLoC out of security | Size change |\n| --- | --- | --- | --- | --- | ---: | ---: | ---: |\n");
+    for i in &r.inputs {
+        out.push_str(&format!(
+            "| {} | `{}` | {} | {} | {} | {} | {} | {} |\n",
+            cell(&i.kind),
+            cell(&i.key),
+            cell(&i.direction),
+            i.reason
+                .as_deref()
+                .map(cell)
+                .unwrap_or_else(|| "**none (schema 2)**".into()),
+            if i.kind == "dependencies" || i.kind == "proof_ratio" {
+                cell(&i.matched.join(", "))
+            } else {
+                format!("{} units", i.matched.len())
+            },
+            i.sloc_into_security,
+            i.sloc_out_of_security,
+            i.size_change
+                .map(|c| format!("{c:+}"))
+                .unwrap_or_else(|| "n/a".into())
+        ));
+    }
+    out.push('\n');
+    out
 }
 fn cell(s: &str) -> String {
     s.replace('|', "\\|").replace(['\n', '\r'], " ")
@@ -378,6 +616,26 @@ fn label(security: bool) -> &'static str {
         "SECURITY-RELEVANT"
     } else {
         "EVERYTHING ELSE"
+    }
+}
+
+/// Fail when explicit inputs move first-party security proven by more than `max` points.
+pub fn gate_override_shift(r: &Report, max: f64) -> Result<Vec<String>> {
+    anyhow::ensure!(
+        max.is_finite() && (0.0..=100.).contains(&max),
+        "override shift must be finite and within 0..100"
+    );
+    validate(r)?;
+    let with = summarize(r).first_party.security_relevant.percent("proven");
+    let without = summarize_default_rules(r)
+        .first_party
+        .security_relevant
+        .percent("proven");
+    let shift = (with - without).abs();
+    if shift > max {
+        Ok(vec![format!("inputs shift first-party security proven by {shift:.4} percentage points (with inputs {with:.4}%, default rules only {without:.4}%), above --max-override-shift {max:.4}")])
+    } else {
+        Ok(vec![])
     }
 }
 
@@ -417,7 +675,7 @@ pub fn gate_with_schema_change(
         "--no-new-escape-hatches requires --baseline"
     );
     validate(r)?;
-    let mut failures = Vec::new();
+    let mut failures = crate::ratio::gate(r);
     let s = summarize(r);
     if !r.dependency_inventory_complete {
         failures.push("security coverage incomplete: dependency inventory unavailable".into());
@@ -434,6 +692,14 @@ pub fn gate_with_schema_change(
     if s.proof_code.total.hazard_units > 0 {
         failures.push("proof-code hazard can invalidate runtime proofs".into());
     }
+    for input in &r.inputs {
+        if input.reason.as_deref().is_some_and(crate::todo_reason) {
+            failures.push(format!(
+                "input {} {:?} has a TODO reason; replace it with the justification",
+                input.kind, input.key
+            ));
+        }
+    }
     let pct = s.all.security_relevant.percent("proven");
     if pct < min {
         failures.push(format!("security-proven {pct:.4}% is below {min:.4}%; proven, relying on {} trusted items ({} SLoC) and {} escapes",s.trusted_items,s.trusted_sloc,s.escape_sites));
@@ -442,7 +708,7 @@ pub fn gate_with_schema_change(
         anyhow::ensure!(b.schema == r.schema || allow_schema_change,
             "baseline schema {} differs from report schema {}; runtime denominators changed; use --allow-schema-change to acknowledge (coverage percentages will not be compared)", b.schema, r.schema);
         anyhow::ensure!(
-            b.schema == 1 || b.schema == 2,
+            (1..=crate::REPORT_SCHEMA).contains(&b.schema),
             "unsupported baseline schema"
         );
         validate_statuses(b)?;
@@ -478,7 +744,10 @@ pub fn gate_with_schema_change(
     Ok(failures)
 }
 fn validate(r: &Report) -> Result<()> {
-    anyhow::ensure!(r.schema == 2, "unsupported report schema");
+    anyhow::ensure!(
+        r.schema == crate::REPORT_SCHEMA,
+        "unsupported report schema"
+    );
     validate_statuses(r)
 }
 fn validate_statuses(r: &Report) -> Result<()> {

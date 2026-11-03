@@ -388,8 +388,10 @@ verus! {
         .any(|u| ["fake", "commented"].contains(&u.name.as_str())));
     let before = formal_coverage::summarize(&r);
     assert_eq!(before.proof_code.total.units, 13);
+    // The fixture's `#[test] fn example()` (2 SLoC) is structural test code.
+    assert_eq!((before.test_code.units, before.test_code.sloc), (1, 2));
     assert_eq!(
-        before.all.security_relevant.sloc + before.proof_code.total.sloc,
+        before.all.security_relevant.sloc + before.proof_code.total.sloc + before.test_code.sloc,
         r.units.iter().map(|u| u.sloc).sum::<usize>()
     );
     let log = receipt(

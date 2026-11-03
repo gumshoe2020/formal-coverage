@@ -1,10 +1,17 @@
+mod ratio;
+pub use ratio::{proof_ratio, ProofRatio, ProofRatioConfig, ProofRatioRange};
+mod ghost;
+pub use ghost::GhostLines;
 mod report;
 pub use report::{
-    gate, gate_first_party_security, gate_with_schema_change, markdown, summarize, Summary,
+    gate, gate_first_party_security, gate_override_shift, gate_with_schema_change, markdown,
+    summarize, summarize_default_rules, Summary,
 };
 mod cfg;
 mod evidence;
+mod fstar;
 mod kani;
+pub use fstar::{apply_fstar_evidence, FstarModule, FstarReceipt};
 mod modules;
 pub use evidence::{
     apply_evidence, apply_evidence_many, apply_upstream_registry, sha256, Claim, Escape,
@@ -12,10 +19,14 @@ pub use evidence::{
 };
 mod classify;
 mod dependencies;
+mod inputs;
+mod size;
 use anyhow::{Context, Result};
-pub use classify::{analyze, analyze_target, Config, Dependency, Override};
+pub use classify::{analyze, analyze_target, analyze_with, Config, Dependency, Options, Override};
+pub use inputs::{migrate_config, todo_reason, DependencyRule, InputRecord, Rule};
 use proc_macro2::{Delimiter, TokenStream, TokenTree};
 use serde::{Deserialize, Serialize};
+pub use size::{dwarf_lines, DwarfLines, SizeFallback, SizeMode};
 use std::{
     fs,
     path::{Path, PathBuf},
@@ -28,6 +39,8 @@ pub enum Category {
     #[default]
     Runtime,
     ProofCode,
+    /// Structural test code: excluded from runtime totals, reported separately.
+    Test,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -40,6 +53,12 @@ pub struct Unit {
     pub line: usize,
     pub end_line: usize,
     pub sloc: usize,
+    #[serde(default)]
+    pub runtime_sloc: usize,
+    #[serde(default)]
+    pub inline_proof_sloc: usize,
+    #[serde(default)]
+    pub ghost_sloc: usize,
     pub first_party: bool,
     pub security: bool,
     pub status: String,
@@ -47,6 +66,9 @@ pub struct Unit {
     pub category: Category,
     pub verus: bool,
     pub proof_scope: Option<String>,
+    /// Security under default rules, present only when an explicit input moved this unit.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub default_security: Option<bool>,
     #[serde(skip)]
     pub tokens: String,
     #[serde(skip)]
@@ -59,10 +81,33 @@ pub struct Unit {
     pub kani_harness: bool,
     #[serde(skip)]
     pub kani_only: bool,
+    /// Structurally test code: a test attribute, an enclosing `#[cfg(test)]` item at any
+    /// depth (including out-of-line module declarations), or an integration-test/bench target.
+    #[serde(skip)]
+    pub test_code: bool,
 }
+/// Report schema: 3 adds dependency size modes, explicit inputs and default-only figures.
+pub const REPORT_SCHEMA: u32 = 3;
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Report {
     pub schema: u32,
+    #[serde(default)]
+    pub ghost_lines: GhostLines,
+    #[serde(default)]
+    pub proof_ratio_range: ProofRatioRange,
+    #[serde(default)]
+    pub no_proof_ratio_gate: bool,
+    #[serde(default)]
+    pub unparseable_files: Vec<String>,
+    #[serde(default)]
+    pub size_mode: String,
+    #[serde(default)]
+    pub size_profile: String,
+    #[serde(default)]
+    pub binary_sha256: Option<String>,
+    #[serde(default)]
+    pub size_fallbacks: Vec<SizeFallback>,
     pub approximation: String,
     pub units: Vec<Unit>,
     #[serde(default)]
@@ -70,6 +115,12 @@ pub struct Report {
     pub security_relevant: usize,
     pub everything_else: usize,
     pub overrides: Vec<Override>,
+    /// Config schema: 2 (bare globs), 3 (explicit inputs with reasons), 0 (no config file).
+    #[serde(default)]
+    pub config_schema: u32,
+    /// Every explicit input with its reason and the SLoC it moved.
+    #[serde(default)]
+    pub inputs: Vec<InputRecord>,
     pub dependencies: Vec<Dependency>,
     #[serde(default)]
     pub build_dependencies: Vec<Dependency>,
@@ -88,6 +139,8 @@ pub struct Report {
     pub warnings: Vec<String>,
     #[serde(default)]
     pub evidence_runs: Vec<EvidenceRun>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub fstar_definitions: Vec<fstar::FstarDefinition>,
     pub escape_hatches: Vec<Escape>,
     #[serde(default)]
     pub trusted_items: Vec<evidence::TrustedItem>,
@@ -115,8 +168,8 @@ struct ManifestDependency {
 
 #[derive(Deserialize)]
 struct Target {
-    #[serde(rename = "src_path")]
-    _src_path: PathBuf,
+    src_path: PathBuf,
+    kind: Vec<String>,
 }
 
 pub fn inventory(root: &Path) -> Result<Report> {
@@ -139,6 +192,7 @@ pub fn inventory(root: &Path) -> Result<Report> {
     let metadata: Metadata = serde_json::from_slice(&output.stdout)?;
     let root = root.canonicalize()?;
     let mut units = Vec::new();
+    let mut unparseable_files = Vec::new();
     let mut source_files = std::collections::BTreeSet::new();
     for package in metadata
         .packages
@@ -148,12 +202,19 @@ pub fn inventory(root: &Path) -> Result<Report> {
         let dir = package.manifest_path.parent().unwrap();
         let mut files = Vec::new();
         collect_rs(dir, &mut files)?;
+        // Integration tests and benches are compiled with --test, so cfg(test) holds throughout.
+        let test_targets: Vec<_> = package
+            .targets
+            .iter()
+            .filter(|t| t.kind.iter().any(|k| k == "test" || k == "bench"))
+            .map(|t| t.src_path.clone())
+            .collect();
+        let first_unit = units.len();
+        let mut file_modules = Vec::new();
+        let mut test_modules = Vec::new();
         // Include all source files conservatively; test/build files are identified by their module paths.
         for path in files {
             let source = fs::read_to_string(&path)?;
-            let stream: TokenStream = source
-                .parse()
-                .map_err(|e| anyhow::anyhow!("{}: {e}", path.display()))?;
             let relative = path
                 .strip_prefix(&root)
                 .unwrap_or(&path)
@@ -167,6 +228,48 @@ pub fn inventory(root: &Path) -> Result<Report> {
                 .replace('\\', "/");
             let module = module_path(&local, &package.targets);
             let source_lines: Vec<_> = source.lines().collect();
+            let Ok(stream) = source.parse::<TokenStream>() else {
+                unparseable_files.push(relative.clone());
+                units.push(Unit {
+                    id: format!(
+                        "{}::{module}::<unparseable>",
+                        package.name.replace('-', "_")
+                    ),
+                    crate_name: package.name.replace('-', "_"),
+                    module,
+                    name: "<unparseable>".into(),
+                    file: relative,
+                    line: 1,
+                    end_line: source_lines.len(),
+                    sloc: sloc(&source),
+                    runtime_sloc: sloc(&source),
+                    inline_proof_sloc: 0,
+                    ghost_sloc: 0,
+                    first_party: true,
+                    security: false,
+                    status: "hazard".into(),
+                    category: Category::Runtime,
+                    verus: false,
+                    proof_scope: None,
+                    default_security: None,
+                    tokens: String::new(),
+                    source,
+                    scope_attributes: String::new(),
+                    scope_sites: vec![],
+                    kani_harness: false,
+                    kani_only: false,
+                    test_code: false,
+                });
+                continue;
+            };
+            module_decls(stream.clone(), &module, "", &mut test_modules);
+            file_modules.push((
+                relative.clone(),
+                module.clone(),
+                local.starts_with("tests/")
+                    || local.starts_with("benches/")
+                    || test_targets.contains(&path),
+            ));
             walk(
                 stream,
                 &module,
@@ -180,6 +283,20 @@ pub fn inventory(root: &Path) -> Result<Report> {
                 &[],
                 &mut units,
             );
+        }
+        for u in &mut units[first_unit..] {
+            if u.name == "<unparseable>" {
+                continue;
+            }
+            let (_, module, test_target) = file_modules
+                .iter()
+                .find(|(file, _, _)| *file == u.file)
+                .expect("unit file inventoried");
+            let declared_test = test_modules.iter().any(|(declared, attrs)| {
+                (module == declared || module.starts_with(&format!("{declared}::")))
+                    && cfg_implies_test(attrs)
+            });
+            u.test_code |= *test_target || declared_test;
         }
     }
     let workspace_dirs: Vec<PathBuf> = metadata
@@ -206,7 +323,7 @@ pub fn inventory(root: &Path) -> Result<Report> {
         .collect();
     let dependency_inventory_complete = declared_external_dependencies.is_empty();
     units.sort_by(|a, b| (&a.file, a.line, &a.id).cmp(&(&b.file, b.line, &b.id)));
-    Ok(Report { schema: 2, approximation: "Syntactic token inventory; includes cfg-disabled functions and Verus ghost/spec code. Security classification pending.".into(), units, source_files: source_files.into_iter().collect(), security_relevant: 0, everything_else: 0, overrides: vec![], dependencies: vec![], build_dependencies: vec![], dev_dependencies_excluded: 0, closure: String::new(), closure_reason: None, target: String::new(), cargo_version: String::new(), declared_external_dependencies, dependency_inventory_complete, warnings: vec![], evidence_runs: vec![], escape_hatches: vec![], trusted_items: vec![], upstream_claims: vec![] })
+    Ok(Report { proof_ratio_range: ProofRatioRange::default(), no_proof_ratio_gate: false, unparseable_files, ghost_lines: GhostLines::default(), schema: REPORT_SCHEMA, size_mode: String::new(), size_profile: String::new(), binary_sha256: None, size_fallbacks: vec![], approximation: "Syntactic token inventory; includes cfg-disabled functions and Verus ghost/spec code. Security classification pending.".into(), units, source_files: source_files.into_iter().collect(), security_relevant: 0, everything_else: 0, overrides: vec![], config_schema: 0, inputs: vec![], dependencies: vec![], build_dependencies: vec![], dev_dependencies_excluded: 0, closure: String::new(), closure_reason: None, target: String::new(), cargo_version: String::new(), declared_external_dependencies, dependency_inventory_complete, warnings: vec![], evidence_runs: vec![], fstar_definitions: vec![], escape_hatches: vec![], trusted_items: vec![], upstream_claims: vec![] })
 }
 fn module_path(local: &str, targets: &[Target]) -> String {
     let _ = targets;
@@ -248,6 +365,133 @@ fn collect_rs(dir: &Path, files: &mut Vec<PathBuf>) -> Result<()> {
     }
     Ok(())
 }
+/// Out-of-line `mod name;` declarations with the attributes in scope at each one.
+fn module_decls(
+    stream: TokenStream,
+    module: &str,
+    inherited: &str,
+    out: &mut Vec<(String, String)>,
+) {
+    let inherited = format!("{inherited} {}", cfg::attributes(stream.clone(), true));
+    let tokens: Vec<_> = stream.into_iter().collect();
+    let child = |name: &TokenTree| {
+        if module.is_empty() {
+            name.to_string()
+        } else {
+            format!("{module}::{name}")
+        }
+    };
+    let mut start = 0;
+    for i in 0..tokens.len() {
+        let prefix = &tokens[start..i];
+        let attrs = || {
+            format!(
+                "{inherited} {}",
+                cfg::attributes(prefix.iter().cloned().collect(), false)
+            )
+        };
+        match &tokens[i] {
+            TokenTree::Group(g) if g.delimiter() == Delimiter::Brace => {
+                let declared = prefix
+                    .iter()
+                    .position(|t| t.to_string() == "mod")
+                    .and_then(|n| prefix.get(n + 1));
+                if let Some(name) = declared {
+                    module_decls(g.stream(), &child(name), &attrs(), out);
+                } else if prefix.last().is_some_and(|t| t.to_string() == "!")
+                    || prefix
+                        .get(prefix.len().wrapping_sub(2))
+                        .is_some_and(|t| t.to_string() == "!")
+                {
+                    // Item macros such as verus! keep the enclosing module.
+                    module_decls(g.stream(), module, &attrs(), out);
+                }
+                start = i + 1;
+            }
+            t if t.to_string() == ";" => {
+                if let [.., keyword, name] = prefix {
+                    if keyword.to_string() == "mod" {
+                        out.push((child(name), attrs()));
+                    }
+                }
+                start = i + 1;
+            }
+            _ => {}
+        }
+    }
+}
+
+/// Attributes that make a function a test: `#[test]`, `#[tokio::test]` and similar.
+fn test_attribute(attrs: &str) -> bool {
+    let Ok(stream) = attrs.parse::<TokenStream>() else {
+        return false;
+    };
+    cfg::attributes(stream, false).into_iter().any(|t| {
+        let TokenTree::Group(g) = t else {
+            return false;
+        };
+        let path: Vec<String> = g
+            .stream()
+            .into_iter()
+            .take_while(|t| matches!(t, TokenTree::Ident(_)) || t.to_string() == ":")
+            .filter_map(|t| match t {
+                TokenTree::Ident(i) => Some(i.to_string()),
+                _ => None,
+            })
+            .collect();
+        path.last().is_some_and(|last| last == "test")
+            || [
+                "bench",
+                "test_case",
+                "rstest",
+                "wasm_bindgen_test",
+                "quickcheck",
+                "proptest",
+            ]
+            .contains(&path.last().map(String::as_str).unwrap_or(""))
+    })
+}
+
+/// True when some `#[cfg(...)]` in `attrs` can only hold under `cfg(test)`.
+fn cfg_implies_test(attrs: &str) -> bool {
+    fn implies(stream: TokenStream) -> bool {
+        let tokens: Vec<_> = stream.into_iter().collect();
+        match tokens.as_slice() {
+            [TokenTree::Ident(name)] => name == "test",
+            [TokenTree::Ident(op), TokenTree::Group(g)]
+                if g.delimiter() == Delimiter::Parenthesis =>
+            {
+                let mut args = vec![TokenStream::new()];
+                for t in g.stream() {
+                    if t.to_string() == "," {
+                        args.push(TokenStream::new());
+                    } else {
+                        args.last_mut().unwrap().extend([t]);
+                    }
+                }
+                args.retain(|a| !a.is_empty());
+                match op.to_string().as_str() {
+                    "all" => args.into_iter().any(implies),
+                    "any" => !args.is_empty() && args.into_iter().all(implies),
+                    _ => false,
+                }
+            }
+            _ => false,
+        }
+    }
+    let Ok(stream) = attrs.parse::<TokenStream>() else {
+        return false;
+    };
+    cfg::attributes(stream, false).into_iter().any(|t| {
+        let TokenTree::Group(g) = t else {
+            return false;
+        };
+        let tokens: Vec<_> = g.stream().into_iter().collect();
+        matches!(tokens.as_slice(), [TokenTree::Ident(cfg), TokenTree::Group(p)]
+            if cfg == "cfg" && p.delimiter() == Delimiter::Parenthesis && implies(p.stream()))
+    })
+}
+
 #[derive(Clone, Copy)]
 struct SourceContext<'a> {
     krate: &'a str,
@@ -331,6 +575,8 @@ fn walk(
                         cfg::attributes(tokens[start..i].iter().cloned().collect(), false)
                             .to_string();
                     let scope_attributes = format!("{} {}", inherited_attrs, own_attributes);
+                    let test_code =
+                        test_attribute(&own_attributes) || cfg_implies_test(&scope_attributes);
                     let kani_harness = kani::is_harness(&own_attributes);
                     let kani_only = cfg::has_attribute(&scope_attributes, "cfg (kani)")
                         || (!kani_harness && kani::is_harness(&scope_attributes));
@@ -347,6 +593,9 @@ fn walk(
                         line,
                         end_line: last,
                         sloc: sloc(&snippet),
+                        runtime_sloc: sloc(&snippet),
+                        inline_proof_sloc: 0,
+                        ghost_sloc: if verus { ghost::inline_sloc(text.clone(), source_lines) } else { 0 },
                         first_party: true,
                         security: false,
                         status: "unverified".into(),
@@ -357,12 +606,14 @@ fn walk(
                         },
                         verus,
                         proof_scope: None,
+                        default_security: None,
                         tokens: text.to_string(),
                         source: snippet,
                         scope_sites: inherited_sites.iter().cloned().chain(evidence::attribute_sites(cfg::attributes(tokens[start..i].iter().cloned().collect(),false))).collect(),
                         scope_attributes,
                         kani_harness,
                         kani_only,
+                        test_code,
                     });
                     // Local functions also count as units; trait declarations have no body.
                     if let TokenTree::Group(body) = last_token {
@@ -457,6 +708,43 @@ fn walk(
 }
 /// Counts nonblank lines touched by non-comment Rust tokens (including multiline literals).
 pub fn sloc(source: &str) -> usize {
+    sloc_lines(source).len()
+}
+
+/// SLoC of one dependency source file without spec/proof functions (the first-party
+/// `Category::ProofCode` rule). Unparseable files keep every nonblank line.
+pub(crate) fn runtime_sloc(source: &str, file: &str) -> usize {
+    let lines = sloc_lines(source);
+    let Ok(stream) = source.parse::<TokenStream>() else {
+        return lines.len();
+    };
+    let source_lines: Vec<_> = source.lines().collect();
+    let mut units = Vec::new();
+    walk(
+        stream,
+        "",
+        SourceContext {
+            krate: "dependency",
+            file,
+            source_lines: &source_lines,
+        },
+        false,
+        "",
+        &[],
+        &mut units,
+    );
+    let proof: Vec<_> = units
+        .iter()
+        .filter(|u| u.category == Category::ProofCode)
+        .map(|u| u.line..=u.end_line)
+        .collect();
+    lines
+        .iter()
+        .filter(|line| !proof.iter().any(|span| span.contains(line)))
+        .count()
+}
+
+fn sloc_lines(source: &str) -> std::collections::BTreeSet<usize> {
     fn visit(stream: TokenStream, lines: &mut std::collections::BTreeSet<usize>) {
         for token in stream {
             if let TokenTree::Group(group) = token {
@@ -473,8 +761,10 @@ pub fn sloc(source: &str) -> usize {
         // conservatively retaining comments instead of understating unverified code size.
         return source
             .lines()
-            .filter(|line| !line.trim().is_empty())
-            .count();
+            .enumerate()
+            .filter(|(_, line)| !line.trim().is_empty())
+            .map(|(i, _)| i + 1)
+            .collect();
     };
     let mut lines = std::collections::BTreeSet::new();
     visit(stream, &mut lines);
@@ -482,5 +772,6 @@ pub fn sloc(source: &str) -> usize {
         .lines()
         .enumerate()
         .filter(|(i, line)| lines.contains(&(i + 1)) && !line.trim().is_empty())
-        .count()
+        .map(|(i, _)| i + 1)
+        .collect()
 }

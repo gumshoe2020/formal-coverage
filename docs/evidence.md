@@ -113,8 +113,8 @@ safety. Partial upstream primitive claims do not establish whole-crate proof.
 ## Kani and proof code (schema 2)
 
 Verus `spec fn`, `proof fn` and `broadcast proof fn` with any visibility and
-open/closed qualifiers are proof code by syntax. Exec contracts/ghost blocks
-stay with the runtime function. `#[kani::proof]` harnesses and functions under
+open/closed qualifiers are proof code by syntax. Before v1.6, exec contracts/ghost blocks
+stayed with the runtime function; the v1.6 split below is now the default. `#[kani::proof]` harnesses and functions under
 `#[cfg(kani)]` are also proof code, excluded from both runtime denominators.
 Names, strings and comments do not establish function mode or attributes.
 
@@ -368,3 +368,189 @@ upstream's public signing key.
 
 With these allowances the v1.4.2 bundle scan reports 0 matching lines, and the
 tree scan reports 0. The original v1.4.1 bundle and checksum are left untouched.
+
+## Security scope and dependency size modes (v1.5)
+
+Reports are schema 3. Line 1 of the Markdown and the JSON fields `size_mode`,
+`size_profile`, `target` and (for linked-lines) `binary_sha256` record how runtime
+dependencies were sized.
+
+**Size modes.** `--size-mode` selects one of three:
+
+| Mode | What counts per runtime dependency | Use when |
+| --- | --- | --- |
+| `compiled-files` (default) | `.rs` files listed in the crate's cargo dep-info (`<target-dir>/<triple>/debug/deps/<crate>-<hash>.d`, mapped through `cargo check --message-format=json` package ids) after `cargo check --frozen --workspace --keep-going --target <triple>`; generated `OUT_DIR` files count when listed. Spec/proof functions (the first-party `proof-code` rule) are subtracted line by line. | The usual case: drops tests, benches, examples, other-OS modules and Verus ghost functions without needing a binary. Runs the workspace's build scripts and proc macros. |
+| `linked-lines` (`--binary`) | Distinct `(file, line)` pairs in the binary's DWARF line table whose file lies under the package source directory (longest prefix wins; a registry `name-version/` path component also matches). On Mach-O, an adjacent `.dSYM` or a fresh `dsymutil` output is used only when its UUID matches the binary. Unit: linked lines, not SLoC. | Measuring a shipped binary after dead-code elimination, inlining and monomorphization. Build it with debug info. |
+| `whole-crate` | Every `.rs` file under the package source directory. | Comparison with earlier releases, or when compiling the target is not acceptable. With `--ghost-lines runtime`, output is v1.4.2's, including v1.4.2 first-party categories (no structural test detection). |
+
+Fail closed: a dependency whose evidence is missing keeps its whole-crate size,
+gets `size_mode: whole-crate (fallback)` with the reason, and is listed under
+**SIZE FALLBACKS** at the top of the report. Compiled-files falls back when
+`cargo check` cannot run (including when the toolchain lacks the target's
+standard library; then `cargo check` is not started), produced no library
+artifact for the package, or the `.d` file or a listed source is missing or
+unreadable. Linked-lines falls back for every dependency when the binary is
+unreadable or has no line rows for first-party sources (built without debug
+info), and for one dependency when a root-manifest profile override disables its
+debug info, or when it has no line rows but the symbol table is stripped or
+contains symbols from its library crate. A dependency with no line rows and no
+symbols counts 0 and says so. Inline cfg-disabled items inside compiled files
+still count in compiled-files mode. Dependencies sized from `dependency_sources`
+have no package id and fall back in both new modes.
+
+Not counted in any mode: only `.rs` files of cargo packages count. Native code a
+package compiles (C or assembly through a build script) and a statically linked C
+runtime (musl) are outside all three figures. In linked-lines, such a package counts
+0 when its native debug paths lie outside its source directory and it defines no
+Rust symbols (aws-lc-sys remaps its paths to `/aws-lc/...`); 0 then means no Rust
+lines, not no code. The aarch64 Linux measurements report those native line counts
+separately ([survey](survey.md), [scratch-server](scratch-server.md)).
+
+**Structural test detection** (compiled-files and linked-lines). A first-party
+function is `test-code` when it has a test attribute (`#[test]`, any path ending
+in `::test`, `bench`, `test_case`, `rstest`, `wasm_bindgen_test`, `quickcheck`,
+`proptest`), when an enclosing item at any depth has a `#[cfg(...)]` that only
+holds under `test` (`test`, `all(.., test, ..)`, an `any` of such terms), when it
+is in an out-of-line module declared under such a cfg (`#[cfg(test)] mod name;`,
+followed by module path; `#[path]` is not followed), or when it is in an
+integration-test or bench target (`tests/`, `benches/`, or a test/bench target
+source; cargo builds these with `--test`, which sets `cfg(test)`). Examples stay
+runtime. Test code stays in the reachability graph, is excluded from runtime
+totals, and is reported as a TEST CODE line and `summary.test_code`.
+
+**Explicit inputs (config schema 3).** `[[security.include]]` and
+`[[security.exclude]]` take `pattern` and a required non-empty `reason`;
+`[dependencies."name"]` or `[dependencies."name@version"]` take `security`
+and/or `sloc` and a `reason`. Default rules apply first, then includes, then
+excludes (exclude wins). A pattern or dependency key that matches nothing, a bare
+name with two versions in the closure, and a dependency entry without `security`
+or `sloc` are errors. Schema-2 files (flat `security`/`not_security` arrays) keep
+their v1.4.2 meaning with one `override has no reason` warning per entry.
+`formal-coverage migrate-config OLD.toml [--output NEW.toml]` writes schema 3 with
+`reason = "TODO"` (comments are not carried over), and any reason containing the
+word TODO fails `gate`.
+
+**Two figures.** Every SECURITY-RELEVANT headline line is printed `(with inputs)`
+and `(default rules only)`: the same analysis with every explicit input undone
+(units keep `default_security` in JSON when an input moved them; dependencies
+keep `default_security` / `default_sloc`). JSON has `summary` and
+`summary_default_rules`. The Inputs section lists each input's kind, key,
+direction, reason, matches and the runtime SLoC it moved into or out of the
+security side (credited to the last matching input, which decided the unit), plus
+any dependency size change. `gate` thresholds use the with-inputs figure;
+`gate --max-override-shift PCT` fails when first-party security proven with
+inputs and under default rules only differ by more than PCT percentage points.
+
+**Regression against v1.4.2.** `scripts/v15_replay.py` replays spec-lemmas (the
+bundle case and a host-metadata export) and Vest, Anvil and Firecracker from the
+v1.4.2 evidence bundle; `scripts/v15_regression.py BASELINE CURRENT` compares a
+v1.4.2-binary replay with a v1.5 `--size-mode whole-crate` replay that uses the
+unchanged v1.4.2 config (`fixtures/v1.5/v1.4.2-scratch-server.toml`). It removes only
+these new constructs and then requires byte equality: JSON keys `size_mode`,
+`size_profile`, `binary_sha256`, `size_fallbacks`, `config_schema`, `inputs`,
+`summary_default_rules`; dependency keys `size_mode`, `size_reason`,
+`whole_crate_sloc`, `default_security`, `default_sloc`, `default_size_unknown`,
+`override_reason`; unit key `default_security`; `schema` 3 → 2; warnings starting
+`override has no reason: `; Markdown line 1 and its blank line, `(default rules
+only)` lines, the ` (with inputs)` label, the `## Inputs` section and the matching
+warning bullets. All five cases compare equal (see
+[scratch-server](scratch-server.md) and [survey](survey.md) for the v1.5 numbers).
+`scripts/v15_replay.py --container NAME [--target TRIPLE]` runs a Linux build of
+the tool through `docker exec` in a container that mounts the repository at `/fc`,
+so `cargo metadata`, `cargo check` and build scripts run on Linux; the container
+prefix is removed from reports like the host prefix. `scripts/v15_size_check.py`
+checks per-dependency ordering between modes (compiled-files ≤ whole-crate,
+linked-lines ≤ compiled-files, fallbacks labelled) and equality against a
+reference run. The published v1.5 survey and scratch-server numbers were measured
+this way on aarch64 Linux.
+The release checkers (`check_survey.py`, `check_dogfood.py`, `check_perf.py`)
+verify the tool sources recorded in the v1.4.2 bundle and therefore report a tool
+mismatch for v1.5 sources until a v1.5 bundle exists.
+
+## Inline ghost lines and proof cost (v1.6)
+
+`--ghost-lines separate|runtime` records its choice on Markdown line 1 and in
+JSON `ghost_lines`. `separate` is the default. Within a first-party Verus runtime
+unit, the token walker recognizes signature `requires`, `ensures`, `recommends`
+and `decreases` clauses; `while`, `loop` and `for` clauses (`invariant`,
+`invariant_except_break`, `ensures`, `decreases`); complete `proof { ... }` blocks;
+`assert(...)`, `assert(...) by { ... }`, `assert forall ... by { ... }`,
+`assume(...)`, and `let ghost` / `let tracked` statements. A line moves only
+when **every non-comment token**, including delimiters and semicolons, belongs
+to these ghost constructs. Mixed lines stay runtime. Comments and strings do
+not establish constructs; arbitrary macro inputs and uncertain syntax stay
+runtime. Non-Verus units are unchanged. Unparseable first-party files retain
+every nonblank line as runtime, are listed in `unparseable_files`, and have an
+explicit file-scope hazard because their escape scan is unconfirmed.
+
+Each unit has `runtime_sloc` and `inline_proof_sloc` (zero for standalone proof
+and structural test units), plus mode-independent `ghost_sloc` for the
+counterfactual denominator. `sloc` continues to drive runtime status totals.
+In `runtime` mode inline proof is zero and ghost lines remain runtime. No source
+bytes, evidence eligibility, receipts, trust/escape classification or security
+rules change between modes. Proven runtime figures under both modes use exactly
+the same accepted evidence. Dependencies retain the v1.5 sizing rules.
+
+JSON `proof_ratio` contains the first-party security headline:
+`standalone_proof_sloc`, `inline_proof_sloc`, their sum `proof_sloc`,
+`proven_runtime_sloc`, `proven_bounded_runtime_sloc`, `ratio` (null at zero proven),
+`range: {min, max, source, reason}`, `status`, and `gate_enabled`. It also contains
+`all_first_party`, `crates`, `modules` and `runtime_proven_modes`. Crate/module
+rows cover all first-party units in that scope; the security headline includes
+only security-relevant units. Root proof units without a module appear in the
+`<unattributed>` module row and remain in crate/overall totals. Proof lines count
+as inventory regardless of proof status; the denominator requires unbounded
+accepted `proven` status. Bounded runtime is separate and never added to it.
+
+The default range is inclusive 1.0:10.0; config `[proof_ratio]` needs at least
+one finite nonnegative bound, ordered when both exist, and a non-empty reason.
+CLI `--proof-ratio-range MIN:MAX` takes precedence, retaining the configured
+input and its reason in Inputs. A TODO config reason still fails the gate when
+overridden or when `--no-proof-ratio-gate` is used. Below/above security ratios
+fail the gate unless disabled; `n/a` and module warnings do not. Range checks
+use the unrounded ratio; Markdown displays two decimals. This measures cost,
+not quality: `ensures true` can need zero proof statements.
+
+`scripts/v16_regression.py BASELINE CURRENT` requires exact v1.5 JSON/Markdown
+bytes after removing only enumerated v1.6 fields/additions. It checks the same
+five cases as `scripts/v15_regression.py`, with unchanged configs,
+`--size-mode whole-crate --ghost-lines runtime`. See the script's explicit
+field list and the v1.6 progress record for local evidence.
+
+## hax/F* receipts (v1.7)
+
+Repeat `--fstar-log LOG`. The adjacent `LOG.evidence.json` has tool
+`hax-fstar`, `hax_version`, full `hax_commit`, `fstar_version`,
+`extraction_command` (`["python3","hax-driver.py","extract-fstar"]`),
+`extraction_exit_code`, `files` (Rust tree hashes including every inventoried
+source, Cargo.toml, Cargo.lock and driver), `fresh`, `checked`, `patches`
+(path-to-SHA256 maps), `log_sha256`, and `modules`. Artifact paths are relative
+to the log directory and cannot leave it. Every F* sibling must be hashed.
+Each module records `file`, complete `command`, `exit_code`, `outcome`
+(`success`, `failed`, `timeout`, `skipped`). Only success with exit zero can
+credit that module. The closed F* grammar accepts `fstar.exe`, one hashed input,
+and repeated distinct `--include` directories containing hashed inputs.
+All other flags, including lax, admission and loading checked caches, reject
+the receipt. No success is inferred from extraction or dependency checks.
+
+`proven-extracted` remains separate from Verus `proven` and Kani
+`proven-bounded`. Every associated headline explicitly trusts hax. Receipts
+are caller-supplied evidence, not attestations; they cannot establish that the
+caller actually executed the recorded commands in a clean environment.
+
+Mapping uses exact, unique `crate::module::function` names obtained by
+lowercasing hax's dotted module path and retaining the function name. Unsupported
+impl/mangled/recursive names are disclosed as unmapped, never guessed. Credit
+requires a checked implementation, an identical fresh `.fst` and (when present)
+`.fsti`, and a recognized contract. Any module/interface byte difference trusts
+all definitions of that module; this conservative rule may undercredit functions
+whose own bodies were unchanged. Interface-only vals and `assume val` are trusted;
+`assume`, `admit`, `admitP` are also reported as hazards. Rust hax opaque and
+replacement annotations remain explicit syntactic trust, including inactive cfgs.
+
+Contract classification comes from the checked interface: `Tot` or an explicit
+True Pure postcondition is `safety-only`; a meaningful `ensures` is `functional`;
+unknown forms are `unclassified` and receive no credit. Functional contracts
+mentioning local function names without an external spec namespace receive the
+**self-consistency heuristic** flag. This is a syntactic warning, not a theorem
+about specification intent. Every definition shows its postcondition and mapping.

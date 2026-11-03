@@ -1,0 +1,26 @@
+--- a/Cargo.toml
++++ b/Cargo.toml
+@@ -60,23 +60,5 @@
+ harness = false
+ 
+ [workspace]
+-members = [
+-    ".",
+-    "record",
+-    "simple_https_client",
+-    "simple_https_server",
+-    "bogo_shim",
+-    "integration_tests",
+-]
+-
+-default-members = [
+-    ".",
+-    "record",
+-    "simple_https_client",
+-    "simple_https_server",
+-    "bogo_shim",
+-    "integration_tests",
+-]
+-
+ [lints.rust]
+ unexpected_cfgs = { level = "warn", check-cfg = ['cfg(bench)', 'cfg(hax)'] }

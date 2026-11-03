@@ -6,9 +6,9 @@ fn weighted_reports_keep_both_groups() {
     r.units[0].status = "proven".into();
     r.units[1].security = false;
     let s = summarize(&r);
-    assert_eq!(s.all.security_relevant.sloc, 12);
+    assert_eq!(s.all.security_relevant.sloc, 10);
     assert_eq!(s.all.everything_else.sloc, 1);
-    assert_eq!(s.all.security_relevant.percent("proven"), 25.);
+    assert_eq!(s.all.security_relevant.percent("proven"), 30.);
     let md = markdown(&r);
     assert!(md.contains("SECURITY-RELEVANT") && md.contains("EVERYTHING ELSE"));
     assert!(md.contains("First-party") && md.contains("Third-party"));
@@ -190,7 +190,7 @@ fn missing_lockfile_never_hides_dependency_weight() {
 #[test]
 fn baseline_schema_change_requires_explicit_acknowledgment() {
     let r = analyze(Path::new("fixtures/inventory"), None).unwrap();
-    assert_eq!(r.schema, 2);
+    assert_eq!(r.schema, formal_coverage::REPORT_SCHEMA);
     let mut old = serde_json::to_value(&r).unwrap();
     old["schema"] = 1.into();
     for u in old["units"].as_array_mut().unwrap() {
@@ -248,12 +248,19 @@ fn first_party_headline_and_threshold_are_independent_of_combined() {
     assert_eq!(first.percent("proven"), 100.);
     assert!(s.all.security_relevant.percent("proven") < 100.);
     let md = markdown(&r);
+    // Line 1 records the size mode; the first-party security headline follows it.
     assert!(md
         .lines()
         .next()
         .unwrap()
+        .starts_with("Size mode: `compiled-files`"));
+    assert_eq!(md.lines().nth(1), Some(""));
+    assert!(md
+        .lines()
+        .nth(2)
+        .unwrap()
         .starts_with("SECURITY-RELEVANT First-party"));
-    assert!(md.lines().next().unwrap().contains("proven 100.00%"));
+    assert!(md.lines().nth(2).unwrap().contains("proven 100.00%"));
     for side in ["SECURITY-RELEVANT", "EVERYTHING ELSE"] {
         for origin in ["First-party", "Third-party (runtime)", "Combined"] {
             assert!(md.contains(&format!("{side} {origin}")));
