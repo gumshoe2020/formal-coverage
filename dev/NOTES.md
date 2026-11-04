@@ -627,3 +627,60 @@ The v1.7 binary predates the fix, so the repo tool was rebuilt in Docker from `g
 Out-of-proof-scope is computed by `v171_numbers.py` (syntactic cfg evaluation, exclusive reasons non_hax > stream > feature-gated). `stream` is both hax-excluded and `api`-gated; it is listed once under `stream`. No unit is gated by `api` outside `stream`, so "feature-gated, shipped-only" is 0; the 52 SLoC "inactive in both builds" are `hax-pv`/`secret_integers`/`test_utils` items the syntactic inventory counts as runtime.
 
 Regression decision: the retained v1.6 baseline (`logs/v1.6/ratio-runtime`) records `cargo 1.99.1 (Homebrew)` and `aarch64-apple-darwin` targets, so a byte-identical new replay can only come from host cargo, which would run third-party build scripts (vest, anvil, firecracker, scratch-server) on the host; the takeover rules forbid that and Docker cannot reproduce those bytes. I did not run it. Evidence instead: `scripts/v17_regression.py logs/v1.6/ratio-runtime logs/v1.7/replay-m4-check` PASS (retained post-v1.7 replay), `git diff 8afd9df HEAD -- fixtures tests` is empty, the only `src/` change is `fstar.rs` (F*-evidence-only; the v1.6 replays pass no `--fstar-log`), and the full cargo test suite (including the v1.7 F* fixtures in tests/fstar_evidence.rs) passes. A new host replay should be run by Dudley if the byte-level check is wanted.
+
+## 2026-11-03 v1.7.2 M1 (Claude Code; Codex hit its usage limit before writing anything for v1.7.2)
+
+Tree at takeover: clean apart from two untracked v1.7.1 `report.log` files (left alone). `pgrep -f dudley-rerun-m5` was empty; no container started in M1.
+
+Plan-required quote of F*'s own text for `--split_queries` (toolchain `runs/v1.7/bertie`, offline, no F* run):
+- F* 2025.10.06 prebuilt, `runs/v1.7/bertie/fstar-bin-2025.10.06/fstar/bin/fstar.exe`, help strings extracted with `strings -n 8` (no execution): "Split SMT verification conditions into several separate queries, one per goal. Helps with localizing errors." / "Use 'yes' to always split." / "Use 'on_failure' to split queries and retry when discharging fails (the default)" / "Use 'no' to disable (this may reduce the quality of error messages)."
+- Source for the older 2025.03.25 pin (only version whose source is vendored here), `runs/v1.7/bertie/fstar-src/fstar/src/basic/FStarC.Options.fst` lines 1405-1414: option type `EnumStr ["no"; "on_failure"; "always"]`, same description. The help text says 'yes' but the enum and `parse_split_queries` (line 2158) accept only `no`, `on_failure`, `always`; the plan's value list matches the code. The whitelist uses the code's values.
+- Mechanism, `.../smtencoding/FStarC.SMTEncoding.Solver.fst` `do_solve_maybe_split` (line 1428): `No` -> `do_solve`; `OnFailure` -> `do_solve`, then `split_and_solve` on failure; `Always` -> `split_and_solve`. Every split goal is still sent to Z3 and must be discharged. `tcenv.admit` (the only bypass) is set by `--admit_smt_queries`/`--lax`, which remain rejected.
+- Conclusion: nothing in the text suggests `--split_queries` can weaken soundness; the only quality warning is about error messages under `no`. No HONEST-FINDING.
+
+Implementation: `unsafe_options(&str) -> bool` becomes `rejected_option(&str) -> Option<String>`, the first rejected option text in a pragma line. Whitelist: `--fuel N`, `--ifuel N`, `--z3rlimit N` (N parses as usize) and `--split_queries V` (V in always/on_failure/no). Rejected text is the option plus its value when the next token is not another `--` option (a missing value reports the bare option; a pragma with no quoted option string reports the trimmed line). Escape kind: `unsupported F* option: <text>`. `.fst` bodies still get one escape per rejected line; the `.fsti` interface check still only needs a boolean. `assume`/`admit`/`admitP` word detection and the `--admit_`/`--lax` interface substring check are untouched.
+
+Rerun: `cargo test --frozen > logs/v1.7.2/m1-test.log 2>&1; tail -n 30 logs/v1.7.2/m1-test.log; cargo clippy --frozen --all-targets -- -D warnings > logs/v1.7.2/m1-clippy.log 2>&1; tail -n 30 logs/v1.7.2/m1-clippy.log`
+
+## 2026-11-03 v1.7.2 M2 (Claude Code)
+
+`declarations()` named every `let rec f` as `rec`. Now `declaration_start()` tries the prefix `let rec ` before `let `, so the name is `f` and the kind stays `let`. Column-zero `and g ...` continues the previous group and inherits its kind only when that kind is `let` or `type` (so `type t = ... and u = ...` stays a type and is filtered out as before; an `and` after `val` or with no previous declaration is ignored, unchanged from "unsupported syntax is uncredited"). Mid-line `and` stays inside the previous declaration's text; hax emits column-zero declarations and `Bertie.Der.fst` has no `and` at all, so no real-file effect is expected. Effect on mapping: `mapped()` now looks up `<module>::f` for recursive helpers instead of `<module>::rec`, so they can map to Rust units and no longer collapse into one trusted `rec` name.
+
+Tests (src/fstar.rs): `let_rec_declarations_are_named_after_the_function` uses literal text copied from `projects/bertie-der/work/ws/bertie/proofs/fstar/extraction/Bertie.Der.fst` (be_value_prefix, pow256, skip_zeros, pow256_is_pow2 with their pragmas, and a plain `let`); `mutually_recursive_groups_name_every_member` covers `let rec ... and ...`, a type group and a stray `and`. cargo test --frozen: 83 passed; clippy -D warnings clean (logs/v1.7.2/m2-*.log).
+
+Rerun: `cargo test --frozen > logs/v1.7.2/m2-test.log 2>&1; tail -n 30 logs/v1.7.2/m2-test.log`
+
+## 2026-11-03 v1.7.2 M3 (Claude Code)
+
+Report step only, no extraction or typecheck, on copies of both v1.7.1 trees (`dev/v172/prepare.sh` copies root, check-target, fresh, libs, proofs and the existing typecheck log + receipt into `.tmp/v1.7.2/<tree>`; `runs/v1.7.1` is not modified). New tool = `git archive HEAD` at cd7fc93 (src tree hash in `.tmp/v1.7.2/tool-source.src-tree`) built in the v1.7.1 Docker image (offline, `--locked`, 1.98.0): sha256 01311d9e11f3fdcaadb964ae27000f28685e8811feec6cab7da868488080b7b8 (v1.7.1 tool was dbebe2f1587fe235...). Docker was started only after `pgrep -f dudley-rerun-m5` was empty (checked before each step; no F* run, no container for F*).
+
+Control: the v1.7.1 binary on the same copies reproduces the v1.7.1 `report.json` exactly after path normalisation (0 changed leaves, both trees) and the v1.7.1 `report.log` byte-for-byte for upstream. So every difference below is the tool change, not the environment. (v1.7.1 reports were path-sanitised to `<repo>`; `dev/v172/compare.py` maps the repo root and `.tmp/v1.7.2` to the same prefix.)
+
+Receipts: the receipt binds file hashes and the log hash, not the tool binary (report line "binary sha256: n/a" is the measured crate's binary). Nothing in a receipt references the formal-coverage binary, so no receipt was edited or regenerated; the copied log and receipt are byte-identical and both are accepted by the new tool (`accepted: true`).
+
+Changes, upstream (shipped is the same pattern, +1 unit each since shipped has one more Bertie unit; 72 changed leaves per tree, `dev/v172/m3-diff-{upstream,shipped}.txt`):
+- Escape kinds: 6 existing escapes in `libs/` (`--max_fuel 0` x3, `--z3version 4.13.3`, `--admit_smt_queries true` x2) now say which option. Count unchanged (2,923 escapes; 6 option escapes), same files and lines. No `--split_queries` appears anywhere in either extraction or `libs/`, so the whitelist addition changes nothing here.
+- `let rec` naming: 15 definitions named `<Module>.rec` now carry their real names (e.g. `Rust_primitives.Hax.Folds.fold_range`, `Bertie.Tls13formats.find_key_share`); definition count unchanged (2,837 upstream / 2,841 shipped), `rec`-named 15 -> 0.
+- Because the `.fsti` `val`s for four Bertie functions now find their `let rec` body in the `.fst`, they are no longer "interface-only val" trusted items: `trusted_items` 2,541 -> 2,536 (-5), `trusted_sloc` 13,954 -> 13,911 (-43), definitions `trusted` 2,494 -> 2,489, `proven-extracted` 155 -> 160 (upstream).
+  - `bertie::tls13record::padlen` (10 SLoC): `.fst` has no hazard, functional postcondition (`out <=. n`, with `decreases`): trusted -> **proven-extracted**, credited units 50 -> 51. First-party security proven-extracted 1,068 -> 1,078 (19.39% -> 19.57%; shipped 1,081 -> 1,091).
+  - `find_key_share` (12), `check_server_extensions` (10), `check_extensions_slice` (11): their bodies are in `Bertie.Tls13formats.fst`, which carries the file-scope hazard (`assume`, `--admit_smt_queries true`), so the `.fst` definitions are `hazard` and the units move trusted -> **unverified** (not credited). trusted 2,407 -> 2,364 (-43 = 12+11+10+10), unverified 1,351 -> 1,384 (+33). This is the correct direction of the let-rec fix in both ways: padlen earns credit, the three hazard-region functions do not.
+  - `Handshake_data.rec` (`impl_HandshakeData__find_handshake_message`, no Rust unit): interface `trusted` -> `unmapped`, 0 SLoC.
+- Every number that changed is accounted for above; nothing unexplained, so no finding.
+
+Observation, reported not changed (pre-existing, not part of v1.7.2): a `.fsti` definition is classified by its own file's hazards only, so the three Tls13formats `.fsti` rows read `proven-extracted` while their implementation is `hazard` and the unit is uncredited. The units, summary and gate numbers are right; only the per-definition table can mislead for interface rows. Same behaviour already applies to every non-recursive function in a hazard `.fst`.
+
+Rerun (everything above, ~5 min): `bash dev/v172/run-m3.sh` (prints exit codes and changed-leaf counts: 0 for control, 72 for new, both trees); reads: `tail -n 30 logs/v1.7.2/m3-*.log`.
+
+## v1.7.2 M4 — bertie-der re-measure (report only) — 2026-11-03
+
+Same pipeline as M3 (`dev/v172/prepare.sh`, `docker.sh`, `report.sh`, `compare.py`), adding a third tree, `fixed` (bertie-der `fix/ecdsa-der` f694480), copied from the v1.7.1 M5 evidence. No extraction, no F* run: the existing typecheck log and receipt are copied byte-for-byte; receipts do not bind the tool binary and none was edited. Docker started only with `pgrep -f dudley-rerun-m5` empty.
+
+Control: the v1.7.1 binary on the copied `fixed` inputs reproduces the v1.7.1 `report.json` exactly (0 changed leaves after path normalisation). New vs control: 211 changed leaves, written to `projects/bertie-der/evidence/m5-v1.7.2/diff-fixed-v1.7.1-vs-v1.7.2.txt`; all attributed to the two v1.7.2 changes:
+- `--split_queries always` (3 pragmas in `Bertie.Der.fst`) no longer makes the whole module `hazard`: 32 bodies become 29 proven-extracted and 3 unmapped (hax appends `_` to `two_pow_256`, `be_value_prefix_upper_128`, `be_value_prefix_lower_128`; reported, not fixed).
+- `let rec` naming: 26 definitions renamed in this tree (11 in `Bertie.Der`), same four non-`der` effects as upstream (`padlen` credited; three `Tls13formats` functions trusted -> unverified).
+- 6 option escapes now name the option (v1.7.1 reported 9 generic ones, 3 were the `Bertie.Der` pragmas).
+Nothing unexplained, so no finding.
+
+Result: proven-extracted 1,068 -> 1,557 SLoC of 5,973 (17.88% -> 26.07%), credited units 50 -> 80 (20 functional). Expectation (`der` credited proven-extracted with functional postconditions) holds, with the qualifications in `SUMMARY.md` (only 120 of 479 credited `der` SLoC are the encode/decode path; `self_consistency_heuristic` false for the four key functions).
+
+Rerun (~10 min): `bash dev/v172/run-m3.sh && bash dev/v172/run-m4.sh`; reads: `tail -n 30 logs/v1.7.2/m4-*.log`. Evidence: `projects/bertie-der/evidence/m5-v1.7.2/` (SUMMARY.md, der-units.md, numbers-*.json, diffs, report-fixed-v1.7.2.{json,md}).

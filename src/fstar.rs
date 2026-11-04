@@ -410,21 +410,35 @@ struct Decl {
     kind: String,
     text: String,
 }
+fn identifier_prefix(s: &str) -> &str {
+    s.split(|c: char| !(c.is_alphanumeric() || c == '_'))
+        .next()
+        .unwrap_or("")
+}
+// hax emits declarations at column zero; `and` continues the previous `let rec`/`type` group.
+fn declaration_start(line: &str, previous_kind: Option<&str>) -> Option<(String, String)> {
+    for prefix in ["let rec ", "let ", "val ", "assume val ", "type "] {
+        if let Some(rest) = line.strip_prefix(prefix) {
+            let kind = if prefix == "let rec " {
+                "let"
+            } else {
+                prefix.trim()
+            };
+            return Some((identifier_prefix(rest).to_string(), kind.to_string()));
+        }
+    }
+    let rest = line.strip_prefix("and ")?;
+    let kind = previous_kind.filter(|k| ["let", "type"].contains(k))?;
+    Some((identifier_prefix(rest).to_string(), kind.to_string()))
+}
 fn declarations(text: &str) -> Vec<Decl> {
     let lines: Vec<_> = text.lines().collect();
-    let mut starts = vec![];
+    let mut starts: Vec<(usize, String, String)> = vec![];
     for (i, line) in lines.iter().enumerate() {
-        // hax emits declarations at column zero; unsupported syntax is uncredited.
-        for prefix in ["let ", "val ", "assume val ", "type "] {
-            if let Some(rest) = line.strip_prefix(prefix) {
-                let name = rest
-                    .split(|c: char| !(c.is_alphanumeric() || c == '_'))
-                    .next()
-                    .unwrap_or("");
-                if !name.is_empty() {
-                    starts.push((i, name.to_string(), prefix.trim().to_string()));
-                }
-                break;
+        let previous_kind = starts.last().map(|s| s.2.as_str());
+        if let Some((name, kind)) = declaration_start(line, previous_kind) {
+            if !name.is_empty() {
+                starts.push((i, name, kind));
             }
         }
     }
@@ -488,29 +502,50 @@ fn pragma_name(line: &str) -> Option<&str> {
         .unwrap_or(word.len());
     word[..end].contains('-').then_some(&word[..end])
 }
-fn unsafe_options(raw: &str) -> bool {
-    raw.lines()
-        .filter(|l| l.trim_start().starts_with('#'))
-        .filter(|l| {
-            !matches!(
-                pragma_name(l),
-                None | Some("pop-options") | Some("restart-solver")
-            )
-        })
-        .any(|line| {
-            let Some((_, tail)) = line.split_once('"') else {
-                return true;
+const SPLIT_QUERIES_VALUES: [&str; 3] = ["always", "on_failure", "no"];
+fn option_is_accepted(name: &str, value: &str) -> bool {
+    match name {
+        "--fuel" | "--ifuel" | "--z3rlimit" => value.parse::<usize>().is_ok(),
+        "--split_queries" => SPLIT_QUERIES_VALUES.contains(&value),
+        _ => false,
+    }
+}
+fn first_rejected_in_options(options: &str) -> Option<String> {
+    let args: Vec<_> = options.split_whitespace().collect();
+    for (i, name) in args.iter().enumerate().step_by(2) {
+        let Some(value) = args.get(i + 1) else {
+            return Some(name.to_string());
+        };
+        if !option_is_accepted(name, value) {
+            let shown = if value.starts_with("--") {
+                name.to_string()
+            } else {
+                format!("{name} {value}")
             };
-            let Some((options, _)) = tail.rsplit_once('"') else {
-                return true;
-            };
-            let args: Vec<_> = options.split_whitespace().collect();
-            args.len() % 2 != 0
-                || args.chunks(2).any(|p| {
-                    !["--fuel", "--ifuel", "--z3rlimit"].contains(&p[0])
-                        || p[1].parse::<usize>().is_err()
-                })
-        })
+            return Some(shown);
+        }
+    }
+    None
+}
+fn rejected_option_in_line(line: &str) -> Option<String> {
+    if !line.trim_start().starts_with('#')
+        || matches!(
+            pragma_name(line),
+            None | Some("pop-options") | Some("restart-solver")
+        )
+    {
+        return None;
+    }
+    let Some((_, tail)) = line.split_once('"') else {
+        return Some(line.trim().to_string());
+    };
+    let Some((options, _)) = tail.rsplit_once('"') else {
+        return Some(line.trim().to_string());
+    };
+    first_rejected_in_options(options)
+}
+fn rejected_option(raw: &str) -> Option<String> {
+    raw.lines().find_map(rejected_option_in_line)
 }
 fn apply_validated(
     report: &mut Report,
@@ -560,12 +595,9 @@ fn apply_validated(
                     .filter(|w| ["assume", "admit", "admitP"].contains(w))
                     .map(move |w| (i + 1, w.to_string()))
             })
-            .chain(
-                raw.lines()
-                    .enumerate()
-                    .filter(|(_, l)| unsafe_options(l))
-                    .map(|(i, _)| (i + 1, "unsupported or weakened F* file options".into())),
-            )
+            .chain(raw.lines().enumerate().filter_map(|(i, l)| {
+                rejected_option_in_line(l).map(|o| (i + 1, format!("unsupported F* option: {o}")))
+            }))
             .collect();
         for (line, kind) in &hazards {
             report.escape_hatches.push(crate::Escape {
@@ -592,7 +624,7 @@ fn apply_validated(
             words(&mask(&spec)?).any(|w| ["assume", "admit", "admitP"].contains(&w))
                 || spec.contains("--admit_")
                 || spec.contains("--lax")
-                || unsafe_options(&spec)
+                || rejected_option(&spec).is_some()
         } else {
             false
         };
@@ -711,7 +743,7 @@ mod tests {
     #[test]
     fn implicit_argument_lines_are_not_file_options_but_real_pragmas_still_are() {
         let benign = "f\n  #u8\n  #FStar.Tactics.Typeclasses.solve\n  #(t_Slice u8)\n#pop-options\n#restart-solver\n#push-options \"--fuel 0 --z3rlimit 100\"\n";
-        assert!(!unsafe_options(benign));
+        assert_eq!(rejected_option(benign), None);
         for hazard in [
             "#push-options \"--admit_smt_queries true\"",
             "#set-options \"--lax\"",
@@ -721,8 +753,53 @@ mod tests {
             "#print-effects-graph",
         ] {
             assert!(
-                unsafe_options(&format!("let x = 1\n{hazard}\n")),
+                rejected_option(&format!("let x = 1\n{hazard}\n")).is_some(),
                 "{hazard}"
+            );
+        }
+    }
+    #[test]
+    fn split_queries_is_the_only_added_option_and_only_with_a_known_value() {
+        for value in ["always", "on_failure", "no"] {
+            for extra in ["", " --fuel 0 --ifuel 1", " --z3rlimit 100"] {
+                let pragma = format!("#push-options \"--split_queries {value}{extra}\"\n");
+                assert_eq!(rejected_option(&pragma), None, "{pragma}");
+                let leading = format!("#push-options \"--z3rlimit 5 --split_queries {value}\"\n");
+                assert_eq!(rejected_option(&leading), None, "{leading}");
+            }
+        }
+        for (pragma, shown) in [
+            ("#push-options \"--split_queries\"", "--split_queries"),
+            (
+                "#push-options \"--split_queries maybe\"",
+                "--split_queries maybe",
+            ),
+            (
+                "#push-options \"--split_queries Always\"",
+                "--split_queries Always",
+            ),
+            (
+                "#push-options \"--split_queries --fuel 1\"",
+                "--split_queries",
+            ),
+            (
+                "#push-options \"--split_queries always --admit_smt_queries true\"",
+                "--admit_smt_queries true",
+            ),
+            ("#push-options \"--split_queries always --lax\"", "--lax"),
+            ("#push-options \"--lax --split_queries always\"", "--lax"),
+            (
+                "#push-options \"--split_queries always --foo bar\"",
+                "--foo bar",
+            ),
+            ("#push-options \"--z3rlimit\"", "--z3rlimit"),
+            ("#push-options \"--fuel x\"", "--fuel x"),
+            ("#reset-options", "#reset-options"),
+        ] {
+            assert_eq!(
+                rejected_option(&format!("{pragma}\n")).as_deref(),
+                Some(shown),
+                "{pragma}"
             );
         }
     }
@@ -753,6 +830,45 @@ mod tests {
         assert!(!words(&masked).any(|w| ["admit", "assume", "admitP"].contains(&w)));
         assert!(mask("(* missing").is_err());
         assert_eq!(declarations(&masked)[0].name, "f");
+    }
+    #[test]
+    fn let_rec_declarations_are_named_after_the_function() {
+        let text = "module Bertie.Der\n\nlet two_pow_256_ (_: Prims.unit) =\n  1\n\nlet rec be_value_prefix (c: t_Slice u8) (n: usize) =\n  if n =. mk_usize 0\n  then Rust_primitives.Hax.Int.from_machine (mk_u8 0)\n  else\n    ((be_value_prefix c (n -! mk_usize 1 <: usize) <: Hax_lib.Int.t_Int) *\n\nlet rec pow256 (n: usize) =\n  if n =. mk_usize 0\n  then Rust_primitives.Hax.Int.from_machine (mk_u8 1)\n\n#push-options \"--fuel 2 --z3rlimit 100\"\n\nlet rec skip_zeros (buf: t_Slice u8) (i: usize) =\n  if i <. mk_usize 32\n\n#pop-options\n\nlet rec pow256_is_pow2 (n: usize) =\n  if n >. mk_usize 0\n";
+        let decls = declarations(text);
+        let named: Vec<_> = decls
+            .iter()
+            .map(|d| (d.name.as_str(), d.kind.as_str()))
+            .collect();
+        assert_eq!(
+            named,
+            [
+                ("two_pow_256_", "let"),
+                ("be_value_prefix", "let"),
+                ("pow256", "let"),
+                ("skip_zeros", "let"),
+                ("pow256_is_pow2", "let")
+            ]
+        );
+        assert_eq!(decls[1].line, 6);
+        assert!(decls[1].text.starts_with("let rec be_value_prefix"));
+        assert!(!decls.iter().any(|d| d.name == "rec"));
+    }
+    #[test]
+    fn mutually_recursive_groups_name_every_member() {
+        let text = "module M\nlet rec even (n: usize) =\n  if n =. mk_usize 0 then true else odd n\n\nand odd (n: usize) =\n  if n =. mk_usize 0 then false else even n\n\nlet after (x: u8) = x\ntype t = | A\nand u = | B\nval v : u8\nand stray = 1\n";
+        let named: Vec<_> = declarations(text)
+            .into_iter()
+            .map(|d| (d.name, d.kind))
+            .collect();
+        let expected = [
+            ("even", "let"),
+            ("odd", "let"),
+            ("after", "let"),
+            ("t", "type"),
+            ("u", "type"),
+            ("v", "val"),
+        ];
+        assert_eq!(named, expected.map(|(n, k)| (n.to_string(), k.to_string())));
     }
     #[test]
     fn closed_command() {

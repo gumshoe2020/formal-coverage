@@ -393,3 +393,46 @@ fn opaque_replacements_and_assumed_interfaces_stay_visible() {
         .any(|t| t.kind.contains("assume val")));
     assert!(r.escape_hatches.iter().any(|e| e.kind == "assume"));
 }
+
+#[test]
+fn split_queries_region_is_credited_but_escapes_inside_it_still_block_and_name_the_option() {
+    let body = "let clean (x: u32) : Tot u32 = x\n";
+    let credited = |text: &str| {
+        let mut f = Fixture::new();
+        f.replace("fresh/Hax_fixture.fst", text);
+        f.replace("checked/Hax_fixture.fst", text);
+        f.run()
+    };
+    let region = |inside: &str| {
+        format!("module Hax_fixture\n#push-options \"--split_queries always --z3rlimit 50\"\n{inside}#pop-options\n")
+    };
+    let r = credited(&region(body));
+    assert!(r.escape_hatches.is_empty(), "{:?}", r.escape_hatches);
+    assert!(r.evidence_runs[0]
+        .credited_units
+        .iter()
+        .any(|u| u.ends_with("clean")));
+
+    let r = credited(&region(&format!("assume (True)\n{body}")));
+    assert!(r.evidence_runs[0].credited_units.is_empty());
+    assert!(r.escape_hatches.iter().any(|e| e.kind == "assume"));
+
+    for (pragma, shown) in [
+        (
+            "--split_queries always --admit_smt_queries true",
+            "--admit_smt_queries true",
+        ),
+        ("--split_queries always --lax", "--lax"),
+        ("--split_queries maybe", "--split_queries maybe"),
+    ] {
+        let text = format!("module Hax_fixture\n#push-options \"{pragma}\"\n{body}#pop-options\n");
+        let r = credited(&text);
+        assert!(r.evidence_runs[0].credited_units.is_empty(), "{pragma}");
+        let kind = format!("unsupported F* option: {shown}");
+        assert!(
+            r.escape_hatches.iter().any(|e| e.kind == kind),
+            "{pragma}: {:?}",
+            r.escape_hatches
+        );
+    }
+}

@@ -1,0 +1,73 @@
+/escape_hatches[2883]/kind: "unsupported or weakened F* file options" -> "unsupported F* option: --max_fuel 0"
+/escape_hatches[2884]/kind: "unsupported or weakened F* file options" -> "unsupported F* option: --max_fuel 0"
+/escape_hatches[2890]/kind: "unsupported or weakened F* file options" -> "unsupported F* option: --max_fuel 0"
+/escape_hatches[2891]/kind: "unsupported or weakened F* file options" -> "unsupported F* option: --z3version 4.13.3"
+/escape_hatches[2906]/kind: "unsupported or weakened F* file options" -> "unsupported F* option: --admit_smt_queries true"
+/escape_hatches[2922]/kind: "unsupported or weakened F* file options" -> "unsupported F* option: --admit_smt_queries true"
+/evidence_runs[0]/credited_units: ["bertie::tls13api::in_psk_mode", "bertie::tls13api::get_server_info", "bertie::tls13handshake::algs_post_clie -> ["bertie::tls13api::in_psk_mode", "bertie::tls13api::get_server_info", "bertie::tls13handshake::algs_post_clie
+/evidence_runs[0]/escape_sites[158][2]: "unsupported or weakened F* file options" -> "unsupported F* option: --max_fuel 0"
+/evidence_runs[0]/escape_sites[159][2]: "unsupported or weakened F* file options" -> "unsupported F* option: --max_fuel 0"
+/evidence_runs[0]/escape_sites[165][2]: "unsupported or weakened F* file options" -> "unsupported F* option: --max_fuel 0"
+/evidence_runs[0]/escape_sites[166][2]: "unsupported or weakened F* file options" -> "unsupported F* option: --z3version 4.13.3"
+/evidence_runs[0]/escape_sites[185][2]: "unsupported or weakened F* file options" -> "unsupported F* option: --admit_smt_queries true"
+/evidence_runs[0]/escape_sites[197][2]: "unsupported or weakened F* file options" -> "unsupported F* option: --admit_smt_queries true"
+/evidence_runs[0]/trusted_sites: [["<repo>/runs/v1.7.1/shipped/typecheck-extraction-2025.10.06.log", 1, "hax extraction (trusted)"], ["libs/cor -> [["<repo>/runs/v1.7.1/shipped/typecheck-extraction-2025.10.06.log", 1, "hax extraction (trusted)"], ["libs/cor
+/evidence_runs[0]/trusted_sloc: 3030 -> 2987
+/fstar_definitions[1471]/name: "Core_models.Specs.Num.Count_ones.rec" -> "Core_models.Specs.Num.Count_ones.popcount"
+/fstar_definitions[1472]/name: "Core_models.Specs.Num.Count_ones.rec" -> "Core_models.Specs.Num.Count_ones.bitsum"
+/fstar_definitions[1473]/name: "Core_models.Specs.Num.Count_ones.rec" -> "Core_models.Specs.Num.Count_ones.bitsum_shift"
+/fstar_definitions[1474]/name: "Core_models.Specs.Num.Count_ones.rec" -> "Core_models.Specs.Num.Count_ones.popcount_bitsum"
+/fstar_definitions[1753]/name: "Rust_primitives.Arithmetic.rec" -> "Rust_primitives.Arithmetic.int_pow"
+/fstar_definitions[1940]/name: "Rust_primitives.Hax.Folds.rec" -> "Rust_primitives.Hax.Folds.fold_range"
+/fstar_definitions[1941]/name: "Rust_primitives.Hax.Folds.rec" -> "Rust_primitives.Hax.Folds.fold_range_cf"
+/fstar_definitions[1942]/name: "Rust_primitives.Hax.Folds.rec" -> "Rust_primitives.Hax.Folds.fold_range_return"
+/fstar_definitions[1946]/name: "Rust_primitives.Hax.Folds.rec" -> "Rust_primitives.Hax.Folds.fold_range_step_by_from"
+/fstar_definitions[1965]/name: "Rust_primitives.Hax.rec" -> "Rust_primitives.Hax.while_loop_internal"
+/fstar_definitions[2307]/contract_kind: "unclassified" -> "safety-only"
+/fstar_definitions[2307]/name: "Bertie.Tls13formats.Handshake_data.rec" -> "Bertie.Tls13formats.Handshake_data.impl_HandshakeData__find_handshake_message"
+/fstar_definitions[2307]/postcondition: "" -> "True (or absent for Tot)"
+/fstar_definitions[2339]/classification: "trusted" -> "unmapped"
+/fstar_definitions[2415]/contract_kind: "unclassified" -> "safety-only"
+/fstar_definitions[2415]/name: "Bertie.Tls13formats.rec" -> "Bertie.Tls13formats.find_key_share"
+/fstar_definitions[2415]/postcondition: "" -> "True (or absent for Tot)"
+/fstar_definitions[2415]/rust_unit: null -> "bertie::tls13formats::find_key_share"
+/fstar_definitions[2416]/contract_kind: "unclassified" -> "safety-only"
+/fstar_definitions[2416]/name: "Bertie.Tls13formats.rec" -> "Bertie.Tls13formats.check_server_extensions"
+/fstar_definitions[2416]/postcondition: "" -> "True (or absent for Tot)"
+/fstar_definitions[2416]/rust_unit: null -> "bertie::tls13formats::check_server_extensions"
+/fstar_definitions[2421]/contract_kind: "unclassified" -> "safety-only"
+/fstar_definitions[2421]/name: "Bertie.Tls13formats.rec" -> "Bertie.Tls13formats.check_extensions_slice"
+/fstar_definitions[2421]/postcondition: "" -> "True (or absent for Tot)"
+/fstar_definitions[2421]/rust_unit: null -> "bertie::tls13formats::check_extensions_slice"
+/fstar_definitions[2538]/classification: "trusted" -> "proven-extracted"
+/fstar_definitions[2539]/classification: "trusted" -> "proven-extracted"
+/fstar_definitions[2544]/classification: "trusted" -> "proven-extracted"
+/fstar_definitions[2716]/classification: "unmapped" -> "proven-extracted"
+/fstar_definitions[2716]/contract_kind: "unclassified" -> "functional"
+/fstar_definitions[2716]/name: "Bertie.Tls13record.rec" -> "Bertie.Tls13record.padlen"
+/fstar_definitions[2716]/postcondition: "" -> "fun out ->\n          let out:usize = out in\n          out <=. n)\n      (decreases (Rust_primitives.Hax.Int
+/fstar_definitions[2716]/rust_unit: null -> "bertie::tls13record::padlen"
+/fstar_definitions[2732]/classification: "trusted" -> "proven-extracted"
+/summary/all/security_relevant/statuses/proven-extracted: 1081 -> 1091
+/summary/all/security_relevant/statuses/trusted: 2407 -> 2364
+/summary/all/security_relevant/statuses/unverified: 226519 -> 226552
+/summary/first_party/security_relevant/statuses/proven-extracted: 1081 -> 1091
+/summary/first_party/security_relevant/statuses/trusted: 2407 -> 2364
+/summary/first_party/security_relevant/statuses/unverified: 1357 -> 1390
+/summary/trusted_items: 2541 -> 2536
+/summary/trusted_sloc: 13954 -> 13911
+/summary_default_rules/all/security_relevant/statuses/proven-extracted: 1081 -> 1091
+/summary_default_rules/all/security_relevant/statuses/trusted: 2407 -> 2364
+/summary_default_rules/all/security_relevant/statuses/unverified: 226519 -> 226552
+/summary_default_rules/first_party/security_relevant/statuses/proven-extracted: 1081 -> 1091
+/summary_default_rules/first_party/security_relevant/statuses/trusted: 2407 -> 2364
+/summary_default_rules/first_party/security_relevant/statuses/unverified: 1357 -> 1390
+/summary_default_rules/trusted_items: 2541 -> 2536
+/summary_default_rules/trusted_sloc: 13954 -> 13911
+/trusted_items: [{"affected_units": [], "file": "<repo>/runs/v1.7.1/shipped/typecheck-extraction-2025.10.06.log", "kind": "hax -> [{"affected_units": [], "file": "<repo>/runs/v1.7.1/shipped/typecheck-extraction-2025.10.06.log", "kind": "hax
+/units[160]/status: "trusted" -> "unverified"
+/units[172]/status: "trusted" -> "unverified"
+/units[174]/status: "trusted" -> "unverified"
+/units[301]/proof_scope: null -> "hax/F*; trusted hax extraction; contract functional; postcondition: fun out ->\n          let out:usize = out
+/units[301]/status: "trusted" -> "proven-extracted"
+72 changed leaves
