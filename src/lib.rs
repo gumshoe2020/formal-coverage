@@ -744,9 +744,33 @@ pub(crate) fn runtime_sloc(source: &str, file: &str) -> usize {
         .count()
 }
 
+/// Skip both sugared doc comments and explicit doc attributes at this token level.
+/// Other attributes and literal contents keep their original spans and ownership.
+pub(crate) fn non_doc_tokens(stream: TokenStream) -> impl Iterator<Item = TokenTree> {
+    let mut tokens = stream.into_iter();
+    std::iter::from_fn(move || loop {
+        let token = tokens.next()?;
+        if matches!(&token, TokenTree::Punct(p) if p.as_char() == '#') {
+            let mut lookahead = tokens.clone();
+            let mut next = lookahead.next();
+            if matches!(&next, Some(TokenTree::Punct(p)) if p.as_char() == '!') {
+                next = lookahead.next();
+            }
+            if matches!(next, Some(TokenTree::Group(g))
+                if g.delimiter() == Delimiter::Bracket
+                    && matches!(g.stream().into_iter().next(), Some(TokenTree::Ident(i)) if i == "doc"))
+            {
+                tokens = lookahead;
+                continue;
+            }
+        }
+        return Some(token);
+    })
+}
+
 fn sloc_lines(source: &str) -> std::collections::BTreeSet<usize> {
     fn visit(stream: TokenStream, lines: &mut std::collections::BTreeSet<usize>) {
-        for token in stream {
+        for token in non_doc_tokens(stream) {
             if let TokenTree::Group(group) = token {
                 lines.insert(group.span_open().start().line);
                 lines.insert(group.span_close().end().line);

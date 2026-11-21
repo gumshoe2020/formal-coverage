@@ -14,6 +14,15 @@ Proof code has its own inventory and stays outside runtime denominators.
 Build dependencies and proc macros are a separate trusted supply-chain inventory.
 Partial upstream claims do not promote entire dependency crates.
 
+## v1.7.3: doc comments no longer count as code
+
+SLoC now excludes lines occupied only by Rust doc comments or explicit `doc`
+attributes, including inline Verus ghost sizing. Other attributes and lines with
+real code still count. This changes measured sizes and coverage denominators;
+status-weighted line totals and percentages may change. No tier rule, receipt
+grammar or threshold changed. See the [release notes](docs/v1.7.3.md) and
+[Bertie comparison](dev/v173/compare.md).
+
 ## Proof cost ratio (v1.6)
 
 `--ghost-lines separate` is the default. In first-party Verus runtime functions,

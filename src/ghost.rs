@@ -57,7 +57,7 @@ impl Lines {
     fn token(&mut self, t: &TokenTree, ghost: bool) {
         if let TokenTree::Group(g) = t {
             self.span(g.span_open(), ghost);
-            for t in g.stream() {
+            for t in crate::non_doc_tokens(g.stream()) {
                 self.token(&t, ghost);
             }
             self.span(g.span_close(), ghost);
@@ -66,11 +66,13 @@ impl Lines {
         }
     }
     fn all(&mut self, ts: &[TokenTree], ghost: bool) {
-        for t in ts {
-            self.token(t, ghost);
+        for t in crate::non_doc_tokens(ts.iter().cloned().collect()) {
+            self.token(&t, ghost);
         }
     }
     fn body(&mut self, ts: &[TokenTree]) {
+        let tokens: Vec<_> = crate::non_doc_tokens(ts.iter().cloned().collect()).collect();
+        let ts = tokens.as_slice();
         let mut i = 0;
         while i < ts.len() {
             let statement = i == 0 || ts[i - 1].to_string() == ";" || brace(&ts[i - 1]);
@@ -178,7 +180,7 @@ impl Lines {
 /// Called only for runtime functions inside a verus! scope. Last token is the
 /// function body (or a trait declaration semicolon), supplied by the inventory.
 pub(crate) fn inline_sloc(stream: TokenStream, source_lines: &[&str]) -> usize {
-    let ts: Vec<_> = stream.into_iter().collect();
+    let ts: Vec<_> = crate::non_doc_tokens(stream).collect();
     let mut lines = Lines::default();
     if let Some(last) = ts.last().filter(|t| brace(t)) {
         let end = ts.len() - 1;
@@ -224,5 +226,29 @@ pub(crate) fn apply(report: &mut crate::Report, mode: GhostLines) {
             u.runtime_sloc = 0;
             u.inline_proof_sloc = 0;
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn docs_do_not_own_inline_ghost_lines() {
+        let source = r#"#[doc(hidden)]
+fn f()
+    requires true,
+{
+    proof {
+        /// Ghost doc
+        /** Ghost block
+         * docs */
+        #[doc = "ghost"]
+        assert(true);
+    }
+    // A shared runtime/ghost line must remain runtime.
+    let x = 1; proof { assert(true); }
+}
+"#;
+        let lines: Vec<_> = source.lines().collect();
+        assert_eq!(super::inline_sloc(source.parse().unwrap(), &lines), 4);
     }
 }

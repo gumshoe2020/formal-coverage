@@ -1,6 +1,6 @@
 [package]
 name = "formal-coverage"
-version = "1.5.0"
+version = "1.7.3"
 edition = "2021"
 license = "MIT"
 

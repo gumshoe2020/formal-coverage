@@ -1,0 +1,45 @@
+{
+  "source_head": "f646099cee002c1d998b0e8c160886ef838f4f69",
+  "baseline_commit": "4031d85",
+  "candidate_measurement_commit": "b3ed561",
+  "source_clean_after_reports": true,
+  "report_exit_codes": [
+    0,
+    0
+  ],
+  "input_sha256": {
+    "Cargo.lock": "478ff0ce228374c1304e50ab7150bf495501c2cf7e5c1e08021f20dfdc7d19c9",
+    "Cargo.toml": "85520979064863dc0cfa6d09804c27988f8229f538f779d821c383a5e944e89f",
+    "formal-coverage.toml": "3bcbbdd309174702d5723dd6ece44ce30c77e4b7bb0ac2492e5517c7ea1f1aa0",
+    "src/der.rs": "93bed984857e18bc5da6ee270e9a6ba9f4d464845269321c67c4af7c730b405b",
+    "src/lib.rs": "18ae0917f44be72af73ed034f3bd23a7c0d5ea7b534fbb968c36dafd1bac8f9d",
+    "src/server.rs": "66d992865a2c653035d7840b6c237d7f6d584f5d770f66999c244d3b420b2b83",
+    "src/stream/bertie_stream.rs": "e4055354228618e7355bf5100a9fefa40cc031a313a89f54e46c0d68f1d3439f",
+    "src/stream/client.rs": "042838c0ddfeee461caf529612cba215e6a1f765b80334010cdd314ece93898a",
+    "src/stream/mod.rs": "9b77de58d23ae08bb3e506621de51a6ec9e176076536e7a8d823c3e66beed6df",
+    "src/stream/server.rs": "cdd759b58ff93489904a665e12ea2b438d22f8551d4586d3793adc8fee357a4e",
+    "src/test_tls13traces_internal.rs": "7a0905da596c0871c3582afeac990a57020958bad75e096d436ec35c7aa65d00",
+    "src/test_utils.rs": "d3d318a788eaa5fdceb932cf5a2d8fdf415c006df9f5c05f9ea0e97335234ed3",
+    "src/tls13api.rs": "49696da639675c03ed59c963bb391f681ed9c2d462843802bf30aa93314dd00d",
+    "src/tls13cert.rs": "9baa742d53b75c99a1b93de96e48ec3c654f1eb1b97ae88bc0ea3523141da3ef",
+    "src/tls13crypto.rs": "f603281953097b7985a45868558b096173c5a5f7e0bad40ae1fcb9a9fa6720f7",
+    "src/tls13formats/handshake_data.rs": "2f1e7bd9b6e4621bc0d691519bcb329658a7a0da81d8eaa84f63289703da09bf",
+    "src/tls13formats.rs": "f2653d2fafd6e3cdf32598be02a7399134945ed25d4977e2c0a215f0b937e6d0",
+    "src/tls13handshake.rs": "3d1817fefa1820d2b0297a59f3f384ddcfe9c1eec29244cd863e7cbaa38db66f",
+    "src/tls13keyscheduler/key_schedule.rs": "fa0352c37a99ab54a29988fe1e9f03724a4b5267e5092143ec6eaa82c5007d46",
+    "src/tls13keyscheduler.rs": "80fd805e2a0d5062715f89805c2056d022c47ac19c70bf51fcf5223f3a8c5d81",
+    "src/tls13record.rs": "db245810d8cfe6c2b63c0033f8ee70057ddf2b003f2367d6b413999950bdd2e0",
+    "src/tls13utils.rs": "aa00a05bda314838c4df8855711ebee078054bf3167c569048ed0c9e08b6757c",
+    "target/ci-logs/fstar/fstar.log.evidence.json": "cd054c8d09c1cc831dea020ff521ffa4d4c8bf096475a6bdc934066d4b70e8e3",
+    "target/ci-logs/fstar/interface-only.json": "28eda9e099dc727293799433965d20854ff57c7debf2dd96022897965bcd3b01",
+    "target/ci-logs/fstar/fstar.log": "6b68a716ac379262f8d937c3fde2c4d52db335a68ae5c4644b5575257319c284"
+  },
+  "artifact_sha256": {
+    "baseline_binary": "2dcece262582a64f0697a795239c0bd4466ae168c04deec8e1b1aaf279f2ce58",
+    "candidate_binary": "25a4f019d3cb87da3b9bbe90c6b288a00d8656761f8b4b31858e342c5fc2037a",
+    "old_json": "5a7f02bf937ed5cc4928434273609de2f2cf7cb223a7508d5faccd6c8dbfd891",
+    "new_json": "735e772a98dea6384f0c8ca79da232da3af20e2ca1a837a905515fb31e6c1c82",
+    "old_markdown": "965c1a526e7c90d0423400e31323670d31ce507f3e4feb082b3529fb966e5ab4",
+    "new_markdown": "d07a5005160f2f29d1a01d7ce7e555371aae8592a40ef09a8f4e0b82e4ff12c4"
+  }
+}
