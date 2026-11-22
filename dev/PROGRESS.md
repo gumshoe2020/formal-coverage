@@ -249,3 +249,35 @@ Codex hit its usage limit before writing anything for v1.7.2; Claude Code took o
 
 V1.7.2-READY
 
+
+## v1.8 — PLAN-FSTAR-RATIO.md
+
+- [x] M1 Denominator — extracted denominator 824; 469 Bertie units identical; Verus ratio assertions and full suite pass. Evidence: logs/v1.8/m1-*.log.
+- [x] M2 Annotations — independent scanner matches 350 security/all-first-party SLoC exactly; 101 changed sizes, no tier changes; runtime sizes identical to baseline.
+- [x] M3 Patches, files, models — strict receipt filtering/config tests pass; independent Bertie patch count matches (105 excluded hunks, 0 eligible lines); models 18 SLoC, excluded from ratio.
+- [x] M4 Replay and docs — final paired Bertie/scratch-server/Vest and six fixture replays pass; independent counts match; every changed size in dev/v18/compare.md; docs/README/version 1.8.0 and report schema 4 updated.
+
+Independent acceptance remains Dudley’s.
+
+Final local validation: cargo test 139 passed / 0 failed / 1 existing ignored performance test; cargo clippy --all-targets -- -D warnings, cargo fmt --check, release build/version, Python syntax and git diff --check passed. No fresh verifier execution or independent acceptance. Four milestone commits on main, local only.
+
+V1.8-READY
+
+## v1.8.1 — PLAN-FSTAR-RATIO-v1.8.1.md
+
+- [x] M1 Classification — 22 independently matched units / 254 full-source SLoC; 16 credited → verified, six retain status, zero proof hazards. Evidence: dev/v181/m1.md and logs/v1.8.1/m1-*.
+- [x] M2 Inline statements — exact independent match: 57 cfg inline lines, 13 annotation overlaps, 44 additional lines separated. Evidence: dev/v181/m2.md and logs/v1.8.1/m2-*.
+- [x] M3 Paired replays, identity checks, docs and version: final source independent counts match; patches=[] figures identical; scratch-server/Vest/fixtures identical in both modes, schema 4 retained. Evidence: dev/v181/compare.md and logs/v1.8.1/m3-*.
+
+Final local validation: cargo test 152 passed / 0 failed / 1 existing ignored performance test; clippy all targets -D warnings, fmt --check, release build/version 1.8.1, Python/shell syntax and diff checks pass. Bertie gate failures are unchanged (below 5-15 and existing file-scope hazard); no new proof-code hazard or other failure. No fresh verifier execution or independent acceptance. Three milestone commits on main, local only; no push, tag or release bundle.
+
+Independent acceptance remains with Dudley.
+
+V1.8.1-READY
+
+## v1.8.1 acceptance fix
+
+- [x] Test precedence guard, three both-mode regressions, plan clarification and independent scanner exclusion.
+- [x] Replay/compare, documentation and required checks: 18 units / 197 standalone SLoC; all tests retain v1.8.0 category/status/size; controls identical in both modes. One local commit on main; no push/tag/release.
+
+V1.8.1-FIX-READY

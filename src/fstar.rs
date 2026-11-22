@@ -208,6 +208,11 @@ pub fn apply_fstar_evidence(report: &mut Report, root: &Path, logs: &[PathBuf]) 
         match validate(root, log, report).context("F* receipt rejected") {
             Ok(receipt) => {
                 run.accepted = true;
+                crate::fstar_proof::accepted(
+                    report,
+                    log.parent().unwrap_or(Path::new(".")),
+                    &receipt,
+                )?;
                 run.verified_files = receipt.checked.keys().cloned().collect();
                 run.reasons.push("Accepted caller-supplied evidence, not an execution attestation; hax extraction is trusted".into());
                 apply_validated(report, root, log, &receipt, &mut run)?;
@@ -232,7 +237,9 @@ pub fn apply_fstar_evidence(report: &mut Report, root: &Path, logs: &[PathBuf]) 
         let credited: std::collections::BTreeSet<_> = report
             .units
             .iter()
-            .filter(|u| u.status == "proven-extracted")
+            .filter(|u| {
+                u.status == "proven-extracted" || (u.fstar_cfg_hax && u.status == "verified")
+            })
             .map(|u| u.id.clone())
             .collect();
         for run in report
@@ -255,6 +262,7 @@ pub fn apply_fstar_evidence(report: &mut Report, root: &Path, logs: &[PathBuf]) 
             .escape_hatches
             .dedup_by(|a, b| a.file == b.file && a.line == b.line && a.kind == b.kind);
     }
+    crate::fstar_proof::refresh(report, root)?;
     Ok(())
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -349,7 +357,7 @@ fn inventory_rust_trust(report: &mut Report, root: &Path) -> Result<()> {
 }
 
 /// Mask nested comments and strings without changing byte offsets or line numbers.
-fn mask(text: &str) -> Result<String> {
+pub(crate) fn mask(text: &str) -> Result<String> {
     let mut out = text.as_bytes().to_vec();
     let bytes = text.as_bytes();
     let (mut i, mut depth, mut string) = (0, 0usize, false);
@@ -544,7 +552,7 @@ fn rejected_option_in_line(line: &str) -> Option<String> {
     };
     first_rejected_in_options(options)
 }
-fn rejected_option(raw: &str) -> Option<String> {
+pub(crate) fn rejected_option(raw: &str) -> Option<String> {
     raw.lines().find_map(rejected_option_in_line)
 }
 fn apply_validated(
@@ -704,12 +712,18 @@ fn apply_validated(
             if !is_interface || trusted {
                 if let Some(u) = &unit {
                     if classification == "proven-extracted"
-                        && u.category == crate::Category::Runtime
+                        && (u.category == crate::Category::Runtime
+                            || (u.fstar_cfg_hax && u.cfg_hax_was_runtime))
                         && !["hazard", "trusted", "proven", "proven-bounded"]
                             .contains(&u.status.as_str())
                     {
                         let target = report.units.iter_mut().find(|v| v.id == u.id).unwrap();
-                        target.status = classification.into();
+                        target.status = if target.fstar_cfg_hax {
+                            "verified"
+                        } else {
+                            classification
+                        }
+                        .into();
                         target.proof_scope = Some(format!("hax/F*; trusted hax extraction; contract {kind}; postcondition: {post}; self-consistency heuristic={self_consistency}{}", if self_consistency { "; consistent with its own parser; not checked against an external spec" } else { "" }));
                         run.credited_units.push(u.id.clone());
                     }

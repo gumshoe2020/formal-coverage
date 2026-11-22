@@ -318,3 +318,112 @@ fn ghost_separation_preserves_full_trusted_footprint_and_receipt_scope() {
     }
     fs::remove_dir_all(root).unwrap();
 }
+
+#[test]
+fn extracted_runtime_is_visible_and_enters_only_the_ratio_denominator() {
+    let root = fixture();
+    let mut r = report(&root, "", None, false).unwrap();
+    r.units
+        .iter_mut()
+        .find(|u| u.name == "second")
+        .unwrap()
+        .status = "proven-extracted".into();
+    let p = proof_ratio(&r);
+    assert_eq!(p.security_relevant.proven_runtime_sloc, 4);
+    assert_eq!(p.security_relevant.proven_extracted_runtime_sloc, 4);
+    assert_eq!(p.security_relevant.proven_bounded_runtime_sloc, 0);
+    assert_eq!(p.security_relevant.ratio, Some(1.25));
+    assert_eq!(p.crates[0].metrics.proven_extracted_runtime_sloc, 4);
+    assert_eq!(p.modules[1].metrics.proven_extracted_runtime_sloc, 4);
+    assert_eq!(
+        p.runtime_proven_modes
+            .runtime
+            .security_relevant
+            .proven_extracted_runtime_sloc,
+        5
+    );
+    for u in &mut r.units {
+        if u.name == "run" {
+            u.status = "unverified".into();
+        }
+    }
+    assert_eq!(proof_ratio(&r).security_relevant.ratio, Some(2.5));
+    fs::remove_dir_all(root).unwrap();
+}
+
+#[test]
+fn hax_modes_filters_docs_and_assume_escape_remain_visible() {
+    let root = fixture();
+    fs::write(root.join("src/lib.rs"), "use hax_lib as hx;\n/// docs\n#[hx::requires(true)]\nfn f() {\n hx::assert!(true);\n hx::assume!(true);\n let x = 0; hx::assert!(true);\n}\n#[hx::lemma]\nfn g() {}\n").unwrap();
+    let options = Options {
+        size_mode: SizeMode::WholeCrate,
+        ..Options::default()
+    };
+    let mut separate = analyze_with(&root, &options).unwrap();
+    apply_evidence_many(&mut separate, &root, &[], &[]).unwrap();
+    let runtime = analyze_with(
+        &root,
+        &Options {
+            ghost_lines: formal_coverage::GhostLines::Runtime,
+            ..options
+        },
+    )
+    .unwrap();
+    let f = separate.units.iter().find(|u| u.name == "f").unwrap();
+    assert_eq!(f.fstar_annotation_sloc, 3);
+    assert_eq!(f.inline_proof_sloc, 3);
+    assert_eq!(
+        runtime.units.iter().find(|u| u.name == "f").unwrap().sloc,
+        f.sloc + 3
+    );
+    assert_eq!(f.status, "hazard");
+    assert!(separate.escape_hatches.iter().any(|e| e.kind == "assume"));
+    assert_eq!(
+        proof_ratio(&runtime)
+            .security_relevant
+            .fstar_annotation_sloc,
+        0
+    );
+    assert_eq!(
+        proof_ratio(&separate)
+            .security_relevant
+            .fstar_annotation_sloc,
+        4
+    );
+    separate
+        .units
+        .iter_mut()
+        .find(|u| u.name == "g")
+        .unwrap()
+        .security = false;
+    assert_eq!(
+        proof_ratio(&separate)
+            .security_relevant
+            .fstar_annotation_sloc,
+        3
+    );
+    assert_eq!(
+        proof_ratio(&separate).all_first_party.fstar_annotation_sloc,
+        4
+    );
+    fs::remove_dir_all(root).unwrap();
+}
+
+#[test]
+fn mixed_verus_and_hax_lines_are_owned_once() {
+    let root = fixture();
+    fs::write(root.join("src/lib.rs"), "verus! {\n#[hax_lib::requires(true)]\nfn f() {\n proof {\n hax_lib::assert!(true);\n }\n}\n}\n").unwrap();
+    let r = analyze_with(
+        &root,
+        &Options {
+            size_mode: SizeMode::WholeCrate,
+            ..Options::default()
+        },
+    )
+    .unwrap();
+    let f = &r.units[0];
+    assert_eq!(f.fstar_annotation_sloc, 2);
+    assert_eq!(f.ghost_sloc, 4);
+    assert_eq!(f.inline_proof_sloc, 4);
+    fs::remove_dir_all(root).unwrap();
+}

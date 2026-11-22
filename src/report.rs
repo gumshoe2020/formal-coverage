@@ -752,9 +752,10 @@ fn validate(r: &Report) -> Result<()> {
 }
 fn validate_statuses(r: &Report) -> Result<()> {
     anyhow::ensure!(
-        r.units
-            .iter()
-            .all(|u| if u.category == Category::ProofCode {
+        r.units.iter().all(
+            |u| if u.category == Category::ProofCode && u.fstar_cfg_hax {
+                u.status == "verified" || STATUSES.contains(&u.status.as_str())
+            } else if u.category == Category::ProofCode {
                 [
                     "verified",
                     "unverified",
@@ -765,11 +766,12 @@ fn validate_statuses(r: &Report) -> Result<()> {
                 .contains(&u.status.as_str())
             } else {
                 STATUSES.contains(&u.status.as_str())
-            })
-            && r.dependencies
-                .iter()
-                .chain(&r.build_dependencies)
-                .all(|d| STATUSES.contains(&d.status.as_str())),
+            }
+        ) && r
+            .dependencies
+            .iter()
+            .chain(&r.build_dependencies)
+            .all(|d| STATUSES.contains(&d.status.as_str())),
         "unknown status in report"
     );
     Ok(())

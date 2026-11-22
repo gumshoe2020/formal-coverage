@@ -179,7 +179,7 @@ impl Lines {
 }
 /// Called only for runtime functions inside a verus! scope. Last token is the
 /// function body (or a trait declaration semicolon), supplied by the inventory.
-pub(crate) fn inline_sloc(stream: TokenStream, source_lines: &[&str]) -> usize {
+pub(crate) fn inline_lines(stream: TokenStream, source_lines: &[&str]) -> BTreeSet<usize> {
     let ts: Vec<_> = crate::non_doc_tokens(stream).collect();
     let mut lines = Lines::default();
     if let Some(last) = ts.last().filter(|t| brace(t)) {
@@ -208,7 +208,12 @@ pub(crate) fn inline_sloc(stream: TokenStream, source_lines: &[&str]) -> usize {
                 .get(**line - 1)
                 .is_some_and(|s| !s.trim().is_empty())
         })
-        .count()
+        .copied()
+        .collect()
+}
+
+pub(crate) fn inline_sloc(stream: TokenStream, source_lines: &[&str]) -> usize {
+    inline_lines(stream, source_lines).len()
 }
 
 pub(crate) fn apply(report: &mut crate::Report, mode: GhostLines) {

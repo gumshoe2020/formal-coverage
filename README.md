@@ -14,6 +14,24 @@ Proof code has its own inventory and stays outside runtime denominators.
 Build dependencies and proc macros are a separate trusted supply-chain inventory.
 Partial upstream claims do not promote entire dependency crates.
 
+## v1.8.1: extraction-only Rust is proof code
+
+In first-party hax crates, items whose own or enclosing `cfg` attributes imply
+`hax` are standalone proof code in both ghost modes. Accepted F* credit reports
+these units as `verified`; uncredited units retain their status. Inside runtime
+functions, cfg(hax) statements and blocks move to inline proof in `separate`
+mode and stay runtime in `runtime` mode. Shared runtime lines stay runtime;
+overlapping annotations count once. See the [paired replay](dev/v181/compare.md).
+
+## v1.8: hax/F* proof cost
+
+Proof ratios now include `proven-extracted` runtime in the denominator and
+whitelisted hax/F* annotations in inline proof. Reports separately show
+annotations, strictly verified patch additions, hand-written F* proof files,
+and model SLoC (trusted assumptions, excluded from the ratio). No tier rule,
+receipt grammar or threshold changed. See the [release notes](docs/v1.8.md)
+and [paired replay](dev/v18/compare.md).
+
 ## v1.7.3: doc comments no longer count as code
 
 SLoC now excludes lines occupied only by Rust doc comments or explicit `doc`
@@ -25,17 +43,19 @@ grammar or threshold changed. See the [release notes](docs/v1.7.3.md) and
 
 ## Proof cost ratio (v1.6)
 
-`--ghost-lines separate` is the default. In first-party Verus runtime functions,
-lines containing only supported ghost constructs move from runtime to inline
+`--ghost-lines separate` is the default. In first-party runtime functions,
+lines containing only supported Verus ghost constructs or whitelisted hax/F*
+annotations, plus cfg(hax) statements in hax crates, move from runtime to inline
 proof SLoC. Mixed runtime/ghost lines stay runtime. `--ghost-lines runtime`
-retains the v1.5 denominator. The first report line records the mode; a table
+keeps these lines in runtime. The first report line records the mode; a table
 shows proven runtime figures under both modes using the same accepted evidence.
-Non-Verus code and dependency sizing are unaffected.
+Other Rust code and dependency sizing are unaffected.
 
-The ratio is **(standalone proof SLoC + inline proof SLoC) / proven runtime
-SLoC**. Reports show first-party security-relevant and all-first-party headlines,
+The ratio is **(standalone proof + inline proof + F* patch additions +
+hand-written F* proof SLoC) / (proven + proven-extracted runtime SLoC)**.
+F* annotations and cfg(hax) statements are already part of inline proof and are never added twice. Reports show first-party security-relevant and all-first-party headlines,
 crate/module rows, the standalone/inline split, and bounded runtime proofs in a
-separate column. Zero proven runtime means `n/a`. Unattributed root proof code
+separate column. A zero combined denominator means `n/a`. Unattributed root proof code
 still counts in crate and overall totals.
 
 The default acceptance range is **1.0–10.0**, inclusive. A schema-3 config can set:
@@ -57,6 +77,53 @@ For a ratio gate with an explicit zero coverage threshold, use
 `formal-coverage gate path/to/workspace --min-security-proven 0 --proof-ratio-range 1:10`.
 `--no-proof-ratio-gate` disables that check and is recorded. Existing coverage,
 completeness, hazard and input-reason checks still apply.
+
+Optional schema-2/3 configuration for hand-written F* inputs:
+
+```toml
+[fstar.proof]
+patches = ["proofs/fstar/extraction-panic-free.patch"]
+files = []                                     # hand-written .fst/.fsti proof
+models = ["proofs/fstar/libcrux-models/*.fsti"] # trusted assumptions only
+```
+
+Globs are relative to the workspace root; unmatched globs are errors. Absent
+configuration adds no patch/file/model cost. Patch additions exclude headers,
+blank lines and comment-only lines; each target must be a strictly verified
+module in an accepted F* receipt. Lax, admitted, hazard, interface-only and
+absent modules count zero, with each excluded hunk and reason listed. Module
+names must match exactly. Hand-written files additionally need matching
+receipt-bound bytes. Generated extraction and configured models never count
+as hand-written proof. Without an accepted receipt, patch/file cost is zero;
+models are still reported separately.
+
+The hax whitelist is centralized in [src/hax.rs](src/hax.rs), with a test for
+every exact path. It covers the approved contracts, F* quoting variants,
+proof helpers and explicitly named int/prop helpers; both `hax_lib::` and
+`hax::` spellings and scoped `use hax_lib as NAME` aliases work. Unknown paths
+are listed for review and stay runtime. ProVerif and SSProve add no proof cost.
+`assume` retains its escape treatment. Annotation cost follows the same
+first-party, runtime-unit and security filters as Verus inline proof.
+Unmapped external lemmas/models are conservatively security relevant in the
+root crate's `<unattributed>` module row.
+
+JSON report schema is **4**; configuration remains schema 2/3. The new
+`proof_ratio` fields are `fstar_annotation_sloc`, `fstar_patch_sloc`,
+`fstar_file_sloc`, `fstar_model_sloc`, `proven_extracted_runtime_sloc` and
+`excluded_patch_hunks`, also present in crate/module rows. v1.8.1 adds
+`fstar_cfg_hax_sloc` (standalone) and `fstar_cfg_hax_inline_sloc` (inline),
+also exposed in both-mode figures. Distinct
+`unknown_hax_paths` are reported beside the ratio. `proven_runtime_sloc`
+continues to mean Verus proven runtime alone; bounded runtime remains separate.
+
+cfg implication uses the shared test/hax algebra: `cfg(hax)` and
+`cfg(all(hax, ...))` qualify; `any(...)` qualifies only when every arm implies
+hax. `not(hax)`, `cfg_attr(hax, ...)`, `feature = "hax"` and other cfg names
+qualify for no cfg proof credit. The existing hax project marker is an
+inventoried source containing `hax_lib`, applied at first-party crate scope.
+Annotations in standalone proof units belong to standalone SLoC and contribute
+zero `fstar_annotation_sloc`. Gated `use` items remain uncounted. Receipt grammar,
+evidence acceptance and thresholds are unchanged.
 
 This is a **cost signal, not a quality score**. `ensures true` can require zero
 proof statements; its low cost says nothing about whether the specification is

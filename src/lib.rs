@@ -1,6 +1,7 @@
 mod ratio;
 pub use ratio::{proof_ratio, ProofRatio, ProofRatioConfig, ProofRatioRange};
 mod ghost;
+mod hax;
 pub use ghost::GhostLines;
 mod report;
 pub use report::{
@@ -10,6 +11,7 @@ pub use report::{
 mod cfg;
 mod evidence;
 mod fstar;
+mod fstar_proof;
 mod kani;
 pub use fstar::{apply_fstar_evidence, FstarModule, FstarReceipt};
 mod modules;
@@ -59,6 +61,19 @@ pub struct Unit {
     pub inline_proof_sloc: usize,
     #[serde(default)]
     pub ghost_sloc: usize,
+    #[serde(default)]
+    pub fstar_annotation_sloc: usize,
+    /// Extraction-only unit, scoped to a first-party hax crate.
+    #[serde(default, skip_serializing_if = "std::ops::Not::not")]
+    pub fstar_cfg_hax: bool,
+    #[serde(default, skip_serializing_if = "is_zero")]
+    pub fstar_cfg_hax_inline_sloc: usize,
+    #[serde(skip)]
+    pub hax_crate: bool,
+    #[serde(skip)]
+    pub cfg_hax_scope: bool,
+    #[serde(skip)]
+    pub cfg_hax_was_runtime: bool,
     pub first_party: bool,
     pub security: bool,
     pub status: String,
@@ -86,8 +101,13 @@ pub struct Unit {
     #[serde(skip)]
     pub test_code: bool,
 }
-/// Report schema: 3 adds dependency size modes, explicit inputs and default-only figures.
-pub const REPORT_SCHEMA: u32 = 3;
+fn is_zero(n: &usize) -> bool {
+    *n == 0
+}
+
+/// Schema 4 adds F* proof cost and moves hax annotations out of runtime in separate mode.
+/// Configuration schemas remain 2/3. Cross-schema coverage comparisons need acknowledgement.
+pub const REPORT_SCHEMA: u32 = 4;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Report {
@@ -100,6 +120,8 @@ pub struct Report {
     pub no_proof_ratio_gate: bool,
     #[serde(default)]
     pub unparseable_files: Vec<String>,
+    #[serde(default)]
+    pub unknown_hax_paths: Vec<String>,
     #[serde(default)]
     pub size_mode: String,
     #[serde(default)]
@@ -141,6 +163,8 @@ pub struct Report {
     pub evidence_runs: Vec<EvidenceRun>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub fstar_definitions: Vec<fstar::FstarDefinition>,
+    #[serde(default)]
+    pub fstar_proof: fstar_proof::ProofState,
     pub escape_hatches: Vec<Escape>,
     #[serde(default)]
     pub trusted_items: Vec<evidence::TrustedItem>,
@@ -212,9 +236,11 @@ pub fn inventory(root: &Path) -> Result<Report> {
         let first_unit = units.len();
         let mut file_modules = Vec::new();
         let mut test_modules = Vec::new();
+        let mut hax_crate = false;
         // Include all source files conservatively; test/build files are identified by their module paths.
         for path in files {
             let source = fs::read_to_string(&path)?;
+            hax_crate |= source.contains("hax_lib");
             let relative = path
                 .strip_prefix(&root)
                 .unwrap_or(&path)
@@ -245,6 +271,12 @@ pub fn inventory(root: &Path) -> Result<Report> {
                     runtime_sloc: sloc(&source),
                     inline_proof_sloc: 0,
                     ghost_sloc: 0,
+                    fstar_annotation_sloc: 0,
+                    fstar_cfg_hax: false,
+                    fstar_cfg_hax_inline_sloc: 0,
+                    hax_crate: false,
+                    cfg_hax_scope: false,
+                    cfg_hax_was_runtime: false,
                     first_party: true,
                     security: false,
                     status: "hazard".into(),
@@ -285,6 +317,7 @@ pub fn inventory(root: &Path) -> Result<Report> {
             );
         }
         for u in &mut units[first_unit..] {
+            u.hax_crate = hax_crate;
             if u.name == "<unparseable>" {
                 continue;
             }
@@ -297,6 +330,11 @@ pub fn inventory(root: &Path) -> Result<Report> {
                     && cfg_implies_test(attrs)
             });
             u.test_code |= *test_target || declared_test;
+            for (_, attrs) in test_modules.iter().filter(|(declared, _)| {
+                module == declared || module.starts_with(&format!("{declared}::"))
+            }) {
+                u.cfg_hax_scope |= cfg_implies_hax(attrs);
+            }
         }
     }
     let workspace_dirs: Vec<PathBuf> = metadata
@@ -323,7 +361,7 @@ pub fn inventory(root: &Path) -> Result<Report> {
         .collect();
     let dependency_inventory_complete = declared_external_dependencies.is_empty();
     units.sort_by(|a, b| (&a.file, a.line, &a.id).cmp(&(&b.file, b.line, &b.id)));
-    Ok(Report { proof_ratio_range: ProofRatioRange::default(), no_proof_ratio_gate: false, unparseable_files, ghost_lines: GhostLines::default(), schema: REPORT_SCHEMA, size_mode: String::new(), size_profile: String::new(), binary_sha256: None, size_fallbacks: vec![], approximation: "Syntactic token inventory; includes cfg-disabled functions and Verus ghost/spec code. Security classification pending.".into(), units, source_files: source_files.into_iter().collect(), security_relevant: 0, everything_else: 0, overrides: vec![], config_schema: 0, inputs: vec![], dependencies: vec![], build_dependencies: vec![], dev_dependencies_excluded: 0, closure: String::new(), closure_reason: None, target: String::new(), cargo_version: String::new(), declared_external_dependencies, dependency_inventory_complete, warnings: vec![], evidence_runs: vec![], fstar_definitions: vec![], escape_hatches: vec![], trusted_items: vec![], upstream_claims: vec![] })
+    Ok(Report { proof_ratio_range: ProofRatioRange::default(), no_proof_ratio_gate: false, unparseable_files, unknown_hax_paths: vec![], ghost_lines: GhostLines::default(), schema: REPORT_SCHEMA, size_mode: String::new(), size_profile: String::new(), binary_sha256: None, size_fallbacks: vec![], approximation: "Syntactic token inventory; includes cfg-disabled functions and Verus ghost/spec code. Security classification pending.".into(), units, source_files: source_files.into_iter().collect(), security_relevant: 0, everything_else: 0, overrides: vec![], config_schema: 0, inputs: vec![], dependencies: vec![], build_dependencies: vec![], dev_dependencies_excluded: 0, closure: String::new(), closure_reason: None, target: String::new(), cargo_version: String::new(), declared_external_dependencies, dependency_inventory_complete, warnings: vec![], evidence_runs: vec![], fstar_definitions: vec![], fstar_proof: fstar_proof::ProofState::default(), escape_hatches: vec![], trusted_items: vec![], upstream_claims: vec![] })
 }
 fn module_path(local: &str, targets: &[Target]) -> String {
     let _ = targets;
@@ -454,10 +492,16 @@ fn test_attribute(attrs: &str) -> bool {
 
 /// True when some `#[cfg(...)]` in `attrs` can only hold under `cfg(test)`.
 fn cfg_implies_test(attrs: &str) -> bool {
-    fn implies(stream: TokenStream) -> bool {
+    cfg_implies(attrs, "test")
+}
+pub(crate) fn cfg_implies_hax(attrs: &str) -> bool {
+    cfg_implies(attrs, "hax")
+}
+fn cfg_implies(attrs: &str, atom: &str) -> bool {
+    fn implies(stream: TokenStream, atom: &str) -> bool {
         let tokens: Vec<_> = stream.into_iter().collect();
         match tokens.as_slice() {
-            [TokenTree::Ident(name)] => name == "test",
+            [TokenTree::Ident(name)] => name == atom,
             [TokenTree::Ident(op), TokenTree::Group(g)]
                 if g.delimiter() == Delimiter::Parenthesis =>
             {
@@ -471,8 +515,8 @@ fn cfg_implies_test(attrs: &str) -> bool {
                 }
                 args.retain(|a| !a.is_empty());
                 match op.to_string().as_str() {
-                    "all" => args.into_iter().any(implies),
-                    "any" => !args.is_empty() && args.into_iter().all(implies),
+                    "all" => args.into_iter().any(|a| implies(a, atom)),
+                    "any" => !args.is_empty() && args.into_iter().all(|a| implies(a, atom)),
                     _ => false,
                 }
             }
@@ -488,7 +532,7 @@ fn cfg_implies_test(attrs: &str) -> bool {
         };
         let tokens: Vec<_> = g.stream().into_iter().collect();
         matches!(tokens.as_slice(), [TokenTree::Ident(cfg), TokenTree::Group(p)]
-            if cfg == "cfg" && p.delimiter() == Delimiter::Parenthesis && implies(p.stream()))
+            if cfg == "cfg" && p.delimiter() == Delimiter::Parenthesis && implies(p.stream(), atom))
     })
 }
 
@@ -596,6 +640,12 @@ fn walk(
                         runtime_sloc: sloc(&snippet),
                         inline_proof_sloc: 0,
                         ghost_sloc: if verus { ghost::inline_sloc(text.clone(), source_lines) } else { 0 },
+                        fstar_annotation_sloc: 0,
+                        fstar_cfg_hax: false,
+                        fstar_cfg_hax_inline_sloc: 0,
+                        hax_crate: false,
+                        cfg_hax_scope: false,
+                        cfg_hax_was_runtime: false,
                         first_party: true,
                         security: false,
                         status: "unverified".into(),
@@ -798,4 +848,38 @@ fn sloc_lines(source: &str) -> std::collections::BTreeSet<usize> {
         .filter(|(i, line)| lines.contains(&(i + 1)) && !line.trim().is_empty())
         .map(|(i, _)| i + 1)
         .collect()
+}
+
+#[cfg(test)]
+mod cfg_implication_tests {
+    #[test]
+    fn shared_atom_algebra() {
+        for atom in ["test", "hax"] {
+            for (condition, expected) in [
+                (atom.to_string(), true),
+                (format!("all({atom}, unix)"), true),
+                (format!("any({atom}, all({atom}, windows))"), true),
+                (format!("any({atom}, unix)"), false),
+                (format!("not({atom})"), false),
+                (format!("feature = \"{atom}\""), false),
+                (format!("{atom}_pv"), false),
+                ("any()".into(), false),
+                ("all()".into(), false),
+            ] {
+                assert_eq!(
+                    super::cfg_implies(&format!("#[cfg({condition})]"), atom),
+                    expected,
+                    "{condition}"
+                );
+            }
+            assert!(!super::cfg_implies(
+                &format!("#[cfg_attr({atom}, inline)]"),
+                atom
+            ));
+            assert!(super::cfg_implies(
+                &format!("#[cfg(unix)] #[cfg({atom})]"),
+                atom
+            ));
+        }
+    }
 }

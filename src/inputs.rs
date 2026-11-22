@@ -39,6 +39,8 @@ pub struct DependencyRule {
 #[derive(Debug, Default, Deserialize)]
 #[serde(deny_unknown_fields)]
 struct ConfigV3 {
+    #[serde(default)]
+    fstar: crate::fstar_proof::FstarConfig,
     proof_ratio: Option<crate::ProofRatioConfig>,
     #[serde(default)]
     entry_points: Vec<String>,
@@ -53,6 +55,7 @@ struct ConfigV3 {
 /// Either schema, normalized. Schema-2 overrides carry no reason.
 #[derive(Debug, Default)]
 pub(crate) struct Inputs {
+    pub fstar: crate::fstar_proof::FstarConfig,
     pub proof_ratio: Option<crate::ProofRatioConfig>,
     /// 0 when no config file exists.
     pub schema: u32,
@@ -107,6 +110,7 @@ pub(crate) fn load(path: &Path) -> Result<Inputs> {
     if is_schema2(&value) {
         let config: Config = toml::from_str(&text)?;
         return Ok(Inputs {
+            fstar: config.fstar,
             proof_ratio: None,
             schema: 2,
             entry_points: config.entry_points,
@@ -144,6 +148,7 @@ pub(crate) fn load(path: &Path) -> Result<Inputs> {
         );
     }
     Ok(Inputs {
+        fstar: config.fstar,
         proof_ratio: config.proof_ratio,
         schema: 3,
         entry_points: config.entry_points,
@@ -207,6 +212,13 @@ pub fn migrate_config(text: &str) -> Result<String> {
                 quoted(&path.to_string_lossy())
             ));
         }
+    }
+    if !config.fstar.proof.patches.is_empty()
+        || !config.fstar.proof.files.is_empty()
+        || !config.fstar.proof.models.is_empty()
+    {
+        out.push_str("\n[fstar.proof]\n");
+        out.push_str(&toml::to_string(&config.fstar.proof)?);
     }
     Ok(out)
 }

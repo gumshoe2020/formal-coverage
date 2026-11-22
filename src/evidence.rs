@@ -411,7 +411,9 @@ pub fn apply_evidence_many(
         })
         .collect();
     for u in &mut report.units {
-        if u.category == crate::Category::Runtime && test_identifiers.contains(u.name.as_str()) {
+        if (u.category == crate::Category::Runtime || (u.fstar_cfg_hax && u.cfg_hax_was_runtime))
+            && test_identifiers.contains(u.name.as_str())
+        {
             u.status = "tested".into();
         }
         let contracted = u.verus && {
@@ -430,7 +432,9 @@ pub fn apply_evidence_many(
             let Some(receipt) = receipt else {
                 continue;
             };
-            if !(contracted || (u.verus && u.category == crate::Category::ProofCode))
+            let was_proof_code = u.category == crate::Category::ProofCode
+                && !(u.fstar_cfg_hax && u.cfg_hax_was_runtime);
+            if !(contracted || (u.verus && was_proof_code))
                 || !crate::cfg::enabled(
                     &u.scope_attributes,
                     receipt,
@@ -448,12 +452,7 @@ pub fn apply_evidence_many(
                 continue;
             }
             clean_verus_run = true;
-            u.status = if u.category == crate::Category::ProofCode {
-                "verified"
-            } else {
-                "proven"
-            }
-            .into();
+            u.status = if was_proof_code { "verified" } else { "proven" }.into();
             let run = &report.evidence_runs[index];
             u.proof_scope = Some(format!("Verus complete run; relying on {} trusted items ({} SLoC) and {} escapes in this run; specification correctness and toolchain are outside this proof",run.trusted_sites.len(),run.trusted_sloc,run.escape_sites.len()));
             report.evidence_runs[index]

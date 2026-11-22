@@ -11,6 +11,8 @@ use std::{
 #[serde(deny_unknown_fields)]
 pub struct Config {
     #[serde(default)]
+    pub fstar: crate::fstar_proof::FstarConfig,
+    #[serde(default)]
     pub entry_points: Vec<String>,
     #[serde(default)]
     pub security: Vec<String>,
@@ -104,6 +106,7 @@ pub fn analyze_with(root: &Path, options: &Options) -> Result<Report> {
             }
         }
     }
+    crate::hax::apply(&mut report, root)?;
     crate::ghost::apply(&mut report, options.ghost_lines);
     let path = options
         .config
@@ -129,6 +132,7 @@ pub fn analyze_with(root: &Path, options: &Options) -> Result<Report> {
         report.proof_ratio_range = range.clone();
     }
     report.no_proof_ratio_gate = options.no_proof_ratio_gate;
+
     let mut reachable = BTreeSet::new();
     if config.entry_points.is_empty() {
         report.warnings.push(
@@ -331,6 +335,7 @@ pub fn analyze_with(root: &Path, options: &Options) -> Result<Report> {
             ),
         );
     }
+    crate::fstar_proof::configure(&mut report, root, config.fstar.proof)?;
     Ok(report)
 }
 /// `[dependencies."name"]` / `[dependencies."name@version"]` inputs on runtime dependencies.

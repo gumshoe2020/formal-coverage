@@ -436,3 +436,253 @@ fn split_queries_region_is_credited_but_escapes_inside_it_still_block_and_name_t
         );
     }
 }
+
+fn configured_proof(f: &Fixture, config: &str, evidence: bool) -> Report {
+    fs::write(f.root.join("formal-coverage.toml"), config).unwrap();
+    fs::write(
+        format!("{}.evidence.json", f.log.display()),
+        serde_json::to_vec(&f.receipt).unwrap(),
+    )
+    .unwrap();
+    let mut r = formal_coverage::analyze_with(
+        &f.root,
+        &formal_coverage::Options {
+            size_mode: formal_coverage::SizeMode::WholeCrate,
+            ..Default::default()
+        },
+    )
+    .unwrap();
+    if evidence {
+        apply_fstar_evidence(&mut r, &f.root, std::slice::from_ref(&f.log)).unwrap();
+    }
+    r
+}
+
+#[test]
+fn configured_patch_hunks_require_strict_accepted_module_and_list_exclusions() {
+    let mut f = Fixture::new();
+    fs::write(f.root.join("proof.patch"), "--- old/Hax_fixture.fst\n+++ new/Hax_fixture.fst\n@@ -1,1 +1,5 @@\n module Hax_fixture\n+(* comment *)\n+\n+let proof = 1\n+let more = 2 // code\n--- old/Absent.fst\n+++ new/Absent.fst\n@@ -1 +1 @@\n+let absent = 0\n").unwrap();
+    let config = "[fstar.proof]\npatches=['proof.patch']\n";
+    let p = formal_coverage::proof_ratio(&configured_proof(&f, config, true));
+    assert_eq!(p.security_relevant.fstar_patch_sloc, 2);
+    assert_eq!(p.all_first_party.fstar_patch_sloc, 2);
+    assert_eq!(p.crates[0].metrics.fstar_patch_sloc, 2);
+    assert_eq!(p.modules[0].metrics.fstar_patch_sloc, 2);
+    assert_eq!(p.security_relevant.excluded_patch_hunks.len(), 1);
+    assert!(p.security_relevant.excluded_patch_hunks[0]
+        .reason
+        .contains("absent"));
+    let p = formal_coverage::proof_ratio(&configured_proof(&f, config, false));
+    assert_eq!(p.security_relevant.fstar_patch_sloc, 0);
+    assert_eq!(p.security_relevant.excluded_patch_hunks.len(), 2);
+    assert!(p.security_relevant.excluded_patch_hunks[0]
+        .reason
+        .contains("no accepted"));
+    for hazard in ["assume True", "admit ()", "#set-options \"--lax\""] {
+        f.replace(
+            "checked/Hax_fixture.fst",
+            &format!("module Hax_fixture\nlet clean (x: u32) : Tot u32 = x\n{hazard}\n"),
+        );
+        let r = configured_proof(&f, config, true);
+        assert!(r.evidence_runs[0].accepted);
+        let p = formal_coverage::proof_ratio(&r);
+        assert_eq!(p.security_relevant.fstar_patch_sloc, 0);
+        assert!(p.security_relevant.excluded_patch_hunks[0]
+            .reason
+            .contains("hazard"));
+    }
+    // Existing grammar rejects lax command lines: rejected receipts credit zero.
+    f.receipt.modules[0].command.push("--lax".into());
+    let r = configured_proof(&f, config, true);
+    assert!(!r.evidence_runs[0].accepted);
+    assert_eq!(
+        formal_coverage::proof_ratio(&r)
+            .security_relevant
+            .fstar_patch_sloc,
+        0
+    );
+}
+
+#[test]
+fn interface_only_patches_and_generated_files_are_not_proof() {
+    let mut f = Fixture::new();
+    fs::write(
+        f.root.join("proof.patch"),
+        "--- old/Hax_fixture.fsti\n+++ new/Hax_fixture.fsti\n@@ -1 +1 @@\n+val clean : Tot u32\n",
+    )
+    .unwrap();
+    let config = "[fstar.proof]\npatches=['proof.patch']\nfiles=['checked/Hax_fixture.fsti']\n";
+    let r = configured_proof(&f, config, true);
+    assert_eq!(
+        formal_coverage::proof_ratio(&r)
+            .security_relevant
+            .fstar_file_sloc,
+        0
+    );
+    assert!(r
+        .fstar_proof
+        .inputs
+        .iter()
+        .any(|i| i.reason.as_deref() == Some("generated extraction")));
+    fs::remove_file(f.root.join("checked/Hax_fixture.fst")).unwrap();
+    f.receipt.checked.remove("checked/Hax_fixture.fst");
+    f.receipt.modules = vec![FstarModule {
+        file: "checked/Hax_fixture.fsti".into(),
+        command: vec!["fstar.exe".into(), "checked/Hax_fixture.fsti".into()],
+        exit_code: 0,
+        outcome: "success".into(),
+    }];
+    let p = formal_coverage::proof_ratio(&configured_proof(&f, config, true));
+    assert_eq!(p.security_relevant.fstar_patch_sloc, 0);
+    assert!(p.security_relevant.excluded_patch_hunks[0]
+        .reason
+        .contains("interface-only"));
+}
+
+#[test]
+fn handwritten_files_need_matching_verified_bytes_and_models_stay_separate() {
+    let mut f = Fixture::new();
+    let text = "module Lemmas\n(* multi\n comment *)\nlet lemma (_:unit) : Tot unit = ()\n";
+    f.replace("checked/Lemmas.fst", text);
+    fs::write(f.root.join("Lemmas.fst"), text).unwrap();
+    fs::write(
+        f.root.join("Models.fsti"),
+        "module Models\n// comment\nassume val axiom : bool\n",
+    )
+    .unwrap();
+    f.receipt.modules.push(FstarModule {
+        file: "checked/Lemmas.fst".into(),
+        command: vec!["fstar.exe".into(), "checked/Lemmas.fst".into()],
+        exit_code: 0,
+        outcome: "success".into(),
+    });
+    fs::write(
+        &f.log,
+        "Verified module: Hax_fixture\nVerified module: Lemmas\n",
+    )
+    .unwrap();
+    f.receipt.log_sha256 = sha256(&fs::read(&f.log).unwrap());
+    let config = "[fstar.proof]\nfiles=['Lemmas.fst']\nmodels=['Models.fsti']\n";
+    let no_receipt = formal_coverage::proof_ratio(&configured_proof(&f, config, false));
+    assert_eq!(no_receipt.security_relevant.fstar_file_sloc, 0);
+    assert_eq!(no_receipt.security_relevant.fstar_model_sloc, 2);
+    let r = configured_proof(&f, config, true);
+    assert!(r.evidence_runs[0].accepted);
+    let p = formal_coverage::proof_ratio(&r);
+    assert_eq!(p.security_relevant.fstar_file_sloc, 2);
+    assert_eq!(p.security_relevant.fstar_model_sloc, 2);
+    assert_eq!(
+        p.security_relevant.proof_sloc,
+        p.security_relevant.standalone_proof_sloc + p.security_relevant.inline_proof_sloc + 2
+    );
+    assert_eq!(
+        p.crates
+            .iter()
+            .map(|c| c.metrics.fstar_file_sloc)
+            .sum::<usize>(),
+        2
+    );
+    assert_eq!(
+        p.modules
+            .iter()
+            .map(|c| c.metrics.fstar_model_sloc)
+            .sum::<usize>(),
+        2
+    );
+    fs::write(
+        f.root.join("Lemmas.fst"),
+        "module Lemmas\nlet changed = 1\n",
+    )
+    .unwrap();
+    let r = configured_proof(&f, config, true);
+    assert_eq!(
+        formal_coverage::proof_ratio(&r)
+            .security_relevant
+            .fstar_file_sloc,
+        0
+    );
+    assert!(r
+        .fstar_proof
+        .inputs
+        .iter()
+        .any(|i| i.reason.as_deref() == Some("file differs from accepted receipt")));
+}
+
+#[test]
+fn missing_globs_and_unknown_fstar_config_fields_are_errors() {
+    let f = Fixture::new();
+    for config in [
+        "[fstar.proof]\npatches=['absent.patch']\n",
+        "[fstar.proof]\nfiles=['absent*.fst']\n",
+        "[fstar.proof]\nmodels=['absent/*.fsti']\n",
+        "[fstar.proof]\nunknown=[]\n",
+        "[fstar]\nunknown=[]\n",
+    ] {
+        fs::write(f.root.join("formal-coverage.toml"), config).unwrap();
+        assert!(
+            formal_coverage::analyze_with(
+                &f.root,
+                &formal_coverage::Options {
+                    size_mode: formal_coverage::SizeMode::WholeCrate,
+                    ..Default::default()
+                }
+            )
+            .is_err(),
+            "{config}"
+        );
+    }
+}
+
+#[test]
+fn schema_two_proof_inputs_survive_config_migration() {
+    let f = Fixture::new();
+    fs::write(
+        f.root.join("model.fsti"),
+        "module Model\nassume val axiom : bool\n",
+    )
+    .unwrap();
+    let config = "security=['src/lib.rs']\n[fstar.proof]\nmodels=['model.fsti']\n";
+    assert_eq!(
+        formal_coverage::proof_ratio(&configured_proof(&f, config, false))
+            .security_relevant
+            .fstar_model_sloc,
+        2
+    );
+    let migrated = formal_coverage::migrate_config(config).unwrap();
+    assert_eq!(
+        formal_coverage::proof_ratio(&configured_proof(&f, &migrated, false))
+            .security_relevant
+            .fstar_model_sloc,
+        2
+    );
+}
+
+#[test]
+fn credited_cfg_hax_proof_unit_is_verified_and_retains_receipt_credit() {
+    let mut f = Fixture::new();
+    let original = fs::read_to_string(f.root.join("src/lib.rs")).unwrap();
+    let source = format!("#[cfg(hax)]\n{original}");
+    fs::write(f.root.join("src/lib.rs"), &source).unwrap();
+    f.receipt
+        .files
+        .insert("src/lib.rs".into(), sha256(source.as_bytes()));
+    fs::write(
+        format!("{}.evidence.json", f.log.display()),
+        serde_json::to_vec(&f.receipt).unwrap(),
+    )
+    .unwrap();
+    let mut r = formal_coverage::analyze_with(
+        &f.root,
+        &formal_coverage::Options {
+            size_mode: formal_coverage::SizeMode::WholeCrate,
+            ..Default::default()
+        },
+    )
+    .unwrap();
+    apply_fstar_evidence(&mut r, &f.root, std::slice::from_ref(&f.log)).unwrap();
+    let u = r.units.iter().find(|u| u.name == "clean").unwrap();
+    assert_eq!(u.category, formal_coverage::Category::ProofCode);
+    assert_eq!(u.status, "verified");
+    assert!(r.evidence_runs[0].credited_units.contains(&u.id));
+    formal_coverage::gate(&r, 0., None, false).unwrap();
+}
