@@ -414,6 +414,26 @@ pub fn markdown(r: &Report) -> String {
                 .unwrap_or_else(|| "unconfirmed".into())
         ));
     }
+    if !r.fstar_extraction.is_empty() {
+        out.push_str(&format!(
+            "\nF* extraction declared inactive features: {}. Reason: {}.\n",
+            cell(&r.fstar_extraction.inactive_features.join(", ")),
+            cell(r.fstar_extraction.reason.as_deref().unwrap_or(""))
+        ));
+    }
+    if !r.non_fstar_trust.is_empty() {
+        out.push_str(&format!("\n## Non-F* trust annotations\n\n{} sites ({} SLoC, summed affected unit footprints); counted separately from F* trusted items. These annotations do not demote F* status.\n\n", r.non_fstar_trust.len(), r.non_fstar_trust.iter().map(|t| t.sloc).sum::<usize>()));
+        for t in &r.non_fstar_trust {
+            out.push_str(&format!(
+                "- {}:{} — {} — {} SLoC — affected units: {}\n",
+                cell(&t.file),
+                t.line,
+                cell(&t.kind),
+                t.sloc,
+                cell(&t.affected_units.join(", "))
+            ));
+        }
+    }
     out.push_str("\n## Trusted items\n\n");
     for t in &r.trusted_items {
         out.push_str(&format!(

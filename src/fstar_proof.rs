@@ -12,6 +12,8 @@ use std::{
 #[serde(deny_unknown_fields)]
 pub struct FstarConfig {
     #[serde(default)]
+    pub extraction: crate::fstar::ExtractionConfig,
+    #[serde(default)]
     pub proof: ProofConfig,
 }
 #[derive(Debug, Clone, Default, Serialize, Deserialize)]

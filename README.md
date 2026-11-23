@@ -78,6 +78,24 @@ For a ratio gate with an explicit zero coverage threshold, use
 `--no-proof-ratio-gate` disables that check and is recorded. Existing coverage,
 completeness, hazard and input-reason checks still apply.
 
+Optional schema-2/3 extraction declaration (v1.8.2):
+
+```toml
+[fstar.extraction]
+inactive_features = ["hax-pv"]
+reason = "hax-driver.py enables hax-pv only for ProverIf extraction"
+```
+
+A nonempty feature list requires a nonempty reason. Only plain
+`cfg_attr(feature = "X", ...)` predicates qualify; `all`/`any`/`not` and unknown
+predicates retain trust. Recognized `proverif`, `coq` and `ssprove` attribute
+paths are non-F* trust independently of this declaration. Reports list these
+annotations with locations, affected units and SLoC separately from F* trust.
+Unconditional opaque, F* replacement and unknown paths retain trust. Removing
+an F* trust annotation's effect still requires normal source-bound F* evidence
+for credit. Inherent `impl_<Type>__<method>` definitions map only to a unique
+Rust method; trait impl names remain unsupported.
+
 Optional schema-2/3 configuration for hand-written F* inputs:
 
 ```toml

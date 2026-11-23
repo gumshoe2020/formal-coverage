@@ -686,3 +686,259 @@ fn credited_cfg_hax_proof_unit_is_verified_and_retains_receipt_credit() {
     assert!(r.evidence_runs[0].credited_units.contains(&u.id));
     formal_coverage::gate(&r, 0., None, false).unwrap();
 }
+
+fn trust_fixture(source: &str, config: &str) -> Report {
+    let mut f = Fixture::new();
+    fs::write(f.root.join("src/lib.rs"), source).unwrap();
+    f.receipt
+        .files
+        .insert("src/lib.rs".into(), sha256(source.as_bytes()));
+    configured_proof(&f, config, true)
+}
+
+#[test]
+fn backend_trust_is_visible_without_demoting_fstar_evidence() {
+    for attribute in [
+        "hax_lib::proverif::replace(\"...\")",
+        "cfg_attr(feature = \"hax-pv\", proverif::replace(\"...\"))",
+        "hax_lib::coq::opaque",
+        "ssprove::replace_body(\"(0)\")",
+    ] {
+        let r = trust_fixture(
+            &format!("#[{attribute}]\npub fn clean(x: u32) -> u32 {{x}}\n"),
+            "",
+        );
+        assert_eq!(r.units[0].status, "proven-extracted", "{attribute}");
+        assert_eq!(r.non_fstar_trust.len(), 1, "{attribute}");
+        let item = &r.non_fstar_trust[0];
+        assert_eq!(item.file, "src/lib.rs");
+        assert_eq!(item.line, 1);
+        assert_eq!(item.affected_units, vec![r.units[0].id.clone()]);
+        assert_eq!(item.sloc, r.units[0].sloc);
+        assert!(item.kind.contains("non-F* trust:"));
+        assert!(item.kind.contains(if attribute.contains("coq") {
+            "coq"
+        } else if attribute.contains("ssprove") {
+            "ssprove"
+        } else {
+            "proverif"
+        }));
+        assert!(r
+            .trusted_items
+            .iter()
+            .all(|t| !t.kind.contains("syntactic")));
+        assert!(formal_coverage::markdown(&r).contains("1 sites ("));
+    }
+}
+
+#[test]
+fn only_declared_plain_inactive_features_remove_fstar_trust() {
+    let config =
+        "[fstar.extraction]\ninactive_features=['hax-pv']\nreason='F* driver excludes hax-pv'\n";
+    for (attribute, cfg, trusted) in [
+        (
+            "cfg_attr(feature = \"hax-pv\", hax_lib::opaque)",
+            config,
+            false,
+        ),
+        ("cfg_attr(feature = \"hax-pv\", hax_lib::opaque)", "", true),
+        (
+            "cfg_attr(all(feature = \"hax-pv\", test), hax_lib::opaque)",
+            config,
+            true,
+        ),
+        (
+            "cfg_attr(any(feature = \"hax-pv\"), hax_lib::opaque)",
+            config,
+            true,
+        ),
+        (
+            "cfg_attr(not(feature = \"hax-pv\"), hax_lib::opaque)",
+            config,
+            true,
+        ),
+        (
+            "cfg_attr(feature = \"other\", hax_lib::opaque)",
+            config,
+            true,
+        ),
+        ("hax_lib::opaque", config, true),
+        ("hax_lib::fstar::replace(\"...\")", config, true),
+        ("fstar::replace_body(\"...\")", config, true),
+        ("unknown::replace(\"...\")", config, true),
+        ("replace", config, true),
+    ] {
+        let r = trust_fixture(
+            &format!("use hax_lib;\n#[{attribute}]\npub fn clean(x: u32) -> u32 {{x}}\n"),
+            cfg,
+        );
+        assert_eq!(
+            r.units[0].status,
+            if trusted {
+                "trusted"
+            } else {
+                "proven-extracted"
+            },
+            "{attribute}"
+        );
+        assert_eq!(
+            r.non_fstar_trust.len(),
+            usize::from(!trusted),
+            "{attribute}"
+        );
+        assert_eq!(
+            r.trusted_items.iter().any(|t| t.kind.contains("syntactic")),
+            trusted,
+            "{attribute}"
+        );
+        if !trusted {
+            assert!(r.non_fstar_trust[0]
+                .kind
+                .contains("inactive feature hax-pv"));
+            assert!(formal_coverage::markdown(&r).contains("F* driver excludes hax-pv"));
+            let json = serde_json::to_value(&r).unwrap();
+            assert_eq!(json["fstar_extraction"]["inactive_features"][0], "hax-pv");
+        }
+    }
+}
+
+#[test]
+fn method_and_inherited_scope_use_the_same_backend_rules() {
+    for (scope, attribute, trusted) in [
+        (false, "hax_lib::proverif::replace_body(\"(0)\")", false),
+        (true, "hax_lib::proverif::replace(\"...\")", false),
+        (true, "hax_lib::opaque", true),
+        (
+            true,
+            "cfg_attr(feature = \"hax-pv\", hax_lib::opaque)",
+            false,
+        ),
+    ] {
+        let source = if scope {
+            format!(
+                "struct Foo;\n#[{attribute}]\nimpl Foo {{\npub fn clean(x: u32) -> u32 {{x}}\n}}\n"
+            )
+        } else {
+            format!(
+                "struct Foo;\nimpl Foo {{\n#[{attribute}]\npub fn clean(x: u32) -> u32 {{x}}\n}}\n"
+            )
+        };
+        let r = trust_fixture(
+            &source,
+            "[fstar.extraction]\ninactive_features=['hax-pv']\nreason='driver excludes hax-pv'\n",
+        );
+        assert_eq!(
+            r.units[0].status,
+            if trusted { "trusted" } else { "unverified" }
+        );
+        let items = if trusted {
+            &r.trusted_items
+        } else {
+            &r.non_fstar_trust
+        };
+        assert!(items
+            .iter()
+            .any(|t| t.affected_units.contains(&r.units[0].id)));
+        assert_eq!(r.non_fstar_trust.len(), usize::from(!trusted));
+    }
+    // Module-level scope, with an unrelated sibling opaque site, must not spill trust.
+    let r = trust_fixture("#[hax_lib::proverif::replace(\"...\")]\nmod m { pub fn clean() {} }\n#[hax_lib::opaque]\nmod n { pub fn other() {} }\n", "");
+    assert_eq!(
+        r.units.iter().find(|u| u.name == "clean").unwrap().status,
+        "unverified"
+    );
+    assert_eq!(
+        r.units.iter().find(|u| u.name == "other").unwrap().status,
+        "trusted"
+    );
+    assert_eq!(r.non_fstar_trust[0].affected_units.len(), 1);
+}
+
+#[test]
+fn inactive_feature_declaration_requires_a_reason_and_survives_migration() {
+    let f = Fixture::new();
+    for reason in ["", "reason=''\n", "reason='  '\n"] {
+        fs::write(
+            f.root.join("formal-coverage.toml"),
+            format!("[fstar.extraction]\ninactive_features=['hax-pv']\n{reason}"),
+        )
+        .unwrap();
+        let error = formal_coverage::analyze_with(
+            &f.root,
+            &formal_coverage::Options {
+                size_mode: formal_coverage::SizeMode::WholeCrate,
+                ..Default::default()
+            },
+        )
+        .unwrap_err();
+        assert!(error.to_string().contains("requires a non-empty reason"));
+    }
+    let config = "security=['src/lib.rs']\n[fstar.extraction]\ninactive_features=['hax-pv']\nreason='F* driver excludes hax-pv'\n";
+    let migrated = formal_coverage::migrate_config(config).unwrap();
+    assert!(migrated.contains("[fstar.extraction]"));
+    assert_eq!(
+        configured_proof(&f, &migrated, false)
+            .fstar_extraction
+            .inactive_features,
+        vec!["hax-pv"]
+    );
+}
+
+#[test]
+fn non_fstar_annotations_do_not_replace_evidence_requirements() {
+    let mut f = Fixture::new();
+    let source = "#[hax_lib::proverif::replace(\"...\")]\npub fn clean(x:u32)->u32{x}\n";
+    fs::write(f.root.join("src/lib.rs"), source).unwrap();
+    f.receipt
+        .files
+        .insert("src/lib.rs".into(), sha256(source.as_bytes()));
+    f.receipt.modules[0].outcome = "failed".into();
+    f.receipt.modules[0].exit_code = 1;
+    let r = configured_proof(&f, "", true);
+    assert_ne!(r.units[0].status, "proven-extracted");
+    assert_eq!(r.non_fstar_trust.len(), 1);
+    assert!(r.evidence_runs[0].credited_units.is_empty());
+}
+
+#[test]
+fn inherent_method_mapping_uses_normal_evidence_and_trust_classification() {
+    for (attribute, status) in [
+        ("", "proven-extracted"),
+        (
+            "#[hax_lib::proverif::replace_body(\"(0)\")]",
+            "proven-extracted",
+        ),
+        ("#[hax_lib::opaque]", "trusted"),
+    ] {
+        let mut f = Fixture::new();
+        let source =
+            format!("struct Foo;\nimpl Foo {{\n{attribute}\npub fn bar(x: u32) -> u32 {{x}}\n}}\n");
+        fs::write(f.root.join("src/lib.rs"), &source).unwrap();
+        f.receipt
+            .files
+            .insert("src/lib.rs".into(), sha256(source.as_bytes()));
+        for dir in ["fresh", "checked"] {
+            f.replace(
+                &format!("{dir}/Hax_fixture.fst"),
+                "module Hax_fixture\nlet impl_Foo__bar (x: u32) : Tot u32 = x\n",
+            );
+            f.replace(
+                &format!("{dir}/Hax_fixture.fsti"),
+                "module Hax_fixture\nval impl_Foo__bar : u32 -> Tot u32\n",
+            );
+        }
+        let r = configured_proof(&f, "", true);
+        assert_eq!(r.units[0].id, "hax_fixture::Foo::bar");
+        assert_eq!(r.units[0].status, status);
+        assert!(r
+            .fstar_definitions
+            .iter()
+            .filter(|d| d.name.ends_with("impl_Foo__bar"))
+            .all(|d| d.rust_unit.as_deref() == Some("hax_fixture::Foo::bar")
+                && d.classification == status));
+        assert_eq!(
+            r.non_fstar_trust.len(),
+            usize::from(attribute.contains("proverif"))
+        );
+    }
+}

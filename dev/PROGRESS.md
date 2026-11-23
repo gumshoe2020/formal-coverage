@@ -281,3 +281,13 @@ V1.8.1-READY
 - [x] Replay/compare, documentation and required checks: 18 units / 197 standalone SLoC; all tests retain v1.8.0 category/status/size; controls identical in both modes. One local commit on main; no push/tag/release.
 
 V1.8.1-FIX-READY
+
+## v1.8.2
+
+- [x] M1 — backend and inactive-feature trust (R1–R3); required local checks pass.
+- [x] M2 — unique inherent impl mapping (R4); required local checks pass.
+- [x] M3 — Bertie/control replays, comparison and docs.
+
+2026-11-22: **HONEST-FINDING — stopped during M3.** Bertie gate returns below-range proof ratio (0.47) and unattributed file-scope hazard. See dev/NOTES.md and logs/v1.8.2/m3-gates.log. M3 uncommitted; readiness not recorded.
+
+2026-11-22T22:34:57-05:00: HONEST-FINDING resolved by Dudley: both gate failures pre-exist in the v1.8.1 baseline (see NOTES). V1.8.2-READY

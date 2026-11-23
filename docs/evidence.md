@@ -540,13 +540,29 @@ caller actually executed the recorded commands in a clean environment.
 
 Mapping uses exact, unique `crate::module::function` names obtained by
 lowercasing hax's dotted module path and retaining the function name. Unsupported
-impl/mangled/recursive names are disclosed as unmapped, never guessed. Credit
-requires a checked implementation, an identical fresh `.fst` and (when present)
+mangled names are disclosed as unmapped, never guessed. Since v1.8.2, when a
+direct ID is absent, `impl_<Type>__<method>` (split at the first `__` after
+`impl_`) tries `crate::module::<Type>::<method>` with the same uniqueness rule.
+Ambiguity remains unmapped; trait impl names (`impl`, `impl_N`, `impl_N'`)
+remain unsupported. Credit requires a checked implementation, an identical fresh `.fst` and (when present)
 `.fsti`, and a recognized contract. Any module/interface byte difference trusts
 all definitions of that module; this conservative rule may undercredit functions
 whose own bodies were unchanged. Interface-only vals and `assume val` are trusted;
 `assume`, `admit`, `admitP` are also reported as hazards. Rust hax opaque and
-replacement annotations remain explicit syntactic trust, including inactive cfgs.
+replacement annotations remain explicit syntactic trust, including inactive cfgs,
+except for positively identified non-F* annotations (v1.8.2): an attribute path
+with `proverif`, `coq` or `ssprove` immediately before the trust identifier, or
+an annotation within a plain `cfg_attr(feature = "X", ...)` whose feature is
+declared in `[fstar.extraction].inactive_features`. That declaration requires a
+nonempty `reason`; both are recorded in the report. Without a declaration,
+feature-based trust remains unchanged. Complex `all`/`any`/`not` predicates never qualify
+by feature alone. Unknown paths and unconditional F* trust retain their effect.
+The same rules apply to inherited impl/module attributes. Non-F* annotations
+remain visible in `non_fstar_trust` and the separate Markdown count, including
+file, line, affected units and SLoC. They do not set Rust status to trusted;
+freshness, implementation bodies, module success and contract checks still
+control F* credit. Existing `trusted_items` continues to mean F* or other
+verification trust, excluding these non-F* annotations.
 
 Contract classification comes from the checked interface: `Tot` or an explicit
 True Pure postcondition is `safety-only`; a meaningful `ensures` is `functional`;

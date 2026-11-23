@@ -335,6 +335,8 @@ pub fn analyze_with(root: &Path, options: &Options) -> Result<Report> {
             ),
         );
     }
+    config.fstar.extraction.validate()?;
+    report.fstar_extraction = config.fstar.extraction;
     crate::fstar_proof::configure(&mut report, root, config.fstar.proof)?;
     Ok(report)
 }

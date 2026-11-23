@@ -277,6 +277,184 @@ pub struct FstarDefinition {
     pub self_consistency_heuristic: bool,
 }
 
+/// Declared extraction context is caller supplied, not inferred from cfg evaluation.
+#[derive(Debug, Clone, Default, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct ExtractionConfig {
+    #[serde(default)]
+    pub inactive_features: Vec<String>,
+    pub reason: Option<String>,
+}
+impl ExtractionConfig {
+    pub(crate) fn is_empty(&self) -> bool {
+        self.inactive_features.is_empty() && self.reason.is_none()
+    }
+    pub(crate) fn validate(&self) -> Result<()> {
+        ensure!(
+            self.inactive_features.is_empty()
+                || self.reason.as_ref().is_some_and(|r| !r.trim().is_empty()),
+            "fstar.extraction.inactive_features requires a non-empty reason"
+        );
+        Ok(())
+    }
+}
+
+pub(crate) fn trust_identifiers(stream: proc_macro2::TokenStream) -> Vec<(usize, String)> {
+    let mut found = vec![];
+    for token in stream {
+        match token {
+            proc_macro2::TokenTree::Ident(id)
+                if ["opaque", "replace", "replace_body"].contains(&id.to_string().as_str()) =>
+            {
+                found.push((id.span().start().line, id.to_string()))
+            }
+            proc_macro2::TokenTree::Group(g) => found.extend(trust_identifiers(g.stream())),
+            _ => {}
+        }
+    }
+    found
+}
+
+fn sites(
+    stream: proc_macro2::TokenStream,
+    config: &ExtractionConfig,
+    found: &mut Vec<(usize, String, Option<String>)>,
+) {
+    use proc_macro2::TokenTree;
+    use syn::{parse::Parser, punctuated::Punctuated, Meta, Token};
+    // Record exceptions by token position. Anything not positively identified keeps trust.
+    fn mark(
+        stream: proc_macro2::TokenStream,
+        reason: &str,
+        exceptions: &mut BTreeMap<(usize, usize), String>,
+    ) {
+        for token in stream {
+            match token {
+                TokenTree::Ident(id)
+                    if ["opaque", "replace", "replace_body"].contains(&id.to_string().as_str()) =>
+                {
+                    let pos = id.span().start();
+                    exceptions
+                        .entry((pos.line, pos.column))
+                        .or_insert_with(|| reason.into());
+                }
+                TokenTree::Group(g) => mark(g.stream(), reason, exceptions),
+                _ => {}
+            }
+        }
+    }
+    fn inspect_meta(
+        meta: &Meta,
+        config: &ExtractionConfig,
+        exceptions: &mut BTreeMap<(usize, usize), String>,
+    ) {
+        let path = meta.path();
+        let segments: Vec<_> = path.segments.iter().collect();
+        if let [.., backend, trust] = segments.as_slice() {
+            let backend = backend.ident.to_string();
+            if ["proverif", "coq", "ssprove"].contains(&backend.as_str())
+                && ["opaque", "replace", "replace_body"].contains(&trust.ident.to_string().as_str())
+            {
+                let pos = trust.ident.span().start();
+                exceptions.insert((pos.line, pos.column), backend);
+            }
+        }
+        let Meta::List(list) = meta else { return };
+        if !path.is_ident("cfg_attr") {
+            return;
+        }
+        let Ok(args) = Punctuated::<Meta, Token![,]>::parse_terminated.parse2(list.tokens.clone())
+        else {
+            return;
+        };
+        let mut args = args.iter();
+        let predicate = args.next();
+        let inactive = match predicate {
+            Some(Meta::NameValue(nv)) if nv.path.is_ident("feature") => match &nv.value {
+                syn::Expr::Lit(lit) => match &lit.lit {
+                    syn::Lit::Str(feature)
+                        if config.inactive_features.contains(&feature.value()) =>
+                    {
+                        Some(feature.value())
+                    }
+                    _ => None,
+                },
+                _ => None,
+            },
+            _ => None,
+        };
+        for attr in args {
+            inspect_meta(attr, config, exceptions);
+            if let Some(feature) = &inactive {
+                // The plain predicate scopes all tokens of each enclosed attribute.
+                // Preserve original token positions, including nested groups.
+                mark_meta(attr, &format!("inactive feature {feature}"), exceptions);
+            }
+        }
+    }
+    fn mark_meta(meta: &Meta, reason: &str, exceptions: &mut BTreeMap<(usize, usize), String>) {
+        for segment in &meta.path().segments {
+            let id = &segment.ident;
+            if ["opaque", "replace", "replace_body"].contains(&id.to_string().as_str()) {
+                let pos = id.span().start();
+                exceptions
+                    .entry((pos.line, pos.column))
+                    .or_insert_with(|| reason.into());
+            }
+        }
+        if let Meta::List(list) = meta {
+            mark(list.tokens.clone(), reason, exceptions);
+        }
+    }
+    fn attrs(
+        stream: proc_macro2::TokenStream,
+        config: &ExtractionConfig,
+        exceptions: &mut BTreeMap<(usize, usize), String>,
+    ) {
+        let tokens: Vec<_> = stream.into_iter().collect();
+        for (i, token) in tokens.iter().enumerate() {
+            if token.to_string() == "#" {
+                let offset = usize::from(tokens.get(i + 1).is_some_and(|t| t.to_string() == "!"));
+                if let Some(TokenTree::Group(g)) = tokens.get(i + 1 + offset) {
+                    if g.delimiter() == proc_macro2::Delimiter::Bracket {
+                        if let Ok(attr) = syn::parse2::<Meta>(g.stream()) {
+                            inspect_meta(&attr, config, exceptions);
+                        }
+                    }
+                }
+            }
+            if let TokenTree::Group(g) = token {
+                attrs(g.stream(), config, exceptions);
+            }
+        }
+    }
+    fn collect(
+        stream: proc_macro2::TokenStream,
+        exceptions: &BTreeMap<(usize, usize), String>,
+        found: &mut Vec<(usize, String, Option<String>)>,
+    ) {
+        for token in stream {
+            match token {
+                TokenTree::Ident(id)
+                    if ["opaque", "replace", "replace_body"].contains(&id.to_string().as_str()) =>
+                {
+                    let pos = id.span().start();
+                    found.push((
+                        pos.line,
+                        id.to_string(),
+                        exceptions.get(&(pos.line, pos.column)).cloned(),
+                    ));
+                }
+                TokenTree::Group(g) => collect(g.stream(), exceptions, found),
+                _ => {}
+            }
+        }
+    }
+    let mut exceptions = BTreeMap::new();
+    attrs(stream.clone(), config, &mut exceptions);
+    collect(stream, &exceptions, found);
+}
+
 fn inventory_rust_trust(report: &mut Report, root: &Path) -> Result<()> {
     fn model_files(dir: &Path, root: &Path, warnings: &mut Vec<String>) -> Result<()> {
         if !dir.is_dir() {
@@ -300,44 +478,37 @@ fn inventory_rust_trust(report: &mut Report, root: &Path) -> Result<()> {
     model_files(&root.join("proofs/proverif"), root, &mut report.warnings)?;
     model_files(&root.join("proofs/ssprove"), root, &mut report.warnings)?;
 
-    fn sites(stream: proc_macro2::TokenStream, found: &mut Vec<(usize, String)>) {
-        for token in stream {
-            match token {
-                proc_macro2::TokenTree::Ident(id)
-                    if ["opaque", "replace", "replace_body"].contains(&id.to_string().as_str()) =>
-                {
-                    found.push((id.span().start().line, id.to_string()))
-                }
-                proc_macro2::TokenTree::Group(g) => sites(g.stream(), found),
-                _ => {}
-            }
-        }
-    }
     for file in &report.source_files {
         let source = fs::read_to_string(root.join(file))?;
         // Scope only hax-annotated sources; conservative token inventory includes cfg-disabled sites.
-        if !source.contains("hax_lib") {
+        if !["hax_lib", "proverif", "coq", "ssprove"]
+            .iter()
+            .any(|marker| source.contains(marker))
+        {
             continue;
         }
         let mut found = vec![];
         if let Ok(stream) = source.parse() {
-            sites(stream, &mut found);
+            sites(stream, &report.fstar_extraction, &mut found);
         }
-        for (line, kind) in found {
+        for (line, kind, backend) in found {
             let affected: Vec<_> = report
                 .units
                 .iter()
                 .filter(|u| {
                     u.file == *file
                         && (u.line <= line && line <= u.end_line
-                            || u.scope_attributes.contains(&kind))
+                            || u.scope_sites.contains(&(line, kind.clone())))
                 })
                 .map(|u| u.id.clone())
                 .collect();
-            report.trusted_items.push(crate::evidence::TrustedItem {
+            let item = crate::evidence::TrustedItem {
                 file: file.clone(),
                 line,
-                kind: format!("hax {kind} (syntactic, includes inactive annotations)"),
+                kind: backend.as_ref().map_or_else(
+                    || format!("hax {kind} (syntactic, includes inactive annotations)"),
+                    |backend| format!("hax {kind} (non-F* trust: {backend})"),
+                ),
                 affected_units: affected.clone(),
                 sloc: report
                     .units
@@ -345,7 +516,12 @@ fn inventory_rust_trust(report: &mut Report, root: &Path) -> Result<()> {
                     .filter(|u| affected.contains(&u.id))
                     .map(|u| u.sloc)
                     .sum(),
-            });
+            };
+            if backend.is_some() {
+                report.non_fstar_trust.push(item);
+                continue;
+            }
+            report.trusted_items.push(item);
             for u in report.units.iter_mut().filter(|u| affected.contains(&u.id)) {
                 if u.status != "hazard" {
                     u.status = "trusted".into();
@@ -462,15 +638,22 @@ fn declarations(text: &str) -> Vec<Decl> {
         .collect()
 }
 fn mapped<'a>(module: &str, name: &str, report: &'a Report) -> Option<&'a crate::Unit> {
-    let id = format!(
-        "{}::{name}",
-        module
-            .split('.')
-            .map(str::to_lowercase)
-            .collect::<Vec<_>>()
-            .join("::")
-    );
-    let mut units = report.units.iter().filter(|u| u.id == id);
+    let module = module
+        .split('.')
+        .map(str::to_lowercase)
+        .collect::<Vec<_>>()
+        .join("::");
+    let direct = format!("{module}::{name}");
+    let mut units = report.units.iter().filter(|u| u.id == direct);
+    if let Some(first) = units.next() {
+        return units.next().is_none().then_some(first);
+    }
+    let (ty, method) = name.strip_prefix("impl_")?.split_once("__")?;
+    if ty.is_empty() || method.is_empty() {
+        return None;
+    }
+    let inherent = format!("{module}::{ty}::{method}");
+    let mut units = report.units.iter().filter(|u| u.id == inherent);
     let first = units.next()?;
     units.next().is_none().then_some(first)
 }
@@ -883,6 +1066,40 @@ mod tests {
             ("v", "val"),
         ];
         assert_eq!(named, expected.map(|(n, k)| (n.to_string(), k.to_string())));
+    }
+    #[test]
+    fn inherent_mapping_is_unique_and_direct_names_take_precedence() {
+        let mut report = crate::inventory(Path::new("fixtures/hax")).unwrap();
+        let mut unit = report.units[0].clone();
+        unit.id = "crate::m::Foo::bar".into();
+        report.units = vec![unit.clone()];
+        assert_eq!(
+            mapped("Crate.M", "impl_Foo__bar", &report).unwrap().id,
+            unit.id
+        );
+        for name in [
+            "impl_1",
+            "impl_1'",
+            "impl",
+            "impl_Foo__missing",
+            "impl___bar",
+            "impl_Foo__",
+        ] {
+            assert!(mapped("Crate.M", name, &report).is_none(), "{name}");
+        }
+        report.units.push(unit);
+        assert!(mapped("Crate.M", "impl_Foo__bar", &report).is_none());
+        report.units.pop();
+        let mut direct = report.units[0].clone();
+        direct.id = "crate::m::impl_Foo__bar".into();
+        report.units.push(direct.clone());
+        assert_eq!(
+            mapped("Crate.M", "impl_Foo__bar", &report).unwrap().id,
+            direct.id
+        );
+        report.units.push(direct);
+        // An ambiguous direct id must never fall back to a unique inherent id.
+        assert!(mapped("Crate.M", "impl_Foo__bar", &report).is_none());
     }
     #[test]
     fn closed_command() {

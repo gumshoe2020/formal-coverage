@@ -841,7 +841,8 @@ pub(crate) fn verus_root(r: &Receipt) -> Option<&str> {
 
 pub(crate) fn attribute_sites(stream: proc_macro2::TokenStream) -> Vec<(usize, String)> {
     let mut found = vec![];
-    escapes(stream, &mut found);
+    escapes(stream.clone(), &mut found);
+    found.extend(crate::fstar::trust_identifiers(stream));
     found
 }
 fn trusted_item_sloc(source: &str, line: usize) -> usize {

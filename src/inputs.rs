@@ -213,6 +213,11 @@ pub fn migrate_config(text: &str) -> Result<String> {
             ));
         }
     }
+    config.fstar.extraction.validate()?;
+    if !config.fstar.extraction.is_empty() {
+        out.push_str("\n[fstar.extraction]\n");
+        out.push_str(&toml::to_string(&config.fstar.extraction)?);
+    }
     if !config.fstar.proof.patches.is_empty()
         || !config.fstar.proof.files.is_empty()
         || !config.fstar.proof.models.is_empty()
