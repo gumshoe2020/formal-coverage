@@ -281,6 +281,8 @@ pub struct FstarDefinition {
     pub contract_kind: String,
     pub postcondition: String,
     pub self_consistency_heuristic: bool,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub mapping_reason: Option<String>,
 }
 
 /// Declared extraction context is caller supplied, not inferred from cfg evaluation.
@@ -680,6 +682,115 @@ fn mapped<'a>(module: &str, name: &str, report: &'a Report) -> Option<&'a crate:
     let first = units.next()?;
     units.next().is_none().then_some(first)
 }
+fn numbered_name(name: &str) -> Option<(&str, &str)> {
+    let (number, method) = name.strip_prefix("impl_")?.split_once("__")?;
+    (!number.is_empty() && number.bytes().all(|c| c.is_ascii_digit()) && !method.is_empty())
+        .then_some((number, method))
+}
+fn numbered_method(method: &str) -> &str {
+    method
+        .strip_prefix("v_")
+        .filter(|rest| rest.as_bytes().first().is_some_and(u8::is_ascii_uppercase))
+        .unwrap_or(method)
+}
+
+/// Decisions are made for whole groups, before any unit receives credit.
+fn numbered_mappings(
+    module: &str,
+    decls: &[Decl],
+    report: &Report,
+) -> BTreeMap<String, std::result::Result<String, String>> {
+    let rust_module = module
+        .split('.')
+        .map(str::to_lowercase)
+        .collect::<Vec<_>>()
+        .join("::");
+    let mut groups: BTreeMap<&str, Vec<&Decl>> = BTreeMap::new();
+    for decl in decls {
+        if let Some((n, _)) = numbered_name(&decl.name) {
+            groups.entry(n).or_default().push(decl);
+        }
+    }
+    let mut blocks: BTreeMap<_, Vec<&crate::Unit>> = BTreeMap::new();
+    for unit in &report.units {
+        if let Some((start, start_column, end, end_column, ty)) = &unit.inherent_impl {
+            if unit.id == format!("{rust_module}::{ty}::{}", unit.name) {
+                blocks
+                    .entry((
+                        unit.file.clone(),
+                        *start,
+                        *start_column,
+                        *end,
+                        *end_column,
+                        ty.clone(),
+                    ))
+                    .or_default()
+                    .push(unit);
+            }
+        }
+    }
+    let mut decisions = BTreeMap::new();
+    for (n, group) in &groups {
+        // The shared declaration parser recognizes an identifier prefix. An F* apostrophe
+        // continuation is unsupported here and must not turn `method'` into `method`.
+        if group
+            .iter()
+            .any(|d| d.text.contains(&format!("{}'", d.name)))
+        {
+            decisions.insert(
+                *n,
+                Err(format!(
+                    "numbered impl_{n}: unsupported F* identifier continuation"
+                )),
+            );
+            continue;
+        }
+        let candidates: Vec<_> = blocks
+            .iter()
+            .filter(|((_, _, _, _, _, ty), units)| {
+                group.iter().all(|d| {
+                    units
+                        .iter()
+                        .any(|u| u.name == numbered_method(numbered_name(&d.name).unwrap().1))
+                }) && group.iter().any(|d| {
+                    d.text
+                        .split(|c: char| !c.is_alphanumeric() && c != '_' && c != '\'')
+                        .any(|w| w == format!("t_{ty}"))
+                })
+            })
+            .map(|(key, _)| key.clone())
+            .collect();
+        decisions.insert(*n, if candidates.len() == 1 { Ok(candidates[0].clone()) }
+            else { Err(format!("numbered impl_{n}: {} qualifying inherent blocks (whole method set and type-token guard; missing/unsupported Rust syntax has no candidates)", candidates.len())) });
+    }
+    let mut result = BTreeMap::new();
+    for (n, group) in groups {
+        let decision = &decisions[n];
+        let collision = decision.as_ref().is_ok_and(|block| {
+            decisions
+                .values()
+                .filter(|d| d.as_ref().ok() == Some(block))
+                .count()
+                > 1
+        });
+        for decl in group {
+            let mapped = match decision {
+                Ok(_) if collision => Err(format!("numbered impl_{n}: injectivity conflict; multiple groups select the same block")),
+                Ok(block) => {
+                    let method = numbered_method(numbered_name(&decl.name).unwrap().1);
+                    let units: Vec<_> = blocks[block].iter().filter(|u| u.name == method).collect();
+                    if units.len() == 1 && report.units.iter().filter(|u| u.id == units[0].id).count() == 1 {
+                        Ok(units[0].id.clone())
+                    } else { Err(format!("numbered impl_{n}: ambiguous Rust unit identity")) }
+                }
+                Err(reason) => Err(reason.clone()),
+            };
+            result.insert(decl.name.clone(), mapped);
+        }
+    }
+    result
+}
+
 fn contract(decl: &str, names: &[String]) -> (String, String, bool) {
     if let Some((_, post)) = decl.split_once("(ensures") {
         let post = post.trim().to_string();
@@ -784,6 +895,32 @@ fn apply_validated(
         affected_units: vec![],
         sloc: 0,
     });
+    let mut module_decls: BTreeMap<String, Vec<Decl>> = BTreeMap::new();
+    let mut parse_errors = BTreeMap::new();
+    for file in receipt.checked.keys() {
+        let module = Path::new(file)
+            .file_stem()
+            .unwrap()
+            .to_string_lossy()
+            .to_string();
+        let raw = fs::read_to_string(inside(base, file)?)?;
+        match mask(&raw) {
+            Ok(text) if text.lines().any(|l| l == format!("module {module}")) => module_decls
+                .entry(module)
+                .or_default()
+                .extend(declarations(&text)),
+            _ => {
+                parse_errors.insert(
+                    module,
+                    "numbered mapping: sibling F* parse/module failure".to_string(),
+                );
+            }
+        }
+    }
+    let numbered: BTreeMap<_, _> = module_decls
+        .iter()
+        .map(|(module, decls)| (module.clone(), numbered_mappings(module, decls, report)))
+        .collect();
     for (file, hash) in &receipt.checked {
         let raw = fs::read_to_string(inside(base, file)?)?;
         let text = match mask(&raw) {
@@ -859,7 +996,33 @@ fn apply_validated(
             && (!receipt.checked.contains_key(&implementation) || identical(&implementation));
         let is_interface = file.ends_with(".fsti");
         for decl in decls.iter().filter(|d| d.kind != "type" && d.name != "_") {
-            let unit = mapped(&module, &decl.name, report).cloned();
+            let mut unit = mapped(&module, &decl.name, report).cloned();
+            let mut mapping_reason = None;
+            if unit.is_none() && numbered_name(&decl.name).is_some() {
+                let direct = format!(
+                    "{}::{}",
+                    module
+                        .split('.')
+                        .map(str::to_lowercase)
+                        .collect::<Vec<_>>()
+                        .join("::"),
+                    decl.name
+                );
+                if report.units.iter().filter(|u| u.id == direct).count() > 1 {
+                    mapping_reason =
+                        Some("numbered mapping: ambiguous direct Rust identity".into());
+                } else if let Some(reason) = parse_errors.get(module.as_ref()) {
+                    mapping_reason = Some(reason.clone());
+                } else if let Some(decision) = numbered
+                    .get(module.as_ref())
+                    .and_then(|m| m.get(&decl.name))
+                {
+                    match decision {
+                        Ok(id) => unit = report.units.iter().find(|u| &u.id == id).cloned(),
+                        Err(reason) => mapping_reason = Some(reason.clone()),
+                    }
+                }
+            }
             let has_body = if is_interface {
                 receipt.checked.contains_key(&implementation)
                     && declarations(&mask(&fs::read_to_string(inside(base, &implementation)?)?)?)
@@ -950,6 +1113,7 @@ fn apply_validated(
                 contract_kind: kind,
                 postcondition: post,
                 self_consistency_heuristic: self_consistency,
+                mapping_reason,
             });
         }
         let _ = hash;
@@ -1176,6 +1340,96 @@ mod tests {
             mapped("Crate.M", "impl_Foo__v_Bar", &report).unwrap().id,
             direct.id
         );
+    }
+    fn numbered_report(source: &str) -> Report {
+        let mut report = crate::inventory(Path::new("fixtures/hax")).unwrap();
+        report.units.clear();
+        let lines: Vec<_> = source.lines().collect();
+        crate::walk(
+            source.parse().unwrap(),
+            "m",
+            crate::SourceContext {
+                krate: "crate",
+                file: "src/m.rs",
+                source_lines: &lines,
+            },
+            false,
+            "",
+            &[],
+            &mut report.units,
+        );
+        crate::inventory_impls(source, &mut report.units);
+        report
+    }
+    #[test]
+    fn numbered_groups_use_blocks_not_type_or_source_order() {
+        let report =
+            numbered_report("struct Foo;\nimpl Foo { fn a() {} }\nimpl Foo { fn B() {} }\n");
+        let decls = declarations("let impl_91__a (x: t_Foo) = x\nlet impl_2__v_B (x: t_Foo) = x\n");
+        let result = numbered_mappings("Crate.M", &decls, &report);
+        assert_eq!(result["impl_91__a"].as_deref(), Ok("crate::m::Foo::a"));
+        assert_eq!(result["impl_2__v_B"].as_deref(), Ok("crate::m::Foo::B"));
+    }
+    #[test]
+    fn numbered_groups_fail_closed_for_ambiguity_missing_methods_traits_and_type_guards() {
+        for (source, text) in [
+            (
+                "struct Foo; impl Foo { fn a() {} }",
+                "let impl_1__a (x: t_Foo') = x",
+            ),
+            (
+                "struct Foo; impl Foo { fn a() {} }",
+                "let impl_1__a' (x: t_Foo) = x",
+            ),
+            (
+                "struct Foo; impl Foo { fn a() {} } impl Foo { fn a() {} }",
+                "let impl_1__a (x: t_Foo) = x",
+            ),
+            (
+                "struct Foo; struct Bar;\nimpl Foo { fn a() {} }\nimpl Bar { fn a() {} }",
+                "let impl_1__a (x: t_Foo) (y: t_Bar) = x",
+            ),
+            (
+                "struct Foo;\nimpl Foo { fn a() {} }",
+                "let impl_1__missing (x: t_Foo) = x",
+            ),
+            (
+                "struct Foo;\nimpl Trait for Foo { fn a() {} }",
+                "let impl_1__a (x: t_Foo) = x",
+            ),
+            (
+                "struct Foo;\nimpl Foo { fn a() {} }",
+                "let impl_1__a (x: t_FooExtra) = x",
+            ),
+            (
+                "struct Foo;\nimpl Foo { fn a() {} }",
+                "let impl_1__a (x: t_Bar) = x",
+            ),
+            (
+                "struct Foo;\nimpl Foo { fn a() {} }\nimpl Foo { fn b() {} }",
+                "let impl_1__a (x: t_Foo) = x\nlet impl_1__b (x: t_Foo) = x",
+            ),
+        ] {
+            let result =
+                numbered_mappings("Crate.M", &declarations(text), &numbered_report(source));
+            assert!(!result.is_empty());
+            assert!(result.values().all(|r| r.is_err()), "{text}");
+        }
+    }
+    #[test]
+    fn numbered_groups_are_injective_and_digits_are_ascii() {
+        let report = numbered_report("struct Foo;\nimpl Foo { fn a() {} fn b() {} }");
+        let result = numbered_mappings(
+            "Crate.M",
+            &declarations("let impl_2__a (x: t_Foo) = x\nlet impl_9__b (x: t_Foo) = x"),
+            &report,
+        );
+        assert!(result
+            .values()
+            .all(|r| r.as_ref().unwrap_err().contains("injectivity")));
+        for name in ["impl_１２__a", "impl_1__", "impl___a", "impl_1x__a"] {
+            assert!(numbered_name(name).is_none());
+        }
     }
     #[test]
     fn closed_command() {

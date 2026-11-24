@@ -14,6 +14,19 @@ Proof code has its own inventory and stays outside runtime denominators.
 Build dependencies and proc macros are a separate trusted supply-chain inventory.
 Partial upstream claims do not promote entire dependency crates.
 
+## v1.8.5: numbered hax impl methods
+
+Numbered `impl_<N>__method` definitions now map to a specific inherent Rust impl
+block when the module's whole method group selects exactly one block and the
+F* definition text mentions that block's `t_Type` token. Different numbered
+groups cannot select the same block. This uses method sets and type tokens;
+hax's impl numbers do not encode source order. Trait impls are excluded.
+Ambiguous groups and missing type tokens stay unmapped with a visible reason
+in JSON and Markdown. Existing direct, named-type and uppercase value mappings
+retain their rules. Mapped definitions use the existing evidence classification:
+strictly checked bodies can earn proven-extracted credit; interface-only
+methods remain trusted. See the [paired replay](dev/v185/compare.md).
+
 ## v1.8.4: code that doesn't ship isn't counted
 
 Optional `[ship]` configuration limits first-party coverage to files rustc reads

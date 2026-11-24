@@ -95,6 +95,8 @@ pub struct Unit {
     #[serde(skip)]
     pub scope_sites: Vec<(usize, String)>,
     #[serde(skip)]
+    pub inherent_impl: Option<(usize, usize, usize, usize, String)>,
+    #[serde(skip)]
     pub kani_harness: bool,
     #[serde(skip)]
     pub kani_only: bool,
@@ -298,6 +300,7 @@ pub fn inventory(root: &Path) -> Result<Report> {
                     source,
                     scope_attributes: String::new(),
                     scope_sites: vec![],
+                    inherent_impl: None,
                     kani_harness: false,
                     kani_only: false,
                     test_code: false,
@@ -312,6 +315,7 @@ pub fn inventory(root: &Path) -> Result<Report> {
                     || local.starts_with("benches/")
                     || test_targets.contains(&path),
             ));
+            let file_start = units.len();
             walk(
                 stream,
                 &module,
@@ -325,6 +329,7 @@ pub fn inventory(root: &Path) -> Result<Report> {
                 &[],
                 &mut units,
             );
+            inventory_impls(&source, &mut units[file_start..]);
         }
         for u in &mut units[first_unit..] {
             u.hax_crate = hax_crate;
@@ -546,6 +551,54 @@ fn cfg_implies(attrs: &str, atom: &str) -> bool {
     })
 }
 
+/// Preserve exact block identity only when Rust syntax can be parsed reliably.
+fn inventory_impls(source: &str, units: &mut [Unit]) {
+    use syn::spanned::Spanned;
+    fn visit(items: &[syn::Item], units: &mut [Unit]) {
+        for item in items {
+            match item {
+                syn::Item::Mod(m) => {
+                    if let Some((_, items)) = &m.content {
+                        visit(items, units);
+                    }
+                }
+                syn::Item::Impl(block) if block.trait_.is_none() => {
+                    let syn::Type::Path(ty) = &*block.self_ty else {
+                        continue;
+                    };
+                    // Qualified/generic self types need additional hax naming rules.
+                    if ty.qself.is_some() || ty.path.segments.len() != 1 {
+                        continue;
+                    }
+                    let ty = ty.path.segments[0].ident.to_string();
+                    let span = block.span();
+                    for item in &block.items {
+                        let syn::ImplItem::Fn(method) = item else {
+                            continue;
+                        };
+                        let line = method.sig.fn_token.span.start().line;
+                        for unit in units.iter_mut().filter(|u| {
+                            method.sig.ident == u.name && u.line <= line && line <= u.end_line
+                        }) {
+                            unit.inherent_impl = Some((
+                                span.start().line,
+                                span.start().column,
+                                span.end().line,
+                                span.end().column,
+                                ty.clone(),
+                            ));
+                        }
+                    }
+                }
+                _ => {}
+            }
+        }
+    }
+    if let Ok(file) = syn::parse_file(source) {
+        visit(&file.items, units);
+    }
+}
+
 #[derive(Clone, Copy)]
 struct SourceContext<'a> {
     krate: &'a str,
@@ -670,6 +723,7 @@ fn walk(
                         tokens: text.to_string(),
                         source: snippet,
                         scope_sites: inherited_sites.iter().cloned().chain(evidence::attribute_sites(cfg::attributes(tokens[start..i].iter().cloned().collect(),false))).collect(),
+                        inherent_impl: None,
                         scope_attributes,
                         kani_harness,
                         kani_only,

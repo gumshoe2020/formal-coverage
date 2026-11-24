@@ -554,12 +554,16 @@ pub fn markdown(r: &Report) -> String {
     if !r.fstar_definitions.is_empty() {
         out.push_str("\n## hax/F* definitions\n\nSelf-consistency is a heuristic: consistent with its own parser; not checked against an external spec. Postconditions are shown verbatim from checked interfaces. Patch differences conservatively trust the whole module.\n\n| Definition | F* location | Rust unit | Classification | Contract kind | Self-consistency heuristic | Postcondition |\n| --- | --- | --- | --- | --- | --- | --- |\n");
         for d in &r.fstar_definitions {
+            let rust_unit = d.mapping_reason.as_ref().map_or_else(
+                || d.rust_unit.as_deref().unwrap_or("unmapped").to_string(),
+                |reason| format!("unmapped: {reason}"),
+            );
             out.push_str(&format!(
                 "| {} | {}:{} | {} | {} | {} | {} | {} |\n",
                 cell(&d.name),
                 cell(&d.file),
                 d.line,
-                cell(d.rust_unit.as_deref().unwrap_or("unmapped")),
+                cell(&rust_unit),
                 cell(&d.classification),
                 cell(&d.contract_kind),
                 d.self_consistency_heuristic,

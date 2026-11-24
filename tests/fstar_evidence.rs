@@ -1034,3 +1034,50 @@ fn uppercase_value_mapping_uses_normal_evidence_classification() {
         );
     }
 }
+
+#[test]
+fn numbered_methods_receive_body_credit_and_interface_only_trust() {
+    let mut f = Fixture::new();
+    let source = "struct Foo;\nimpl Foo { pub fn body(x: u32) -> u32 { x } }\nimpl Foo { pub fn external(x: u32) -> u32 { x } }\n";
+    fs::write(f.root.join("src/lib.rs"), source).unwrap();
+    f.receipt
+        .files
+        .insert("src/lib.rs".into(), sha256(source.as_bytes()));
+    for dir in ["fresh", "checked"] {
+        f.replace(
+            &format!("{dir}/Hax_fixture.fst"),
+            "module Hax_fixture\nlet impl_99__body (x: t_Foo) : Tot u32 = 0\n",
+        );
+        f.replace(&format!("{dir}/Hax_fixture.fsti"),
+            "module Hax_fixture\nval impl_99__body : t_Foo -> Tot u32\nval impl_3__external : t_Foo -> Tot u32\nval impl_4__missing : t_Foo -> Tot u32\n");
+    }
+    let r = f.run();
+    assert!(r.evidence_runs[0].accepted);
+    assert_eq!(
+        r.units.iter().find(|u| u.name == "body").unwrap().status,
+        "proven-extracted"
+    );
+    assert_eq!(
+        r.units
+            .iter()
+            .find(|u| u.name == "external")
+            .unwrap()
+            .status,
+        "trusted"
+    );
+    let missing = r
+        .fstar_definitions
+        .iter()
+        .find(|d| d.name.ends_with("impl_4__missing"))
+        .unwrap();
+    assert!(missing.rust_unit.is_none());
+    assert!(missing
+        .mapping_reason
+        .as_ref()
+        .unwrap()
+        .contains("0 qualifying"));
+    assert!(formal_coverage::markdown(&r).contains("0 qualifying"));
+    assert!(serde_json::to_string(&r)
+        .unwrap()
+        .contains("mapping_reason"));
+}
