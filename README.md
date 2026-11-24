@@ -14,6 +14,24 @@ Proof code has its own inventory and stays outside runtime denominators.
 Build dependencies and proc macros are a separate trusted supply-chain inventory.
 Partial upstream claims do not promote entire dependency crates.
 
+## v1.8.4: code that doesn't ship isn't counted
+
+Optional `[ship]` configuration limits first-party coverage to files rustc reads
+for the named packages and the workspace members reached through their normal
+runtime dependencies, with the configured Cargo features. Unrelated workspace
+members and cfg-disabled files leave every total, including proven numerators
+and security/non-security denominators. Without `[ship]`, the existing inventory
+of all workspace members stays in scope.
+`[ship]` controls what is counted; tests and proof evidence anywhere in the full
+first-party inventory still confer the same tiers on shipped units.
+
+This fails toward counting: missing dep-info or a failed `cargo check` keeps the
+uncertain code in scope and emits a warning. Reports keep excluded files visible
+in a **Not shipped** summary line and a **Not shipped** section listing each file,
+whole-file SLoC and its units' would-be tiers. This is file-level build scope;
+inline cfg-disabled code inside a compiled file can still count. See the
+[paired replay](dev/v184/compare.md).
+
 ## v1.8.1: extraction-only Rust is proof code
 
 In first-party hax crates, items whose own or enclosing `cfg` attributes imply
@@ -153,7 +171,8 @@ proof statements; its low cost says nothing about whether the specification is
 useful. Syntactic line counts also cannot measure proof difficulty or establish
 end-to-end correctness.
 
-Build with stable Rust and Cargo:
+Build with stable Rust and Cargo. The test, clippy, fmt and CI quality gates run
+on current stable Rust (1.100.0 for v1.8.4), without a toolchain override:
 
 ```sh
 cargo build --release --locked
@@ -211,6 +230,27 @@ reason = "formats fixed strings; never sees request data"
 sloc = 1200                     # and/or security = true|false
 reason = "measured by hand: see docs/foo-size.md"
 ```
+
+Optional schema-3 shipped-artifact scope in `formal-coverage.toml`:
+
+```toml
+[ship]
+packages = ["bertie-tls"]
+features = ["default"]
+reason = "Ship the bertie-tls library with default features"
+```
+
+`packages` names workspace packages. `features` is the explicit Cargo feature
+set: `"default"` enables default features; omit it (or use an empty list) to
+disable defaults. Other entries are passed through `--features`. A non-empty
+`reason` is required. Scope comes from `cargo check --frozen -p PACKAGE --lib
+--bins` dep-info for each selected package (binary-only packages omit `--lib`),
+using the report target and features. Build scripts and proc macros can execute.
+Normal workspace dependency edges extend first-party scope; dev/build-only
+edges do not. Dependency coverage and evidence acceptance rules stay unchanged.
+Excluded files appear under **Not shipped**, outside all coverage and proof
+cost totals. JSON exposes the selection as `ship` and excluded files as
+`not_shipped`; both fields are omitted when absent/empty.
 
 Each security headline is printed twice: with these inputs and under default rules
 only. An Inputs section shows the SLoC each input moved. `gate` uses the with-inputs

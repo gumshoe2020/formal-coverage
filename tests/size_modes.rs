@@ -134,21 +134,17 @@ fn missing_dep_info_falls_back_to_whole_crate_for_that_dependency_only() {
     let root = fixture("c");
     let first = analyze_with(&root, &options(SizeMode::CompiledFiles)).unwrap();
     assert!(first.size_fallbacks.is_empty());
-    let deps = fs::read_dir(root.join("target/formal-coverage"))
+    // Derive dep-info from the rmeta path, as the tool does, without assuming
+    // Cargo's target/profile directory layout.
+    let removed: Vec<_> = glob::glob(&format!("{}/target/**/libother-*.rmeta", root.display()))
         .unwrap()
-        .map(|e| e.unwrap().path().join("debug/deps"))
-        .find(|p| p.is_dir())
-        .unwrap();
-    let removed: Vec<_> = fs::read_dir(&deps)
-        .unwrap()
-        .map(|e| e.unwrap().path())
-        .filter(|p| {
-            p.extension().is_some_and(|e| e == "d")
-                && p.file_name()
-                    .unwrap()
-                    .to_string_lossy()
-                    .starts_with("other-")
+        .map(|entry| {
+            let rmeta = entry.unwrap();
+            let stem = rmeta.file_stem().unwrap().to_string_lossy();
+            let stem = stem.strip_prefix("lib").unwrap();
+            rmeta.with_file_name(format!("{stem}.d"))
         })
+        .filter(|path| path.is_file())
         .collect();
     assert_eq!(removed.len(), 1);
     fs::remove_file(&removed[0]).unwrap();

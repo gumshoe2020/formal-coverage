@@ -191,6 +191,12 @@ fn validate(root: &Path, log_path: &Path, report: &Report) -> Result<FstarReceip
 }
 
 pub fn apply_fstar_evidence(report: &mut Report, root: &Path, logs: &[PathBuf]) -> Result<()> {
+    crate::ship::apply_evidence(report, |inventory| {
+        apply_fstar_evidence_scoped(inventory, root, logs)
+    })
+}
+
+fn apply_fstar_evidence_scoped(report: &mut Report, root: &Path, logs: &[PathBuf]) -> Result<()> {
     inventory_rust_trust(report, root)?;
     for log in logs {
         let mut run = EvidenceRun {

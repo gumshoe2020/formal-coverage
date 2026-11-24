@@ -301,6 +301,13 @@ pub fn markdown(r: &Report) -> String {
         &trust,
         combined_unit,
     ));
+    if r.ship.is_some() {
+        lines.push(format!(
+            "Not shipped: {} SLoC in {} files (excluded from all coverage totals)",
+            r.not_shipped.iter().map(|f| f.sloc).sum::<usize>(),
+            r.not_shipped.len()
+        ));
+    }
     let mut out = format!("# Formal coverage\n\n```text\n{}\n```\n\nPercentages are SLoC-weighted, mutually exclusive statuses over measured runtime code. First-party, third-party runtime and combined figures are also in JSON summary.first_party, summary.third_party and summary.all for each block. Headline trust/escape counts conservatively list the whole runtime inventory, including outside verified scope; each receipt lists its cfg-active scope separately. Unknown sizes are excluded and prominently flagged; gates fail closed when security dependency sizes are unknown.\n\n{}\n\n", lines.join("\n"), r.approximation);
     if s.escape_sites > 0 {
         out = out.replacen("# Formal coverage\n\n", &format!("# Formal coverage\n\n**ESCAPES: {} distinct sites, including outside verified scope; all remain gate-visible.**\n\n",s.escape_sites),1);
@@ -323,6 +330,35 @@ pub fn markdown(r: &Report) -> String {
         }
     ));
     out.push_str(&inputs_section(r, &s, &d));
+    if let Some(ship) = &r.ship {
+        out.push_str(&format!("## Not shipped\n\nShipped packages: `{}`; features: `{}`. Reason: {}\n\nExcluded from all coverage totals. Tiers show the classifications these units would have had under the supplied evidence.\n\n| File | SLoC | Tier it would have had |\n| --- | ---: | --- |\n", cell(&ship.packages.join(", ")), cell(&ship.features.join(", ")), cell(&ship.reason)));
+        for file in &r.not_shipped {
+            let tiers: std::collections::BTreeSet<_> = file
+                .units
+                .iter()
+                .map(|u| {
+                    format!(
+                        "{} / {:?} / {}",
+                        if u.security {
+                            "security"
+                        } else {
+                            "non-security"
+                        },
+                        u.category,
+                        u.status
+                    )
+                })
+                .collect();
+            out.push_str(&format!(
+                "| {} | {} | {} |\n",
+                cell(&file.file),
+                file.sloc,
+                cell(&tiers.into_iter().collect::<Vec<_>>().join(", "))
+            ));
+        }
+        out.push('\n');
+    }
+
     out.push_str("## Build-time dependencies\n\nBuild-time code can affect the binary and is trusted, not measured by runtime coverage. Build scripts, proc macros and their dependencies are excluded from runtime denominators; their source SLoC and unsafe counts are listed separately. A package used at runtime and build time appears in both inventories.\n\n| Crate | SLoC | Unsafe sites |\n| --- | ---: | ---: |\n");
     for d in &r.build_dependencies {
         out.push_str(&format!(

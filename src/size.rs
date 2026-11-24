@@ -180,7 +180,7 @@ fn cargo_check(root: &Path, target: &str, options: &Options) -> Check {
                 ["lib", "rlib", "dylib", "cdylib", "staticlib"].contains(&k.as_str().unwrap_or(""))
             })
         });
-        let (Some(id), Some(files)) = (
+        let (Some(id), Some(_files)) = (
             message["package_id"].as_str(),
             message["filenames"].as_array(),
         ) else {
@@ -189,15 +189,8 @@ fn cargo_check(root: &Path, target: &str, options: &Options) -> Check {
         if !library {
             continue;
         }
-        let rmeta = files
-            .iter()
-            .filter_map(|f| f.as_str())
-            .map(PathBuf::from)
-            .find(|f| f.extension().is_some_and(|e| e == "rmeta" || e == "rlib"));
-        if let Some(rmeta) = rmeta {
-            let stem = rmeta.file_stem().unwrap_or_default().to_string_lossy();
-            let stem = stem.strip_prefix("lib").unwrap_or(&stem);
-            artifacts.insert(id.to_string(), rmeta.with_file_name(format!("{stem}.d")));
+        if let Some(path) = artifact_dep_info(&message) {
+            artifacts.insert(id.to_string(), path);
         }
     }
     let error = (!output.status.success()).then(|| {
@@ -218,6 +211,19 @@ fn cargo_check(root: &Path, target: &str, options: &Options) -> Check {
         )
     });
     Check { artifacts, error }
+}
+
+/// Cargo artifact → adjacent rustc dep-info, shared by dependency sizing and ship scope.
+pub(crate) fn artifact_dep_info(message: &serde_json::Value) -> Option<PathBuf> {
+    let files = message["filenames"].as_array()?;
+    let artifact = files
+        .iter()
+        .filter_map(|f| f.as_str())
+        .map(PathBuf::from)
+        .find(|f| f.extension().is_some_and(|e| e == "rmeta" || e == "rlib"))?;
+    let stem = artifact.file_stem()?.to_string_lossy();
+    let stem = stem.strip_prefix("lib").unwrap_or(&stem);
+    Some(artifact.with_file_name(format!("{stem}.d")))
 }
 
 /// Source files listed in a Makefile-style dep-info file, in order and without duplicates.

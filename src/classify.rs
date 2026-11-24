@@ -296,6 +296,9 @@ pub fn analyze_with(root: &Path, options: &Options) -> Result<Report> {
     }
     crate::size::apply(root, options, &mut report)?;
     apply_dependency_rules(&config.dependencies, &mut report)?;
+    if let Some(ship) = &config.ship {
+        crate::ship::apply(root, options, ship, &mut report)?;
+    }
     report.security_relevant = report
         .units
         .iter()

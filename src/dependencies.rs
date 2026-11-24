@@ -194,6 +194,9 @@ pub(crate) fn resolve(root: &Path, target: Option<&str>, report: &mut Report) ->
     Ok(())
 }
 fn metadata(root: &Path, target: &str) -> Result<Metadata> {
+    metadata_features(root, target, &[])
+}
+fn metadata_features(root: &Path, target: &str, features: &[String]) -> Result<Metadata> {
     let out = Command::new("cargo")
         .args([
             "metadata",
@@ -203,6 +206,7 @@ fn metadata(root: &Path, target: &str) -> Result<Metadata> {
             "--filter-platform",
             target,
         ])
+        .args(features)
         .current_dir(root)
         .output()
         .context("running cargo metadata")?;
@@ -328,4 +332,86 @@ fn closure(m: Metadata, report: &mut Report) -> Result<()> {
         output.sort_by(|a, b| (&a.name, &a.version).cmp(&(&b.name, &b.version)));
     }
     Ok(())
+}
+
+pub(crate) struct ShipPackage {
+    pub id: String,
+    pub name: String,
+    pub dir: PathBuf,
+    pub reached: bool,
+    pub library: bool,
+}
+
+/// First-party normal dependency closure, reusing the target-filtered Cargo graph.
+/// Dependency reporting deliberately continues to use its existing workspace-wide roots.
+pub(crate) fn ship_packages(
+    root: &Path,
+    target: &str,
+    ship: &crate::Ship,
+) -> Result<Vec<ShipPackage>> {
+    let mut args = Vec::new();
+    if !ship.features.iter().any(|f| f == "default") {
+        args.push("--no-default-features".into());
+    }
+    let features: Vec<_> = ship
+        .packages
+        .iter()
+        .flat_map(|p| {
+            ship.features
+                .iter()
+                .filter(|f| *f != "default")
+                .map(move |f| {
+                    if f.contains('/') {
+                        f.clone()
+                    } else {
+                        format!("{p}/{f}")
+                    }
+                })
+        })
+        .collect();
+    if !features.is_empty() {
+        args.extend(["--features".into(), features.join(",")]);
+    }
+    let m = metadata_features(root, target, &args)?;
+    let packages: BTreeMap<_, _> = m.packages.iter().map(|p| (p.id.as_str(), p)).collect();
+    let nodes: BTreeMap<_, _> = m.resolve.nodes.iter().map(|n| (n.id.as_str(), n)).collect();
+    let mut pending = Vec::new();
+    for name in &ship.packages {
+        let p = m
+            .packages
+            .iter()
+            .find(|p| p.name == *name && m.workspace_members.contains(&p.id))
+            .with_context(|| format!("[ship] unknown workspace package {name:?}"))?;
+        pending.push(p.id.as_str());
+    }
+    let mut reached = BTreeSet::new();
+    while let Some(id) = pending.pop() {
+        if !reached.insert(id) {
+            continue;
+        }
+        let node = nodes.get(id).context("missing ship resolve node")?;
+        for edge in &node.deps {
+            if edge.dep_kinds.iter().any(|k| {
+                k.kind.is_none()
+                    && enabled(packages[id], node, edge, packages[edge.pkg.as_str()], k)
+            }) {
+                pending.push(edge.pkg.as_str());
+            }
+        }
+    }
+    Ok(m.packages
+        .iter()
+        .filter(|p| m.workspace_members.contains(&p.id))
+        .map(|p| ShipPackage {
+            id: p.id.clone(),
+            name: p.name.clone(),
+            dir: p.manifest_path.parent().unwrap().to_path_buf(),
+            reached: reached.contains(p.id.as_str()),
+            library: p.targets.iter().any(|t| {
+                t.kind
+                    .iter()
+                    .any(|k| ["lib", "rlib", "dylib", "cdylib", "staticlib"].contains(&k.as_str()))
+            }),
+        })
+        .collect())
 }

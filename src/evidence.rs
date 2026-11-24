@@ -103,6 +103,17 @@ pub fn apply_evidence_many(
     verus: &[std::path::PathBuf],
     kani: &[std::path::PathBuf],
 ) -> Result<()> {
+    crate::ship::apply_evidence(report, |inventory| {
+        apply_evidence_many_scoped(inventory, root, verus, kani)
+    })
+}
+
+fn apply_evidence_many_scoped(
+    report: &mut Report,
+    root: &Path,
+    verus: &[std::path::PathBuf],
+    kani: &[std::path::PathBuf],
+) -> Result<()> {
     let registry: Registry = toml::from_str(include_str!("../registry/upstream.toml"))?;
     apply_upstream_registry(report, registry.claims)?;
     let files: BTreeSet<_> = report.source_files.iter().cloned().collect();

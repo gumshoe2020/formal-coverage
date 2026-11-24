@@ -36,9 +36,20 @@ pub struct DependencyRule {
     pub reason: String,
 }
 
+/// Shipped first-party build roots and Cargo features (schema 3 only).
+#[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct Ship {
+    pub packages: Vec<String>,
+    #[serde(default)]
+    pub features: Vec<String>,
+    pub reason: String,
+}
+
 #[derive(Debug, Default, Deserialize)]
 #[serde(deny_unknown_fields)]
 struct ConfigV3 {
+    ship: Option<Ship>,
     #[serde(default)]
     fstar: crate::fstar_proof::FstarConfig,
     proof_ratio: Option<crate::ProofRatioConfig>,
@@ -55,6 +66,7 @@ struct ConfigV3 {
 /// Either schema, normalized. Schema-2 overrides carry no reason.
 #[derive(Debug, Default)]
 pub(crate) struct Inputs {
+    pub ship: Option<Ship>,
     pub fstar: crate::fstar_proof::FstarConfig,
     pub proof_ratio: Option<crate::ProofRatioConfig>,
     /// 0 when no config file exists.
@@ -110,6 +122,7 @@ pub(crate) fn load(path: &Path) -> Result<Inputs> {
     if is_schema2(&value) {
         let config: Config = toml::from_str(&text)?;
         return Ok(Inputs {
+            ship: None,
             fstar: config.fstar,
             proof_ratio: None,
             schema: 2,
@@ -122,6 +135,16 @@ pub(crate) fn load(path: &Path) -> Result<Inputs> {
     }
     let config: ConfigV3 =
         toml::from_str(&text).with_context(|| format!("{}: schema-3 config", path.display()))?;
+    if let Some(ship) = &config.ship {
+        anyhow::ensure!(
+            !ship.reason.trim().is_empty(),
+            "[ship] reason must be non-empty"
+        );
+        anyhow::ensure!(
+            !ship.packages.is_empty(),
+            "[ship] packages must not be empty"
+        );
+    }
     if let Some(ratio) = &config.proof_ratio {
         ratio.range()?;
     }
@@ -148,6 +171,7 @@ pub(crate) fn load(path: &Path) -> Result<Inputs> {
         );
     }
     Ok(Inputs {
+        ship: config.ship,
         fstar: config.fstar,
         proof_ratio: config.proof_ratio,
         schema: 3,
