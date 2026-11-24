@@ -800,3 +800,65 @@ Retained v1.8.0 baseline and source copies reused without changes; compare.md re
   Stopping per instruction: M1 commit 62fd3cc and M2 commit 39782f8 are local on main with Assisted-by trailers. M3 remains uncommitted and unchecked in PROGRESS; no V1.8.2-READY marker. Required cargo test, clippy all targets -D warnings, fmt --check and release build passed; fresh F* checks all passed; paired controls and Bertie scope audit passed. Independent acceptance, ignored performance test, fresh Verus execution and runtime-mode gate were not run. No push, tag, release bundle, host install, email or external-checkout mutation. No further implementation or acceptance work after this finding.
 
 - 2026-11-22T22:34:57-05:00 **Dudley: HONEST-FINDING resolved, not a regression.** The same gate audit on the v1.8.1 "before" reports returns the same two failures: separate ratio 0.64 + unattributed file-scope hazard; runtime ratio 0.22 + same hazard. v1.8.2 lowers the informational ratio (0.64→0.47, 0.22→0.17) only because proven runtime grows; the hazard is unchanged. The plan's stop rule should have said "a new gate failure"; the spec wording was the cause. Real CI path on the bertie copy with the candidate release binary: `formal-coverage report . --config formal-coverage.toml --fstar-log target/ci-logs/fstar/fstar.log` exits 0 (no ratio bypass needed); `write-coverage.py` regenerates COVERAGE.md/baseline.json (proven=1079, proven_share 20.3278%) and `scripts/check-coverage` against main's 9212e97 baseline as floor: ratchet PASS. Reran cargo test (159 passed, 0 failed), clippy -D warnings, fmt --check: all pass. Reviewed M1/M2 diffs.
+
+## v1.8.3
+
+- 2026-11-24T10:30:16.470613-05:00 Start on clean main, one preexisting local commit ahead of origin; plan read fully. Memory search/diary tools unavailable (no matching tools discovered); all notes remain in repo. Authoritative spec: dev/PLAN-FSTAR-VPREFIX-v1.8.3.md. Baseline v1.8.2 and Bertie c66a986 archived under target/v183, no external checkout changes. No CHANGELOG tracked.
+- 2026-11-24T10:30:16.470613-05:00 Before implementation, confirmed hax naming from pinned upstream source https://github.com/cryspen/hax/blob/5ccf89dd2e996c9f88f2267eaa2a64739c4ca41a/engine/lib/concrete_ident/concrete_ident.ml (apply_policy ~449, global values ~624, locals ~645): value prefix v with SameCase suppression; uppercase names get v_. Reserved words can also force the prefix even when lowercase; locals use this policy too. Those cases are outside R1 and will not be stripped. Prefix escaping can further change names; no general demangling in this release. Downloaded source to target/v183/hax from pinned GitHub tarball.
+- 2026-11-24T10:30:16.470613-05:00 CI artifact contains log/receipt but none of 37 hashed fresh extraction files. Archived Bertie also has none. Existing v182 library inputs match all 138 CI library hashes, but cannot supply fresh inputs. Thus cannot directly replay CI log yet; authorized fallback runs unchanged scripts/verify-fstar.py in the copied tree using fc-verify-fstar-amd64:v17. Will reconstruct missing inputs beside a copy of original CI receipt and validate every hash before baseline comparison. Initial relative-path setup from copy cwd failed, verifier failed before extraction (no indexed inputs); corrected by git init/add solely in target/v183/bertie and reran. No claim of successful verification yet.
+
+Exact setup/rerun commands (repository cwd except stated):
+```sh
+mkdir -p target/v183/baseline-src target/v183/bertie logs/v1.8.3
+git archive v1.8.2 | tar -x -C target/v183/baseline-src
+git -C ~/src/bertie-tls-flake-check archive c66a986 | tar -x -C target/v183/bertie
+cargo build --release --frozen --manifest-path target/v183/baseline-src/Cargo.toml --target-dir target/v183/baseline-build > logs/v1.8.3/baseline-build.log 2>&1
+git -C target/v183/bertie init -b main > logs/v1.8.3/bertie-init.log 2>&1
+git -C target/v183/bertie add .
+(cd target/v183/bertie && BERTIE_DOCKER_TOOLS=~/src/bertie-toolchain python3 scripts/verify-fstar.py > ~/src/formal-coverage/logs/v1.8.3/verify-fstar.log 2>&1)
+```
+
+- 2026-11-24T10:33:50.538554-05:00 M1: direct lookup and v1.8.2 inherent lookup keep precedence, including ambiguity returning unmapped without fallback. R1 strips one v_ only when next byte is ASCII uppercase, including method part. Unit regressions cover empty/lower/digit/underscore/non-ASCII names, duplicates, direct precedence and existing impl precedence/ambiguity. Integration regression covers success, failed module, lax hazard, stale body, missing body, unclassified contract and Rust opaque trust. Existing impl_Foo__bar regression retained. No classification/report/evidence policy changes.
+- 2026-11-24T10:33:50.538554-05:00 Baseline prerequisite PASS: reconstructed all 37 fresh and 138 library files against unchanged CI receipt, report accepts it. All 510 CI unit entries (506 distinct IDs) exactly match v1.8.2, first-party summary identical: 3635 proven-extracted / 5402 runtime security SLoC (67.29%), tested 452, unverified 1197, trusted 118. Preliminary whole-crate run used wrong size mode (structural test behavior differs); discarded in favor of CI's compiled-files mode and target. Metadata and dependency sizing remain local; paired candidate will use identical settings.
+- 2026-11-24T10:33:50.538554-05:00 Validation: default cargo 1.100 full suite failed the preexisting size_modes dep-info path assumption at tests/size_modes.rs:141; isolated rerun reproduced it. New mapper/evidence tests passed. Already-installed Rust 1.97.1 uses the supported layout; full cargo test then passed (one existing ignored performance test), clippy all targets -D warnings and fmt --check passed. No host install or test/code weakening. Use RUSTUP_TOOLCHAIN=1.97.1 for release checks and hooks. Fresh F* execution still running; original CI receipt is already accepted. Independent acceptance and performance test not run. Correct hax references: function-like v policy at lines 644–645, apply_policy at 449–461; inherent item rendering at 575–578 concatenates original method, and remains unchanged.
+
+```sh
+# CI evidence reconstruction (all copied inputs were hash-checked against original receipt):
+cp -R target/v183/bertie/target/ci-logs/fstar/fresh target/v183/ci-evidence/
+cp -R target/v183/bertie/target/ci-logs/fstar/libs target/v183/ci-evidence/
+cp target/v183/ci-c66a986/fstar/* target/v183/ci-evidence/
+cp target/v183/baseline-build/release/formal-coverage target/v183/baseline
+(cd target/v183/bertie && ~/src/formal-coverage/target/v183/baseline report . --target x86_64-unknown-linux-gnu --fstar-log ~/src/formal-coverage/target/v183/ci-evidence/fstar.log --json ~/src/formal-coverage/target/v183/baseline-ci-replay.json --markdown ~/src/formal-coverage/target/v183/baseline-ci-replay.md > ~/src/formal-coverage/logs/v1.8.3/baseline-ci-replay.log 2>&1)
+RUSTUP_TOOLCHAIN=1.97.1 cargo test > logs/v1.8.3/m1-test-197.log 2>&1
+RUSTUP_TOOLCHAIN=1.97.1 cargo clippy --all-targets -- -D warnings > logs/v1.8.3/m1-clippy-197.log 2>&1
+RUSTUP_TOOLCHAIN=1.97.1 cargo fmt --check > logs/v1.8.3/m1-fmt-197.log 2>&1
+git diff --check > logs/v1.8.3/m1-diff.log 2>&1
+```
+
+- 2026-11-24T10:35:01.959913-05:00 M2 start after M1 commit f94ee92. Version 1.8.3 in Cargo.toml/lock; README and evidence mapping policy updated (no tracked CHANGELOG). Replays adapted under dev/v183: same copied Bertie config/evidence for before and after, both ghost modes, compiled-files size mode and CI target; controls use existing bundled scratch-server/Vest and six copied fixtures with whole-crate settings from v182. Both binaries invoke the same installed Rust 1.97.1 environment. M1 baseline evidence check automated in dev/v183/baseline.py. The host lacks Linux std, so Bertie dependency sizes can fall back; all first-party statuses/totals match CI, and paired dependency figures must be identical. No claim of full CI third-party size reproduction. Initial fixture driver launched before candidate build completed and failed with missing binary; rerun after successful build.
+
+```sh
+RUSTUP_TOOLCHAIN=1.97.1 cargo build --release --frozen > logs/v1.8.3/m2-build.log 2>&1
+cp target/release/formal-coverage target/v183/candidate
+python3 dev/v183/replay.py bertie > logs/v1.8.3/m2-bertie.log 2>&1
+python3 dev/v183/replay.py fixtures > logs/v1.8.3/m2-fixtures.log 2>&1
+python3 dev/v183/replay.py verus > logs/v1.8.3/m2-verus.log 2>&1
+python3 dev/v183/baseline.py > logs/v1.8.3/m2-baseline.log 2>&1
+python3 dev/v183/controls.py > logs/v1.8.3/m2-controls.log 2>&1
+```
+
+- 2026-11-24T10:38:19.383146-05:00 Paired scope audit PASS: all 510 entries (506 distinct IDs) match CI baseline, including duplicate-ID entries via Counter comparison. Earlier commentary counted distinct IDs as units; this corrects the count. Five status changes in both modes: XPD 69, XTR 57, U8/U16/U32 5 each, total +141. Separate 3635/5402 (67.29%) → 3776/5402 (69.90%); runtime 3950/5772 (68.43%) → 4091/5772 (70.88%). Tested drops 10 and unverified drops 131 in each mode. Every unit field except those five statuses/proof scopes stays equal. Mapping/classification changes are constrained to unique R1 names; summary deltas are recomputed from units; every ratio denominator delta and ratio is checked against the changed units in each mode/crate/module. F* credited lists gain only those IDs. All remaining report fields, non-F* evidence, proof numerator, inventories, sizes, categories, trust and hazards are equal.
+- 2026-11-24T10:38:19.383146-05:00 Controls PASS: scratch-spec-lemmas, Vest and six static fixtures, both ghost modes (16 pairs), exact JSON and Markdown equality. dev/v183/compare.md inventories all 62 remaining unmapped .fst definitions in both modes: apparent trait impl 54, no Rust unit 1, generated/escaped helper names 4, other (ambiguous IDs) 3. No other name mapping fix. Required M2 full cargo test PASS (161 passed, 0 failed, 1 existing ignored performance test), clippy all targets -D warnings, fmt --check, release build/version, Python syntax and git diff --check PASS. Fresh F* verification has completed seven modules successfully so far; still running. Not yet ready/committed M2.
+
+```sh
+RUSTUP_TOOLCHAIN=1.97.1 cargo test > logs/v1.8.3/m2-test.log 2>&1
+RUSTUP_TOOLCHAIN=1.97.1 cargo clippy --all-targets -- -D warnings > logs/v1.8.3/m2-clippy.log 2>&1
+RUSTUP_TOOLCHAIN=1.97.1 cargo fmt --check > logs/v1.8.3/m2-fmt.log 2>&1
+python3 -m py_compile dev/v183/*.py > logs/v1.8.3/m2-python.log 2>&1
+target/v183/candidate --version > logs/v1.8.3/m2-version.log 2>&1
+git diff --check > logs/v1.8.3/m2-diff.log 2>&1
+```
+
+- 2026-11-24T10:41:19.186946-05:00 Sequence disclosure: the baseline was built from immutable v1.8.2 before R1 source edits; the successful CI replay check completed after those edits and before M1 commit. This departs from the requested baseline-before-edits order. The replay used only the tagged baseline binary and original hash-validated CI evidence, so the candidate edits could not affect its outcome. No baseline discrepancy was found.
+
+- 2026-11-24T10:45:21.383279-05:00 Final M2 verification: unchanged copied scripts/verify-fstar.py exited 0; all 18 strict implementation modules passed under fc-verify-fstar-amd64:v17. Fresh receipt files/fresh/checked maps exactly equal original CI receipt maps; no patched model or weakened proof. Paired reports continue using the original CI log and receipt. No HONEST-FINDING. All required Rust checks passed before this commit on installed 1.97.1 (161 tests passed, 0 failed, 1 existing ignored), paired controls/full report scope/CI baseline and syntax/diff checks passed. Initial default 1.100 size-mode test failure and preliminary setup failures are recorded above; final runs are passing. No fresh Verus execution, ignored performance acceptance, or independent acceptance run. No push, tag, release bundle, host install, email or external-checkout mutation. M1 f94ee92 and final M2 commit are local on main with Assisted-by: Codex (GPT-6). Record V1.8.3-READY, commit M2 including readiness, then stop.

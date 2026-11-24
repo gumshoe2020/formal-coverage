@@ -291,3 +291,14 @@ V1.8.1-FIX-READY
 2026-11-22: **HONEST-FINDING — stopped during M3.** Bertie gate returns below-range proof ratio (0.47) and unattributed file-scope hazard. See dev/NOTES.md and logs/v1.8.2/m3-gates.log. M3 uncommitted; readiness not recorded.
 
 2026-11-22T22:34:57-05:00: HONEST-FINDING resolved by Dudley: both gate failures pre-exist in the v1.8.1 baseline (see NOTES). V1.8.2-READY
+
+## v1.8.3
+
+- [x] M1 — R1 unique uppercase v_ fallback and evidence regressions; test/clippy/fmt pass on installed Rust 1.97.1.
+- [x] M2 — exact CI baseline; five Bertie statuses (+141 SLoC, 67.29% → 69.90%); 16 control pairs identical; 62 unmapped definitions inventoried; docs/version 1.8.3.
+
+Independent acceptance remains Dudley’s.
+
+Final local validation: 161 tests passed, zero failed, one existing ignored performance test; clippy all targets -D warnings, fmt --check, release build/version, Python syntax and diff checks pass on installed Rust 1.97.1. Default Cargo 1.100 hit an existing dep-info layout assumption; recorded in NOTES. Fresh F* fallback: all 18 modules pass, exit 0. CI baseline: all 510 entries (506 distinct IDs) and first-party totals match exactly. Both-mode paired scope audit passes; scratch-server, Vest and six fixtures preserve exact JSON/Markdown. No fresh Verus execution or independent acceptance. Two milestone commits on main, local only; no push/tag/release.
+
+V1.8.3-READY

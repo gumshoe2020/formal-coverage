@@ -94,7 +94,12 @@ annotations with locations, affected units and SLoC separately from F* trust.
 Unconditional opaque, F* replacement and unknown paths retain trust. Removing
 an F* trust annotation's effect still requires normal source-bound F* evidence
 for credit. Inherent `impl_<Type>__<method>` definitions map only to a unique
-Rust method; trait impl names remain unsupported.
+Rust method; trait impl names remain unsupported. Since v1.8.3, if both direct
+and inherent lookups find no unit, `v_<Rest>` also tries `<Rest>` only when
+its first character is ASCII uppercase. The same rule applies to the method
+part of `impl_<Type>__v_<Method>`. All lookups require exactly one Rust unit;
+ambiguous existing matches stop without fallback. Normal F* evidence rules
+still determine credit.
 
 Optional schema-2/3 configuration for hand-written F* inputs:
 

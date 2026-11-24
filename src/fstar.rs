@@ -648,12 +648,29 @@ fn mapped<'a>(module: &str, name: &str, report: &'a Report) -> Option<&'a crate:
     if let Some(first) = units.next() {
         return units.next().is_none().then_some(first);
     }
-    let (ty, method) = name.strip_prefix("impl_")?.split_once("__")?;
-    if ty.is_empty() || method.is_empty() {
-        return None;
+    let inherent = name
+        .strip_prefix("impl_")
+        .and_then(|rest| rest.split_once("__"))
+        .filter(|(ty, method)| !ty.is_empty() && !method.is_empty());
+    if let Some((ty, method)) = inherent {
+        let id = format!("{module}::{ty}::{method}");
+        let mut units = report.units.iter().filter(|u| u.id == id);
+        if let Some(first) = units.next() {
+            return units.next().is_none().then_some(first);
+        }
     }
-    let inherent = format!("{module}::{ty}::{method}");
-    let mut units = report.units.iter().filter(|u| u.id == inherent);
+    // R1: only uppercase-initial hax value names; never guess other escapes.
+    fn strip_value(value: &str) -> Option<&str> {
+        value
+            .strip_prefix("v_")
+            .filter(|rest| rest.as_bytes().first().is_some_and(u8::is_ascii_uppercase))
+    }
+    let id = if let Some((ty, method)) = inherent {
+        format!("{module}::{ty}::{}", strip_value(method)?)
+    } else {
+        format!("{module}::{}", strip_value(name)?)
+    };
+    let mut units = report.units.iter().filter(|u| u.id == id);
     let first = units.next()?;
     units.next().is_none().then_some(first)
 }
@@ -1100,6 +1117,59 @@ mod tests {
         report.units.push(direct);
         // An ambiguous direct id must never fall back to a unique inherent id.
         assert!(mapped("Crate.M", "impl_Foo__bar", &report).is_none());
+    }
+    #[test]
+    fn uppercase_value_mapping_is_unique_and_preserves_existing_precedence() {
+        let mut report = crate::inventory(Path::new("fixtures/hax")).unwrap();
+        let mut unit = report.units[0].clone();
+        unit.id = "crate::m::XTR".into();
+        report.units = vec![unit.clone()];
+        assert_eq!(mapped("Crate.M", "v_XTR", &report).unwrap().id, unit.id);
+        for rest in ["xtr", "", "1A", "_A", "É", "v_XTR"] {
+            report.units[0].id = format!("crate::m::{rest}");
+            assert!(mapped("Crate.M", &format!("v_{rest}"), &report).is_none());
+        }
+        unit.id = "crate::m::Foo".into();
+        report.units = vec![unit.clone(), unit.clone()];
+        assert!(mapped("Crate.M", "v_Foo", &report).is_none());
+        report.units.pop();
+        let mut direct = unit.clone();
+        direct.id = "crate::m::v_Foo".into();
+        report.units.push(direct.clone());
+        assert_eq!(mapped("Crate.M", "v_Foo", &report).unwrap().id, direct.id);
+        report.units.push(direct);
+        assert!(mapped("Crate.M", "v_Foo", &report).is_none());
+
+        unit.id = "crate::m::Foo::Bar".into();
+        report.units = vec![unit.clone()];
+        assert_eq!(
+            mapped("Crate.M", "impl_Foo__v_Bar", &report).unwrap().id,
+            unit.id
+        );
+        report.units.push(unit.clone());
+        assert!(mapped("Crate.M", "impl_Foo__v_Bar", &report).is_none());
+        report.units.pop();
+        for rest in ["bar", "", "1A", "_A", "É"] {
+            report.units[0].id = format!("crate::m::Foo::{rest}");
+            assert!(mapped("Crate.M", &format!("impl_Foo__v_{rest}"), &report).is_none());
+        }
+        report.units[0] = unit.clone();
+        let mut existing = unit.clone();
+        existing.id = "crate::m::Foo::v_Bar".into();
+        report.units.push(existing.clone());
+        assert_eq!(
+            mapped("Crate.M", "impl_Foo__v_Bar", &report).unwrap().id,
+            existing.id
+        );
+        report.units.push(existing);
+        assert!(mapped("Crate.M", "impl_Foo__v_Bar", &report).is_none());
+        let mut direct = unit;
+        direct.id = "crate::m::impl_Foo__v_Bar".into();
+        report.units.push(direct.clone());
+        assert_eq!(
+            mapped("Crate.M", "impl_Foo__v_Bar", &report).unwrap().id,
+            direct.id
+        );
     }
     #[test]
     fn closed_command() {

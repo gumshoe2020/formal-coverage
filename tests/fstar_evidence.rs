@@ -942,3 +942,95 @@ fn inherent_method_mapping_uses_normal_evidence_and_trust_classification() {
         );
     }
 }
+
+#[test]
+fn uppercase_value_mapping_uses_normal_evidence_classification() {
+    for case in [
+        "success",
+        "failed",
+        "lax",
+        "stale",
+        "no-body",
+        "unclassified",
+        "opaque",
+    ] {
+        let mut f = Fixture::new();
+        let attribute = if case == "opaque" {
+            "#[hax_lib::opaque]\n"
+        } else {
+            ""
+        };
+        let source = format!("{attribute}pub fn XTR(x: u32) -> u32 {{x}}\n");
+        fs::write(f.root.join("src/lib.rs"), &source).unwrap();
+        f.receipt
+            .files
+            .insert("src/lib.rs".into(), sha256(source.as_bytes()));
+        for dir in ["fresh", "checked"] {
+            let option = if case == "lax" {
+                "#set-options \"--lax\"\n"
+            } else {
+                ""
+            };
+            let declaration = if case == "no-body" {
+                "val v_XTR : u32 -> Tot u32"
+            } else if case == "unclassified" {
+                "let v_XTR x = x"
+            } else {
+                "let v_XTR (x: u32) : Tot u32 = x"
+            };
+            f.replace(
+                &format!("{dir}/Hax_fixture.fst"),
+                &format!("module Hax_fixture\n{option}{declaration}\n"),
+            );
+            let contract = if case == "unclassified" {
+                "u32 -> u32"
+            } else {
+                "u32 -> Tot u32"
+            };
+            f.replace(
+                &format!("{dir}/Hax_fixture.fsti"),
+                &format!("module Hax_fixture\nval v_XTR : {contract}\n"),
+            );
+        }
+        if case == "failed" {
+            f.receipt.modules[0].outcome = "failed".into();
+            f.receipt.modules[0].exit_code = 1;
+        }
+        if case == "stale" {
+            f.replace(
+                "checked/Hax_fixture.fst",
+                "module Hax_fixture\nlet v_XTR (x: u32) : Tot u32 = 0\n",
+            );
+        }
+        let r = configured_proof(&f, "", true);
+        assert!(r.evidence_runs[0].accepted, "{case}");
+        assert!(
+            r.fstar_definitions
+                .iter()
+                .all(|d| d.rust_unit.as_deref() == Some("hax_fixture::XTR")),
+            "{case}"
+        );
+        let implementation = r
+            .fstar_definitions
+            .iter()
+            .find(|d| d.file.ends_with(".fst"))
+            .unwrap();
+        let expected = match case {
+            "success" => "proven-extracted",
+            "failed" | "unclassified" => "unverified",
+            "lax" => "hazard",
+            _ => "trusted",
+        };
+        assert_eq!(implementation.classification, expected, "{case}");
+        assert_eq!(
+            r.units[0].status == "proven-extracted",
+            case == "success",
+            "{case}"
+        );
+        assert_eq!(
+            !r.evidence_runs[0].credited_units.is_empty(),
+            case == "success",
+            "{case}"
+        );
+    }
+}

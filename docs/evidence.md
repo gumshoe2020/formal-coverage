@@ -544,7 +544,14 @@ mangled names are disclosed as unmapped, never guessed. Since v1.8.2, when a
 direct ID is absent, `impl_<Type>__<method>` (split at the first `__` after
 `impl_`) tries `crate::module::<Type>::<method>` with the same uniqueness rule.
 Ambiguity remains unmapped; trait impl names (`impl`, `impl_N`, `impl_N'`)
-remain unsupported. Credit requires a checked implementation, an identical fresh `.fst` and (when present)
+remain unsupported. Since v1.8.3, only when both existing lookups find no unit,
+`v_<Rest>` tries `crate::module::<Rest>` if the nonempty remainder starts with
+an ASCII uppercase letter. For `impl_<Type>__v_<Method>`, the same strip applies
+only to the method part, trying `crate::module::<Type>::<Method>`. Direct and
+unstripped inherent matches win; ambiguity in either stops without fallback.
+Zero or multiple stripped matches remain unmapped. Lowercase, digit, underscore
+and non-ASCII initial remainders are not stripped. Mapping alone never proves a unit.
+Credit requires a checked implementation, an identical fresh `.fst` and (when present)
 `.fsti`, and a recognized contract. Any module/interface byte difference trusts
 all definitions of that module; this conservative rule may undercredit functions
 whose own bodies were unchanged. Interface-only vals and `assume val` are trusted;
