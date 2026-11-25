@@ -1,5 +1,9 @@
 # formal-coverage
 
+[![CI](https://github.com/gumshoe2020/formal-coverage/actions/workflows/ci.yml/badge.svg)](https://github.com/gumshoe2020/formal-coverage/actions/workflows/ci.yml)
+[![Release](https://img.shields.io/github/v/tag/gumshoe2020/formal-coverage?label=release)](https://github.com/gumshoe2020/formal-coverage/releases)
+[![License: MIT](https://img.shields.io/github/license/gumshoe2020/formal-coverage)](LICENSE)
+
 A conservative source inventory of formal verification coverage in Rust.
 It reports **security-relevant code** separately from everything else, with
 first-party, runtime dependency and combined SLoC-weighted figures.
@@ -13,6 +17,13 @@ first-party, runtime dependency and combined SLoC-weighted figures.
 Proof code has its own inventory and stays outside runtime denominators.
 Build dependencies and proc macros are a separate trusted supply-chain inventory.
 Partial upstream claims do not promote entire dependency crates.
+
+## v1.9.0: reusable coverage CI
+
+The [CI kit](ci/README.md) wraps the existing measurement tool with a git-based
+ratchet, committed baseline/document checks and shields.io endpoint badges.
+Measurement behavior is unchanged from v1.8.5. Proof cost stays informational.
+See [Use in CI](#use-in-ci) below and the [changelog](CHANGELOG.md).
 
 ## v1.8.5: numbered hax impl methods
 
@@ -304,3 +315,74 @@ contracts are trusted, never Rust proof credit. Reports show checked
 postconditions and a labelled **self-consistency heuristic**: agreement with
 one's own parser does not establish external format conformance. See the
 [v1.7 receipt contract](docs/evidence.md#haxf-receipts-v17) and Bertie survey.
+
+## Use in CI
+
+Install a reviewed initial `coverage/baseline.json` and `COVERAGE.md` using the
+[local commands and document template](ci/README.md#rules-and-local-use). Copy
+[ci/project.example.json](ci/project.example.json) into your project's
+`coverage/ci.json`. Keep the project's prover setup and receipt generation before
+the coverage action; pass receipts through `report-args` (for example
+`'["--verus-log","target/verification.log"]'` or
+`'["--fstar-log","target/fstar.log"]'`). With `[]`, code without accepted evidence
+remains unproven. Install/fetch locked dependencies before measuring; incomplete
+inventory is blocking.
+
+Copy this to `.github/workflows/coverage.yml`. Replace **both**
+`FORMAL_COVERAGE_COMMIT_SHA` placeholders with the same full 40-character commit of
+the release you pin, for example
+`git ls-remote https://github.com/gumshoe2020/formal-coverage 'refs/tags/v1.9.0^{}'`.
+Only the publication job has write permission; every blocking step propagates
+failure. Do not run this under `pull_request_target`. The project must enable
+up-to-date branch checks before relying on concurrent PR ratchets.
+
+```yaml
+name: Coverage
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+permissions:
+  contents: read
+concurrency:
+  group: coverage-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      # Insert this project's pinned prover setup and fresh receipt generation here.
+      - uses: gumshoe2020/formal-coverage/.github/actions/coverage@FORMAL_COVERAGE_COMMIT_SHA
+        with:
+          workspace: '.'
+          report-args: '[]'
+          baseline: coverage/baseline.json
+          coverage: COVERAGE.md
+          config: coverage/ci.json
+          artifact-name: coverage-badges
+  publish-badges:
+    needs: coverage
+    if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.coverage.result != 'cancelled'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: gumshoe2020/formal-coverage/.github/actions/publish-badges@FORMAL_COVERAGE_COMMIT_SHA
+        with:
+          artifact-name: coverage-badges
+          coverage-result: ${{ needs.coverage.result }}
+```
+
+The coverage action outputs `ratchet` and `artifact-name`; the publication action
+has no outputs. The latter updates only the `badges` branch with GITHUB_TOKEN.
+Embed its `proven.json`, `tested.json`, `unverified.json`, `proof-ratio.json` and
+`ratchet.json` through shields.io endpoint URLs. See [inputs, configuration,
+thresholds and failure behavior](ci/README.md). formal-coverage itself has no
+proven badge: this tool is not formally verified.

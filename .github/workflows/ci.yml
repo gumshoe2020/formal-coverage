@@ -1,0 +1,24 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Build and test
+        shell: bash
+        run: |
+          mkdir -p logs/ci-kit
+          cargo build --locked > logs/ci-kit/build.log 2>&1 || { tail -n 40 logs/ci-kit/build.log; exit 1; }
+          cargo test --locked > logs/ci-kit/test.log 2>&1 || { tail -n 40 logs/ci-kit/test.log; exit 1; }
+          cargo fmt --check
+          cargo clippy --all-targets -- -D warnings > logs/ci-kit/clippy.log 2>&1 || { tail -n 40 logs/ci-kit/clippy.log; exit 1; }
+          python3 -m unittest discover -s ci/tests -v

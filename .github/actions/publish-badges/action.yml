@@ -1,0 +1,28 @@
+name: Publish coverage badges
+description: Publish the badge artifact to the badges branch using GITHUB_TOKEN
+inputs:
+  artifact-name:
+    description: Artifact produced by the coverage action
+    default: coverage-badges
+  coverage-result:
+    description: needs.coverage.result, so any coverage job failure turns the ratchet red
+    required: true
+runs:
+  using: composite
+  steps:
+    - name: Require push to main
+      shell: bash
+      run: |
+        test "$GITHUB_EVENT_NAME" = push
+        test "$GITHUB_REF" = refs/heads/main
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: ${{ runner.temp }}/coverage-badges-in
+    - name: Publish only the badges ref
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+        ACTION_PATH: ${{ github.action_path }}
+        COVERAGE_RESULT: ${{ inputs.coverage-result }}
+      run: python3 "$ACTION_PATH/../../../ci/publish.py" "$RUNNER_TEMP/coverage-badges-in" "$COVERAGE_RESULT"

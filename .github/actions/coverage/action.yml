@@ -1,0 +1,110 @@
+name: Formal coverage
+description: Build the pinned tool, measure receipts, check git baselines and stage badges
+inputs:
+  workspace:
+    description: Project directory relative to github.workspace
+    default: '.'
+  report-args:
+    description: JSON array of extra report arguments, relative to the project directory
+    default: '[]'
+  baseline:
+    description: Committed baseline path relative to project directory
+    default: coverage/baseline.json
+  coverage:
+    description: Committed document path relative to project directory
+    default: COVERAGE.md
+  config:
+    description: Optional schema-1 CI project JSON path relative to project directory
+    default: ''
+  artifact-name:
+    description: Unique artifact name for this measurement
+    default: coverage-badges
+outputs:
+  ratchet:
+    description: success, failure or skipped; includes measurement and committed-output checks
+    value: ${{ steps.measure.outcome }}
+  artifact-name:
+    description: Badge artifact name
+    value: ${{ inputs.artifact-name }}
+runs:
+  using: composite
+  steps:
+    - id: source
+      shell: bash
+      env:
+        ACTION_PATH: ${{ github.action_path }}
+        ACTION_REF: ${{ github.action_ref }}
+      run: |
+        [[ "$ACTION_REF" =~ ^[0-9a-f]{40}$ ]] || { echo 'Pin this action by full commit SHA'; exit 1; }
+        echo "root=$(cd "$ACTION_PATH/../../.." && pwd)" >> "$GITHUB_OUTPUT"
+    - name: Cache pinned formal-coverage build
+      uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4.2.0
+      with:
+        path: ${{ runner.temp }}/formal-coverage-build
+        key: formal-coverage-${{ runner.os }}-${{ github.action_ref }}
+    - name: Build pinned formal-coverage
+      shell: bash
+      env:
+        KIT_ROOT: ${{ steps.source.outputs.root }}
+      run: |
+        mkdir -p logs/ci-kit
+        cargo build --release --locked --manifest-path "$KIT_ROOT/Cargo.toml" --target-dir "$RUNNER_TEMP/formal-coverage-build" > logs/ci-kit/build.log 2>&1 || { tail -n 40 logs/ci-kit/build.log; exit 1; }
+    - id: measure
+      name: Measure and ratchet
+      shell: bash
+      env:
+        KIT_ROOT: ${{ steps.source.outputs.root }}
+        PROJECT: ${{ inputs.workspace }}
+        REPORT_ARGS: ${{ inputs.report-args }}
+        BASELINE: ${{ inputs.baseline }}
+        COVERAGE: ${{ inputs.coverage }}
+        CONFIG: ${{ inputs.config }}
+        EVENT_NAME: ${{ github.event_name }}
+        BASE_REF: ${{ github.base_ref }}
+        BEFORE: ${{ github.event.before }}
+      run: |
+        base="$BEFORE"
+        if [ "$EVENT_NAME" = pull_request ]; then
+          base=$(git -C "$PROJECT" merge-base "origin/$BASE_REF" HEAD)
+        fi
+        python3 "$KIT_ROOT/ci/run.py" \
+          --tool "$RUNNER_TEMP/formal-coverage-build/release/formal-coverage" \
+          --workspace "$PROJECT" --report-args "$REPORT_ARGS" \
+          --baseline "$BASELINE" --coverage "$COVERAGE" --config "$CONFIG" \
+          --base "$base" --output "$GITHUB_WORKSPACE/target/coverage-ci" \
+          > logs/ci-kit/coverage.log 2>&1 || { tail -n 40 logs/ci-kit/coverage.log; exit 1; }
+    - name: Record coverage failure in job summary
+      if: failure()
+      shell: bash
+      run: echo 'Coverage failed. See the blocking step and coverage artifact logs; no passing ratchet is claimed.' >> "$GITHUB_STEP_SUMMARY"
+    - name: Stage badges including failed ratchets
+      if: always() && steps.source.outcome == 'success'
+      shell: bash
+      env:
+        KIT_ROOT: ${{ steps.source.outputs.root }}
+        PROJECT: ${{ inputs.workspace }}
+        BASELINE: ${{ inputs.baseline }}
+        CONFIG: ${{ inputs.config }}
+        RESULT: ${{ steps.measure.outcome }}
+      run: |
+        result=fail
+        if [ "$RESULT" = success ]; then result=pass; fi
+        args=()
+        if [ -n "$CONFIG" ]; then args+=(--config "$PROJECT/$CONFIG"); fi
+        python3 "$KIT_ROOT/ci/write-badges.py" "$PROJECT/$BASELINE" target/coverage-ci/badges "$result" "${args[@]}"
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      if: always()
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: target/coverage-ci/badges/*.json
+        if-no-files-found: error
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      if: always()
+      with:
+        name: ${{ inputs.artifact-name }}-report
+        path: |
+          target/coverage-ci/*.json
+          target/coverage-ci/*.md
+          target/coverage-ci/*.patch
+          logs/ci-kit/
+        if-no-files-found: error
