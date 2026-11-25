@@ -1,4 +1,6 @@
 //! Caller-supplied hax/F* evidence. Unsupported scope never earns credit.
+mod naming;
+
 use crate::{sha256, EvidenceRun, Report};
 use anyhow::{ensure, Context, Result};
 use serde::{Deserialize, Serialize};
@@ -897,6 +899,7 @@ fn apply_validated(
     });
     let mut module_decls: BTreeMap<String, Vec<Decl>> = BTreeMap::new();
     let mut parse_errors = BTreeMap::new();
+    let mut module_hazards = std::collections::BTreeSet::new();
     for file in receipt.checked.keys() {
         let module = Path::new(file)
             .file_stem()
@@ -905,10 +908,17 @@ fn apply_validated(
             .to_string();
         let raw = fs::read_to_string(inside(base, file)?)?;
         match mask(&raw) {
-            Ok(text) if text.lines().any(|l| l == format!("module {module}")) => module_decls
-                .entry(module)
-                .or_default()
-                .extend(declarations(&text)),
+            Ok(text) if text.lines().any(|l| l == format!("module {module}")) => {
+                if words(&text).any(|w| ["assume", "admit", "admitP"].contains(&w))
+                    || rejected_option(&raw).is_some()
+                {
+                    module_hazards.insert(module.clone());
+                }
+                module_decls
+                    .entry(module)
+                    .or_default()
+                    .extend(declarations(&text));
+            }
             _ => {
                 parse_errors.insert(
                     module,
@@ -921,6 +931,69 @@ fn apply_validated(
         .iter()
         .map(|(module, decls)| (module.clone(), numbered_mappings(module, decls, report)))
         .collect();
+    let mut fallbacks = BTreeMap::new();
+    for file in receipt.checked.keys() {
+        let raw = fs::read_to_string(inside(base, file)?)?;
+        if let Ok(text) = mask(&raw) {
+            let module = Path::new(file).file_stem().unwrap().to_string_lossy();
+            fallbacks.insert(
+                file.clone(),
+                naming::fallbacks(
+                    &module,
+                    &declarations(&text),
+                    module_decls
+                        .get(module.as_ref())
+                        .map(Vec::as_slice)
+                        .unwrap_or_default(),
+                    &text,
+                    report,
+                    _root,
+                ),
+            );
+        }
+    }
+    // Preserve existing mappings. Distinct fallback definitions must be injective,
+    // including collisions with existing direct and numbered lookups.
+    let mut owners: BTreeMap<String, std::collections::BTreeSet<String>> = BTreeMap::new();
+    for (module, decls) in &module_decls {
+        for decl in decls {
+            let id = mapped(module, &decl.name, report)
+                .map(|u| u.id.clone())
+                .or_else(|| {
+                    numbered
+                        .get(module)?
+                        .get(&decl.name)?
+                        .as_ref()
+                        .ok()
+                        .cloned()
+                });
+            if let Some(id) = id {
+                owners
+                    .entry(id)
+                    .or_default()
+                    .insert(format!("{module}.{}", decl.name));
+            }
+        }
+    }
+    for (file, decisions) in &fallbacks {
+        let module = Path::new(file).file_stem().unwrap().to_string_lossy();
+        for (name, decision) in decisions {
+            for id in naming::ids(decision) {
+                owners
+                    .entry(id.clone())
+                    .or_default()
+                    .insert(format!("{module}.{name}"));
+            }
+        }
+    }
+    for decisions in fallbacks.values_mut() {
+        for decision in decisions.values_mut() {
+            if naming::ids(decision).any(|id| owners[id].len() > 1) {
+                *decision =
+                    Err("v191 mapping: injectivity conflict with another F* definition".into());
+            }
+        }
+    }
     for (file, hash) in &receipt.checked {
         let raw = fs::read_to_string(inside(base, file)?)?;
         let text = match mask(&raw) {
@@ -1023,98 +1096,165 @@ fn apply_validated(
                     }
                 }
             }
-            let has_body = if is_interface {
-                receipt.checked.contains_key(&implementation)
-                    && declarations(&mask(&fs::read_to_string(inside(base, &implementation)?)?)?)
-                        .iter()
-                        .any(|d| d.kind == "let" && d.name == decl.name)
-            } else {
-                decl.kind == "let"
-            };
-            let specification = if is_interface {
-                decl.text.clone()
-            } else if receipt.checked.contains_key(&interface) {
-                declarations(&mask(&fs::read_to_string(inside(base, &interface)?)?)?)
-                    .into_iter()
-                    .find(|d| d.name == decl.name)
-                    .map(|d| d.text)
-                    .unwrap_or_default()
-            } else {
-                decl.text.clone()
-            };
-            let (kind, post, self_consistency) = contract(&specification, &names);
-            let rust_trusted = unit.as_ref().is_some_and(|u| u.status == "trusted");
-            let trusted = rust_trusted
-                || !fresh
-                || !has_body
-                || (is_interface && !success)
-                || decl.kind == "assume val";
-            let classification = if trusted {
-                "trusted"
-            } else if !hazards.is_empty() || interface_hazard {
-                "hazard"
-            } else if unit.is_none() {
-                "unmapped"
-            } else if success && kind != "unclassified" {
-                "proven-extracted"
-            } else {
-                "unverified"
-            };
-            if trusted {
-                let reason = if rust_trusted {
-                    "Rust hax opaque/replacement trust"
-                } else if !fresh {
-                    "patch-altered or non-fresh F* module (whole-module conservative rule)"
-                } else {
-                    "interface-only val / assume val"
-                };
-                report.trusted_items.push(crate::evidence::TrustedItem {
-                    file: file.clone(),
-                    line: decl.line,
-                    kind: reason.into(),
-                    affected_units: unit.iter().map(|u| u.id.clone()).collect(),
-                    sloc: unit.as_ref().map_or(0, |u| u.sloc),
-                });
-                run.trusted_sites
-                    .push((file.clone(), decl.line, reason.into()));
-            }
-            if !is_interface || trusted {
-                if let Some(u) = &unit {
-                    if classification == "proven-extracted"
-                        && (u.category == crate::Category::Runtime
-                            || (u.fstar_cfg_hax && u.cfg_hax_was_runtime))
-                        && !["hazard", "trusted", "proven", "proven-bounded"]
-                            .contains(&u.status.as_str())
-                    {
-                        let target = report.units.iter_mut().find(|v| v.id == u.id).unwrap();
-                        target.status = if target.fstar_cfg_hax {
-                            "verified"
-                        } else {
-                            classification
-                        }
-                        .into();
-                        target.proof_scope = Some(format!("hax/F*; trusted hax extraction; contract {kind}; postcondition: {post}; self-consistency heuristic={self_consistency}{}", if self_consistency { "; consistent with its own parser; not checked against an external spec" } else { "" }));
-                        run.credited_units.push(u.id.clone());
-                    }
-                    if trusted {
-                        let target = report.units.iter_mut().find(|v| v.id == u.id).unwrap();
-                        if target.status != "hazard" {
-                            target.status = "trusted".into();
-                        }
+            let mut choices = vec![(unit.clone(), mapping_reason.clone())];
+            if unit.is_none() && mapping_reason.is_none() {
+                if naming::cfg_twins(&module, &decl.name, report) {
+                    choices = vec![(None, Some("form B: extraction feature/cfg set is not recorded in this receipt; twins remain unmapped".into()))];
+                } else if let Some(decision) = fallbacks.get(file).and_then(|m| m.get(&decl.name)) {
+                    let eligible = (!is_interface
+                        || !naming::instance(&decl.name)
+                        || receipt.fstar_version == "2025.10.06")
+                        && success
+                        && hazards.is_empty()
+                        && !interface_hazard
+                        && !parse_errors.contains_key(module.as_ref())
+                        && !module_hazards.contains(module.as_ref());
+                    if !eligible {
+                        choices = vec![(None, Some("v191 mapping: module is not strictly verified, has hazards/parse failures, or interface tool version lacks the M0 canary".into()))];
+                    } else {
+                        let units = naming::units(decision, report);
+                        choices =
+                            if units.is_empty() {
+                                vec![(
+                                    None,
+                                    Some(
+                                        decision.as_ref().err().cloned().unwrap_or_else(|| {
+                                            "v191 mapping: no candidates".into()
+                                        }),
+                                    ),
+                                )]
+                            } else {
+                                let form = if naming::trailing(&decl.name).is_some() {
+                                    "A"
+                                } else if decl.name.starts_with("impl__") {
+                                    "E"
+                                } else if is_interface {
+                                    "D"
+                                } else {
+                                    "C"
+                                };
+                                units
+                                    .into_iter()
+                                    .map(|u| {
+                                        (
+                                            Some(u),
+                                            Some(format!("form {form}: unique guarded mapping")),
+                                        )
+                                    })
+                                    .collect()
+                            };
                     }
                 }
             }
-            report.fstar_definitions.push(FstarDefinition {
-                name: format!("{module}.{}", decl.name),
-                file: file.clone(),
-                line: decl.line,
-                rust_unit: unit.map(|u| u.id),
-                classification: classification.into(),
-                contract_kind: kind,
-                postcondition: post,
-                self_consistency_heuristic: self_consistency,
-                mapping_reason,
-            });
+            for (unit, mapping_reason) in choices {
+                let has_body = if is_interface {
+                    receipt.checked.contains_key(&implementation)
+                        && declarations(&mask(&fs::read_to_string(inside(
+                            base,
+                            &implementation,
+                        )?)?)?)
+                        .iter()
+                        .any(|d| d.kind == "let" && d.name == decl.name)
+                } else {
+                    decl.kind == "let"
+                };
+                let specification = if is_interface {
+                    decl.text.clone()
+                } else if receipt.checked.contains_key(&interface) {
+                    declarations(&mask(&fs::read_to_string(inside(base, &interface)?)?)?)
+                        .into_iter()
+                        .find(|d| d.name == decl.name)
+                        .map(|d| d.text)
+                        .unwrap_or_default()
+                } else {
+                    decl.text.clone()
+                };
+                let (mut kind, mut post, self_consistency) = contract(&specification, &names);
+                if kind == "unclassified"
+                    && mapping_reason
+                        .as_ref()
+                        .is_some_and(|r| r.starts_with("form C:") || r.starts_with("form D:"))
+                {
+                    // The checked record type supplies the method's contract. Do not
+                    // claim a functional specification from an undecoded trait field.
+                    kind = "safety-only".into();
+                    post =
+                        "Typed trait instance method; member postcondition not separately decoded"
+                            .into();
+                }
+                let rust_trusted = unit.as_ref().is_some_and(|u| u.status == "trusted");
+                let trusted = rust_trusted
+                    || !fresh
+                    || !has_body
+                    || (is_interface && !success)
+                    || decl.kind == "assume val";
+                let classification = if trusted {
+                    "trusted"
+                } else if !hazards.is_empty() || interface_hazard {
+                    "hazard"
+                } else if unit.is_none() {
+                    "unmapped"
+                } else if success && kind != "unclassified" {
+                    "proven-extracted"
+                } else {
+                    "unverified"
+                };
+                if trusted {
+                    let reason = if rust_trusted {
+                        "Rust hax opaque/replacement trust"
+                    } else if !fresh {
+                        "patch-altered or non-fresh F* module (whole-module conservative rule)"
+                    } else {
+                        "interface-only val / assume val"
+                    };
+                    report.trusted_items.push(crate::evidence::TrustedItem {
+                        file: file.clone(),
+                        line: decl.line,
+                        kind: reason.into(),
+                        affected_units: unit.iter().map(|u| u.id.clone()).collect(),
+                        sloc: unit.as_ref().map_or(0, |u| u.sloc),
+                    });
+                    run.trusted_sites
+                        .push((file.clone(), decl.line, reason.into()));
+                }
+                if !is_interface || trusted {
+                    if let Some(u) = &unit {
+                        if classification == "proven-extracted"
+                            && (u.category == crate::Category::Runtime
+                                || (u.fstar_cfg_hax && u.cfg_hax_was_runtime))
+                            && !["hazard", "trusted", "proven", "proven-bounded"]
+                                .contains(&u.status.as_str())
+                        {
+                            let target = report.units.iter_mut().find(|v| v.id == u.id).unwrap();
+                            target.status = if target.fstar_cfg_hax {
+                                "verified"
+                            } else {
+                                classification
+                            }
+                            .into();
+                            target.proof_scope = Some(format!("hax/F*; trusted hax extraction; contract {kind}; postcondition: {post}; self-consistency heuristic={self_consistency}{}", if self_consistency { "; consistent with its own parser; not checked against an external spec" } else { "" }));
+                            run.credited_units.push(u.id.clone());
+                        }
+                        if trusted {
+                            let target = report.units.iter_mut().find(|v| v.id == u.id).unwrap();
+                            if target.status != "hazard" {
+                                target.status = "trusted".into();
+                            }
+                        }
+                    }
+                }
+                report.fstar_definitions.push(FstarDefinition {
+                    name: format!("{module}.{}", decl.name),
+                    file: file.clone(),
+                    line: decl.line,
+                    rust_unit: unit.map(|u| u.id),
+                    classification: classification.into(),
+                    contract_kind: kind,
+                    postcondition: post,
+                    self_consistency_heuristic: self_consistency,
+                    mapping_reason,
+                });
+            }
         }
         let _ = hash;
     }
@@ -1360,6 +1500,153 @@ mod tests {
         );
         crate::inventory_impls(source, &mut report.units);
         report
+    }
+    fn naming_case(
+        source: &str,
+        text: &str,
+    ) -> BTreeMap<String, std::result::Result<Vec<String>, String>> {
+        use std::sync::atomic::{AtomicUsize, Ordering};
+        static NEXT: AtomicUsize = AtomicUsize::new(0);
+        let root = PathBuf::from(format!(
+            "logs/v191/naming-{}-{}",
+            std::process::id(),
+            NEXT.fetch_add(1, Ordering::Relaxed)
+        ));
+        fs::create_dir_all(root.join("src")).unwrap();
+        fs::write(root.join("src/m.rs"), source).unwrap();
+        let mut report = numbered_report(source);
+        report.source_files = vec!["src/m.rs".into()];
+        naming::fallbacks(
+            "Crate.M",
+            &declarations(text),
+            &declarations(text),
+            text,
+            &report,
+            &root,
+        )
+    }
+    #[test]
+    fn v191_trailing_escape_is_narrow_and_preserves_existing_names() {
+        let source = "fn two_pow_256() {} fn next_2() {} fn wrong() {} fn actual_2_() {}";
+        let r = naming_case(source,"let two_pow_256_ () = ()\nlet next_2_ () = ()\nlet wrong_ () = ()\nlet actual_2_ () = ()");
+        assert_eq!(
+            r["two_pow_256_"].as_ref().unwrap(),
+            &["crate::m::two_pow_256"]
+        );
+        assert_eq!(r["next_2_"].as_ref().unwrap(), &["crate::m::next_2"]);
+        assert!(!r.contains_key("actual_2_"));
+        for name in ["wrong_", "x2_", "x_２_", "x_2__", "x__"] {
+            assert!(naming::trailing(name).is_none(), "{name}");
+        }
+        let r = naming_case("fn x_2() {} fn x_2_() {} fn x_2_() {}", "let x_2_ () = ()");
+        assert!(r["x_2_"].is_err());
+    }
+    #[test]
+    fn v191_cfg_twins_have_no_receipt_feature_set() {
+        let report = numbered_report(
+            "#[cfg(feature=\"on\")] fn twin() {} #[cfg(not(feature=\"on\"))] fn twin() {}",
+        );
+        assert!(naming::cfg_twins("Crate.M", "twin", &report));
+        assert!(mapped("Crate.M", "twin", &report).is_none());
+        let report = numbered_report("#[cfg(target_os=\"unknown\")] fn twin() {} fn twin() {}");
+        assert!(naming::cfg_twins("Crate.M", "twin", &report));
+    }
+    #[test]
+    fn v191_instances_match_trait_self_and_arguments_and_only_body_fields() {
+        let source="struct Foo; struct Arg; trait Convert<T> {} impl Convert<Arg> for Foo { fn convert() {} fn defaulted() {} }";
+        let prefix =
+            "[@@ FStar.Tactics.Typeclasses.tcinstance]\nlet impl: t_Convert t_Foo t_Arg = ";
+        let r = naming_case(
+            source,
+            &format!(
+                "{prefix}{{ f_convert_pre = true; f_convert_post = true; f_convert = fun x -> x }}"
+            ),
+        );
+        assert_eq!(
+            r["impl"].as_ref().unwrap(),
+            &["crate::m::Convert<Arg>forFoo::convert"]
+        );
+        for text in [
+            "let impl: t_Convert t_Foo t_Arg = { f_convert = fun x -> x }",
+            "[@@ FStar.Tactics.Typeclasses.tcinstance]\nlet impl: t_Wrong t_Foo t_Arg = { f_convert = fun x -> x }",
+            "[@@ FStar.Tactics.Typeclasses.tcinstance]\nlet impl: t_Convert t_Wrong t_Arg = { f_convert = fun x -> x }",
+            "[@@ FStar.Tactics.Typeclasses.tcinstance]\nlet impl: t_Convert t_Foo t_Wrong = { f_convert = fun x -> x }",
+            "[@@ FStar.Tactics.Typeclasses.tcinstance]\nlet impl (v_C: usize): t_Convert t_Foo t_Arg = { f_convert = fun x -> x }",
+        ] { assert!(naming_case(source,text)["impl"].is_err(),"{text}"); }
+        let r = naming_case(
+            source,
+            &format!("{prefix}{{ f_convert_pre = true; f_convert_post = true }}"),
+        );
+        assert!(r["impl"].as_ref().unwrap_err().contains("no method body"));
+        let source="struct Foo; struct Arg; trait Convert<T> {} impl<T> Convert<T> for Foo { fn convert() {} }";
+        assert!(
+            naming_case(source, &format!("{prefix}{{ f_convert = fun x -> x }}"))["impl"].is_err()
+        );
+    }
+    #[test]
+    fn v191_empty_impl_uses_the_whole_block_and_type_guard() {
+        let r = naming_case(
+            "struct Foo; impl Foo { fn new() {} fn other() {} }",
+            "let impl__new (x:t_Foo) = x\nlet impl__other (x:t_Foo) = x",
+        );
+        assert_eq!(r["impl__new"].as_ref().unwrap(), &["crate::m::Foo::new"]);
+        for (source, text) in [
+            (
+                "struct Foo; impl Foo { fn new() {} }",
+                "let impl__new (x:t_FooExtra) = x",
+            ),
+            (
+                "struct Foo; impl Foo { fn new() {} } impl Foo { fn new() {} }",
+                "let impl__new (x:t_Foo) = x",
+            ),
+            (
+                "struct Foo; impl Trait for Foo { fn new() {} }",
+                "let impl__new (x:t_Foo) = x",
+            ),
+            (
+                "struct Foo; impl Foo { fn new() {} } impl Foo { fn other() {} }",
+                "let impl__new (x:t_Foo) = x\nlet impl__other (x:t_Foo) = x",
+            ),
+        ] {
+            assert!(naming_case(source, text).values().all(|r| r.is_err()));
+        }
+    }
+    #[test]
+    fn v191_empty_impl_rejects_apostrophes_and_type_continuations() {
+        for text in [
+            "let impl__new' (x:t_Foo) = x",
+            "let impl__new (x:t_Foo') = x",
+        ] {
+            assert!(naming_case("struct Foo; impl Foo { fn new() {} }", text)
+                .values()
+                .all(|r| r.is_err()));
+        }
+    }
+    #[test]
+    fn v191_instances_refuse_shadowed_paths_conditional_blocks_and_ambiguous_sources() {
+        let text="[@@ FStar.Tactics.Typeclasses.tcinstance]\nlet impl: Core_models.Convert.t_From t_Foo u8 = { f_from = fun x -> x }";
+        for source in [
+            "struct Foo; trait From<T> {} impl From<u8> for Foo { fn from() {} }",
+            "struct Foo; #[cfg(feature=\"on\")] impl From<u8> for Foo { fn from() {} }",
+            "struct Foo; impl From<u8> for Foo { fn from() {} } impl From<u8> for Foo { fn from() {} }",
+            "struct Foo; impl From<u16> for Foo { fn from() {} }",
+            "struct Foo; impl Other::From<u8> for Foo { fn from() {} }",
+        ] { assert!(naming_case(source,text)["impl"].is_err(),"{source}"); }
+    }
+    #[test]
+    fn v191_empty_groups_include_both_interface_and_implementation() {
+        let report = numbered_report("struct Foo; impl Foo { fn a() {} } impl Foo { fn b() {} }");
+        let implementation = "let impl__a (x:t_Foo) = x";
+        let siblings = declarations("let impl__a (x:t_Foo) = x\nval impl__b: t_Foo -> Tot t_Foo");
+        let decisions = naming::fallbacks(
+            "Crate.M",
+            &declarations(implementation),
+            &siblings,
+            implementation,
+            &report,
+            Path::new("."),
+        );
+        assert!(decisions["impl__a"].is_err());
     }
     #[test]
     fn numbered_groups_use_blocks_not_type_or_source_order() {

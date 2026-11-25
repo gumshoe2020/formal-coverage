@@ -1081,3 +1081,154 @@ fn numbered_methods_receive_body_credit_and_interface_only_trust() {
         .unwrap()
         .contains("mapping_reason"));
 }
+
+#[test]
+fn v191_forms_with_a_hash_bound_synthetic_crate_and_receipt() {
+    let mut f = Fixture::new();
+    f.receipt.fstar_version = "2025.10.06".into();
+    let source = r#"
+pub fn good_2() {}
+pub fn wrong2() {}
+#[cfg(feature="on")] pub fn twin() {}
+#[cfg(not(feature="on"))] pub fn twin() {}
+pub struct Foo;
+pub struct Other;
+pub trait Convert<T> { fn convert(); }
+impl Convert<u8> for Foo { fn convert() {} }
+pub trait Decode<T> { fn decode(); }
+impl Decode<u8> for Foo { fn decode() {} }
+impl Foo { pub fn new() {} }
+"#;
+    fs::write(f.root.join("src/lib.rs"), source).unwrap();
+    f.receipt
+        .files
+        .insert("src/lib.rs".into(), sha256(source.as_bytes()));
+    let implementation = r#"module Hax_fixture
+let good_2_ () : Tot unit = ()
+let wrong2_ () : Tot unit = ()
+let twin () : Tot unit = ()
+[@@ FStar.Tactics.Typeclasses.tcinstance]
+let impl: t_Convert t_Foo u8 = { f_convert = fun x -> x }
+[@@ FStar.Tactics.Typeclasses.tcinstance]
+let impl_1: t_Convert t_Other u8 = { f_convert = fun x -> x }
+[@@ FStar.Tactics.Typeclasses.tcinstance]
+let impl_2: t_Convert t_Foo u8 = { f_convert_pre = true; f_convert_post = true }
+let impl__new (x: t_Foo) : Tot t_Foo = x
+let impl__missing (x: t_Foo) : Tot t_Foo = x
+"#;
+    // The empty-segment group is indivisible: the missing method refuses both.
+    let interface = r#"module Hax_fixture
+val good_2_ : Tot unit
+val impl__new : t_Foo -> Tot t_Foo
+[@@ FStar.Tactics.Typeclasses.tcinstance]
+let impl_3: t_Decode t_Foo u8 = { f_decode = fun x -> x }
+[@@ FStar.Tactics.Typeclasses.tcinstance]
+let impl_4: t_Decode t_Other u8 = { f_decode = fun x -> x }
+"#;
+    for dir in ["fresh", "checked"] {
+        f.replace(&format!("{dir}/Hax_fixture.fst"), implementation);
+        f.replace(&format!("{dir}/Hax_fixture.fsti"), interface);
+    }
+    let r = f.run();
+    assert!(r.evidence_runs[0].accepted);
+    let definition = |suffix: &str| {
+        r.fstar_definitions
+            .iter()
+            .find(|d| d.name == format!("Hax_fixture.{suffix}"))
+            .unwrap()
+    };
+    assert_eq!(definition("good_2_").classification, "proven-extracted");
+    assert!(definition("wrong2_").rust_unit.is_none());
+    assert!(definition("twin")
+        .mapping_reason
+        .as_ref()
+        .unwrap()
+        .contains("not recorded"));
+    assert_eq!(definition("impl").classification, "proven-extracted");
+    assert!(definition("impl_1").rust_unit.is_none());
+    assert!(definition("impl_2").rust_unit.is_none());
+    assert_eq!(definition("impl_3").classification, "trusted");
+    assert!(definition("impl_3").rust_unit.is_some());
+    assert!(definition("impl_4").rust_unit.is_none());
+    assert!(definition("impl__new").rust_unit.is_none());
+    assert!(definition("impl__missing").rust_unit.is_none());
+    assert!(formal_coverage::markdown(&r).contains("not recorded"));
+    f.receipt.fstar_version = "uncanaried".into();
+    let refused = f.run();
+    assert!(refused
+        .fstar_definitions
+        .iter()
+        .find(|d| d.name == "Hax_fixture.impl_3")
+        .unwrap()
+        .rust_unit
+        .is_none());
+    f.receipt.fstar_version = "2025.10.06".into();
+    let implementation = implementation.replace("let impl__missing (x: t_Foo) : Tot t_Foo = x", "");
+    for dir in ["fresh", "checked"] {
+        f.replace(&format!("{dir}/Hax_fixture.fst"), &implementation);
+    }
+    let r = f.run();
+    assert_eq!(
+        r.fstar_definitions
+            .iter()
+            .find(|d| d.name == "Hax_fixture.impl__new")
+            .unwrap()
+            .classification,
+        "proven-extracted"
+    );
+}
+
+#[test]
+fn v191_fallbacks_preserve_existing_owners_and_refuse_failed_or_hazard_modules() {
+    let mut f = Fixture::new();
+    let source = "pub struct Foo; impl Foo { pub fn new() {} }";
+    fs::write(f.root.join("src/lib.rs"), source).unwrap();
+    f.receipt
+        .files
+        .insert("src/lib.rs".into(), sha256(source.as_bytes()));
+    let implementation =
+        "module Hax_fixture\nlet impl_Foo__new (x:t_Foo) = x\nlet impl__new (x:t_Foo) = x\n";
+    let interface="module Hax_fixture\nval impl_Foo__new : t_Foo -> Tot t_Foo\nval impl__new : t_Foo -> Tot t_Foo\n";
+    for dir in ["fresh", "checked"] {
+        f.replace(&format!("{dir}/Hax_fixture.fst"), implementation);
+        f.replace(&format!("{dir}/Hax_fixture.fsti"), interface);
+    }
+    let r = f.run();
+    let d = r
+        .fstar_definitions
+        .iter()
+        .find(|d| d.name == "Hax_fixture.impl__new" && d.file.ends_with(".fst"))
+        .unwrap();
+    assert!(d.rust_unit.is_none());
+    assert!(d.mapping_reason.as_ref().unwrap().contains("injectivity"));
+    assert_eq!(
+        r.units.iter().find(|u| u.name == "new").unwrap().status,
+        "proven-extracted"
+    );
+    let implementation = "module Hax_fixture\nlet impl__new (x:t_Foo) = x\n";
+    for dir in ["fresh", "checked"] {
+        f.replace(&format!("{dir}/Hax_fixture.fst"), implementation);
+    }
+    f.receipt.modules[0].outcome = "failed".into();
+    f.receipt.modules[0].exit_code = 1;
+    let r = f.run();
+    assert!(r
+        .fstar_definitions
+        .iter()
+        .filter(|d| d.name == "Hax_fixture.impl__new")
+        .all(|d| d.rust_unit.is_none()));
+    f.receipt.modules[0].outcome = "success".into();
+    f.receipt.modules[0].exit_code = 0;
+    for dir in ["fresh", "checked"] {
+        f.replace(
+            &format!("{dir}/Hax_fixture.fst"),
+            &format!("{implementation}assume val danger: unit\n"),
+        );
+    }
+    let r = f.run();
+    assert!(r
+        .fstar_definitions
+        .iter()
+        .filter(|d| d.name == "Hax_fixture.impl__new")
+        .all(|d| d.rust_unit.is_none()));
+}

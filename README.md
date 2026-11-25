@@ -18,6 +18,19 @@ Proof code has its own inventory and stays outside runtime denominators.
 Build dependencies and proc macros are a separate trusted supply-chain inventory.
 Partial upstream claims do not promote entire dependency crates.
 
+## v1.9.1: more hax naming forms
+
+Hax's trailing numeric escapes, typed trait instance records and empty-segment
+inherent impl names now have conservative fallback mappings. Trait records
+match the Rust trait, Self type and generic arguments; only explicit method
+body fields can receive credit. Interface records retain trusted classification
+and require the F* version checked by the [M0 canary](dev/v191/NOTES.md).
+Cfg twins stay unmapped when the receipt lacks an explicit extraction cfg set.
+Ambiguous identities, unsupported generic binders and missing type guards stay
+unmapped with reasons in JSON and Markdown. Existing mappings retain precedence
+and new mappings cannot share a Rust unit with another definition.
+See the [paired replay](dev/v191/compare.md).
+
 ## v1.9.0: reusable coverage CI
 
 The [CI kit](ci/README.md) wraps the existing measurement tool with a git-based
@@ -331,7 +344,7 @@ inventory is blocking.
 Copy this to `.github/workflows/coverage.yml`. Replace **both**
 `FORMAL_COVERAGE_COMMIT_SHA` placeholders with the same full 40-character commit of
 the release you pin, for example
-`git ls-remote https://github.com/gumshoe2020/formal-coverage 'refs/tags/v1.9.0^{}'`.
+`git ls-remote https://github.com/gumshoe2020/formal-coverage 'refs/tags/v1.9.1^{}'`.
 Only the publication job has write permission; every blocking step propagates
 failure. Do not run this under `pull_request_target`. The project must enable
 up-to-date branch checks before relying on concurrent PR ratchets.
