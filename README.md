@@ -380,7 +380,7 @@ inventory is blocking.
 Copy this to `.github/workflows/coverage.yml`. Replace **both**
 `FORMAL_COVERAGE_COMMIT_SHA` placeholders with the same full 40-character commit of
 the release you pin, for example
-`git ls-remote https://github.com/gumshoe2020/formal-coverage 'refs/tags/v1.9.1^{}'`.
+`git ls-remote https://github.com/gumshoe2020/formal-coverage 'refs/tags/v1.10.0^{}'`.
 Only the publication job has write permission; every blocking step propagates
 failure. Do not run this under `pull_request_target`. The project must enable
 up-to-date branch checks before relying on concurrent PR ratchets.
@@ -428,6 +428,11 @@ jobs:
           artifact-name: coverage-badges
           coverage-result: ${{ needs.coverage.result }}
 ```
+
+To stop PRs from committing coverage numbers (and conflicting with each other),
+set `"floor": "recorded"` in `coverage/ci.json` and add the `publish-baseline`
+job: main records each measurement on a `coverage-data` branch and PRs compare
+against their merge base's recorded one. See [Recorded floor](ci/README.md#recorded-floor).
 
 The coverage action outputs `ratchet` and `artifact-name`; the publication action
 has no outputs. The latter updates only the `badges` branch with GITHUB_TOKEN.

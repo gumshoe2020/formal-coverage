@@ -16,6 +16,9 @@ invalid values fail. Keys may be omitted to retain defaults:
 | Key | Meaning/default |
 | --- | --- |
 | `schema` | `1` |
+| `floor` | `committed` (default): floor is `coverage/baseline.json` at the merge base. `recorded`: floor is main's recorded measurement, see [Recorded floor](#recorded-floor) |
+| `data_branch` | Recorded-floor branch, default `coverage-data`; not `main`, `master` or `badges` |
+| `bootstrap_baseline` | Recorded floor only: project-relative path of a baseline used for the first adoption commit, default none |
 | `badges` | Array of endpoint names: `proven`, `tested`, `unverified`, `proof-ratio`, `ratchet` |
 | `labels` | Optional overrides of the five displayed badge labels |
 | `proven_thresholds` | Descending lower bounds `[90,75,50,25]`: brightgreen, green, yellow, orange; below is red |
@@ -54,6 +57,64 @@ ratchet red for any coverage job failure. Git work happens in an isolated temp
 directory; only `refs/heads/badges` is updated, using force-with-lease to reject
 concurrent overwrites. Main and the caller's working tree are never modified.
 No missing artifact or network failure is silently ignored.
+
+## Recorded floor
+
+Opt in with `"floor": "recorded"` in `coverage/ci.json`. The default `committed`
+mode is unchanged. Ratchet rules and exact-rational arithmetic are identical; only
+the floor's source differs, and no numbers are committed in PRs.
+
+- **Floor.** For a PR, the measurement recorded for its merge-base commit, read
+  from `baselines/<full-sha>.json` on the data branch (same schema as
+  `baseline.json`). The coverage action fetches the branch first. If the file is
+  missing (that main commit was never measured, or predates adoption), or is
+  unreadable or not a schema-1 baseline, the run fails closed with a message naming the
+  commit.
+- **Bootstrap.** For the first adoption only, set `bootstrap_baseline` to a path
+  (for example the project's last committed `coverage/baseline.json`). It is read
+  from the merge-base commit, not the PR's tree, and is used only while the data
+  branch holds no `baselines/*.json`. After the first recording it is ignored, so
+  remove it then.
+- **No committed numbers.** The action does not check `coverage/baseline.json` or
+  the measured section of `COVERAGE.md`; delete them and link to
+  `COVERAGE-MEASURED.md` on the data branch. Prose and the `## Exceptions` table in
+  `COVERAGE.md` stay in force.
+- **Recording.** On push to main, the `publish-baseline` action writes
+  `baselines/<sha>.json` and a rendered `COVERAGE-MEASURED.md` to the data branch.
+  It needs `contents: write` on its job, uses only `GITHUB_TOKEN`, pushes only the
+  data branch and never forces. An existing sha file is never overwritten: identical
+  content is a no-op, different content is an error. Run it even when the coverage
+  job failed (`if: always()`, as for badges): main's real state must become the
+  next floor, and a red ratchet already flags the failure. If measurement itself
+  failed there is no artifact and the job fails.
+- **Exceptions.** Unchanged: an exact commit in the PR's range with approver,
+  reason and restoration obligation in `COVERAGE.md` `## Exceptions`. The commit
+  is recorded like any other, so the next floor is the post-exception state.
+- **Concurrency.** Each PR is compared with its own merge base. After two PRs
+  merge, main's push run measures the combination and fails visibly if it breaks
+  the ratchet against the previous recorded sha. To avoid that, enable "Require
+  branches to be up to date" or a merge queue; the kit never changes repository
+  settings.
+
+Add this job beside `publish-badges`; the coverage job and `artifact-name` are
+the same. The `coverage` job's `permissions` stay `contents: read`.
+
+```yaml
+  publish-baseline:
+    needs: coverage
+    if: always() && github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.coverage.result != 'cancelled'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: gumshoe2020/formal-coverage/.github/actions/publish-baseline@FORMAL_COVERAGE_COMMIT_SHA
+        with:
+          artifact-name: coverage-badges
+```
+
+Adopting: set `floor`/`bootstrap_baseline`, merge, let the first main push record,
+then delete `bootstrap_baseline`, `coverage/baseline.json` and the measured section.
 
 ## Rules and local use
 

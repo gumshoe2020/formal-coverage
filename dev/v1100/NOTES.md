@@ -1,0 +1,12 @@
+# v1.10.0 notes
+- 2026-11-25 takeover: Codex made no changes; started at M1 from clean tree.
+- Refactor: measured-section rendering moved from write-coverage.py to ci/coverage_section.py (shared with recorded mode); compare.py output unchanged.
+- run.py: committed path unchanged (split into ratchet_committed/conclude); recorded path in ratchet_recorded. Recorded mode writes `<output>/record/{baseline.json,COVERAGE-MEASURED.md,sha}` BEFORE the floor lookup, so main records its own measurement even when the ratchet fails or the floor is missing (otherwise one red main commit would leave every later floor missing = permanent lockout). Ratchet failure is still red/visible.
+- Bootstrap: `bootstrap_baseline` is read from the merge-base commit (not the PR working tree, so a PR cannot lower its own floor) and applies only while the data branch holds no baselines/*.json at all ("first adoption"). Requires floor "recorded".
+- Floor must have exactly the snapshot key set, else fail closed.
+- Data branch is read from refs/heads/<b> or refs/remotes/origin/<b>.
+- Plan M1 lists an "append-only refusal" unit test; that logic lives in the recording script, so the test lands with M2.
+- M2 recording: new action `publish-baseline` + `ci/record.py` rather than extending `publish-badges`. Why: badges validator accepts only the five endpoint names and force-pushes the `badges` ref; baselines need a different, append-only, non-forced push to a different ref. Separate actions keep the badges code path byte-identical and let each job hold its own `contents: write`.
+- The coverage action uploads `<artifact-name>-record` (record/{baseline.json,COVERAGE-MEASURED.md,sha,branch}, if-no-files-found: ignore). The branch name travels in the artifact (from ci.json) so the publish job needs no checkout/config. record.py checks artifact sha == GITHUB_SHA, push-on-main only, never forces, retries a raced push up to 3x, identical re-record is a no-op, differing content for an existing sha is an error. `valid_branch` rejects main/master/badges/HEAD.
+- New step in coverage action: `fetch_data_branch.py` (no-op unless floor "recorded"; tolerates a missing branch; token only in that step's env).
+- The record job should run on push to main even if the ratchet failed (so the floor exists); documented in README.

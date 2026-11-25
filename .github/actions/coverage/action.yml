@@ -49,6 +49,15 @@ runs:
       run: |
         mkdir -p logs/ci-kit
         cargo build --release --locked --manifest-path "$KIT_ROOT/Cargo.toml" --target-dir "$RUNNER_TEMP/formal-coverage-build" > logs/ci-kit/build.log 2>&1 || { tail -n 40 logs/ci-kit/build.log; exit 1; }
+    - name: Fetch recorded floor (floor "recorded" only)
+      if: inputs.config != ''
+      shell: bash
+      env:
+        KIT_ROOT: ${{ steps.source.outputs.root }}
+        PROJECT: ${{ inputs.workspace }}
+        CONFIG: ${{ inputs.config }}
+        GH_TOKEN: ${{ github.token }}
+      run: python3 "$KIT_ROOT/ci/fetch_data_branch.py" --workspace "$PROJECT" --config "$PROJECT/$CONFIG"
     - id: measure
       name: Measure and ratchet
       shell: bash
@@ -91,7 +100,9 @@ runs:
         if [ "$RESULT" = success ]; then result=pass; fi
         args=()
         if [ -n "$CONFIG" ]; then args+=(--config "$PROJECT/$CONFIG"); fi
-        python3 "$KIT_ROOT/ci/write-badges.py" "$PROJECT/$BASELINE" target/coverage-ci/badges "$result" "${args[@]}"
+        source="$PROJECT/$BASELINE"
+        if [ -f target/coverage-ci/record/baseline.json ]; then source=target/coverage-ci/record/baseline.json; fi
+        python3 "$KIT_ROOT/ci/write-badges.py" "$source" target/coverage-ci/badges "$result" "${args[@]}"
     - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
       if: always()
       with:
@@ -108,3 +119,9 @@ runs:
           target/coverage-ci/*.patch
           logs/ci-kit/
         if-no-files-found: error
+    - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      if: always()
+      with:
+        name: ${{ inputs.artifact-name }}-record
+        path: target/coverage-ci/record/*
+        if-no-files-found: ignore

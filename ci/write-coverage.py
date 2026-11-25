@@ -6,6 +6,7 @@ import argparse
 import json
 from pathlib import Path
 from coverage_metrics import snapshot
+from coverage_section import END, START, measured_section
 
 p = argparse.ArgumentParser(description=__doc__)
 p.add_argument('report', type=Path)
@@ -16,31 +17,10 @@ a = p.parse_args()
 r = json.loads(a.report.read_text())
 b = snapshot(r)
 encoded = json.dumps(b, indent=2, sort_keys=True) + '\n'
-start = '<!-- measured coverage: begin -->'
-end = '<!-- measured coverage: end -->'
+start, end = START, END
 proven_pct = b['proven'] / b['total'] * 100
-rows = []
-for key in ['proven', 'tested', 'unverified']:
-    rows.append(f"| {key} | {b[key]} | {100*b[key]/b['total']:.2f}% |")
 ratio = 'n/a' if b['proof_ratio'] is None else f"{b['proof_ratio']:.2f}"
-section = start + '\n\n| Security runtime | Lines | Share |\n| --- | ---: | ---: |\n' + '\n'.join(rows)
-section += f"\n\nTotal: **{b['total']}** first-party security runtime SLoC. Proven includes explicitly labelled\n`proven-extracted` hax credit ({b['statuses'].get('proven-extracted',0)} lines); Verus proven: {b['statuses'].get('proven',0)} lines.\n"
-proof = r['proof_ratio']
-proven_runtime = proof['proven_runtime_sloc'] + proof['proven_extracted_runtime_sloc']
-section += f"\nProof-to-code ratio: **{ratio}** ({b['proof_sloc']} proof SLoC / {proven_runtime} proven + proven-extracted runtime SLoC); informational, never blocking.\n"
-section += (f"\nProof components: {proof['fstar_annotation_sloc']} hax annotation SLoC, "
-            f"{proof['fstar_cfg_hax_sloc']} standalone `cfg(hax)` proof-code SLoC, "
-            f"and {proof['fstar_cfg_hax_inline_sloc']} inline `cfg(hax)` SLoC "
-            "(overlaps count once). "
-            f"F* models: {proof['fstar_model_sloc']} SLoC of trusted assumptions, excluded from the ratio.\n")
-if proof['modules']:
-    section += '\n| Module | Proven runtime | Proof SLoC | Proof / proven runtime |\n| --- | ---: | ---: | ---: |\n'
-for mod in proof['modules']:
-    proven = mod['proven_runtime_sloc'] + mod['proven_extracted_runtime_sloc']
-    val = 'n/a' if mod['ratio'] is None else f"{mod['ratio']:.2f}"
-    if proven or mod['proof_sloc']:
-        section += f"| {mod['crate_name']}::{mod['module']} | {proven} | {mod['proof_sloc']} | {val} |\n"
-section += '\n' + end
+section = measured_section(b, r)
 baseline = a.baseline
 page = a.coverage
 text = page.read_text()

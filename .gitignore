@@ -100,3 +100,6 @@ runs/**/*.log
 !/runs/v1.7.1/*/numbers.json
 !/runs/v1.7.1/tool-binary.sha256
 !/runs/v1.7.1/tool-build.exit
+
+# per-pass build/run logs carry local paths
+/dev/**/*.log

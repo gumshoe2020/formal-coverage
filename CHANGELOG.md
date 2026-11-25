@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.10.0 — 2026-11-25
+
+- Coverage CI: opt-in `floor: "recorded"` mode. A PR's ratchet compares its
+  measurement with the one recorded for its merge-base commit on main, read from a
+  data branch (`coverage-data`, file `baselines/<sha>.json`), so PRs no longer
+  commit `coverage/baseline.json` or the measured section of `COVERAGE.md` and two
+  PRs stop conflicting there. A missing recorded file fails closed, naming the
+  commit; `bootstrap_baseline` covers the first adoption only.
+- New `publish-baseline` action records each main push append-only (existing
+  files are never overwritten) and refreshes `COVERAGE-MEASURED.md` on the data
+  branch. Only that job needs `contents: write`; main is never written.
+- Ratchet rules, arithmetic and the exceptions table are unchanged. The default
+  `floor: "committed"` mode is byte-identical to 1.9.1 (checked by replay in
+  [dev/v1100](dev/v1100/PROGRESS.md)).
+
 ## 1.9.1 — 2026-11-25
 
 - Map five more hax naming forms back to Rust, each only when exactly one Rust

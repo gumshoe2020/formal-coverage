@@ -1,0 +1,14 @@
+default: exit=0
+default: stdout='coverage baseline and document match measurement\n::warning::Proof/code ratio 0.93 outside [5, 15]: informational only. Informational proof maintenance cost per proven runtime line\nratchet PASS'
+default: COVERAGE.md 47805f1dfdad9374b89cc0f652894cb6a99db0f3dc0d2192ce61d9648afcc2a5
+default: coverage/baseline.json a39837a589a159487e3fb7f2f5dd4f2c730151ad88443031b48c3461843c6748
+default: out/badges/proof-ratio.json 985b44114c28c625ea1fd90c1afeb0e61d6a34fd40a8856542bcef21c652694b
+default: out/badges/proven.json e565f153c533f4de6ddbb189040ed0874d2772457a69283139c16491d62454b3
+default: out/badges/ratchet.json 31c82726c0f0faf39269e033fb7064c400c670ee618aa9bdb985032c3bce6906
+default: out/badges/tested.json 49aa4d8f2be4df201f2d699d06f47d545aff1319b6b5c1bc50416140e786569b
+default: out/badges/unverified.json 1dcf69b2b384c831551646980c160523958b09a3d3d04eafff8977bf0fca79ed
+default: out/diff.patch eb5ab13c1f2afc8af7b2c85295cd3fc50e4db475fe1e186c532005757c911f21
+default: out/floor.json a39837a589a159487e3fb7f2f5dd4f2c730151ad88443031b48c3461843c6748
+default: out/report.json 741269338eb3ceb1287db55fa29b83912b0bdfee10419f3128167861280fc5ff
+default: out/report.md f16d05ec6b29248d2c61adb1e9263f78e4f7bace1b955014a2d17872cfe4064d
+default: out/summary.md 4b8da4192e46ac8bf556d11b36d9fcdcf0cba857869420aef3712d804df26cfc

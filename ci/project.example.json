@@ -1,5 +1,8 @@
 {
   "schema": 1,
+  "floor": "committed",
+  "data_branch": "coverage-data",
+  "bootstrap_baseline": "",
   "badges": [
     "proven",
     "tested",

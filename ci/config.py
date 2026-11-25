@@ -2,10 +2,14 @@
 import copy
 import json
 import math
+import re
 from pathlib import Path
 
 DEFAULT = {
     'schema': 1,
+    'floor': 'committed',
+    'data_branch': 'coverage-data',
+    'bootstrap_baseline': '',
     'badges': ['proven', 'tested', 'unverified', 'proof-ratio', 'ratchet'],
     'labels': {'proven': 'proven', 'tested': 'tested', 'unverified': 'unverified',
                'proof-ratio': 'proof/code', 'ratchet': 'ratchet'},
@@ -15,6 +19,14 @@ DEFAULT = {
                     'established': [10, 20],
                     'reason': 'Informational proof maintenance cost per proven runtime line'},
 }
+
+
+def valid_branch(name):
+    """A plain data branch name; never the default branch or the badges ref."""
+    return (isinstance(name, str)
+            and re.fullmatch(r'[A-Za-z0-9_][A-Za-z0-9_.-]*(/[A-Za-z0-9_][A-Za-z0-9_.-]*)*', name) is not None
+            and '..' not in name and not name.endswith('.lock')
+            and name not in ('main', 'master', 'badges', 'HEAD'))
 
 
 def load(path=None):
@@ -32,6 +44,14 @@ def load(path=None):
                 data[key] = value
     if type(data['schema']) is not int or data['schema'] != 1:
         raise ValueError('expected project config schema 1')
+    if data['floor'] not in ('committed', 'recorded'):
+        raise ValueError('floor must be "committed" or "recorded"')
+    if not valid_branch(data['data_branch']):
+        raise ValueError('invalid data_branch')
+    if not isinstance(data['bootstrap_baseline'], str) or data['bootstrap_baseline'].startswith('/') or '..' in Path(data['bootstrap_baseline']).parts:
+        raise ValueError('bootstrap_baseline must be a relative path inside the project')
+    if data['bootstrap_baseline'] and data['floor'] != 'recorded':
+        raise ValueError('bootstrap_baseline requires floor "recorded"')
     badges = data['badges']
     if not isinstance(badges, list) or not badges or len(set(badges)) != len(badges) or set(badges) - set(DEFAULT['badges']):
         raise ValueError('invalid badge set')
