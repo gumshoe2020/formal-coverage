@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.11.0 — 2026-11-25
+
+- Honest contract depth. `safety-only` now covers every F* postcondition that only
+  states lengths or integer ranges (about two thirds of what 1.10.0 called
+  `functional` on bertie-tls), not just a missing one; `functional` needs a value fact.
+  New `contract_reason` per definition (`no-postcondition`, `trivial`, `size-only`,
+  `value`, `unparsed`); unreadable postconditions stay `safety-only` and are listed in
+  a new report section.
+- The self-consistency flag now works with current hax namespaces and is decided by
+  resolving the functions a contract calls: first-party runtime callee and no proof-code
+  callee. `contract_unresolved` lists names that did not resolve.
+- New "Proof depth" table (Markdown, `summary.proof_depth`, kit COVERAGE.md section,
+  `coverage_metrics.proof_depth`). No unit changes tier, status or SLoC; the proven share,
+  proof ratio, badges and ratchet are unchanged. Recorded baselines stay valid.
+
 ## 1.10.0 — 2026-11-25
 
 - Coverage CI: opt-in `floor: "recorded"` mode. A PR's ratchet compares its

@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Render the measured-coverage section of COVERAGE.md from a snapshot and report."""
+from coverage_metrics import proof_depth
+
 START = '<!-- measured coverage: begin -->'
 END = '<!-- measured coverage: end -->'
 
@@ -26,5 +28,20 @@ def measured_section(b, r):
         val = 'n/a' if mod['ratio'] is None else f"{mod['ratio']:.2f}"
         if proven or mod['proof_sloc']:
             section += f"| {mod['crate_name']}::{mod['module']} | {proven} | {mod['proof_sloc']} | {val} |\n"
+    section += depth_table(proof_depth(r))
     section += '\n' + END
     return section
+
+
+def depth_table(depth):
+    if depth is None:
+        return ''
+    proven = sum(depth.values())
+    rows = [('safety-only', 'safety_only'),
+            ('functional, checked only against own code', 'functional_own_code_only'),
+            ('functional', 'functional')]
+    share = lambda n: 0.0 if proven == 0 else 100 * n / proven
+    table = '\n### Proof depth\n\n| Contract depth | Lines | Share of proven lines |\n| --- | ---: | ---: |\n'
+    table += ''.join(f"| {label} | {depth[key]} | {share(depth[key]):.2f}% |\n" for label, key in rows)
+    return table + ('\nSafety-only means proven free of panics, overflows and out-of-bounds access, including '
+                    'length and range facts; it says nothing about what the code computes.\n')

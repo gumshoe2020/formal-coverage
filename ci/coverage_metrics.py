@@ -26,3 +26,19 @@ def snapshot(report):
                 proof_sloc=report['proof_ratio']['proof_sloc'],
                 proof_ratio=report['proof_ratio']['ratio'], inventory=inventory)
 
+
+
+def proof_depth(report):
+    """Proven security runtime lines by contract depth; None for reports older than v1.11.0.
+
+    Kept out of snapshot(): recorded baselines are exact snapshots and must stay comparable.
+    """
+    depth = report['summary'].get('proof_depth')
+    if depth is None:
+        return None
+    ratio = report['proof_ratio']
+    proven = ratio['proven_runtime_sloc'] + ratio['proven_extracted_runtime_sloc']
+    parts = (depth['safety_only_sloc'], depth['functional_own_code_only_sloc'], depth['functional_sloc'])
+    if any(type(v) is not int or v < 0 for v in parts) or sum(parts) != proven:
+        raise ValueError('proof depth does not add up to proven runtime SLoC')
+    return dict(safety_only=parts[0], functional_own_code_only=parts[1], functional=parts[2])

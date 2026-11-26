@@ -571,9 +571,40 @@ freshness, implementation bodies, module success and contract checks still
 control F* credit. Existing `trusted_items` continues to mean F* or other
 verification trust, excluding these non-F* annotations.
 
-Contract classification comes from the checked interface: `Tot` or an explicit
-True Pure postcondition is `safety-only`; a meaningful `ensures` is `functional`;
-unknown forms are `unclassified` and receive no credit. Functional contracts
-mentioning local function names without an external spec namespace receive the
-**self-consistency heuristic** flag. This is a syntactic warning, not a theorem
-about specification intent. Every definition shows its postcondition and mapping.
+Contract classification comes from the checked interface, and every definition
+shows its postcondition, `contract_reason` and mapping. An `ensures` is split into
+atoms (`&&`, `/\`, `||`, `\/`, `==>`, `if`, match arms; `fun` binders, `let x:T = x in`
+rebinding, `<: T` ascriptions, `#T` arguments, `b2t` and match scaffolding on the result
+are stripped first).
+
+- `safety-only`: no `ensures` (`no-postcondition`), a trivially true one (`trivial`), or
+  every atom is a size fact (`size-only`): a comparison built only from length functions,
+  integer literals, integer-typed variables, `from_machine`, arithmetic and range fields.
+  Length and range facts are what callers need to prove absence of panics, so they are
+  safety facts. `safety-only` means proven free of panics, overflows and out-of-bounds
+  access; it says nothing about what the code computes.
+- `functional` (`value`): at least one atom is not a size fact (a value equality between
+  non-integers, a call to a predicate, indexing).
+- A postcondition the classifier cannot read is `safety-only` with reason `unparsed` and is
+  listed in the report section "Contracts the classifier could not read". Doubt always
+  lowers a classification.
+- Unknown declaration forms are `unclassified` and receive no credit.
+
+A functional contract gets the **self-consistency heuristic** flag when the functions it
+calls (outside `Core.`, `Core_models.`, `Prims.`, `FStar.`, `Alloc.`, `Rust_primitives.`,
+`Hax_lib.`, `Lib.` and length functions) resolve to at least one first-party runtime unit and
+to no first-party proof code: the contract is stated through the project's own code, such
+as a builder proven only to round-trip through its own parser. It is a syntactic warning, not
+a theorem about specification intent. Checked only against own code means the
+postcondition relates the result to other runtime functions of the same project (for example
+its own parser), not to a separate specification. Fixed-width data integers (`u8`..`u128`,
+`i8`..`i128`) are values; only `usize`, `isize` and `Hax_lib.Int.t_Int` variables are size
+operands. Unresolved names are listed per definition in
+`contract_unresolved`.
+
+The "Proof depth" table (Markdown, `summary.proof_depth` in `report.json`, the kit's
+COVERAGE.md section) splits proven plus proven-extracted first-party security runtime
+SLoC into `safety-only`, `functional, checked only against own code` and `functional`. A unit with
+several credited definitions takes the lowest depth; Verus-proven units count as
+`safety-only` because no F* contract is read for them. Badges and the ratchet do not use
+depth.

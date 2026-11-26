@@ -281,8 +281,14 @@ pub struct FstarDefinition {
     pub rust_unit: Option<String>,
     pub classification: String,
     pub contract_kind: String,
+    /// `no-postcondition`, `trivial`, `size-only`, `value` or `unparsed`.
+    #[serde(default)]
+    pub contract_reason: String,
     pub postcondition: String,
     pub self_consistency_heuristic: bool,
+    /// Functions a functional postcondition calls that did not resolve to a Rust unit.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub contract_unresolved: Vec<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub mapping_reason: Option<String>,
 }
@@ -793,34 +799,50 @@ fn numbered_mappings(
     result
 }
 
-fn contract(decl: &str, names: &[String]) -> (String, String, bool) {
-    if let Some((_, post)) = decl.split_once("(ensures") {
-        let post = post.trim().to_string();
-        let meaningful = words(&post)
-            .any(|w| !["fun", "result", "True", "true", "Prims", "l_True"].contains(&w));
-        if meaningful {
-            // Heuristic: same-module function reference and no known external spec namespace.
-            let own = words(&post).any(|w| names.iter().any(|n| n == w));
-            let external = post.split_whitespace().any(|w| {
-                w.contains('.')
-                    && !w.starts_with("Core.")
-                    && !w.starts_with("Prims.")
-                    && !w.starts_with("Bertie.")
-            });
-            return ("functional".into(), post, own && !external);
-        }
-        return ("safety-only".into(), post, false);
-    }
-    if decl.contains("Prims.Pure") && decl.contains("(fun _ -> Prims.l_True)")
-        || decl.contains("Tot ")
+/// R4: a functional contract is self-consistent when it is stated through first-party runtime
+/// code and no first-party proof code. Returns the verdict and the names that did not resolve.
+fn self_consistency(
+    calls: &[String],
+    module: &str,
+    definition: &str,
+    report: &Report,
+) -> (bool, Vec<String>) {
+    const SPEC_NAMESPACES: [&str; 8] = [
+        "Core.",
+        "Core_models.",
+        "Prims.",
+        "FStar.",
+        "Alloc.",
+        "Rust_primitives.",
+        "Hax_lib.",
+        "Lib.",
+    ];
+    let crate_prefix = format!("{}.", module.split('.').next().unwrap_or(module));
+    let (mut runtime, mut proof_code, mut unresolved) = (false, false, vec![]);
+    let own_name = format!("{module}.{definition}");
+    for call in calls
+        .iter()
+        .filter(|c| **c != definition && **c != own_name)
     {
-        return (
-            "safety-only".into(),
-            "True (or absent for Tot)".into(),
-            false,
-        );
+        if SPEC_NAMESPACES.iter().any(|ns| call.starts_with(ns)) {
+            continue;
+        }
+        let (owner, name) = match call.rsplit_once('.') {
+            Some((owner, name)) if call.starts_with(&crate_prefix) => (owner, name),
+            Some(_) => {
+                unresolved.push(call.clone());
+                continue;
+            }
+            None => (module, call.as_str()),
+        };
+        match mapped(owner, name, report) {
+            Some(u) if u.category == crate::Category::ProofCode => proof_code = true,
+            Some(u) if u.category == crate::Category::Runtime && u.first_party => runtime = true,
+            Some(_) => {}
+            None => unresolved.push(call.clone()),
+        }
     }
-    ("unclassified".into(), decl.into(), false)
+    (runtime && !proof_code, unresolved)
 }
 fn pragma_name(line: &str) -> Option<&str> {
     let word = line.trim_start().strip_prefix('#')?;
@@ -1010,7 +1032,6 @@ fn apply_validated(
             continue;
         }
         let decls = declarations(&text);
-        let names: Vec<_> = decls.iter().map(|d| d.name.clone()).collect();
         let hazards: Vec<_> = text
             .lines()
             .enumerate()
@@ -1169,7 +1190,17 @@ fn apply_validated(
                 } else {
                     decl.text.clone()
                 };
-                let (mut kind, mut post, self_consistency) = contract(&specification, &names);
+                let contract = crate::contract::classify(&specification);
+                let (mut kind, mut post, mut reason) = (
+                    contract.kind.clone(),
+                    contract.post.clone(),
+                    contract.reason,
+                );
+                let (self_consistency, unresolved) = if kind == "functional" {
+                    self_consistency(&contract.calls, &module, &decl.name, report)
+                } else {
+                    (false, vec![])
+                };
                 if kind == "unclassified"
                     && mapping_reason
                         .as_ref()
@@ -1178,6 +1209,7 @@ fn apply_validated(
                     // The checked record type supplies the method's contract. Do not
                     // claim a functional specification from an undecoded trait field.
                     kind = "safety-only".into();
+                    reason = "no-postcondition";
                     post =
                         "Typed trait instance method; member postcondition not separately decoded"
                             .into();
@@ -1232,7 +1264,7 @@ fn apply_validated(
                                 classification
                             }
                             .into();
-                            target.proof_scope = Some(format!("hax/F*; trusted hax extraction; contract {kind}; postcondition: {post}; self-consistency heuristic={self_consistency}{}", if self_consistency { "; consistent with its own parser; not checked against an external spec" } else { "" }));
+                            target.proof_scope = Some(format!("hax/F*; trusted hax extraction; contract {kind} ({reason}); postcondition: {post}; self-consistency heuristic={self_consistency}{}", if self_consistency { "; consistent with its own parser; not checked against an external spec" } else { "" }));
                             run.credited_units.push(u.id.clone());
                         }
                         if trusted {
@@ -1250,6 +1282,8 @@ fn apply_validated(
                     rust_unit: unit.map(|u| u.id),
                     classification: classification.into(),
                     contract_kind: kind,
+                    contract_reason: reason.into(),
+                    contract_unresolved: unresolved,
                     postcondition: post,
                     self_consistency_heuristic: self_consistency,
                     mapping_reason,
@@ -1329,24 +1363,17 @@ mod tests {
     }
     #[test]
     fn contracts_and_comment_masking() {
-        let names = vec!["parse_certificate_verify".into()];
-        let (kind,_,own) = contract("val certificate_verify : Prims.Pure result True (ensures fun result -> parse_certificate_verify result = x)",&names);
-        assert_eq!(kind, "functional");
-        assert!(own);
+        let verify = crate::contract::classify("val certificate_verify : Prims.Pure result True (ensures fun result -> parse_certificate_verify result = x)");
+        assert_eq!(verify.kind, "functional");
+        assert!(verify
+            .calls
+            .contains(&"parse_certificate_verify".to_string()));
         assert_eq!(
-            contract(
-                "val ecdsa_signature : Prims.Pure result Prims.l_True (fun _ -> Prims.l_True)",
-                &names
+            crate::contract::classify(
+                "val ecdsa_signature : Prims.Pure result Prims.l_True (fun _ -> Prims.l_True)"
             )
-            .0,
+            .kind,
             "safety-only"
-        );
-        assert!(
-            !contract(
-                "val f : result (ensures fun result -> External.Spec.valid result)",
-                &names
-            )
-            .2
         );
         let text = "module Test\n(* admit (* assume *) *)\n// admitP\nlet f x = \"admit\"\n";
         let masked = mask(text).unwrap();

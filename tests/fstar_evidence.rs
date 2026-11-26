@@ -1232,3 +1232,104 @@ fn v191_fallbacks_preserve_existing_owners_and_refuse_failed_or_hazard_modules()
         .filter(|d| d.name == "Hax_fixture.impl__new")
         .all(|d| d.rust_unit.is_none()));
 }
+
+const DEPTH_RUST: &str = "// hax_lib marks this as a hax crate
+pub fn runtime_parse(x: u32) -> u32 { x }
+#[cfg(hax)]
+pub fn spec_valid(x: u32) -> bool { true }
+pub fn bounded(x: u32) -> u32 { x }
+pub fn plain(x: u32) -> u32 { x }
+pub fn trivial(x: u32) -> u32 { x }
+pub fn self_checked(x: u32) -> u32 { x }
+pub fn spec_checked(x: u32) -> u32 { x }
+pub fn odd(x: u32) -> u32 { x }
+";
+const DEPTH_FSTI: &str = "module Hax_fixture
+val runtime_parse (x: u32) : Tot u32
+val spec_valid (x: u32) : Tot bool
+val bounded (x: u32) : Prims.Pure usize Prims.l_True (ensures fun result -> let result:usize = result in result <=. mk_usize 64)
+val plain (x: u32) : Tot u32
+val trivial (x: u32) : Prims.Pure u32 Prims.l_True (ensures fun _ -> Prims.l_True)
+val self_checked (x: u32) : Prims.Pure u32 Prims.l_True (ensures fun result -> let result:u32 = result in runtime_parse result =. x)
+val spec_checked (x: u32) : Prims.Pure u32 Prims.l_True (ensures fun result -> let result:u32 = result in spec_valid result)
+val odd (x: u32) : Prims.Pure u32 Prims.l_True (ensures fun result -> forall (i: nat). i < 3 ==> true)
+";
+
+fn depth_report() -> Report {
+    let mut f = Fixture::new();
+    let fst = DEPTH_FSTI
+        .lines()
+        .map(|l| match l.strip_prefix("val ") {
+            Some(rest) => format!("let {} = x\n", rest.split(" : ").next().unwrap()),
+            None => format!("{l}\n"),
+        })
+        .collect::<String>();
+    f.replace("fresh/Hax_fixture.fst", &fst);
+    f.replace("checked/Hax_fixture.fst", &fst);
+    f.replace("fresh/Hax_fixture.fsti", DEPTH_FSTI);
+    f.replace("checked/Hax_fixture.fsti", DEPTH_FSTI);
+    fs::write(f.root.join("src/lib.rs"), DEPTH_RUST).unwrap();
+    f.receipt
+        .files
+        .insert("src/lib.rs".into(), sha256(DEPTH_RUST.as_bytes()));
+    fs::write(
+        format!("{}.evidence.json", f.log.display()),
+        serde_json::to_vec(&f.receipt).unwrap(),
+    )
+    .unwrap();
+    let options = formal_coverage::Options {
+        size_mode: formal_coverage::SizeMode::WholeCrate,
+        ..Default::default()
+    };
+    let mut r = formal_coverage::analyze_with(&f.root, &options).unwrap();
+    apply_fstar_evidence(&mut r, &f.root, std::slice::from_ref(&f.log)).unwrap();
+    r
+}
+
+#[test]
+fn contract_depth_follows_each_classification_rule() {
+    let r = depth_report();
+    let depth = |name: &str| {
+        let found: Vec<_> = r
+            .fstar_definitions
+            .iter()
+            .filter(|d| d.name.ends_with(&format!(".{name}")))
+            .map(|d| {
+                (
+                    d.contract_kind.as_str(),
+                    d.contract_reason.as_str(),
+                    d.self_consistency_heuristic,
+                )
+            })
+            .collect();
+        assert!(
+            !found.is_empty() && found.iter().all(|d| *d == found[0]),
+            "{name}: {found:?}"
+        );
+        found[0]
+    };
+    assert_eq!(depth("bounded"), ("safety-only", "size-only", false));
+    assert_eq!(depth("plain"), ("safety-only", "no-postcondition", false));
+    assert_eq!(depth("trivial"), ("safety-only", "trivial", false));
+    assert_eq!(depth("self_checked"), ("functional", "value", true));
+    assert_eq!(depth("spec_checked"), ("functional", "value", false));
+    assert_eq!(depth("odd"), ("safety-only", "unparsed", false));
+}
+
+#[test]
+fn depth_report_lists_unreadable_contracts_and_proof_depth_adds_up() {
+    let r = depth_report();
+    let markdown = formal_coverage::markdown(&r);
+    assert!(markdown.contains("## Contracts the classifier could not read"));
+    assert!(markdown.contains("forall (i: nat)"));
+    assert!(markdown.contains("Proof depth (first-party security-relevant"));
+    assert!(markdown.contains("says nothing about what the code computes"));
+    let ratio = formal_coverage::proof_ratio(&r).security_relevant;
+    let depth = formal_coverage::summarize(&r).proof_depth;
+    assert_eq!(
+        depth.total(),
+        ratio.proven_runtime_sloc + ratio.proven_extracted_runtime_sloc
+    );
+    let json = serde_json::to_value(formal_coverage::summarize(&r)).unwrap();
+    assert!(json["proof_depth"]["safety_only_sloc"].is_u64());
+}

@@ -198,8 +198,13 @@ Supply repeatable `--fstar-log LOG` for source-bound hax/F* receipts.
 **Proven-extracted** has its own column and explicitly trusts hax extraction;
 it never enters Verus `proven` or its gates. Patched models and interface-only
 contracts are trusted, never Rust proof credit. Reports show checked
-postconditions and a labelled **self-consistency heuristic**: agreement with
-one's own parser does not establish external format conformance. See the
+postconditions, each contract's depth and a labelled **self-consistency heuristic**:
+agreement with one's own parser does not establish external format conformance.
+`safety-only` means proven free of panics, overflows and out-of-bounds access (length
+and range facts included); only a value fact makes a contract `functional`. A "Proof
+depth" table splits the proven lines accordingly (`functional, checked only against own code`
+means the postcondition relates the result to other runtime functions of the same project, for
+example its own parser, not to a separate specification). See the
 [receipt contract](docs/evidence.md#haxf-receipts-v17) and Bertie survey.
 
 ### Extraction context and names

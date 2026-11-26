@@ -150,18 +150,7 @@ fn metrics<'a>(
                 }
             }
             Category::Runtime => {
-                let legacy = u.sloc
-                    + if current == GhostLines::Separate {
-                        u.inline_proof_sloc
-                    } else {
-                        0
-                    };
-                let inline = if mode == GhostLines::Separate {
-                    u.ghost_sloc
-                } else {
-                    0
-                };
-                let runtime = legacy - inline;
+                let (runtime, inline) = runtime_lines(u, mode, current);
                 m.inline_proof_sloc += inline;
                 if mode == GhostLines::Separate {
                     m.fstar_annotation_sloc += u.fstar_annotation_sloc;
@@ -195,6 +184,107 @@ fn metrics<'a>(
     m.ratio = (denominator > 0).then(|| m.proof_sloc as f64 / denominator as f64);
     m.status = range.status(m.ratio);
     m
+}
+/// Runtime SLoC of a unit under a ghost-line mode, and the inline proof lines taken out of it.
+fn runtime_lines(u: &Unit, mode: GhostLines, current: GhostLines) -> (usize, usize) {
+    let legacy = u.sloc
+        + if current == GhostLines::Separate {
+            u.inline_proof_sloc
+        } else {
+            0
+        };
+    let inline = if mode == GhostLines::Separate {
+        u.ghost_sloc
+    } else {
+        0
+    };
+    (legacy - inline, inline)
+}
+/// How much of the proven runtime code is proven only to be free of panics, overflows and
+/// out-of-bounds access, and how much has a postcondition about values.
+#[derive(Debug, Default, Clone, PartialEq, Eq, Serialize, Deserialize)]
+pub struct ProofDepth {
+    pub safety_only_sloc: usize,
+    pub functional_own_code_only_sloc: usize,
+    pub functional_sloc: usize,
+}
+impl ProofDepth {
+    pub fn total(&self) -> usize {
+        self.safety_only_sloc + self.functional_own_code_only_sloc + self.functional_sloc
+    }
+}
+#[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+enum Depth {
+    SafetyOnly,
+    SelfConsistentOnly,
+    Functional,
+}
+/// Depth of each credited F* unit: the lowest of its credited definitions, never rounded up.
+fn extracted_depths(r: &Report) -> std::collections::HashMap<&str, Depth> {
+    let mut depths: std::collections::HashMap<&str, Depth> = Default::default();
+    for d in r
+        .fstar_definitions
+        .iter()
+        .filter(|d| d.classification == "proven-extracted")
+    {
+        let Some(id) = d.rust_unit.as_deref() else {
+            continue;
+        };
+        let depth = match (d.contract_kind.as_str(), d.self_consistency_heuristic) {
+            ("functional", true) => Depth::SelfConsistentOnly,
+            ("functional", false) => Depth::Functional,
+            _ => Depth::SafetyOnly,
+        };
+        let lowest = depths.entry(id).or_insert(depth);
+        *lowest = (*lowest).min(depth);
+    }
+    depths
+}
+/// Proof depth over proven and proven-extracted first-party runtime SLoC of `units`.
+/// Verus-proven units carry no F* contract here, so they count as safety-only (never rounded up).
+pub(crate) fn proof_depth<'a>(r: &Report, units: impl Iterator<Item = &'a Unit>) -> ProofDepth {
+    let depths = extracted_depths(r);
+    let mut total = ProofDepth::default();
+    for u in units.filter(|u| u.first_party && u.category == Category::Runtime) {
+        if !["proven", "proven-extracted"].contains(&u.status.as_str()) {
+            continue;
+        }
+        let (runtime, _) = runtime_lines(u, r.ghost_lines, r.ghost_lines);
+        let depth = depths
+            .get(u.id.as_str())
+            .copied()
+            .unwrap_or(Depth::SafetyOnly);
+        match (u.status.as_str(), depth) {
+            ("proven-extracted", Depth::Functional) => total.functional_sloc += runtime,
+            ("proven-extracted", Depth::SelfConsistentOnly) => {
+                total.functional_own_code_only_sloc += runtime
+            }
+            _ => total.safety_only_sloc += runtime,
+        }
+    }
+    total
+}
+fn depth_markdown(r: &Report) -> String {
+    let depth = proof_depth(r, r.units.iter().filter(|u| u.security));
+    let total = depth.total();
+    let mut out = String::from("\nProof depth (first-party security-relevant, proven + proven-extracted runtime SLoC):\n\n| Contract depth | Lines | Share of proven lines |\n| --- | ---: | ---: |\n");
+    for (label, lines) in [
+        ("safety-only", depth.safety_only_sloc),
+        (
+            "functional, checked only against own code",
+            depth.functional_own_code_only_sloc,
+        ),
+        ("functional", depth.functional_sloc),
+    ] {
+        let share = if total == 0 {
+            0.
+        } else {
+            lines as f64 * 100. / total as f64
+        };
+        out.push_str(&format!("| {label} | {lines} | {share:.2}% |\n"));
+    }
+    out.push_str("\nSafety-only means proven free of panics, overflows and out-of-bounds access, including length and range facts; it says nothing about what the code computes.\n");
+    out
 }
 #[derive(Debug, Serialize)]
 pub struct RatioRow {
@@ -391,6 +481,7 @@ pub(crate) fn markdown(r: &Report) -> String {
             ));
         }
     }
+    out.push_str(&depth_markdown(r));
     out.push_str("\nF* proof components (annotations are already included in inline proof; models are trusted assumptions):\n\n| Scope | Annotations | cfg(hax) standalone | cfg(hax) inline | Patch additions | Hand-written F* | Models (excluded) |\n| --- | ---: | ---: | ---: | ---: | ---: | ---: |\n");
     for (scope, metrics) in [
         ("Security", &p.security_relevant),

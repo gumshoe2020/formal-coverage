@@ -1,5 +1,5 @@
 mod ratio;
-pub use ratio::{proof_ratio, ProofRatio, ProofRatioConfig, ProofRatioRange};
+pub use ratio::{proof_ratio, ProofDepth, ProofRatio, ProofRatioConfig, ProofRatioRange};
 mod ghost;
 mod hax;
 pub use ghost::GhostLines;
@@ -9,6 +9,7 @@ pub use report::{
     summarize, summarize_default_rules, Summary,
 };
 mod cfg;
+mod contract;
 mod evidence;
 mod fstar;
 mod fstar_proof;

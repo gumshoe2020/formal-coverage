@@ -8,7 +8,7 @@ import tempfile
 import unittest
 
 from test_ratchet import fixture
-from coverage_metrics import snapshot
+from coverage_metrics import proof_depth, snapshot
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -58,6 +58,32 @@ class WriteCoverageTests(unittest.TestCase):
         self.assertIn('18 SLoC of trusted assumptions, excluded from the ratio', text)
         self.assertIn('| bertie_tls::parser | 549 | 509 | 0.93 |', text)
         self.assertNotIn('not measured', text)
+
+    def test_proof_depth_table_and_metrics(self):
+        report = self.report()
+        report['summary']['proof_depth'] = dict(
+            safety_only_sloc=400, functional_own_code_only_sloc=50, functional_sloc=99)
+        text = self.render(report)
+        self.assertIn('### Proof depth', text)
+        self.assertIn('| safety-only | 400 | 72.86% |', text)
+        self.assertIn('| functional, checked only against own code | 50 | 9.11% |', text)
+        self.assertIn('| functional | 99 | 18.03% |', text)
+        self.assertIn('it says nothing about what the code computes.', text)
+        self.assertEqual(proof_depth(report), dict(
+            safety_only=400, functional_own_code_only=50, functional=99))
+        self.assertNotIn('proof_depth', snapshot(report))
+
+    def test_reports_without_depth_have_no_depth_table(self):
+        report = self.report()
+        self.assertIsNone(proof_depth(report))
+        self.assertNotIn('Proof depth', self.render(report))
+
+    def test_depth_must_add_up_to_proven_runtime_lines(self):
+        report = self.report()
+        report['summary']['proof_depth'] = dict(
+            safety_only_sloc=1, functional_own_code_only_sloc=0, functional_sloc=0)
+        with self.assertRaisesRegex(ValueError, 'does not add up'):
+            proof_depth(report)
 
     def test_zero_ratio_is_measured(self):
         report = self.report()

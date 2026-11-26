@@ -79,6 +79,8 @@ pub struct Summary {
     pub trusted_sloc: usize,
     pub escape_sites: usize,
     pub proof_code: ProofCode,
+    #[serde(default)]
+    pub proof_depth: crate::ProofDepth,
     #[serde(default, skip_serializing_if = "TestTotals::is_empty")]
     pub test_code: TestTotals,
     pub all: Split,
@@ -135,6 +137,16 @@ fn summarize_rules(r: &Report, defaults: bool) -> Summary {
         side(&mut summary.all, security).add(u.sloc, &u.status, false);
         side(&mut summary.first_party, security).add(u.sloc, &u.status, false);
     }
+    summary.proof_depth = crate::ratio::proof_depth(
+        r,
+        r.units.iter().filter(|u| {
+            if defaults {
+                u.default_security.unwrap_or(u.security)
+            } else {
+                u.security
+            }
+        }),
+    );
     for d in &r.dependencies {
         let (security, sloc, known) = if defaults {
             (
@@ -149,6 +161,35 @@ fn summarize_rules(r: &Report, defaults: bool) -> Summary {
         side(&mut summary.third_party, security).add(sloc, &d.status, !known);
     }
     summary
+}
+/// Postconditions the classifier could not read; they stay `safety-only` and are listed here.
+fn unparsed_contracts(r: &Report) -> String {
+    let unread: Vec<_> = r
+        .fstar_definitions
+        .iter()
+        .filter(|d| d.contract_reason == "unparsed")
+        .collect();
+    if r.fstar_definitions.is_empty() {
+        return String::new();
+    }
+    let mut out = String::from("\n## Contracts the classifier could not read\n\nEach is counted `safety-only` (never rounded up).\n\n");
+    if unread.is_empty() {
+        return out + "None.\n";
+    }
+    out.push_str(
+        "| Definition | F* location | Rust unit | Postcondition |\n| --- | --- | --- | --- |\n",
+    );
+    for d in unread {
+        out.push_str(&format!(
+            "| {} | {}:{} | {} | {} |\n",
+            cell(&d.name),
+            cell(&d.file),
+            d.line,
+            cell(d.rust_unit.as_deref().unwrap_or("unmapped")),
+            cell(&d.postcondition)
+        ));
+    }
+    out
 }
 fn headline(label: &str, totals: &Totals, trust: &str) -> String {
     headline_unit(label, totals, trust, "SLoC")
@@ -552,25 +593,27 @@ pub fn markdown(r: &Report) -> String {
         }
     }
     if !r.fstar_definitions.is_empty() {
-        out.push_str("\n## hax/F* definitions\n\nSelf-consistency is a heuristic: consistent with its own parser; not checked against an external spec. Postconditions are shown verbatim from checked interfaces. Patch differences conservatively trust the whole module.\n\n| Definition | F* location | Rust unit | Classification | Contract kind | Self-consistency heuristic | Postcondition |\n| --- | --- | --- | --- | --- | --- | --- |\n");
+        out.push_str("\n## hax/F* definitions\n\nContract kind `safety-only` covers postconditions that only state lengths, integer ranges or nothing (reason `size-only`, `trivial`, `no-postcondition`) and postconditions the classifier could not read (`unparsed`); `functional` means at least one value fact (`value`). Self-consistency is a heuristic on functional contracts: stated through first-party runtime code and no proof code, so consistent with its own parser; not checked against an external spec. Postconditions are shown verbatim from checked interfaces. Patch differences conservatively trust the whole module.\n\n| Definition | F* location | Rust unit | Classification | Contract kind | Contract reason | Self-consistency heuristic | Postcondition |\n| --- | --- | --- | --- | --- | --- | --- | --- |\n");
         for d in &r.fstar_definitions {
             let rust_unit = d.mapping_reason.as_ref().map_or_else(
                 || d.rust_unit.as_deref().unwrap_or("unmapped").to_string(),
                 |reason| format!("unmapped: {reason}"),
             );
             out.push_str(&format!(
-                "| {} | {}:{} | {} | {} | {} | {} | {} |\n",
+                "| {} | {}:{} | {} | {} | {} | {} | {} | {} |\n",
                 cell(&d.name),
                 cell(&d.file),
                 d.line,
                 cell(&rust_unit),
                 cell(&d.classification),
                 cell(&d.contract_kind),
+                cell(&d.contract_reason),
                 d.self_consistency_heuristic,
                 cell(&d.postcondition)
             ));
         }
     }
+    out.push_str(&unparsed_contracts(r));
     out.push_str("\n## Run receipts\n\n");
     for run in &r.evidence_runs {
         out.push_str(&format!(
