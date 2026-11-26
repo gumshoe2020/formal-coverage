@@ -302,3 +302,47 @@ Independent acceptance remains Dudley’s.
 Final local validation: 161 tests passed, zero failed, one existing ignored performance test; clippy all targets -D warnings, fmt --check, release build/version, Python syntax and diff checks pass on installed Rust 1.97.1. Default Cargo 1.100 hit an existing dep-info layout assumption; recorded in NOTES. Fresh F* fallback: all 18 modules pass, exit 0. CI baseline: all 510 entries (506 distinct IDs) and first-party totals match exactly. Both-mode paired scope audit passes; scratch-server, Vest and six fixtures preserve exact JSON/Markdown. No fresh Verus execution or independent acceptance. Two milestone commits on main, local only; no push/tag/release.
 
 V1.8.3-READY
+
+## formal-coverage v1.12.0
+
+- M0: receipt format, full F* dependency closure and trust boundary recorded in dev/NOTES.md.
+- M3 preparation: scratch Bertie inputs archived from origin/main 110802a under target/v1120/bertie; full fresh strict check started with FSTAR_JOBS=1 and the prescribed Docker toolchain. Consumer checkout remains read-only.
+- Shared memory search/diary tools unavailable in this session.
+- M1: implemented opt-in --fstar-reuse plus check-fstar-receipt. Existing source-bound extraction, strict command, cached-artifact, mapping/hazard and proof-cost checks retained. Markdown labels provenance; JSON remains stable. Unit tamper matrix covers module/interface, dependency/library bytes, all tool identities, options, missing entries, wrong module/log, malformed records; integration test proves exact report JSON equality and stale Rust rejection.
+- M1 validation: cargo test --locked PASS (one pre-existing ignored performance test); cargo clippy --locked --all-targets -- -D warnings PASS; cargo fmt PASS. Initial compile issues in new test scaffolding/export placement fixed before these passing runs. Logs target/v1120/logs/m1-*.log. Full Bertie check still running.
+- M2: standard-library-only context/closure builder, PR selector sharing the Rust verifier, main artifact preparation, and main-only publish-receipts action/append-only recorder implemented and documented in ci/README.md. Real selector tests and temporary bare Git remotes cover unchanged/missing/mismatched/malformed receipts, immutable append/no-op/conflict, coexistence with baselines, main-event/SHA guard and token plumbing. 85 kit tests PASS; actionlint including new composite PASS. No hosted action, real remote publication or network API tested/executed.
+- M3 in progress: full fresh Docker run is strict/uncached at FSTAR_JOBS=1; 16/18 roots have passed, no failures/137 so far. Fresh real F* --dep full contexts include 117–148 source files per root. Der.fsti is in exactly Der and Tls13formats closures. The acceptance adapter and byte-comparison checks are in dev/v1120; all artifacts stay in target/v1120. Origin hardening additionally binds every reused receipt to its exact fetched main data-branch record; forged-log integration and malformed-module-field tests pass. Current Rust tests/clippy and all 85 kit tests/actionlint pass. Required equality/touch/tamper results still pending.
+- M3 PASS: all 18 fresh strict roots exit 0 (1,689.2 s); unchanged inputs check zero roots (24.8 s verifier phase); Rust leaf canary changes only Der.fsti, selecting exactly Der + Tls13formats, both strict exit 0 (463.6 s); restored Rust re-extracts and checks zero roots (25.6 s). Debug reports separately 120.6/119.8/116.6 s for the incremental cases. No 137/retries. Source restored byte-for-byte.
+- M3 equality PASS: full fresh / unchanged / reverted JSON are literally identical (4,557,458 bytes, SHA-256 924c77d9d316173406feacd553c5ccbbfaff017cbe7a3d5146e9962452c860e8). Default JSON and Markdown also exactly match immutable v1.11.0. Original compiled-files/[ship] scope, 4125/5092 security SLoC, ratio 0.142303 unchanged; existing chacha20/getrandom sizing fallbacks unchanged.
+- M3 tamper PASS (expected nonzero): standard-library hash corruption rejected naming Der and FStar.Attributes.fsti dependency field. Origin-forgery and typed malformed-field tests also pass. Results/reproduction in dev/v1120; artifacts/logs target/v1120. Final version/check milestone remains pending. No hosted action or independent acceptance execution; all real-remote publication deferred to Dudley.
+
+- M4 PASS: version 1.12.0 (unreleased changelog), root README integration link; no new runtime dependencies or dependency-lock changes beyond the package version. Final cargo test --locked: 200 passed, 0 failed, 1 existing ignored performance test not run. cargo clippy --locked --all-targets -- -D warnings, cargo fmt --check, cargo build --locked, 85 kit tests, actionlint (all composites including publish-receipts), version and git diff --check PASS. Logs target/v1120/logs/final-*.log.
+- Design/trust: per-module main-only append-only receipts bind full transitive source closure and strict check; PR fresh extraction/context, exact hashes/tools/options/log and fetched-main origin must all agree. `.checked` is never evidence. New trust is main's protected publisher/artifact chain; execution/extraction claims remain caller-owned, not signed attestations.
+- Local milestones: M0 0c046ee; M1 f1f2ffc; M2 61be93f; M3 450a947; M4 is the final version/checks commit containing this entry. All authored as Dudley with Assisted-by: Codex (GPT-6). No real-remote push, tag, release, gh/GitHub API, hook bypass or consumer edits. Temporary local Git fixtures exercise publisher writes only.
+- Acceptance is deliberately on requested 110802a, not newer consumer/main changes made concurrently. Hosted workflow/publication, independent reviewer rerun and the pre-existing ignored performance test remain unverified. Shared memory tools unavailable; no palace diary filed. The existing untracked dev/CODEX_PROMPT-v1.12.0.md was left untouched.
+
+FC-V1120-READY
+
+Ratchet depth M1: committed and main record writers carry validated optional depth.
+M2: check accepts a strict functional-line gain at equal share. Missing depth retains the share-only comparison.
+M3: all 90 kit tests passed, including missing and malformed depth, both functional categories, independent regression checks, and a main record consumed by a PR. Direct comparison also rejects boolean depth counts that Python would equate to integers.
+M4: updated kit rules, evidence reference and unreleased 1.12.0 changelog. Local verification: cargo test --locked (200 passed, one existing ignored), cargo clippy --locked --all-targets -- -D warnings, cargo fmt --check, 90 kit tests and git diff --check passed. No workflow changes. Independent acceptance pending.
+Ratchet opt-in M1: the action passes an exact boolean string. Only policy failures and stale committed numbers become advisory.
+M2: added not-enforced output and neutral off badge, including publication. Successful advisory runs use current measured numbers.
+M3: documented the default, accepted input values and existing-project migration in the template, CI guide and changelog.
+M4: tested enforced and advisory decisions, exception reporting, invalid inputs,
+stale committed outputs, invalid floor and measurement errors, action outputs
+and badge publication. Offline local verification passed: 200 Rust tests (one
+existing ignored), clippy with warnings denied, fmt, 91 Python tests,
+actionlint via ci/lint-actions.py and git diff --check. Hosted CI, live
+publication and independent acceptance were not run.
+
+2026-11-26 M1: Fetch, baseline, receipt and badge publication use the shared
+GitHub auth environment. It resets extraHeader before setting the job header.
+
+2026-11-26 M3: Documented persisted checkout credentials in Recorded floor
+and the unreleased 1.12.0 changelog. The README template retains
+`persist-credentials: false`. Offline local verification passed: cargo test
+--locked, cargo clippy --locked --all-targets -- -D warnings, cargo fmt --check,
+and python3 -m unittest discover -s ci/tests (92 tests). No action or workflow
+YAML changed. actionlint passed on .github/workflows/ci.yml.

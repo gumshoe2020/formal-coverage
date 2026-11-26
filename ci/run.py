@@ -12,8 +12,8 @@ import subprocess
 import sys
 
 from config import load
-from coverage_lib import check
-from coverage_metrics import snapshot
+from coverage_lib import RatchetFailure, check, validate_floor
+from coverage_metrics import baseline
 from coverage_section import END, START, measured_section
 
 HERE = Path(__file__).resolve().parent
@@ -49,7 +49,7 @@ def recorded_floor(workspace, base, config):
     if text is None:
         text = bootstrap_floor(workspace, base, config)
     floor = json.loads(text)
-    if not isinstance(floor, dict) or set(floor) != set(snapshot_keys()):
+    if not isinstance(floor, dict) or set(floor) - {'proof_depth'} != set(snapshot_keys()):
         raise ValueError(f'unreadable floor for {base}: not a schema-1 baseline')
     return floor
 
@@ -110,28 +110,56 @@ def run(args):
     report_path = output / 'report.json'
     report = json.loads(report_path.read_text())
     if config['floor'] == 'recorded':
-        errors, baseline_path, measured = ratchet_recorded(args, config, workspace, output, report)
+        message, baseline_path, measured = ratchet_recorded(args, config, workspace, output, report)
     else:
-        errors, baseline_path, measured = ratchet_committed(args, workspace, output, report_path, report)
-    conclude(config, config_path, output, report, errors, baseline_path, measured)
+        message, baseline_path, measured = ratchet_committed(args, workspace, output, report_path, report)
+    conclude(config, config_path, output, report, message, baseline_path, measured, args.enforce_ratchet)
+
+
+def verdict(enforce, floor, committed, report, diff, page, commits):
+    try:
+        errors = check(floor, committed, report, diff, page, commits)
+    except RatchetFailure as exc:
+        if enforce:
+            raise
+        return f'ratchet FAIL: {exc}'
+    return 'ratchet PASS' + (' (maintainer exception: ' + '; '.join(errors) + ')' if errors else '')
 
 
 def ratchet_committed(args, workspace, output, report_path, report):
-    subprocess.run([sys.executable, str(HERE / 'write-coverage.py'), str(report_path),
-                    '--baseline', args.baseline, '--coverage', args.coverage, '--check'],
-                   cwd=workspace, check=True)
+    command = [sys.executable, str(HERE / 'write-coverage.py'), str(report_path),
+               '--baseline', args.baseline, '--coverage', args.coverage, '--check']
+    baseline_path = workspace / args.baseline
+    if not args.enforce_ratchet:
+        baseline_path = output / 'measured-baseline.json'
+        command += ['--measured-baseline', str(baseline_path)]
+    result = subprocess.run(command, cwd=workspace)
+    stale = not args.enforce_ratchet and result.returncode == 3
+    if not stale:
+        result.check_returncode()
     floor, diff, commits = floor_and_diff(workspace, args.baseline, args.base)
     page = (workspace / args.coverage).read_text()
-    errors = check(floor, json.loads((workspace / args.baseline).read_text()), report, diff, page, commits)
+    committed = json.loads((workspace / args.baseline).read_text())
+    if stale:
+        if not isinstance(committed, dict) or set(committed) - {'proof_depth'} != set(snapshot_keys()) or committed['schema'] != 1:
+            raise ValueError('invalid committed baseline')
+        validate_floor(committed)
+        committed = json.loads(baseline_path.read_text())
+    message = verdict(args.enforce_ratchet, floor, committed,
+                      report, diff, page, commits)
+    if stale:
+        message = 'ratchet FAIL: baseline.json or COVERAGE.md differs from measured report'
     (output / 'floor.json').write_text(json.dumps(floor, indent=2) + '\n')
     (output / 'diff.patch').write_text(diff + '\n')
     measured = page.split(START, 1)[1].split(END, 1)[0]
-    return errors, workspace / args.baseline, measured
+    if stale:
+        measured = measured_section(baseline(report), report).removeprefix(START).removesuffix(END)
+    return message, baseline_path, measured
 
 
 def ratchet_recorded(args, config, workspace, output, report):
     """Floor = main's recorded measurement of the merge base; nothing numeric is committed."""
-    snap = snapshot(report)
+    snap = baseline(report)
     record = output / 'record'
     record.mkdir(exist_ok=True)
     section = measured_section(snap, report)
@@ -147,14 +175,15 @@ def ratchet_recorded(args, config, workspace, output, report):
     commits = git(workspace, 'rev-list', f'{base}..HEAD').splitlines()
     coverage = workspace / args.coverage
     page = coverage.read_text() if coverage.exists() else ''
-    errors = check(floor, snap, report, diff, page, commits)
+    message = verdict(args.enforce_ratchet, floor, snap, report, diff, page, commits)
     (output / 'floor.json').write_text(json.dumps(floor, indent=2) + '\n')
     (output / 'diff.patch').write_text(diff + '\n')
-    return errors, record / 'baseline.json', section.removeprefix(START).removesuffix(END)
+    return message, record / 'baseline.json', section.removeprefix(START).removesuffix(END)
 
 
-def conclude(config, config_path, output, report, errors, baseline_path, measured):
-    message = 'ratchet PASS' + (' (maintainer exception: ' + '; '.join(errors) + ')' if errors else '')
+def conclude(config, config_path, output, report, message, baseline_path, measured, enforce):
+    if not enforce:
+        message = 'ratchet: not enforced (would report ' + message + ')'
     bounds = config['proof_ratio'][config['proof_ratio']['stage']]
     ratio = report['proof_ratio']['ratio']
     warnings = []
@@ -173,7 +202,7 @@ def conclude(config, config_path, output, report, errors, baseline_path, measure
     for warning in warnings:
         print('::warning::' + warning)
     badge_command = [sys.executable, str(HERE / 'write-badges.py'),
-                     str(baseline_path), str(output / 'badges'), 'pass']
+                     str(baseline_path), str(output / 'badges'), 'pass' if enforce else 'off']
     if config_path:
         badge_command += ['--config', str(config_path)]
     subprocess.run(badge_command, check=True)
@@ -190,7 +219,9 @@ def main():
     parser.add_argument('--config', default='')
     parser.add_argument('--base', required=True, help='merge-base SHA (PR) or before SHA (push)')
     parser.add_argument('--output', type=Path, default=Path('target/coverage-ci'))
+    parser.add_argument('--enforce-ratchet', choices=('true', 'false'), default='true')
     args = parser.parse_args()
+    args.enforce_ratchet = args.enforce_ratchet == 'true'
     try:
         run(args)
     except (ValueError, KeyError, TypeError, OSError, subprocess.CalledProcessError) as exc:

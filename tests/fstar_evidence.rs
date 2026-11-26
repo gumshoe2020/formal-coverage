@@ -1333,3 +1333,137 @@ fn depth_report_lists_unreadable_contracts_and_proof_depth_adds_up() {
     let json = serde_json::to_value(formal_coverage::summarize(&r)).unwrap();
     assert!(json["proof_depth"]["safety_only_sloc"].is_u64());
 }
+
+#[test]
+fn reused_checks_preserve_json_and_source_bound_rules() {
+    use formal_coverage::reuse::{
+        CheckContext, ModuleContext, ModuleReceipt, ReuseManifest, Toolchain,
+    };
+    let mut f = Fixture::new();
+    let fresh_report = f.run();
+    let main_commit = "a".repeat(40);
+    let toolchain = Toolchain {
+        fstar: format!("{}@binary-sha", f.receipt.fstar_version),
+        z3: "z3@binary-sha".into(),
+        hax: format!(
+            "{}@{}@binary-sha",
+            f.receipt.hax_version, f.receipt.hax_commit
+        ),
+    };
+    let file = "checked/Hax_fixture.fst".to_string();
+    let ctx = CheckContext {
+        schema: 1,
+        toolchain: toolchain.clone(),
+        modules: vec![ModuleContext {
+            file: file.clone(),
+            command: f.receipt.modules[0].command.clone(),
+            dependencies: f.receipt.checked.keys().cloned().collect(),
+        }],
+    };
+    let historical = ModuleReceipt {
+        schema: 1,
+        module: "Hax_fixture".into(),
+        main_commit: main_commit.clone(),
+        file: file.clone(),
+        toolchain,
+        command: f.receipt.modules[0].command.clone(),
+        dependencies: f.receipt.checked.clone(),
+        log: fs::read_to_string(&f.log).unwrap(),
+    };
+    let manifest = f.root.join("reuse.json");
+    fs::write(
+        &manifest,
+        serde_json::to_vec(&ReuseManifest {
+            schema: 1,
+            data_branch: "coverage-data".into(),
+            main_commit,
+            receipts: [(file, historical)].into(),
+        })
+        .unwrap(),
+    )
+    .unwrap();
+    fs::write(
+        format!("{}.context.json", f.log.display()),
+        serde_json::to_vec(&ctx).unwrap(),
+    )
+    .unwrap();
+    // Local Git object fixture stands in for the protected fetched data branch.
+    let data = f.root.join("data-record");
+    fs::create_dir_all(data.join(format!("receipts/{}", "a".repeat(40)))).unwrap();
+    let saved: serde_json::Value = serde_json::from_slice(&fs::read(&manifest).unwrap()).unwrap();
+    fs::write(
+        data.join(format!("receipts/{}/Hax_fixture.json", "a".repeat(40))),
+        serde_json::to_vec(&saved["receipts"]["checked/Hax_fixture.fst"]).unwrap(),
+    )
+    .unwrap();
+    let git = |base: &std::path::Path, args: &[&str]| {
+        let out = std::process::Command::new("git")
+            .arg("-C")
+            .arg(base)
+            .args(args)
+            .output()
+            .unwrap();
+        assert!(
+            out.status.success(),
+            "{}",
+            String::from_utf8_lossy(&out.stderr)
+        );
+    };
+    git(&data, &["init", "-q", "-b", "coverage-data"]);
+    git(&data, &["add", "."]);
+    git(
+        &data,
+        &[
+            "-c",
+            "user.name=Test",
+            "-c",
+            "user.email=test@local",
+            "commit",
+            "-qm",
+            "main receipt fixture",
+        ],
+    );
+    git(&f.root, &["init", "-q"]);
+    git(
+        &f.root,
+        &[
+            "fetch",
+            "-q",
+            data.canonicalize().unwrap().to_str().unwrap(),
+            "coverage-data:refs/remotes/origin/coverage-data",
+        ],
+    );
+    f.receipt.modules.clear();
+    fs::write(&f.log, "").unwrap();
+    f.receipt.log_sha256 = sha256(b"");
+    fs::write(
+        format!("{}.evidence.json", f.log.display()),
+        serde_json::to_vec(&f.receipt).unwrap(),
+    )
+    .unwrap();
+    let mut reused = inventory(&f.root).unwrap();
+    let labels =
+        formal_coverage::apply_fstar_reuse(&mut reused, &f.root, &f.log, &manifest).unwrap();
+    assert!(labels.contains("reused") && labels.contains(&"a".repeat(40)));
+    assert_eq!(
+        serde_json::to_value(&fresh_report).unwrap(),
+        serde_json::to_value(&reused).unwrap()
+    );
+    let original_manifest = fs::read(&manifest).unwrap();
+    let mut forged: serde_json::Value = serde_json::from_slice(&original_manifest).unwrap();
+    forged["receipts"]["checked/Hax_fixture.fst"]["log"] =
+        "extra forged bytes\nVerified module: Hax_fixture\n".into();
+    fs::write(&manifest, serde_json::to_vec(&forged).unwrap()).unwrap();
+    let mut denied = inventory(&f.root).unwrap();
+    let error =
+        formal_coverage::apply_fstar_reuse(&mut denied, &f.root, &f.log, &manifest).unwrap_err();
+    assert!(format!("{error:#}").contains("origin"));
+    assert!(!denied.units.iter().any(|u| u.status == "proven-extracted"));
+    fs::write(&manifest, original_manifest).unwrap();
+    fs::write(f.root.join("src/lib.rs"), "pub fn changed() {}\n").unwrap();
+    let mut stale = inventory(&f.root).unwrap();
+    let error =
+        formal_coverage::apply_fstar_reuse(&mut stale, &f.root, &f.log, &manifest).unwrap_err();
+    assert!(format!("{error:#}").contains("stale hash"));
+    assert!(!stale.units.iter().any(|u| u.status == "proven-extracted"));
+}

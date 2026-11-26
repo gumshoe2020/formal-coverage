@@ -5,17 +5,18 @@
 import argparse
 import json
 from pathlib import Path
-from coverage_metrics import snapshot
+from coverage_metrics import baseline
 from coverage_section import END, START, measured_section
 
 p = argparse.ArgumentParser(description=__doc__)
 p.add_argument('report', type=Path)
 p.add_argument('--check', action='store_true', help='verify baseline and numeric document are current')
+p.add_argument('--measured-baseline', type=Path, help='stage current numbers and distinguish stale outputs in check mode')
 p.add_argument('--baseline', type=Path, default=Path('coverage/baseline.json'))
 p.add_argument('--coverage', type=Path, default=Path('COVERAGE.md'))
 a = p.parse_args()
 r = json.loads(a.report.read_text())
-b = snapshot(r)
+b = baseline(r)
 encoded = json.dumps(b, indent=2, sort_keys=True) + '\n'
 start, end = START, END
 proven_pct = b['proven'] / b['total'] * 100
@@ -26,7 +27,11 @@ page = a.coverage
 text = page.read_text()
 updated = text[:text.index(start)] + section + text[text.index(end)+len(end):]
 if a.check:
+    if a.measured_baseline:
+        a.measured_baseline.write_text(encoded)
     if baseline.read_text() != encoded or text != updated:
+        if a.measured_baseline:
+            p.exit(3, 'baseline.json or COVERAGE.md differs from measured report\n')
         p.error('baseline.json or COVERAGE.md differs from measured report')
     print('coverage baseline and document match measurement')
 else:

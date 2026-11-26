@@ -5,7 +5,7 @@ inputs:
     description: Artifact produced by the coverage action
     default: coverage-badges
   coverage-result:
-    description: needs.coverage.result, so any coverage job failure turns the ratchet red
+    description: needs.coverage.result, so any coverage job failure turns an enforced ratchet red
     required: true
 runs:
   using: composite

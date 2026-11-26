@@ -34,6 +34,9 @@ struct Input {
     kani_log: Vec<PathBuf>,
     #[arg(long)]
     fstar_log: Vec<PathBuf>,
+    /// Reuse manifest; requires one current F* log and its fresh context sidecar.
+    #[arg(long, requires = "fstar_log")]
+    fstar_reuse: Option<PathBuf>,
     #[arg(long)]
     json: Option<PathBuf>,
     #[arg(long)]
@@ -41,6 +44,13 @@ struct Input {
 }
 #[derive(Subcommand)]
 enum Commands {
+    /// Validate one historical module receipt against a fresh dependency context.
+    CheckFstarReceipt {
+        #[arg(long)]
+        context: PathBuf,
+        #[arg(long)]
+        receipt: PathBuf,
+    },
     Report {
         #[command(flatten)]
         input: Input,
@@ -94,7 +104,21 @@ fn run(input: &Input) -> anyhow::Result<formal_coverage::Report> {
         &input.verus_log,
         &input.kani_log,
     )?;
-    formal_coverage::apply_fstar_evidence(&mut report, &input.workspace_dir, &input.fstar_log)?;
+    let provenance = if let Some(manifest) = &input.fstar_reuse {
+        anyhow::ensure!(
+            input.fstar_log.len() == 1,
+            "reuse requires exactly one F* log"
+        );
+        formal_coverage::apply_fstar_reuse(
+            &mut report,
+            &input.workspace_dir,
+            &input.fstar_log[0],
+            manifest,
+        )?
+    } else {
+        formal_coverage::apply_fstar_evidence(&mut report, &input.workspace_dir, &input.fstar_log)?;
+        String::new()
+    };
     let json = serde_json::to_value(&report)?;
     let mut document = json.as_object().unwrap().clone();
     document.insert(
@@ -112,7 +136,7 @@ fn run(input: &Input) -> anyhow::Result<formal_coverage::Report> {
     if let Some(path) = &input.json {
         std::fs::write(path, serde_json::to_string_pretty(&document)?)?;
     }
-    let md = formal_coverage::markdown(&report);
+    let md = formal_coverage::markdown(&report) + &provenance;
     if let Some(path) = &input.markdown {
         std::fs::write(path, &md)?;
     }
@@ -121,6 +145,9 @@ fn run(input: &Input) -> anyhow::Result<formal_coverage::Report> {
 }
 fn main() -> anyhow::Result<()> {
     match Cli::parse().command {
+        Commands::CheckFstarReceipt { context, receipt } => {
+            formal_coverage::reuse::check_receipt(&context, &receipt)?;
+        }
         Commands::Report { input } => {
             run(&input)?;
         }

@@ -207,6 +207,17 @@ means the postcondition relates the result to other runtime functions of the sam
 example its own parser, not to a separate specification). See the
 [receipt contract](docs/evidence.md#haxf-receipts-v17) and Bertie survey.
 
+### Reusing main's strict module checks (opt-in)
+
+`--fstar-log LOG --fstar-reuse MANIFEST.json` accepts a mixture of current strict
+checks and main's per-module receipts for identical extracted inputs. Fresh
+extraction and dependency analysis remain mandatory. The tool checks every
+project/library dependency hash, exact tool identities/options, the strict log
+slice and the fetched data-branch record before granting reuse. Main still
+checks everything uncached; `.checked` files are never evidence. Markdown lists
+each module's fresh/reused provenance and main commit; equal coverage keeps
+identical JSON. See the [CI integration and added trust](ci/README.md#opt-in-per-module-f-reuse-v1120).
+
 ### Extraction context and names
 
 Optional schema-2/3 extraction declaration:
@@ -384,8 +395,7 @@ inventory is blocking.
 
 Copy this to `.github/workflows/coverage.yml`. Replace **both**
 `FORMAL_COVERAGE_COMMIT_SHA` placeholders with the same full 40-character commit of
-the release you pin, for example
-`git ls-remote https://github.com/gumshoe2020/formal-coverage 'refs/tags/v1.10.0^{}'`.
+the version you pin. The `enforce-ratchet` input requires the 1.12.0 changes or later.
 Only the publication job has write permission; every blocking step propagates
 failure. Do not run this under `pull_request_target`. The project must enable
 up-to-date branch checks before relying on concurrent PR ratchets.
@@ -415,6 +425,8 @@ jobs:
       - uses: gumshoe2020/formal-coverage/.github/actions/coverage@FORMAL_COVERAGE_COMMIT_SHA
         with:
           workspace: '.'
+          # Off by default. Set to 'true' once you have reviewed the baseline.
+          enforce-ratchet: 'false'
           report-args: '[]'
           baseline: coverage/baseline.json
           coverage: COVERAGE.md

@@ -1,5 +1,36 @@
 # Changelog
 
+## 1.12.0 — 2026-11-26
+
+- Recorded-floor fetches and publish actions now reset inherited GitHub HTTP
+  headers before setting the job token, preventing duplicate Authorization
+  headers when checkout persists credentials.
+
+- The coverage action now defaults to reporting the ratchet without enforcing it.
+  Existing projects that rely on the ratchet must add `enforce-ratchet: 'true'`
+  when they adopt 1.12.0.
+
+- At equal proven share, touched security code can now pass the ratchet by
+  increasing proven security runtime lines in the two functional contract
+  categories combined. Unverified lines still cannot increase. Recorded-mode
+  PRs can use this rule once their main merge base has a depth-bearing record
+  written by this version.
+
+- Opt-in reuse of main's strict per-module F* checks for identical extracted
+  inputs. Receipts bind the module/interface and full transitive project/library
+  closure, tool identities, exact options, main commit and strict log slice.
+  Fresh extraction/dependency analysis remain mandatory; `.checked` files never
+  provide evidence. Main still checks every root strictly and uncached.
+- Add the PR selector, dependency-context builder and main-only
+  `publish-receipts` action. Data-branch records are append-only: identical bytes
+  are a no-op, conflicting bytes fail. Publication uses GITHUB_TOKEN only.
+- `report --fstar-reuse` independently verifies every reused record against
+  current inputs and main's fetched data-branch record before granting credit.
+  Mismatches fail closed with module/field diagnostics. Markdown labels fresh
+  and reused module evidence and its main commit; equal coverage JSON stays
+  identical. Added trust: main's protected receipt publisher and artifact chain.
+  Default evidence rules, coverage schema and runtime dependencies are unchanged.
+
 ## 1.11.0 — 2026-11-25
 
 - Honest contract depth. `safety-only` now covers every F* postcondition that only

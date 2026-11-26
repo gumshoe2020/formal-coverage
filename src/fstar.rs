@@ -1,5 +1,6 @@
 //! Caller-supplied hax/F* evidence. Unsupported scope never earns credit.
 mod naming;
+pub mod reuse;
 
 use crate::{sha256, EvidenceRun, Report};
 use anyhow::{ensure, Context, Result};
@@ -88,9 +89,14 @@ fn command(args: &[String], input: &str, checked: &BTreeMap<String, String>) -> 
     }
     source
 }
-fn validate(root: &Path, log_path: &Path, report: &Report) -> Result<FstarReceipt> {
-    let log = fs::read(log_path)?;
-    let receipt: FstarReceipt =
+fn validate(
+    root: &Path,
+    log_path: &Path,
+    report: &Report,
+    reuse: Option<&reuse::ReuseManifest>,
+) -> Result<FstarReceipt> {
+    let mut log = fs::read(log_path)?;
+    let mut receipt: FstarReceipt =
         serde_json::from_slice(&fs::read(format!("{}.evidence.json", log_path.display()))?)?;
     ensure!(receipt.tool == "hax-fstar", "tool mismatch");
     ensure!(
@@ -102,6 +108,9 @@ fn validate(root: &Path, log_path: &Path, report: &Report) -> Result<FstarReceip
         "missing full hax commit"
     );
     ensure!(receipt.log_sha256 == sha256(&log), "log hash mismatch");
+    if let Some(manifest) = reuse {
+        reuse::merge(log_path, &mut receipt, &mut log, manifest)?;
+    }
     ensure!(
         receipt.extraction_command == ["python3", "hax-driver.py", "extract-fstar"]
             && receipt.extraction_exit_code == 0,
@@ -194,11 +203,52 @@ fn validate(root: &Path, log_path: &Path, report: &Report) -> Result<FstarReceip
 
 pub fn apply_fstar_evidence(report: &mut Report, root: &Path, logs: &[PathBuf]) -> Result<()> {
     crate::ship::apply_evidence(report, |inventory| {
-        apply_fstar_evidence_scoped(inventory, root, logs)
+        apply_fstar_evidence_scoped(inventory, root, logs, None)
     })
 }
 
-fn apply_fstar_evidence_scoped(report: &mut Report, root: &Path, logs: &[PathBuf]) -> Result<()> {
+pub fn apply_fstar_reuse(
+    report: &mut Report,
+    root: &Path,
+    log: &Path,
+    manifest: &Path,
+) -> Result<String> {
+    // Preflight historical evidence before granting any credit, with a nonzero error.
+    let mut receipt: FstarReceipt =
+        serde_json::from_slice(&fs::read(format!("{}.evidence.json", log.display()))?)?;
+    let mut bytes = fs::read(log)?;
+    let reuse = reuse::load_manifest(manifest)?;
+    let labels = reuse::merge(log, &mut receipt, &mut bytes, &reuse)?;
+    reuse::verify_origin(root, &reuse)?;
+    crate::ship::apply_evidence(report, |inventory| {
+        apply_fstar_evidence_scoped(inventory, root, &[log.to_path_buf()], Some(&reuse))
+    })?;
+    ensure!(
+        report
+            .evidence_runs
+            .iter()
+            .filter(|r| r.tool == "hax-fstar")
+            .all(|r| r.accepted),
+        "F* reuse current-run evidence rejected: {:?}",
+        report
+            .evidence_runs
+            .iter()
+            .filter(|r| !r.accepted)
+            .map(|r| &r.reasons)
+            .collect::<Vec<_>>()
+    );
+    Ok(format!(
+        "\n## F* module evidence\n\n| Module | Evidence | Main commit |\n| --- | --- | --- |\n{}\n",
+        labels.join("\n")
+    ))
+}
+
+fn apply_fstar_evidence_scoped(
+    report: &mut Report,
+    root: &Path,
+    logs: &[PathBuf],
+    reuse: Option<&reuse::ReuseManifest>,
+) -> Result<()> {
     inventory_rust_trust(report, root)?;
     for log in logs {
         let mut run = EvidenceRun {
@@ -213,7 +263,7 @@ fn apply_fstar_evidence_scoped(report: &mut Report, root: &Path, logs: &[PathBuf
             escape_sites: vec![],
             trusted_sloc: 0,
         };
-        match validate(root, log, report).context("F* receipt rejected") {
+        match validate(root, log, report, reuse).context("F* receipt rejected") {
             Ok(receipt) => {
                 run.accepted = true;
                 crate::fstar_proof::accepted(

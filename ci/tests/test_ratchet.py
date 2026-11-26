@@ -6,6 +6,7 @@ from pathlib import Path
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+from coverage_metrics import baseline
 from coverage_lib import check, snapshot, touched
 
 COMMIT = 'a' * 40
@@ -22,6 +23,14 @@ def fixture(proven=20, tested=30, unverified=50):
                 units=[dict(file='src/parser.rs', line=8, end_line=20, first_party=True, security=True, category='runtime')])
 
 
+def with_depth(report, own, functional):
+    proven = snapshot(report)['proven']
+    report['proof_ratio'].update(proven_runtime_sloc=0, proven_extracted_runtime_sloc=proven)
+    report['summary']['proof_depth'] = dict(safety_only_sloc=proven-own-functional,
+                                          functional_own_code_only_sloc=own, functional_sloc=functional)
+    return report
+
+
 class RatchetTests(unittest.TestCase):
     def setUp(self):
         self.report = fixture()
@@ -29,7 +38,7 @@ class RatchetTests(unittest.TestCase):
 
     def run_check(self, report=None, diff=DOC_DIFF, committed=None, **kw):
         report = self.report if report is None else report
-        return check(self.floor, snapshot(report) if committed is None else committed, report, diff, **kw)
+        return check(self.floor, baseline(report) if committed is None else committed, report, diff, **kw)
 
     def test_docs_exempt_at_equal_share(self):
         self.assertEqual(self.run_check(), [])
@@ -40,6 +49,44 @@ class RatchetTests(unittest.TestCase):
 
     def test_security_improvement_passes(self):
         self.assertEqual(self.run_check(fixture(21, 30, 49), SECURITY_DIFF), [])
+
+    def test_equal_share_depth_progress(self):
+        self.floor = baseline(with_depth(fixture(), 3, 2))
+        for own, functional in ((4, 2), (3, 3)):
+            self.assertEqual(self.run_check(with_depth(fixture(), own, functional), SECURITY_DIFF), [])
+        with self.assertRaisesRegex(ValueError, 'functional security lines: 5 -> 5'):
+            self.run_check(with_depth(fixture(), 2, 3), SECURITY_DIFF)
+
+    def test_depth_gain_preserves_other_rules(self):
+        self.floor = baseline(with_depth(fixture(), 0, 0))
+        for report, error in ((fixture(19, 31, 50), 'proven share decreased'),
+                              (fixture(20, 29, 51), 'unverified security lines increased')):
+            with self.subTest(error=error), self.assertRaisesRegex(ValueError, error):
+                self.run_check(with_depth(report, 1, 0), SECURITY_DIFF)
+
+    def test_missing_depth_requires_share_gain(self):
+        with self.assertRaisesRegex(ValueError, 'without increasing proven share'):
+            self.run_check(with_depth(fixture(), 1, 0), SECURITY_DIFF)
+        self.floor = baseline(with_depth(fixture(), 0, 0))
+        with self.assertRaisesRegex(ValueError, 'without increasing proven share'):
+            self.run_check(fixture(), SECURITY_DIFF)
+
+    def test_committed_depth_requires_integer_counts(self):
+        report = with_depth(fixture(), 1, 0)
+        committed = baseline(report)
+        committed['proof_depth']['functional_own_code_only'] = True
+        with self.assertRaisesRegex(ValueError, 'does not add up'):
+            self.run_check(report, committed=committed)
+
+    def test_malformed_depth_cannot_be_waived(self):
+        self.floor = baseline(with_depth(fixture(), 1, 0))
+        self.floor['proof_depth']['functional'] += 1
+        with self.assertRaisesRegex(ValueError, 'does not add up'):
+            self.run_check(markdown=EXCEPTION, commits=[COMMIT])
+        report = with_depth(fixture(), 1, 0)
+        report['summary']['proof_depth']['functional_sloc'] += 1
+        with self.assertRaisesRegex(ValueError, 'does not add up'):
+            self.run_check(report, committed=self.floor)
 
     def test_unverified_increase_fails_even_with_better_share(self):
         with self.assertRaisesRegex(ValueError, 'unverified security lines increased'):

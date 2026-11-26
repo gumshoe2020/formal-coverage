@@ -606,5 +606,6 @@ The "Proof depth" table (Markdown, `summary.proof_depth` in `report.json`, the k
 COVERAGE.md section) splits proven plus proven-extracted first-party security runtime
 SLoC into `safety-only`, `functional, checked only against own code` and `functional`. A unit with
 several credited definitions takes the lowest depth; Verus-proven units count as
-`safety-only` because no F* contract is read for them. Badges and the ratchet do not use
-depth.
+`safety-only` because no F* contract is read for them. At equal proven share, the ratchet counts a strict increase in
+the combined functional line count as progress on touched security code.
+See the [floor requirements](../ci/README.md#rules-and-local-use).

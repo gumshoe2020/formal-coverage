@@ -14,6 +14,7 @@ import sys
 import tempfile
 
 from config import valid_branch
+from coverage_metrics import functional_lines
 from gitauth import github_env
 
 KEYS = {'schema', 'scope', 'total', 'proven', 'tested', 'unverified', 'statuses',
@@ -30,9 +31,10 @@ def load_record(source):
         raise ValueError('invalid data branch in record')
     baseline = (source / 'baseline.json').read_text()
     data = json.loads(baseline)
-    if not isinstance(data, dict) or set(data) != KEYS or any(
+    if not isinstance(data, dict) or set(data) - {'proof_depth'} != KEYS or any(
             type(data[k]) is not int for k in ('total', 'proven', 'tested', 'unverified')):
         raise ValueError('record baseline is not a schema-1 baseline')
+    functional_lines(data)
     return sha, branch, baseline, (source / 'COVERAGE-MEASURED.md').read_text()
 
 

@@ -1,0 +1,24 @@
+name: Publish F* module receipts
+description: Append main's strict module receipts on the data branch using GITHUB_TOKEN
+inputs:
+  artifact-name:
+    description: Artifact containing the prepared main-only receipts, sha and branch
+    default: coverage-receipts
+runs:
+  using: composite
+  steps:
+    - name: Require push to main
+      shell: bash
+      run: |
+        test "$GITHUB_EVENT_NAME" = push
+        test "$GITHUB_REF" = refs/heads/main
+    - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: ${{ runner.temp }}/coverage-receipts-in
+    - name: Append receipts on the data branch only
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
+        ACTION_PATH: ${{ github.action_path }}
+      run: python3 "$ACTION_PATH/../../../ci/publish_receipts.py" "$RUNNER_TEMP/coverage-receipts-in"

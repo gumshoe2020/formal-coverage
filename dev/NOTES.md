@@ -862,3 +862,83 @@ git diff --check > logs/v1.8.3/m2-diff.log 2>&1
 - 2026-11-24T10:41:19.186946-05:00 Sequence disclosure: the baseline was built from immutable v1.8.2 before R1 source edits; the successful CI replay check completed after those edits and before M1 commit. This departs from the requested baseline-before-edits order. The replay used only the tagged baseline binary and original hash-validated CI evidence, so the candidate edits could not affect its outcome. No baseline discrepancy was found.
 
 - 2026-11-24T10:45:21.383279-05:00 Final M2 verification: unchanged copied scripts/verify-fstar.py exited 0; all 18 strict implementation modules passed under fc-verify-fstar-amd64:v17. Fresh receipt files/fresh/checked maps exactly equal original CI receipt maps; no patched model or weakened proof. Paired reports continue using the original CI log and receipt. No HONEST-FINDING. All required Rust checks passed before this commit on installed 1.97.1 (161 tests passed, 0 failed, 1 existing ignored), paired controls/full report scope/CI baseline and syntax/diff checks passed. Initial default 1.100 size-mode test failure and preliminary setup failures are recorded above; final runs are passing. No fresh Verus execution, ignored performance acceptance, or independent acceptance run. No push, tag, release bundle, host install, email or external-checkout mutation. M1 f94ee92 and final M2 commit are local on main with Assisted-by: Codex (GPT-6). Record V1.8.3-READY, commit M2 including readiness, then stop.
+
+## 2026-11-25 — formal-coverage v1.12.0 M0
+
+Receipt schema 1: one JSON record at receipts/<main-sha>/<module>.json, with
+schema, module, main_commit, file, toolchain (fstar, z3, hax identities), command
+(exact strict argv), dependencies (logical path -> SHA-256, including the root
+and its interface), and log (the complete strict invocation's log slice).
+Publication is append-only, main-push-only and GITHUB_TOKEN-only; no signatures
+or execution attestations are claimed. New trust: the data branch is controlled
+so these historical receipts were written by main's full strict job. PRs cannot
+publish receipts. Extraction and dependency analysis must run freshly on PRs;
+caller-supplied context, tool identities and execution remain trusted just as
+caller-supplied run evidence was trusted before.
+
+A current schema-1 context records toolchain identities and, for each requested
+root, its exact command and full dependency closure. Generate it from F* --dep
+full's make rules: recursively follow every .checked rule to its source files,
+including interfaces, project files, hax libraries and F* standard libraries.
+Unknown rules, cycles, missing files and ambiguous paths fail closed. Normalize
+external paths with explicit prefix mappings to copied files under the log
+folder; the report hashes the actual current files, never trusts current hash
+claims. No .checked file is copied or used as evidence. Compare the exact set
+of dependency paths as well as every hash: a missing dependency entry fails.
+The context is a fresh dependency-analysis input, not evidence of verification.
+
+The selector invokes the Rust verifier, emits only roots needing fresh checks,
+and writes a reuse manifest containing only matching receipts from the exact
+merge-base directory on the data branch. The report independently revalidates
+that manifest against the fresh context and extraction, merges verified module
+outcomes in memory, and runs all pre-existing source/extraction, strict argv,
+hazard, mapping and proof-cost checks. Rejected reuse is a nonzero error naming
+the module and field. Default invocation is unchanged.
+
+Equality/provenance: keep coverage report JSON unchanged (including evidence-run
+shape) to permit mandatory byte equality; put per-module fresh/reused labels and
+historical main commit in Markdown/stdout. Fresh receipt + context remain bound
+to current Rust sources, even when zero modules need a fresh check. Historical
+Rust hashes are deliberately not substituted for current extraction evidence.
+No new runtime dependencies. Read-only consumer worktree; acceptance-only
+adapter lives under target/v1120. No publishing or remote APIs executed.
+
+### M3 review hardening
+
+Historical hash equality alone cannot authenticate a supplied receipt as main's
+receipt: a PR could rewrite hashes/log bytes. Reuse manifests therefore also
+name data_branch, and report checks each supplied record against the exact
+receipts/<main_commit>/<module>.json read from the local fetched data-branch
+refs in the reported workspace. This origin check is in addition to independent
+hash/options/log validation and happens before any credit. No network calls.
+Local synthetic and M3 Git object fixtures stand in for that protected ref;
+production still trusts workflow provenance and protection of those refs.
+Malformed individual receipt deserialization names the module and missing field.
+
+### M3 equality outcome
+
+The leaf canary adds a harmless public Rust constant. hax places it only in
+Der.fsti; Der.fst stays identical. This deliberately exercises own-interface
+hash binding and its consumer's transitive closure, not a superficial file touch.
+Exactly Der and Tls13formats require fresh strict checks. Restore then extract
+freshly again before equality: a changed run's source-bound receipt is never
+relabelled as evidence for restored Rust. Literal JSON equality and default
+v1.11.0 JSON/Markdown equality pass. See dev/v1120/results.md for timings/hash.
+Tamper fails closed. Debug report overhead is recorded separately from prover
+phase timings. Independent rerun/hosted CI/publication remain outside this run.
+
+Ratchet depth (2026-11-26). Schema 1 gains one optional proof_depth sibling
+alongside the snapshot fields. Both writers use the same baseline projection.
+This keeps snapshot() comparable and legacy records readable without migration.
+A present block must partition the baseline's proven count before use.
+
+Ratchet opt-in (2026-11-26). The composite action defaults to advisory mode.
+Direct callers of ci/run.py retain their previous enforcing default. Both modes
+use the same comparison and exception table. In advisory committed mode the
+writer stages the measured baseline separately so stale numbers cannot appear
+as current values in the summary or badges. Recorded files use the existing writer.
+
+2026-11-26 M2: The offline auth regression reads ordered values from real Git
+in a temporary repository, with and without a local checkout header. Git config
+reports the empty reset literally. The test captures output and compares it
+without including header values in assertion failures. Both cases passed.

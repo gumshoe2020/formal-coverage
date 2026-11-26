@@ -12,6 +12,7 @@ mod cfg;
 mod contract;
 mod evidence;
 mod fstar;
+pub use fstar::{apply_fstar_reuse, reuse};
 mod fstar_proof;
 mod kani;
 pub use fstar::{apply_fstar_evidence, FstarModule, FstarReceipt};

@@ -65,11 +65,11 @@ class RecordedRepo:
         git(self.work, 'commit', '-q', '-m', f'record {sha}')
         git(self.work, 'checkout', '-q', here)
 
-    def run(self, report, base=None):
+    def run(self, report, base=None, enforce='true'):
         Path(str(self.tool) + '-report.json').write_text(json.dumps(report))
         out = self.work / 'target/out'
         command = [sys.executable, str(ROOT / 'ci/run.py'), '--tool', str(self.tool), '--workspace', str(self.work),
-                   '--config', 'coverage/ci.json', '--base', base or self.base, '--output', str(out)]
+                   '--enforce-ratchet', enforce, '--config', 'coverage/ci.json', '--base', base or self.base, '--output', str(out)]
         return subprocess.run(command, capture_output=True, text=True), out
 
 
@@ -134,6 +134,15 @@ class RecordedRatchetTests(unittest.TestCase):
         result, _ = repo.run(self.report)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn('proven share decreased', result.stderr)
+        reason = result.stderr.strip().removeprefix('coverage FAIL: ')
+        result, out = repo.run(self.report, enforce='false')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        notice = f'ratchet: not enforced (would report ratchet FAIL: {reason})'
+        self.assertIn(notice, result.stdout)
+        self.assertIn(notice, (out / 'summary.md').read_text())
+        self.assertEqual((out / 'record/baseline.json').read_text(), encoded(self.report))
+        badge = json.loads((out / 'badges/ratchet.json').read_text())
+        self.assertEqual((badge['message'], badge['color']), ('off', 'lightgrey'))
 
     def test_exception_in_coverage_md_still_waives(self):
         repo = self.repo()
@@ -148,6 +157,9 @@ class RecordedRatchetTests(unittest.TestCase):
         result, out = repo.run(self.report)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn('maintainer exception', (out / 'summary.md').read_text())
+        result, _ = repo.run(self.report, enforce='false')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('would report ratchet PASS (maintainer exception:', result.stdout)
 
     def test_missing_sha_fails_closed_naming_the_commit(self):
         repo = self.repo()

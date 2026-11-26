@@ -8,6 +8,8 @@ import re
 import subprocess
 import tempfile
 
+from gitauth import github_env
+
 NAMES = {'proven', 'tested', 'unverified', 'proof-ratio', 'ratchet'}
 
 
@@ -23,7 +25,7 @@ def validate(source, result):
         if set(data) != {'schemaVersion', 'label', 'message', 'color'} or data['schemaVersion'] != 1 or any(
                 not isinstance(data[k], str) for k in ('label', 'message', 'color')):
             raise ValueError('invalid badge endpoint')
-        if path.stem == 'ratchet' and result != 'success':
+        if path.stem == 'ratchet' and result != 'success' and data['message'] != 'off':
             data.update(message='fail', color='red')
         badges[path.name] = json.dumps(data, sort_keys=True) + '\n'
     return badges
@@ -36,13 +38,7 @@ def publish(source, result):
     if not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', repository):
         raise ValueError('invalid GitHub repository')
     badges = validate(source, result)
-    # Token stays in an environment-provided HTTP header, never in the remote URL
-    # or printed command. This is the job's GITHUB_TOKEN, no other credential.
-    import base64
-    header = base64.b64encode(('x-access-token:' + os.environ['GH_TOKEN']).encode()).decode()
-    env = {**os.environ, 'GIT_CONFIG_COUNT': '1',
-           'GIT_CONFIG_KEY_0': 'http.https://github.com/.extraheader',
-           'GIT_CONFIG_VALUE_0': 'AUTHORIZATION: basic ' + header}
+    env = github_env(os.environ['GH_TOKEN'])
     with tempfile.TemporaryDirectory(prefix='coverage-badges-', dir=os.environ.get('RUNNER_TEMP')) as directory:
         def git(*args, capture=False):
             return subprocess.run(['git', '-C', directory, *args], env=env, check=True,

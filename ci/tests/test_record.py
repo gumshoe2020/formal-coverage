@@ -13,7 +13,7 @@ import fetch_data_branch
 import record
 from test_recorded import RecordedRepo, encoded, git
 from test_write_coverage import WriteCoverageTests
-from test_ratchet import fixture
+from test_ratchet import fixture, with_depth
 
 SHA1, SHA2 = '1' * 40, '2' * 40
 
@@ -101,15 +101,16 @@ class RecordTests(unittest.TestCase):
         repo = RecordedRepo(tempfile.mkdtemp(dir=self.root), {})
         git(repo.work, 'remote', 'add', 'origin', self.url)
         # main's push run: no floor yet (first adoption, no bootstrap) -> fails closed but records.
-        result, out = repo.run(self.report)
+        result, out = repo.run(with_depth(self.report, 2, 3))
         self.assertNotEqual(result.returncode, 0)
         sha = git(repo.work, 'rev-parse', 'HEAD')
         record.record(out / 'record', self.url)
         # a PR branched from that main commit: fetch the data branch, compare to the recorded sha.
-        (repo.work / 'README.md').write_text('docs\n')
+        (repo.work / 'src').mkdir()
+        (repo.work / 'src/parser.rs').write_text('code\n' * 10)
         repo.commit('pr change')
         self.assertTrue(fetch_data_branch.fetch(repo.work, repo.work / 'coverage/ci.json'))
-        result, out = repo.run(self.report, base=sha)
+        result, out = repo.run(with_depth(self.report, 2, 4), base=sha)
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn('ratchet PASS', (out / 'summary.md').read_text())
 

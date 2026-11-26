@@ -3,7 +3,7 @@
 # Adapted from gumshoe2020/bertie-tls scripts at 26b54ae; see THIRD_PARTY_NOTICES.md.
 """Write shields.io endpoint JSON badges from the committed baseline.
 
-usage: write-badges.py BASELINE_JSON OUT_DIR RATCHET_RESULT   (RATCHET_RESULT: pass|fail)
+usage: write-badges.py BASELINE_JSON OUT_DIR RATCHET_RESULT   (RATCHET_RESULT: pass|fail|off)
 Colors follow the plain thresholds documented in COVERAGE.md and never flatter.
 The proof-to-code ratio is formal-coverage's native ratio, projected into the
 baseline by coverage_metrics. Its badge is informational: it is never red.
@@ -47,14 +47,14 @@ def build(baseline, ratchet_result, config=None):
     total = baseline['total']
     percent = lambda lines: 100 * lines / total
     ratio_message, ratio_color = ratio_badge(baseline['proof_ratio'], config['proof_ratio'][config['proof_ratio']['stage']])
-    passed = ratchet_result == 'pass'
+    ratchet_color = {'pass': 'brightgreen', 'fail': 'red', 'off': 'lightgrey'}[ratchet_result]
     result = {
         'proven': badge('proven', f"{percent(baseline['proven']):.1f}%", proven_color(percent(baseline['proven']), config['proven_thresholds'])),
         'tested': badge('tested', f"{percent(baseline['tested']):.1f}%", 'blue'),
         'unverified': badge('unverified', f"{baseline['unverified']} lines",
                             unverified_color(percent(baseline['unverified']), config['unverified_thresholds'])),
         'proof-ratio': badge('proof/code', ratio_message, ratio_color),
-        'ratchet': badge('ratchet', 'pass' if passed else 'fail', 'brightgreen' if passed else 'red'),
+        'ratchet': badge('ratchet', ratchet_result, ratchet_color),
     }
 
     for name, value in result.items():
@@ -66,12 +66,10 @@ def main(argv):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('baseline_path')
     parser.add_argument('out_dir')
-    parser.add_argument('ratchet_result', choices=['pass', 'fail'])
+    parser.add_argument('ratchet_result', choices=['pass', 'fail', 'off'])
     parser.add_argument('--config')
     args = parser.parse_args(argv)
     baseline_path, out_dir, ratchet_result = args.baseline_path, args.out_dir, args.ratchet_result
-    if ratchet_result not in ('pass', 'fail'):
-        raise SystemExit('RATCHET_RESULT must be pass or fail')
     badges = build(json.loads(Path(baseline_path).read_text()), ratchet_result, load(args.config))
     Path(out_dir).mkdir(parents=True, exist_ok=True)
     for name, content in badges.items():

@@ -28,7 +28,10 @@ class WriteCoverageTests(unittest.TestCase):
             result = subprocess.run(command, cwd=work, capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stderr)
             baseline = json.loads((work / 'coverage/baseline.json').read_text())
-            self.assertEqual(baseline, snapshot(report))
+            expected = snapshot(report)
+            if proof_depth(report) is not None:
+                expected['proof_depth'] = proof_depth(report)
+            self.assertEqual(baseline, expected)
             result = subprocess.run(command + ['--check'], cwd=work, capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stderr)
             text = page.read_text()
@@ -61,6 +64,9 @@ class WriteCoverageTests(unittest.TestCase):
 
     def test_proof_depth_table_and_metrics(self):
         report = self.report()
+        totals = report['summary']['first_party']['security_relevant']
+        totals['statuses']['proven-extracted'] = 549
+        totals['sloc'] = sum(totals['statuses'].values())
         report['summary']['proof_depth'] = dict(
             safety_only_sloc=400, functional_own_code_only_sloc=50, functional_sloc=99)
         text = self.render(report)

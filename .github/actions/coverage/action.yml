@@ -1,6 +1,9 @@
 name: Formal coverage
 description: Build the pinned tool, measure receipts, check git baselines and stage badges
 inputs:
+  enforce-ratchet:
+    description: Enforce the coverage ratchet (true or false)
+    default: 'false'
   workspace:
     description: Project directory relative to github.workspace
     default: '.'
@@ -21,8 +24,8 @@ inputs:
     default: coverage-badges
 outputs:
   ratchet:
-    description: success, failure or skipped; includes measurement and committed-output checks
-    value: ${{ steps.measure.outcome }}
+    description: not-enforced when off, otherwise the measurement step outcome
+    value: ${{ steps.ratchet.outputs.result }}
   artifact-name:
     description: Badge artifact name
     value: ${{ inputs.artifact-name }}
@@ -64,6 +67,7 @@ runs:
       env:
         KIT_ROOT: ${{ steps.source.outputs.root }}
         PROJECT: ${{ inputs.workspace }}
+        ENFORCE_RATCHET: ${{ inputs.enforce-ratchet }}
         REPORT_ARGS: ${{ inputs.report-args }}
         BASELINE: ${{ inputs.baseline }}
         COVERAGE: ${{ inputs.coverage }}
@@ -80,24 +84,35 @@ runs:
           --tool "$RUNNER_TEMP/formal-coverage-build/release/formal-coverage" \
           --workspace "$PROJECT" --report-args "$REPORT_ARGS" \
           --baseline "$BASELINE" --coverage "$COVERAGE" --config "$CONFIG" \
-          --base "$base" --output "$GITHUB_WORKSPACE/target/coverage-ci" \
+          --enforce-ratchet="$ENFORCE_RATCHET" --base "$base" --output "$GITHUB_WORKSPACE/target/coverage-ci" \
           > logs/ci-kit/coverage.log 2>&1 || { tail -n 40 logs/ci-kit/coverage.log; exit 1; }
+        if [ "$ENFORCE_RATCHET" = false ]; then head -n 1 "$GITHUB_WORKSPACE/target/coverage-ci/summary.md"; fi
+    - id: ratchet
+      if: always()
+      shell: bash
+      env:
+        ENFORCE_RATCHET: ${{ inputs.enforce-ratchet }}
+        RESULT: ${{ steps.measure.outcome }}
+      run: |
+        if [ "$ENFORCE_RATCHET" = false ]; then RESULT=not-enforced; fi
+        echo "result=$RESULT" >> "$GITHUB_OUTPUT"
     - name: Record coverage failure in job summary
       if: failure()
       shell: bash
       run: echo 'Coverage failed. See the blocking step and coverage artifact logs; no passing ratchet is claimed.' >> "$GITHUB_STEP_SUMMARY"
     - name: Stage badges including failed ratchets
-      if: always() && steps.source.outcome == 'success'
+      if: always() && steps.source.outcome == 'success' && (steps.measure.outcome != 'success' || steps.ratchet.outputs.result != 'not-enforced')
       shell: bash
       env:
         KIT_ROOT: ${{ steps.source.outputs.root }}
         PROJECT: ${{ inputs.workspace }}
         BASELINE: ${{ inputs.baseline }}
         CONFIG: ${{ inputs.config }}
-        RESULT: ${{ steps.measure.outcome }}
+        RESULT: ${{ steps.ratchet.outputs.result }}
       run: |
         result=fail
         if [ "$RESULT" = success ]; then result=pass; fi
+        if [ "$RESULT" = not-enforced ]; then result=off; fi
         args=()
         if [ -n "$CONFIG" ]; then args+=(--config "$PROJECT/$CONFIG"); fi
         source="$PROJECT/$BASELINE"

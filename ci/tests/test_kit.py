@@ -6,6 +6,7 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import textwrap
 import unittest
 from unittest.mock import patch
 
@@ -98,12 +99,29 @@ class PublishTests(unittest.TestCase):
             (source / 'ratchet.json').write_text(json.dumps(badge))
             failed = json.loads(publish.validate(source, 'failure')['ratchet.json'])
             self.assertEqual((failed['message'], failed['color']), ('fail', 'red'))
+            badge.update(message='off', color='lightgrey')
+            (source / 'ratchet.json').write_text(json.dumps(badge))
+            self.assertEqual(json.loads(publish.validate(source, 'failure')['ratchet.json']), badge)
             (source / 'unexpected.json').write_text('{}')
             with self.assertRaises(ValueError):
                 publish.validate(source, 'success')
 
 
 class RunnerTests(unittest.TestCase):
+    def test_action_ratchet_output(self):
+        action = (ROOT / '.github/actions/coverage/action.yml').read_text()
+        self.assertIn("default: 'false'", action.split('  enforce-ratchet:', 1)[1].split('  workspace:', 1)[0])
+        self.assertIn('value: ${{ steps.ratchet.outputs.result }}', action)
+        step = action.split('    - id: ratchet\n')[1].split('    - name:')[0]
+        script = textwrap.dedent(step.split('      run: |\n')[1])
+        for enforce in ('true', 'false'):
+            for outcome in ('success', 'failure', 'skipped'):
+                with self.subTest(enforce=enforce, outcome=outcome), tempfile.NamedTemporaryFile() as output:
+                    subprocess.run(['bash', '-ec', script], check=True, env=dict(
+                        os.environ, ENFORCE_RATCHET=enforce, RESULT=outcome, GITHUB_OUTPUT=output.name))
+                    expected = outcome if enforce == 'true' else 'not-enforced'
+                    self.assertEqual(output.read().decode().strip(), 'result=' + expected)
+
     def test_local_pipeline_and_missing_floor(self):
         with tempfile.TemporaryDirectory() as directory:
             work = Path(directory)
@@ -136,6 +154,37 @@ class RunnerTests(unittest.TestCase):
                 run.floor_and_diff(work, 'coverage/baseline.json', '')
             with self.assertRaises(subprocess.CalledProcessError):
                 run.floor_and_diff(work, 'missing-baseline.json', base)
+            off = command + ['--enforce-ratchet', 'false']
+            for invalid in ('False', 'TRUE', '', '0'):
+                result = subprocess.run(command + ['--enforce-ratchet', invalid], capture_output=True, text=True)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn('invalid choice', result.stderr)
+            baseline_path = work / 'coverage/baseline.json'
+            baseline_path.write_text(baseline_path.read_text() + '\n')
+            summary = work / 'job-summary'
+            result = subprocess.run(off, capture_output=True, text=True, env=dict(os.environ, GITHUB_STEP_SUMMARY=str(summary)))
+            self.assertEqual(result.returncode, 0, result.stderr)
+            notice = 'ratchet: not enforced (would report ratchet FAIL: baseline.json or COVERAGE.md differs'
+            self.assertIn(notice, result.stdout)
+            self.assertIn(notice, summary.read_text())
+            result = subprocess.run(command + ['--enforce-ratchet', 'true'], capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('baseline.json or COVERAGE.md differs', result.stderr)
+            valid = baseline_path.read_text()
+            invalid = json.loads(valid)
+            invalid['total'] = 0
+            baseline_path.write_text(json.dumps(invalid))
+            git('add', 'coverage/baseline.json')
+            git('-c', 'user.name=Test', '-c', 'user.email=test@example.invalid', 'commit', '-m', 'bad floor')
+            baseline_path.write_text(valid)
+            result = subprocess.run(off + ['--base', 'HEAD'], capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('invalid merge-base totals', result.stderr)
+            report['dependency_inventory_complete'] = False
+            (work / 'fixture.json').write_text(json.dumps(report))
+            result = subprocess.run(off, capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn('incomplete inventory', result.stderr)
             # Every tool failure blocks, even when it produced a plausible report.
             tool.write_text('#!' + sys.executable + '\nraise SystemExit(7)\n')
             result = subprocess.run(command, capture_output=True, text=True)

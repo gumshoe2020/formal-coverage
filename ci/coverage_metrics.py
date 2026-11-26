@@ -42,3 +42,23 @@ def proof_depth(report):
     if any(type(v) is not int or v < 0 for v in parts) or sum(parts) != proven:
         raise ValueError('proof depth does not add up to proven runtime SLoC')
     return dict(safety_only=parts[0], functional_own_code_only=parts[1], functional=parts[2])
+
+
+def baseline(report):
+    data = snapshot(report)
+    depth = proof_depth(report)
+    if depth is not None:
+        data['proof_depth'] = depth
+        functional_lines(data)
+    return data
+
+
+def functional_lines(data):
+    if 'proof_depth' not in data:
+        return None
+    depth = data['proof_depth']
+    if (not isinstance(depth, dict) or set(depth) != {'safety_only', 'functional_own_code_only', 'functional'}
+            or any(type(v) is not int or v < 0 for v in depth.values())
+            or sum(depth.values()) != data['proven']):
+        raise ValueError('baseline proof depth does not add up to proven runtime SLoC')
+    return depth['functional_own_code_only'] + depth['functional']
