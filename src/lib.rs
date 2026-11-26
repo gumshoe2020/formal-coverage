@@ -16,6 +16,7 @@ pub use fstar::{apply_fstar_reuse, reuse};
 mod fstar_proof;
 mod kani;
 pub use fstar::{apply_fstar_evidence, FstarModule, FstarReceipt};
+mod module_files;
 mod modules;
 pub use evidence::{
     apply_evidence, apply_evidence_many, apply_upstream_registry, sha256, Claim, Escape,
@@ -34,6 +35,7 @@ use serde::{Deserialize, Serialize};
 pub use ship::NotShipped;
 pub use size::{dwarf_lines, DwarfLines, SizeFallback, SizeMode};
 use std::{
+    collections::BTreeMap,
     fs,
     path::{Path, PathBuf},
     process::Command,
@@ -242,6 +244,13 @@ pub fn inventory(root: &Path) -> Result<Report> {
     let mut units = Vec::new();
     let mut unparseable_files = Vec::new();
     let mut source_files = std::collections::BTreeSet::new();
+    let members: Vec<_> = metadata
+        .packages
+        .iter()
+        .filter(|p| metadata.workspace_members.contains(&p.id))
+        .collect();
+    let resolution = resolve_module_files(&members)?;
+    let mut canonical_files = BTreeMap::new();
     for package in metadata
         .packages
         .iter()
@@ -257,6 +266,12 @@ pub fn inventory(root: &Path) -> Result<Report> {
             .filter(|t| t.kind.iter().any(|k| k == "test" || k == "bench"))
             .map(|t| t.src_path.clone())
             .collect();
+        let crate_imports: Vec<_> = package
+            .targets
+            .iter()
+            .filter_map(|t| fs::read_to_string(&t.src_path).ok())
+            .flat_map(|source| macro_use_imports(&source))
+            .collect();
         let first_unit = units.len();
         let mut file_modules = Vec::new();
         let mut test_modules = Vec::new();
@@ -271,6 +286,7 @@ pub fn inventory(root: &Path) -> Result<Report> {
                 .to_string_lossy()
                 .to_string();
             source_files.insert(relative.clone());
+            canonical_files.insert(relative.clone(), path.canonicalize()?);
             let local = path
                 .strip_prefix(dir)
                 .unwrap_or(&path)
@@ -336,6 +352,8 @@ pub fn inventory(root: &Path) -> Result<Report> {
                     krate: &package.name.replace('-', "_"),
                     file: &relative,
                     source_lines: &source_lines,
+                    enclosing_imports: &crate_imports,
+                    crate_imports: &crate_imports,
                 },
                 false,
                 "",
@@ -353,6 +371,27 @@ pub fn inventory(root: &Path) -> Result<Report> {
                 .iter()
                 .find(|(file, _, _)| *file == u.file)
                 .expect("unit file inventoried");
+            let claims: Vec<_> = resolution
+                .claims
+                .iter()
+                .filter(|c| Some(&c.file) == canonical_files.get(&u.file))
+                .collect();
+            if claims.iter().any(|c| c.via_path) {
+                // A `#[path]` file takes the attributes of every declaration
+                // loading it: test only if each one is.
+                let all_test = claims
+                    .iter()
+                    .all(|c| c.test_crate || cfg_implies_test(&c.attrs));
+                if u.test_evidence == TestEvidence::None && all_test {
+                    u.test_evidence = if claims.iter().all(|c| c.test_crate) {
+                        TestEvidence::TestTarget
+                    } else {
+                        TestEvidence::CfgTest
+                    };
+                }
+                u.cfg_hax_scope |= claims.iter().any(|c| cfg_implies_hax(&c.attrs));
+                continue;
+            }
             let declared_test = test_modules.iter().any(|(declared, attrs)| {
                 (module == declared || module.starts_with(&format!("{declared}::")))
                     && cfg_implies_test(attrs)
@@ -371,6 +410,7 @@ pub fn inventory(root: &Path) -> Result<Report> {
             }
         }
     }
+    let path_hazards = path_hazard_escapes(resolution.hazards, &canonical_files, &units);
     let workspace_dirs: Vec<PathBuf> = metadata
         .packages
         .iter()
@@ -395,7 +435,66 @@ pub fn inventory(root: &Path) -> Result<Report> {
         .collect();
     let dependency_inventory_complete = declared_external_dependencies.is_empty();
     units.sort_by(|a, b| (&a.file, a.line, &a.id).cmp(&(&b.file, b.line, &b.id)));
-    Ok(Report { ship: None, not_shipped: vec![], proof_ratio_range: ProofRatioRange::default(), no_proof_ratio_gate: false, unparseable_files, unknown_hax_paths: vec![], ghost_lines: GhostLines::default(), schema: REPORT_SCHEMA, size_mode: String::new(), size_profile: String::new(), binary_sha256: None, size_fallbacks: vec![], approximation: "Syntactic token inventory; includes cfg-disabled functions and Verus ghost/spec code. Security classification pending.".into(), units, source_files: source_files.into_iter().collect(), security_relevant: 0, everything_else: 0, overrides: vec![], config_schema: 0, inputs: vec![], dependencies: vec![], build_dependencies: vec![], dev_dependencies_excluded: 0, closure: String::new(), closure_reason: None, target: String::new(), cargo_version: String::new(), declared_external_dependencies, dependency_inventory_complete, warnings: vec![], evidence_runs: vec![], fstar_definitions: vec![], fstar_proof: fstar_proof::ProofState::default(), fstar_extraction: fstar::ExtractionConfig::default(), non_fstar_trust: vec![], escape_hatches: vec![], trusted_items: vec![], upstream_claims: vec![] })
+    Ok(Report { ship: None, not_shipped: vec![], proof_ratio_range: ProofRatioRange::default(), no_proof_ratio_gate: false, unparseable_files, unknown_hax_paths: vec![], ghost_lines: GhostLines::default(), schema: REPORT_SCHEMA, size_mode: String::new(), size_profile: String::new(), binary_sha256: None, size_fallbacks: vec![], approximation: "Syntactic token inventory; includes cfg-disabled functions and Verus ghost/spec code. Security classification pending.".into(), units, source_files: source_files.into_iter().collect(), security_relevant: 0, everything_else: 0, overrides: vec![], config_schema: 0, inputs: vec![], dependencies: vec![], build_dependencies: vec![], dev_dependencies_excluded: 0, closure: String::new(), closure_reason: None, target: String::new(), cargo_version: String::new(), declared_external_dependencies, dependency_inventory_complete, warnings: vec![], evidence_runs: vec![], fstar_definitions: vec![], fstar_proof: fstar_proof::ProofState::default(), fstar_extraction: fstar::ExtractionConfig::default(), non_fstar_trust: vec![], escape_hatches: path_hazards, trusted_items: vec![], upstream_claims: vec![] })
+}
+/// Module files of every workspace member, followed from every target root.
+/// A `#[path]` may load a file another member measures, so the measured set
+/// and the declarations are workspace-wide.
+fn resolve_module_files(members: &[&Package]) -> Result<module_files::Resolution> {
+    let mut inventoried = std::collections::BTreeSet::new();
+    for package in members {
+        let mut files = Vec::new();
+        collect_rs(package.manifest_path.parent().unwrap(), &mut files)?;
+        for file in files {
+            inventoried.insert(file.canonicalize()?);
+        }
+    }
+    let roots: Vec<_> = members
+        .iter()
+        .flat_map(|p| &p.targets)
+        .map(|t| module_files::CrateRoot {
+            file: &t.src_path,
+            test_crate: t.kind.iter().any(|k| k == "test" || k == "bench"),
+        })
+        .collect();
+    Ok(module_files::resolve(&roots, &inventoried))
+}
+
+/// Each unfollowable `#[path]` declaration as a file-scope hazard in the
+/// declaring file, affecting the units of its target file.
+fn path_hazard_escapes(
+    hazards: Vec<module_files::Hazard>,
+    canonical_files: &BTreeMap<String, PathBuf>,
+    units: &[Unit],
+) -> Vec<Escape> {
+    let relative_of = |canonical: &Path| {
+        canonical_files
+            .iter()
+            .find(|(_, c)| c.as_path() == canonical)
+            .map(|(relative, _)| relative.clone())
+    };
+    hazards
+        .into_iter()
+        .map(|hazard| {
+            let declaring = relative_of(&hazard.declaring_file)
+                .unwrap_or_else(|| hazard.declaring_file.display().to_string());
+            let target = hazard.target.as_deref().and_then(relative_of);
+            let affected_units = units
+                .iter()
+                .filter(|u| Some(&u.file) == target.as_ref())
+                .map(|u| u.id.clone())
+                .collect();
+            Escape {
+                unit: format!("{declaring}::<file-scope>"),
+                affected_units,
+                file: declaring,
+                line: hazard.line,
+                kind: format!("#[path] module: {}", hazard.reason),
+                security: true,
+                first_party: true,
+            }
+        })
+        .collect()
 }
 fn module_path(local: &str, targets: &[Target]) -> String {
     let _ = targets;
@@ -493,7 +592,90 @@ fn module_decls(
     }
 }
 
-fn test_attribute(attrs: TokenStream) -> (TestEvidence, bool) {
+// A module import can bind an attribute macro under a prelude name, even
+// when the use declaration follows the function. A glob can bind any name
+// its source exports, so only globs rooted in std, core or alloc (whose
+// `test` and `bench` are the built-ins) are known not to shadow.
+fn may_import_name(tree: &syn::UseTree, name: &str) -> bool {
+    imports_name(tree, name, &mut Vec::new())
+}
+
+fn imports_name(tree: &syn::UseTree, name: &str, prefix: &mut Vec<String>) -> bool {
+    let unraw = |ident: &syn::Ident| syn::ext::IdentExt::unraw(ident).to_string();
+    match tree {
+        syn::UseTree::Path(path) => {
+            prefix.push(unraw(&path.ident));
+            let found = imports_name(&path.tree, name, prefix);
+            prefix.pop();
+            found
+        }
+        // `use a::test::{self};` binds `test`.
+        syn::UseTree::Name(item) if item.ident == "self" => {
+            prefix.last().is_some_and(|last| last == name)
+        }
+        syn::UseTree::Name(item) => unraw(&item.ident) == name,
+        syn::UseTree::Rename(item) => unraw(&item.rename) == name,
+        syn::UseTree::Glob(_) => !prefix
+            .first()
+            .is_some_and(|root| ["std", "core", "alloc"].contains(&root.as_str())),
+        syn::UseTree::Group(group) => group
+            .items
+            .iter()
+            .any(|item| imports_name(item, name, prefix)),
+    }
+}
+
+/// `use` declarations of one scope, including those inside item macros such
+/// as `verus! { ... }`, whose items belong to the enclosing module.
+fn scope_imports(tokens: &[TokenTree]) -> Vec<syn::UseTree> {
+    let mut imports = Vec::new();
+    for (i, token) in tokens.iter().enumerate() {
+        match token {
+            TokenTree::Ident(id) if id == "use" => {
+                let Some(end) = tokens[i..].iter().position(|t| t.to_string() == ";") else {
+                    continue;
+                };
+                let item = tokens[i..=i + end].iter().cloned().collect();
+                if let Ok(item) = syn::parse2::<syn::ItemUse>(item) {
+                    imports.push(item.tree);
+                }
+            }
+            TokenTree::Group(g)
+                if g.delimiter() == Delimiter::Brace
+                    && tokens[i.saturating_sub(2)..i]
+                        .iter()
+                        .any(|t| t.to_string() == "!") =>
+            {
+                let inner: Vec<_> = g.stream().into_iter().collect();
+                imports.extend(scope_imports(&inner));
+            }
+            _ => {}
+        }
+    }
+    imports
+}
+
+/// `#[macro_use] extern crate x;` (allowed only at a crate root) puts every
+/// macro of `x` in the macro_use prelude, which is searched before the
+/// standard prelude in every module of the crate. Each becomes a glob of `x`.
+fn macro_use_imports(source: &str) -> Vec<syn::UseTree> {
+    let Ok(file) = syn::parse_file(source) else {
+        return Vec::new();
+    };
+    file.items
+        .iter()
+        .filter_map(|item| match item {
+            syn::Item::ExternCrate(item)
+                if item.attrs.iter().any(|a| a.path().is_ident("macro_use")) =>
+            {
+                syn::parse_str::<syn::UseTree>(&format!("{}::*", item.ident)).ok()
+            }
+            _ => None,
+        })
+        .collect()
+}
+
+fn test_attribute(attrs: TokenStream, imports: &[syn::UseTree]) -> (TestEvidence, bool) {
     let mut unrecognized = false;
     for t in attrs {
         let TokenTree::Group(g) = t else { continue };
@@ -508,8 +690,13 @@ fn test_attribute(attrs: TokenStream) -> (TestEvidence, bool) {
             .collect();
         let path: Vec<_> = path.iter().map(String::as_str).collect();
         match path.as_slice() {
-            ["test" | "bench"]
-            | ["std" | "core", "prelude", "v1" | "rust_2015" | "rust_2018" | "rust_2021" | "rust_2024", "test"] => {
+            [name @ ("test" | "bench")] => {
+                if !imports.iter().any(|tree| may_import_name(tree, name)) {
+                    return (TestEvidence::BuiltinAttribute, false);
+                }
+                unrecognized = true;
+            }
+            ["std" | "core", "prelude", "v1" | "rust_2015" | "rust_2018" | "rust_2021" | "rust_2024", "test"] => {
                 return (TestEvidence::BuiltinAttribute, false)
             }
             [.., "test"] => unrecognized = true,
@@ -618,6 +805,11 @@ struct SourceContext<'a> {
     krate: &'a str,
     file: &'a str,
     source_lines: &'a [&'a str],
+    /// Imports visible from enclosing scopes of the same module (fn and impl
+    /// bodies see them; a `mod` starts afresh from `crate_imports`).
+    enclosing_imports: &'a [syn::UseTree],
+    /// Crate-wide macro_use imports, visible in every module.
+    crate_imports: &'a [syn::UseTree],
 }
 fn walk(
     stream: TokenStream,
@@ -632,6 +824,8 @@ fn walk(
         krate,
         file,
         source_lines,
+        enclosing_imports,
+        ..
     } = context;
     let inner_tokens = cfg::attributes(stream.clone(), true);
     let mut inherited_sites = inherited_sites.to_vec();
@@ -639,6 +833,12 @@ fn walk(
     let inner = inner_tokens.to_string();
     let inherited_attrs = format!("{inherited_attrs} {inner}");
     let tokens: Vec<_> = stream.into_iter().collect();
+    let mut imports = enclosing_imports.to_vec();
+    imports.extend(scope_imports(&tokens));
+    let nested = SourceContext {
+        enclosing_imports: &imports,
+        ..context
+    };
     let mut i = 0;
     let mut start = 0;
     while i < tokens.len() {
@@ -695,7 +895,8 @@ fn walk(
                     let attrs = cfg::attributes(tokens[start..i].iter().cloned().collect(), false);
                     let own_attributes = attrs.to_string();
                     let scope_attributes = format!("{} {}", inherited_attrs, own_attributes);
-                    let (mut test_evidence, unrecognized_test_attribute) = test_attribute(attrs);
+                    let (mut test_evidence, unrecognized_test_attribute) =
+                        test_attribute(attrs, &imports);
                     if test_evidence == TestEvidence::None && cfg_implies_test(&scope_attributes) {
                         test_evidence = TestEvidence::CfgTest;
                     }
@@ -750,7 +951,7 @@ fn walk(
                         walk(
                             body.stream(),
                             &format!("{module}::{name}"),
-                            context,
+                            nested,
                             verus,
                             &format!(
                                 "{} {}",
@@ -797,6 +998,7 @@ fn walk(
                     .position(|t| t.to_string() == "trait")
                     .and_then(|n| prefix.get(n + 1))
                     .map(ToString::to_string);
+                let is_module = child.is_some();
                 let extra = child.or(impl_name).or(trait_name);
                 let next = extra
                     .map(|x| {
@@ -810,7 +1012,14 @@ fn walk(
                 walk(
                     g.stream(),
                     &next,
-                    context,
+                    if is_module {
+                        SourceContext {
+                            enclosing_imports: context.crate_imports,
+                            ..context
+                        }
+                    } else {
+                        nested
+                    },
                     verus || prefix.iter().any(|t| t.to_string() == "verus"),
                     &format!(
                         "{} {}",
@@ -857,6 +1066,8 @@ pub(crate) fn runtime_sloc(source: &str, file: &str) -> usize {
             krate: "dependency",
             file,
             source_lines: &source_lines,
+            enclosing_imports: &[],
+            crate_imports: &[],
         },
         false,
         "",

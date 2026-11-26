@@ -1,5 +1,45 @@
 # Changelog
 
+## 1.12.4 — 2026-11-26
+
+Both changes below are **measurement changes**. They move lines between
+runtime and test code; neither changes proofs.
+
+- **Measurement change: `#[path]` modules are followed.** Out-of-line module
+  files are now located from every target root as rustc locates them,
+  including `#[path = "..."]` on `mod` items and inline modules and the
+  mod.rs vs non-mod-rs directory rules. A `#[path]` file takes the
+  attributes of the declarations that load it, so the units of
+  `#[cfg(test)] #[path = "x.rs"] mod x;` are test code (`test_evidence:
+  cfg-test`). Before, they counted as runtime. A file loaded by several
+  declarations is test only if every one is. A `#[path]` that points outside
+  the measured workspace sources, at a missing or unreadable file, back at an
+  enclosing file, or at a file another declaration already loads is now a
+  first-party file-scope hazard and fails the gate, as is a
+  `#[cfg_attr(.., path = ..)]`, which is not followed. A `#[path]` into
+  another workspace member's sources is followed. Unit ids keep their
+  file-path module names.
+- **Measurement change: a possibly shadowed bare `#[test]` is not trusted.**
+  A bare `#[test]`/`#[bench]` counts as the built-in only when no `use` in
+  its module, or in an enclosing fn or impl body, can bind the name: no
+  `use x::test;`, no `use x::y as test;`, no `use x::test::{self};`, and no
+  glob except from `std`, `core` or `alloc`. Globs such as `use super::*`
+  count, because they import the parent's imports. A new `mod` starts clean,
+  except for `#[macro_use] extern crate x;` at the crate root, which applies
+  everywhere. Without built-in evidence the function needs `#[cfg(test)]` or a
+  test target to count as test code. Otherwise it is runtime and the report
+  warns `<unit>: unrecognized test attribute; measured as runtime`.
+- Measured impact against 1.12.3 (first-party security SLoC,
+  proven/tested/unverified/total, compiled-files, no prover logs):
+  bertie-tls main is unchanged at 0/1578/3454/5032. Its 25 `use super::*` test
+  modules switch from `builtin-attribute` to `cfg-test` evidence and stay test.
+  scratch-server goes from 0/824/886/1710 to 0/666/700/1366: 48 units
+  (344 lines) of its `#[cfg(test)] #[path]` test provider
+  (`src/tls_test_provider.rs`, `src/record_tests.rs`) leave runtime, and its
+  test code grows from 2633 to 2977 lines. The five
+  `record_tests::stage15_*` tests stay test. The six kit fixtures are
+  unchanged. Per-unit list: `dev/v1124/impact.md`.
+
 ## 1.12.3 — 2026-11-26
 
 - The coverage ratchet treats a proven-share drop explained by deleted proven

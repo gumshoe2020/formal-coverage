@@ -34,6 +34,30 @@ async fn tokio_case() {}
 #[attrs::test]
 fn authorize() {}
 
+mod shadowed {
+    #[test]
+    fn release_callable() {}
+    use attrs::test;
+}
+
+mod shadowed_scopes {
+    use attrs::test;
+    pub struct S;
+    impl S {
+        #[test]
+        fn method_callable() {}
+    }
+    pub fn outer() {
+        #[test]
+        fn inner_callable() {}
+    }
+    mod fresh {
+        use std::fmt;
+        #[test]
+        fn still_builtin() {}
+    }
+}
+
 #[std::prelude::rust_2021::test]
 fn qualified() {}
 
@@ -106,12 +130,16 @@ fn test_code_is_detected_structurally_at_any_depth() {
         "nested_helper",
         "shared_helper",
         "integration",
+        "still_builtin",
     ] {
         assert_eq!(category(&r, name), Category::Test, "{name}");
     }
     for name in [
         "tokio_case",
         "authorize",
+        "release_callable",
+        "method_callable",
+        "inner_callable",
         "entry",
         "helper_runtime",
         "any_test",
@@ -125,6 +153,9 @@ fn test_code_is_detected_structurally_at_any_depth() {
         ("nested_helper", "cfg-test"),
         ("shared_helper", "test-target"),
         ("authorize", "none"),
+        ("method_callable", "none"),
+        ("inner_callable", "none"),
+        ("still_builtin", "builtin-attribute"),
     ] {
         let unit = r.units.iter().find(|u| u.name == name).unwrap();
         assert_eq!(
@@ -143,7 +174,7 @@ fn test_code_is_detected_structurally_at_any_depth() {
         s.test_code.sloc,
         test_units.clone().map(|u| u.sloc).sum::<usize>()
     );
-    assert_eq!(s.test_code.units, 11);
+    assert_eq!(s.test_code.units, 12);
     let runtime: usize = r
         .units
         .iter()
@@ -156,7 +187,7 @@ fn test_code_is_detected_structurally_at_any_depth() {
     );
     let md = formal_coverage::markdown(&r);
     assert!(md.contains(&format!(
-        "TEST CODE: {} SLoC in 11 first-party units",
+        "TEST CODE: {} SLoC in 12 first-party units",
         s.test_code.sloc
     )));
     assert!(md.contains("| detect::policy_tests::diagnostic_classes_and_privacy | src/lib.rs:"));

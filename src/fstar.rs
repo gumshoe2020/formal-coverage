@@ -1569,6 +1569,8 @@ mod tests {
                 krate: "crate",
                 file: "src/m.rs",
                 source_lines: &lines,
+                enclosing_imports: &[],
+                crate_imports: &[],
             },
             false,
             "",

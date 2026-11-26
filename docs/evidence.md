@@ -411,11 +411,20 @@ function is `test-code` when it has a built-in `#[test]` or `#[bench]` attribute
 (including the standard and core prelude paths for `test`), when an enclosing item at any depth has a `#[cfg(...)]` that only
 holds under `test` (`test`, `all(.., test, ..)`, an `any` of such terms), when it
 is in an out-of-line module declared under such a cfg (`#[cfg(test)] mod name;`,
-followed by module path; `#[path]` is not followed), or when it is in an
+including `#[path = "..."]` declarations, which are resolved as rustc resolves
+them; a file loaded by several declarations is test only if every one is), or when it is in an
 integration-test or bench target (`tests/`, `benches/`, or a test/bench target
 source; cargo builds these with `--test`, which sets `cfg(test)`). Examples stay
-runtime. Each unit records its structural evidence in `test_evidence`. Other
-attributes ending in `::test` on runtime functions produce a warning naming the unit.
+runtime. Each unit records its structural evidence in `test_evidence`. A bare
+`#[test]` or `#[bench]` is the built-in only when no `use` in its module (or an
+enclosing fn or impl body) can bind that name: a direct or renamed import of
+`test`, a glob not rooted in `std`, `core` or `alloc` (including `use super::*`),
+or a `#[macro_use] extern crate` at the crate root. Otherwise it needs one of the
+other kinds of evidence. Other attributes ending in `::test`, and a possibly
+shadowed bare one, produce a warning naming the unit when it is measured as runtime.
+A `#[path]` declaration whose file is outside the measured workspace sources,
+missing, circular, conditional (`cfg_attr`) or already loaded by another
+declaration is a first-party file-scope hazard, which fails the gate.
 Test code stays in the reachability graph, is excluded from runtime
 totals, and is reported as a TEST CODE line and `summary.test_code`.
 

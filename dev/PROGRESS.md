@@ -461,3 +461,14 @@ HOOK-ENV-READY
   5032 -> 5030, functional 369 -> 381. CHANGELOG 1.12.3 covers the
   classification measurement change with its measured impact, the allowance
   and the failure output.
+
+## formal-coverage v1.12.4 — follow `#[path]` modules, don't trust a possibly shadowed `#[test]`
+
+- 2026-11-26: Claude Code took over after Codex's usage-limit stop. Codex had left no v1.12.4 work (tree clean at cb3d236).
+- [x] M1 cherry-picked fae5a14 and reviewed it against the rules. Added: std/core/alloc globs don't shadow, `{self}` imports, `#[macro_use] extern crate` applies crate-wide, a shadowed bare test/bench attribute gets the warning, and item-macro `use` items count. tests/test_shadowing.rs added. cargo test --locked: 203 passed, 1 ignored. clippy and fmt clean.
+- [x] M2 src/module_files.rs follows `#[path]` (and default) module declarations from every target root as rustc does. Attributes on the declarations apply to every unit of a `#[path]` file. Escaping, unreadable, duplicate, circular, cfg_attr and malformed paths are file-scope hazards. Fixture layout cross-checked with rustc dep-info (15/15 files). cargo test 206 passed, 1 ignored. clippy and fmt clean.
+- [x] M3 impact, v1.12.3 vs candidate, compiled-files reports. Fixtures and fix-3 counterexample unchanged. bertie-tls 0/1578/3454/5032 unchanged; 25 test units change evidence only. scratch-server 0/824/886/1710 → 0/666/700/1366: the approved 48 units / 344 SLoC leave runtime, and the 5 `record_tests::stage15_*` units stay test. Resolution made workspace-wide after the first run flagged a `#[path]` into another member's measured sources (judgment call in NOTES). Per-unit record: dev/v1124/impact.md.
+- [x] M4 tests/path_modules.rs (sibling, subdirectory, mod.rs, non-mod-rs and nested inline, `#[path]` directory, cfg(test) on the mod item, outside/target/missing/duplicate/circular/cfg_attr hazards, cross-member) plus the M1 shadowing tests. CHANGELOG 1.12.4 (unreleased) states both measurement changes with measured impact. docs/evidence.md updated.
+- Final (offline): cargo test --locked 207 passed / 1 ignored. clippy -D warnings, fmt --check and git diff --check pass. Python 125 OK. decoy_suite.sh passes in both modes, decoy unchanged. ci/lint-actions.py passes. No push, tag, network or consumer edits.
+
+TEST-SCOPE-READY

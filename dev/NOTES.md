@@ -1247,3 +1247,179 @@ which is the conservative direction. Resolving `#[path]` declarations would
 make the shadowing fix count-neutral for scratch-server. It would also drop
 those 344 lines from scratch-server's runtime totals. Both are measurement changes, so both need Andrew's
 decision first.
+
+## 2026-11-26 — formal-coverage v1.12.4 (`#[path]` modules, shadowed `#[test]`)
+
+Claude Code took over after Codex's usage-limit stop. Codex had left no
+v1.12.4 work: the tree was clean at cb3d236.
+
+### M1 — shadowed bare `#[test]` (cherry-pick of fae5a14, reviewed)
+
+Checked fae5a14 against the rules. It already handled direct imports, imports
+renamed to `test`, order independence (a `use` after the fn still binds),
+inheritance into fn and impl bodies, and a fresh scope for every `mod`. The
+`std`/`core` prelude paths stay built-in. I changed four things:
+
+- Globs. fae5a14 treated every glob as shadowing, including `use std::fmt::*`.
+  Now a glob whose path starts with `std`, `core` or `alloc` is known not to
+  shadow: their only `test`/`bench` exports are the built-ins in the preludes.
+  Every other glob counts as shadowing, because we can't see what it exports.
+  That includes `use super::*`, `use crate::*` and `use self::*`: a glob also
+  imports the parent's private imports, so a parent's `use attrs::test;` can
+  arrive through `use super::*`. This is the conservative choice. Its cost is
+  that the usual `#[cfg(test)] mod tests { use super::*; #[test] ... }` loses
+  `builtin-attribute` evidence. Those units still count as test through
+  `cfg-test` evidence.
+- `use a::test::{self};` binds `test`. It is now caught.
+- `#[macro_use] extern crate x;` (rustc only allows it at the crate root,
+  E0468) puts every macro of `x` in the macro_use prelude. Name resolution
+  searches that prelude before the standard prelude, in every module of the
+  crate. It now acts as a glob of `x` that a new `mod` does not reset. It is
+  read from each target root of the package. `std`, `core` and `alloc` are
+  exempt, as with globs.
+- A bare `#[test]`/`#[bench]` that may be shadowed now also sets the
+  "unrecognized test attribute" warning, as `#[attrs::test]` does. Before
+  this, a shadowed `#[bench]` was silently runtime.
+- `use` items inside item-macro bodies (`verus! { use ...; }`) belong to the
+  enclosing module, so they now count for its scope.
+
+A `use` disabled by cfg still counts, which is conservative. tests/test_shadowing.rs
+covers each case, including the `#[macro_use] extern crate std;` exemption.
+cargo test --locked: 203 passed, 1 ignored. clippy -D warnings and fmt clean.
+
+### M2 — follow `#[path]` module declarations
+
+New src/module_files.rs walks out-of-line `mod` declarations from every
+target root of each workspace package, following rustc_expand/src/module.rs:
+
+- Default files: `name.rs` or `name/mod.rs` under the module directory.
+  A non-mod-rs file `foo.rs` adds `foo/` (rustc's `DirOwnership::Owned {
+  relative }`). Exactly one must exist.
+- `#[path = "p"] mod x;` joins `p` to the enclosing module directory. At file
+  level that is the declaring file's directory, whether or not it is a mod.rs.
+  Inside inline modules it is that directory plus the inline module names,
+  with the `foo/` prefix in a non-mod-rs file. A `#[path]` file then acts as
+  a mod.rs: its own `mod y;` is a sibling (rustc: `relative: None`).
+- `#[path = "d"] mod x { ... }` on an inline module names a directory.
+- rustc reads the first `path` attribute. The path is not normalized
+  lexically, so `..` resolves through the file system (canonicalize).
+- Item-macro bodies (`verus! { ... }`) are transparent, as in module_decls.
+
+The fixture in tests/path_modules.rs was cross-checked against rustc 1.100.0
+(`rustc --test --emit=dep-info`). It loads exactly the 15 files the walk
+predicts, including `src/nm/inl/y.rs` and `src/sub/child.rs`.
+
+Each file reached through a `#[path]` declaration, or below one, gets the
+attributes of every declaration that loads it: the enclosing `mod` items'
+attributes and the files' inner attributes. Then:
+
+- Its units get `cfg-test` evidence when every declaration implies
+  cfg(test). If every declaration comes from a test or bench target root, the
+  evidence is `test-target` instead.
+- `cfg_hax_scope` is set when any declaration implies cfg(hax).
+- Files reached without `#[path]` keep the existing module-path mechanism,
+  so nothing else can move. As with default module files, only the test and
+  hax implications of the `mod` item's attributes reach the units. Other
+  attributes (`#[cfg(feature)]`, `#[verifier::external]`) were not applied to
+  default module files before either.
+- Unit ids keep their file-path module names, e.g.
+  `scratch_server::record_tests::stage15_*` and not
+  `scratch_server::tls::test_provider::record_tests::stage15_*`. Renaming
+  ids would break ratchet continuity for every unit in a `#[path]` file, and
+  that identity change was not part of the approval.
+
+Report hazards. Each is a first-party `<file-scope>` escape in the declaring
+file, at the `mod` line, with kind `#[path] module: <reason>`. It blocks the
+gate ("unattributed file-scope hazard"), and the units of the target file,
+if inventoried, are its affected units. How rustc treats each case, checked
+with `rustc --emit=metadata` with and without `--test`:
+
+| Case | rustc | Report |
+| --- | --- | --- |
+| `#[path]` outside the package, or into an uninventoried dir (`target/`, a nested package) | compiles it | hazard: its code is unmeasured |
+| missing or unreadable file | `couldn't find file` error, but only when the module is cfg-enabled (a `#[cfg(test)]` one compiles in a normal build) | hazard |
+| file already loaded by another declaration in the same crate | compiles it twice as separate modules | hazard, and the file is test only if every declaration is |
+| circular (`#[path = "lib.rs"]` in lib.rs) | `circular modules` error | hazard |
+| `#[cfg_attr(.., path = ..)]` | applies the path when the cfg holds | hazard, not followed |
+| non-string `path` value | malformed-attribute error | hazard |
+
+Hazards apply only inside a `#[path]` chain. A missing default module file
+outside one stays silent, as before.
+cargo test --locked: 206 passed, 1 ignored (with the M4 test file present but
+uncommitted). clippy and fmt clean.
+
+### M3 — measured impact
+
+Before: the v1.12.3 release binary, built from `git archive cb3d236`. After:
+the candidate. Both ran the compiled-files CLI report with a scratch
+`--check-target-dir` on the six Cargo fixtures, the fix-3 counterexample,
+bertie-tls origin/main (1a46d03, the existing read-only worktree) and
+scratch-server (8e663e9; its checkout, read-only). Neither external tree's
+`git status` changed. The per-unit record is dev/v1124/impact.md.
+
+Workspace-wide resolution (code change made during M3). The first after-run
+had one change beyond the expected ones: a new hazard on scratch-server
+`crates/transport-core/src/lib.rs:12`,
+`#[path = "../../http-subset/src/lib.rs"] pub mod http;`. That file belongs
+to the http-subset workspace member and is measured there. The M2 resolver
+only counted the declaring package's own files as measured, so it called the
+file "outside the crate". Nothing escapes measurement here. rustc compiles the
+file into both crates, and the inventory measures it once, as http-subset's
+units. I made the measured set and the declarations workspace-wide. A
+`#[path]` into another member's sources is now followed. Its units are test
+only if every declaration that loads the file, from any crate, is test (here
+http-subset's own lib root is not). The "escape" hazard now means
+"outside the measured workspace sources", i.e. code no report measures.
+**Judgment call for Andrew:** a strict reading of "escapes the crate" would
+make this declaration a hazard, which fails scratch-server's gate with an
+unattributed file-scope hazard. I did not do that, because no code goes
+unmeasured. It is a one-line change in module_files::locate if wanted.
+
+Results (first-party security SLoC, proven/tested/unverified/total):
+
+- Six fixtures and the fix-3 counterexample: no unit changes. Escapes and
+  warnings are identical.
+- bertie-tls: 0/1578/3454/5032 before and after. 25 test units (439 SLoC)
+  change evidence only, from builtin-attribute to cfg-test. They are
+  `#[cfg(test)] mod tests { use super::*; #[test] ... }`, whose `use super::*`
+  glob may now shadow `test`. Same 25 as fae5a14 alone in fix 4.
+- scratch-server: 0/824/886/1710 → 0/666/700/1366 (hazard 83 unchanged).
+  Test code 2633 → 2977. Exactly the approved 48 units / 344 SLoC
+  (158 tested, 186 unverified) move from runtime to test: 46 in
+  src/tls_test_provider.rs and 2 in src/record_tests.rs (`random`,
+  `compare_unpad`). The fix-4 note named src/binary_handshake_tests.rs as a
+  third file. It holds only one `#[test]` (no glob), which was already test
+  and stays builtin-attribute. The five `record_tests::stage15_*` units stay
+  test, now with cfg-test evidence through the `#[path]` chain
+  (src/tls.rs → tls_test_provider.rs → record_tests.rs). The other 33 changes
+  are evidence only: 29 test units go from builtin-attribute to cfg-test
+  (`use super::*` globs) and 4 in tests/differential.rs go from
+  builtin-attribute to test-target.
+
+No unit changes beyond the two approved gaps. Unit ids and SLoC are
+unchanged.
+
+### M4 — tests, CHANGELOG, final verification
+
+tests/path_modules.rs covers: the scratch-server shape (cfg(test) `#[path]`
+chain from a non-mod-rs file, `use super::*` in the leaf); a subdirectory
+`#[path]` whose `mod child;` is a sibling; a mod.rs file; a non-mod-rs file
+at top level and inside an inline module; an inline module in lib.rs; an
+inline module with a `#[path]` directory; a plain `#[path]` runtime module;
+hazards for outside the workspace, an uninventoried `target/` file, a missing
+file, a duplicate declaration, a circular one and `cfg_attr`; the duplicate
+staying runtime; and a `#[path]` into another workspace member. With the
+resolver disabled, the main fixture test fails. tests/test_shadowing.rs (M1)
+and tests/test_detection.rs cover the shadowing cases.
+CHANGELOG `## 1.12.4 — unreleased` calls both items measurement changes and
+gives the measured impact. docs/evidence.md describes both rules. Cargo
+version left at 1.12.3, as in earlier unreleased entries.
+
+Final verification (offline): cargo test --locked 207 passed, 0 failed,
+1 ignored. cargo clippy --locked --all-targets -- -D warnings passed.
+cargo fmt --check passed. `python3 -m unittest discover -s ci/tests` ran 125
+tests, OK. dev/v1122/decoy_suite.sh passed in both modes (207 Rust, 125
+Python, decoy unchanged). ci/lint-actions.py passed. git diff --check passed.
+No local paths in the committed diff. No push, tag, release, gh/GitHub API
+calls, network or consumer edits. The bertie and scratch-server trees were
+only read. Shared-memory diary not filed (tools unavailable here).
