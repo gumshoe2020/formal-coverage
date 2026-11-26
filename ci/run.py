@@ -82,8 +82,8 @@ def recorded_floor(workspace, base, config):
     if text is None:
         text = bootstrap_floor(workspace, base, config)
     floor = json.loads(text)
-    if not isinstance(floor, dict) or set(floor) - {'proof_depth'} != set(snapshot_keys()):
-        raise ValueError(f'unreadable floor for {base}: not a schema-1 baseline')
+    if not isinstance(floor, dict) or floor.get('schema') not in (1, 2) or set(floor) - {'proof_depth'} != set(snapshot_keys()):
+        raise ValueError(f'unreadable floor for {base}: unsupported baseline schema or fields')
     return floor
 
 
@@ -175,7 +175,7 @@ def ratchet_committed(args, workspace, output, report_path, report):
     page = (workspace / args.coverage).read_text()
     committed = json.loads((workspace / args.baseline).read_text())
     if stale:
-        if not isinstance(committed, dict) or set(committed) - {'proof_depth'} != set(snapshot_keys()) or committed['schema'] != 1:
+        if not isinstance(committed, dict) or set(committed) - {'proof_depth'} != set(snapshot_keys()) or committed['schema'] not in (1, 2):
             raise ValueError('invalid committed baseline')
         validate_floor(committed)
         committed = json.loads(baseline_path.read_text())
@@ -259,6 +259,7 @@ def main():
     try:
         run(args)
     except (ValueError, KeyError, TypeError, OSError, subprocess.CalledProcessError) as exc:
+        sys.stdout.flush()
         parser.exit(1, f'coverage FAIL: {exc}\n')
 
 

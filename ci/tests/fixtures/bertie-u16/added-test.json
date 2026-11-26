@@ -1,0 +1,21 @@
+{
+  "category": "test",
+  "crate_name": "bertie_tls",
+  "end_line": 1095,
+  "file": "src/tls13utils.rs",
+  "first_party": true,
+  "fstar_annotation_sloc": 0,
+  "ghost_sloc": 0,
+  "id": "bertie_tls::tls13utils::tests::u16_encoder_matches_to_be_bytes",
+  "inline_proof_sloc": 0,
+  "line": 1089,
+  "module": "tls13utils::tests",
+  "name": "u16_encoder_matches_to_be_bytes",
+  "proof_scope": null,
+  "runtime_sloc": 0,
+  "security": true,
+  "sloc": 7,
+  "status": "unverified",
+  "verus": false,
+  "test_evidence": "builtin-attribute"
+}

@@ -431,3 +431,33 @@ HOOK-ENV-READY
 2026-11-26 hook-env part 2 M2: three publisher decoy controls failed with the scrub disabled and passed with it enabled. Local transfer substituted for push.
 2026-11-26 hook-env part 2 M3: replaced known issue with the fix and documented publisher isolation in ci/README.md.
 2026-11-26 hook-env part 2: all requested local checks passed using file-only fixture transfers. HOOK-ENV-2-BLOCKED on milestone commits only; HEAD remains e5588a1.
+2026-11-26 M1: Added schema-2 inventory evidence to the existing baseline. Schema-1 floors remain readable.
+2026-11-26 M2: Ratchet checks every formerly proven unit, classifies scope exits and demotions, and requires diff evidence for size loss. Accepted drops still require depth progress.
+2026-11-26 M3: Seven deletion tests pass, including the hax fixture with real CLI reports and a Git diff. Synthetic F* receipts exercise the −2 proven, −2 total, +12 functional pass and unchanged-depth failure. Compared v1.12.2 and current projections on the same whole-crate reports (proven/tested/unverified): classification 0/0/3, evidence 0/3/8, hax 0/0/3, inventory 0/0/11, doc_comments 0/0/3, ghost 0/0/41. All matched.
+2026-11-26 M4: Added consumer rule 1 and schema rollout to ci/README.md and an unreleased changelog entry. The root README has no consumer AGENTS.md template. All eight deletion tests pass. Against v1.12.2, the real CLI regression also preserved proven/tested/unverified at 14/0/1 before and 12/0/1 after, with identical serialized baselines under reversed report unit order. Offline cargo test (201), clippy with warnings denied, fmt check and actionlint passed. Python discovery ran 121 tests: 110 passed, 11 publisher/record tests require local fixture pushes and errored when the no-push guard refused them. The decoy suite reported the same 11 errors and a byte-unchanged decoy. Full acceptance is blocked on those fixture pushes.
+
+### 1.12.3 fix 2
+- M1 removed the inline-proof growth veto after confirming that the allowance operates after measurement and still checks the surviving unit's identity, scope and proven status.
+- M2 verified the floor span 337–350 intersects four removed old-side lines (345–346 and 348–349), covering the two-line runtime loss. The second hunk replaces two lines. New-side additions contribute zero. The existing zero-context interval calculation needs no change.
+- M3 added the real encoder entries and all three encoder hunks. The test supplies one stable tested line so a proven loss changes the share and exercises the allowance. It checks functional gains of 12 and zero.
+- M4 full Bertie replay still fails the existing identity guard on the added encoder test. Exact output is in NOTES. README and CHANGELOG do not describe the dropped guard.
+- Verification passed locally: cargo test --locked, clippy --locked --all-targets with warnings denied, fmt --check, all 122 Python tests, actionlint, and the hook-environment decoy suite (decoy unchanged). Checked the new fixture for local home and temporary path prefixes.
+
+### 1.12.3 fix 3
+- Blocked the proposed category-only replacement filter after reproducing a release-callable function classified as test. The in-memory M1 change accepted it. Counterexample and full Bertie replay are in NOTES. No ratchet or regression-suite changes committed.
+- Local verification on the unchanged gate passed: cargo test --locked, clippy --locked --all-targets -- -D warnings, fmt --check, all 122 Python tests, the decoy suite (decoy unchanged), and actionlint.
+
+### 1.12.3 fix 4
+- M1. Compared compiled-files CLI reports before and after on all six Cargo fixtures, the fix-3 identity attribute, Bertie origin/main and scratch-server. Consumer counts and all six ordinary fixtures matched. Only example::authorize changed in the counterexample (two unverified runtime lines). Structural detection regression passed.
+- M2. The unmatched-replacement loop accepts only the three structural evidence values. Eleven deletion tests passed, including a real Bertie test addition, runtime rename, cfg-test move with and without depth gain, and unverified identity-attribute helper.
+- M3. Flushed stdout before the failure verdict and repeated the verdict after the action log tail. A failing committed-floor fixture ran the actual shell handler with a buffered report longer than the tail and observed the reason on the final line.
+- M1 follow-up (blocked). Codex had left uncommitted work that stops a
+  possibly shadowed bare `#[test]` from counting as built-in. I completed it
+  for fn and impl scopes; it passes all tests. It fails the impact check on
+  scratch-server: tested 824 -> 917, total 1710 -> 1803, five record_tests
+  units. Parked on branch v1123/shadowed-test-attribute for Andrew. Details
+  in NOTES.
+- M4. Full Bertie check (fix-2 inputs) returns []: proven 4065 -> 4063 of
+  5032 -> 5030, functional 369 -> 381. CHANGELOG 1.12.3 covers the
+  classification measurement change with its measured impact, the allowance
+  and the failure output.

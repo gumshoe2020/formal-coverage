@@ -130,6 +130,26 @@ class DirtyTreeTests(unittest.TestCase):
         self.assertNotIn('uncommitted', result.stderr)
         self.assertEqual(result.stderr, 'coverage FAIL: security code changed without increasing proven share\n')
 
+    def test_action_displays_failure_reason_after_report_tail(self):
+        self.repo.edit_security_line()
+        self.repo.commit('touch security code without improving coverage')
+        logs = self.repo.work / 'logs/ci-kit'
+        logs.mkdir(parents=True)
+        action = (ROOT / '.github/actions/coverage/action.yml').read_text()
+        redirection = '> logs/ci-kit/coverage.log 2>&1'
+        handler = action.split(redirection, 1)[1].split('\n        if [', 1)[0]
+        # Write a buffered report prefix in the run.py process before the real verdict.
+        runner = (f'import sys; sys.path.insert(0, {str(ROOT / "ci")!r}); import run; '
+                  'print("report row\\n" * 80); run.main()')
+        result = gitenv.run(['bash', '-c', '"$@" ' + redirection + handler, 'action',
+                             sys.executable, '-c', runner, '--tool', str(self.repo.tool),
+                             '--workspace', '.', '--base', self.repo.base],
+                            cwd=self.repo.work, capture_output=True, text=True)
+        verdict = 'coverage FAIL: security code changed without increasing proven share'
+        self.assertEqual(result.returncode, 1)
+        self.assertEqual((logs / 'coverage.log').read_text().splitlines()[-1], verdict)
+        self.assertEqual(result.stdout.splitlines()[-2:], [verdict, verdict])
+
     def test_action_log_files_are_exempt_by_exact_path_only(self):
         logs = self.repo.work / 'logs/ci-kit'
         logs.mkdir(parents=True)

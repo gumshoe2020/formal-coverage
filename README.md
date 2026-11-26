@@ -179,9 +179,15 @@ real code still count.
 ## Test detection
 
 Test code is found structurally, whatever the module is named: functions with
-`#[test]`-style attributes, anything under `#[cfg(test)]` at any depth, and
-integration-test and bench targets. It is reported on its own line and excluded
-from runtime totals (not in `whole-crate` mode).
+the built-in `#[test]` or `#[bench]` (including the `core`/`std::prelude::*::test`
+paths), anything under `#[cfg(test)]` at any depth, and integration-test and
+bench targets. Other attributes ending in `test` (`tokio::test`, a local
+`attrs::test`) can leave a function in the release binary. On their own they
+are not evidence. Such a unit is measured as runtime, and the report warns
+`unrecognized test attribute; measured as runtime`. Each unit's JSON records
+`test_evidence`: `builtin-attribute`, `cfg-test`, `test-target` or `none`.
+Test code is reported on its own line and excluded from runtime totals (not in
+`whole-crate` mode).
 
 ## Evidence and receipts
 

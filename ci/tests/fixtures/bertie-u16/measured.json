@@ -1,0 +1,20 @@
+{
+  "category": "runtime",
+  "crate_name": "bertie_tls",
+  "end_line": 352,
+  "file": "src/tls13utils.rs",
+  "first_party": true,
+  "fstar_annotation_sloc": 4,
+  "ghost_sloc": 4,
+  "id": "bertie_tls::tls13utils::u16_as_be_bytes",
+  "inline_proof_sloc": 4,
+  "line": 337,
+  "module": "tls13utils",
+  "name": "u16_as_be_bytes",
+  "proof_scope": "hax/F*; trusted hax extraction; contract functional (value); postcondition: fun result ->\n          let result:t_Array u8 (mk_usize 2) = result in\n          (result.[ mk_usize 0 ] <: u8) =. (cast (v_val >>! mk_i32 8 <: u16) <: u8) &&\n          (result.[ mk_usize 1 ] <: u8) =. (cast (v_val <: u16) <: u8)); self-consistency heuristic=false",
+  "runtime_sloc": 12,
+  "security": true,
+  "sloc": 12,
+  "status": "proven-extracted",
+  "verus": false
+}

@@ -407,15 +407,16 @@ lines, not no code. The aarch64 Linux measurements report those native line coun
 separately ([survey](survey.md), [scratch-server](scratch-server.md)).
 
 **Structural test detection** (compiled-files and linked-lines). A first-party
-function is `test-code` when it has a test attribute (`#[test]`, any path ending
-in `::test`, `bench`, `test_case`, `rstest`, `wasm_bindgen_test`, `quickcheck`,
-`proptest`), when an enclosing item at any depth has a `#[cfg(...)]` that only
+function is `test-code` when it has a built-in `#[test]` or `#[bench]` attribute
+(including the standard and core prelude paths for `test`), when an enclosing item at any depth has a `#[cfg(...)]` that only
 holds under `test` (`test`, `all(.., test, ..)`, an `any` of such terms), when it
 is in an out-of-line module declared under such a cfg (`#[cfg(test)] mod name;`,
 followed by module path; `#[path]` is not followed), or when it is in an
 integration-test or bench target (`tests/`, `benches/`, or a test/bench target
 source; cargo builds these with `--test`, which sets `cfg(test)`). Examples stay
-runtime. Test code stays in the reachability graph, is excluded from runtime
+runtime. Each unit records its structural evidence in `test_evidence`. Other
+attributes ending in `::test` on runtime functions produce a warning naming the unit.
+Test code stays in the reachability graph, is excluded from runtime
 totals, and is reported as a TEST CODE line and `summary.test_code`.
 
 **Explicit inputs (config schema 3).** `[[security.include]]` and

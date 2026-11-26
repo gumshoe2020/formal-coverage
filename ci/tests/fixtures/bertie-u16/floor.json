@@ -1,0 +1,20 @@
+{
+  "category": "runtime",
+  "crate_name": "bertie_tls",
+  "end_line": 350,
+  "file": "src/tls13utils.rs",
+  "first_party": true,
+  "fstar_annotation_sloc": 0,
+  "ghost_sloc": 0,
+  "id": "bertie_tls::tls13utils::u16_as_be_bytes",
+  "inline_proof_sloc": 0,
+  "line": 337,
+  "module": "tls13utils",
+  "name": "u16_as_be_bytes",
+  "proof_scope": "hax/F*; trusted hax extraction; contract safety-only (no-postcondition); postcondition: True (or absent for Tot); self-consistency heuristic=false",
+  "runtime_sloc": 14,
+  "security": true,
+  "sloc": 14,
+  "status": "proven-extracted",
+  "verus": false
+}

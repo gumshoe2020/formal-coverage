@@ -1,10 +1,11 @@
 # SPDX-License-Identifier: Apache-2.0
 # Adapted from gumshoe2020/bertie-tls scripts at 26b54ae; see THIRD_PARTY_NOTICES.md.
 """Versioned, first-party security ratchet. hax credit stays explicitly labelled."""
+from collections import Counter, defaultdict
 from fractions import Fraction
 import re
 
-from coverage_metrics import baseline, functional_lines, snapshot
+from coverage_metrics import PROVEN, baseline, functional_lines, snapshot
 
 
 def share(data):
@@ -85,6 +86,99 @@ def validate_floor(floor):
     return functional_lines(floor)
 
 
+def changed_spans(diff):
+    """Old and new intervals of zero-context hunks, keyed by unquoted path."""
+    removed, added = defaultdict(list), defaultdict(list)
+    for patch in re.split(r'^diff --git ', diff, flags=re.M)[1:]:
+        header, *hunks = re.split(r'^@@ ', patch, flags=re.M)
+        old = re.search(r'^--- a/([^\t\n]+)\t?$', header, re.M)
+        new = re.search(r'^\+\+\+ b/([^\t\n]+)\t?$', header, re.M)
+        for hunk in hunks:
+            m = re.match(r'-(\d+)(?:,(\d+))? \+(\d+)(?:,(\d+))? @@', hunk)
+            if m:
+                a, ac, b, bc = (int(v or 1) for v in m.groups())
+                if old and ac:
+                    removed[old[1]].append((a, a + ac - 1, bc))
+                if new and bc:
+                    added[new[1]].append((b, b + bc - 1))
+    return removed, added
+
+
+def deletion_obstacle(floor, measured, report, diff):
+    if floor['schema'] != 2:
+        return 'merge-base floor lacks per-unit statuses'
+    if measured['schema'] != 2:
+        return 'measurement lacks per-unit statuses'
+    for status in ('unverified', 'tested'):
+        if measured[status] > floor[status]:
+            return f'{status} security lines increased'
+
+    def key(unit):
+        return unit['file'], unit['id']
+
+    for data in (floor, measured):
+        counts = Counter()
+        for u in data['inventory']:
+            if type(u['sloc']) is not int or u['sloc'] < 0:
+                raise ValueError('invalid inventory SLoC')
+            counts['proven' if u['status'] in PROVEN else
+                   'tested' if u['status'] == 'tested' else 'unverified'] += u['sloc']
+        if any(counts[k] != data[k] for k in ('proven', 'tested', 'unverified')):
+            raise ValueError('inventory does not explain security totals')
+
+    old = Counter(map(key, floor['inventory']))
+    current = defaultdict(list)
+    for u in report['units']:
+        current[key(u)].append(u)
+    if re.search(r'^(?:---|\+\+\+) "', diff, flags=re.M):
+        return 'unmatched quoted path in source diff'
+    removed, added = changed_spans(diff)
+    missing = False
+    for u in floor['inventory']:
+        if u['status'] not in PROVEN:
+            continue
+        k = key(u)
+        candidates = current.get(k, [])
+        if old[k] != 1 or len(candidates) > 1:
+            return f'ambiguous unit match for {k}'
+        hunks = removed[u['file']]
+        if not candidates:
+            if not any(lo <= u['line'] and u['end_line'] <= hi and replacements == 0
+                       for lo, hi, replacements in hunks):
+                return f'unmatched proven unit {k} without a complete source deletion'
+            missing = True
+            continue
+        v = candidates[0]
+        if not (v['first_party'] and v['security'] and v['category'] == 'runtime'):
+            return f'proven unit {k} left security runtime scope'
+        if v['status'] not in PROVEN:
+            return f'proven unit {k} demoted to {v["status"]}'
+        loss = u['sloc'] - v['sloc']
+        if loss > 0:
+            deleted = sum(max(0, min(hi, u['end_line']) - max(lo, u['line']) + 1)
+                          for lo, hi, _ in hunks)
+            if deleted < loss:
+                return f'shorter proven unit {k} lacks sufficient source deletion evidence'
+
+    # A removed function plus a newly named/moved function is ambiguous.
+    for k, units in current.items():
+        if k in old:
+            continue
+        for v in units:
+            if v.get('test_evidence') in ('builtin-attribute', 'cfg-test', 'test-target'):
+                continue
+            proven = (v['first_party'] and v['security'] and v['category'] == 'runtime'
+                      and v['status'] in PROVEN)
+            if (missing or not proven) and any(lo <= v['end_line'] and hi >= v['line']
+                                               for lo, hi in added.get(v['file'], ())):
+                return f'unmatched replacement unit {k}'
+    reported_files = {u['file'] for u in report['units']}
+    for path in added:
+        if path.endswith('.rs') and path not in reported_files:
+            return f'unmatched Rust source outside the measured inventory: {path}'
+    return None
+
+
 def check(floor, committed, report, diff, markdown='', commits=()):
     measured = baseline(report)
     if committed != measured:
@@ -95,12 +189,18 @@ def check(floor, committed, report, diff, markdown='', commits=()):
     errors = []
     if measured['unverified'] > floor['unverified']:
         errors.append('unverified security lines increased')
-    if share(measured) < share(floor):
-        errors.append('proven share decreased')
-    if touched(diff, [floor['inventory'], measured['inventory']]) and share(measured) <= share(floor):
+    previous_share, current_share = share(floor), share(measured)
+    deletion_only = False
+    if current_share < previous_share:
+        reason = deletion_obstacle(floor, measured, report, diff)
+        if reason:
+            errors.append(f'proven share decreased ({reason})')
+        else:
+            deletion_only = True
+    if deletion_only or (current_share <= previous_share and touched(diff, [floor['inventory'], measured['inventory']])):
         if before is None or after is None:
             errors.append('security code changed without increasing proven share')
-        elif share(measured) < share(floor) or after <= before:
+        elif (current_share < previous_share and not deletion_only) or after <= before:
             errors.append(f'security code changed without increasing proven share or deepening proofs '
                           f'at equal share (functional security lines: {before} -> {after})')
     if errors and not exception(markdown, commits):

@@ -1137,3 +1137,113 @@ and fmt --check passed. Python discovery passed all 113 on rerun after one fixtu
 init error during the first run. Both decoy_suite.sh modes passed and reported the
 outer decoy unchanged. ci/lint-actions.py passed. Logs and the local verification
 wrapper are in target/hook-env2. Independent acceptance remains pending.
+
+2026-11-26 (1.12.3): Match the report's qualified function id within its file. This survives edits above or inside a function, unlike a span or body hash. Spans locate diff evidence. Ambiguous ids cannot establish continuity. Record the same unit SLoC as the summary and the separately excluded inline proof count.
+
+2026-11-26 (1.12.3): A missing unit needs a zero-context deletion covering its complete old span. A same-key unit must still be proven security runtime. A size loss needs at least that many removed source lines in its old span and cannot coincide with increased inline-proof exclusions. Ambiguous replacements, including changed Rust files outside the report, fail closed. The depth comparison uses both functional categories and applies to every accepted deletion.
+
+### 1.12.3 fix 2 — Bertie acceptance (2026-11-26)
+
+Replayed the full zero-context diff from 1625f31 to 8068b9f with
+`check(baseline(M1), baseline(M2), M2, diff)`. Proven/total went from
+4065/5032 to 4063/5030. Tested stayed at 253 and unverified at 714.
+The encoder's old span is 337–350. The diff removes 345–346 and replaces
+348–349, so four old lines count toward a runtime loss of two. The four
+added contract lines do not contribute deletion evidence.
+
+Full check result:
+
+```text
+RatchetFailure: proven share decreased (unmatched replacement unit ('src/tls13utils.rs', 'bertie_tls::tls13utils::tests::u16_encoder_matches_to_be_bytes')); security code changed without increasing proven share or deepening proofs at equal share (functional security lines: 369 -> 381)
+```
+
+The new test function intersects a separate addition hunk and is absent
+from the floor's security runtime inventory. The existing replacement
+check rejects a new unit outside proven security runtime in an added
+span even when the shorter encoder retains its identity. Changing that
+identity check is outside the requested fix.
+
+### 1.12.3 fix 3 — verified counterexample (2026-11-26)
+
+The report categories are runtime, test and proof-code. Bench attributes
+fall under test. In src/lib.rs, test_attribute accepts any attribute path
+ending in test. A local proc-macro crate can export an identity attribute
+named test. Applied to `fn authorize() -> bool { true }` as
+`#[attrs::test]`, the attribute leaves the function callable. A release
+binary calling it printed `authorize returned true`. The default CLI report
+classified example::authorize as first-party, test, unverified.
+
+Used that actual unit in a synthetic shorter-proven-unit check with an
+addition hunk for the new function and a functional gain of 12. The current
+guard refused the unmatched replacement. Applying M1 in memory made check
+return []. Thus extracting production logic from a proven unit into this
+unverified helper can pass as a deletion. The totals also omit the helper.
+Retained the guard. A genuine #[cfg(test)] move leaves production, so I agree
+it should qualify with a depth gain. An in-place conversion retains its key
+and currently hits the separate surviving-unit scope guard.
+
+Full Bertie replay on the unchanged gate, using baseline(M1), baseline(M2),
+the M2 report and git diff -U0 1625f31 8068b9f:
+
+```text
+RatchetFailure: proven share decreased (unmatched replacement unit ('src/tls13utils.rs', 'bertie_tls::tls13utils::tests::u16_encoder_matches_to_be_bytes')); security code changed without increasing proven share or deepening proofs at equal share (functional security lines: 369 -> 381)
+```
+
+### 1.12.3 fix 4 — classification impact, Bertie replay, open shadowing gap (2026-11-26)
+
+M1 impact check: compiled-files reports from the pre-change and M1 builds,
+on the six Cargo fixtures, the fix-3 counterexample, bertie-tls origin/main
+(1a46d03, read-only worktree <temporary-path>) and
+scratch-server (read-only). Consumer tested/unverified/total did not change:
+bertie-tls 1578/3454/5032, scratch-server 824/886/1710. Proven is 0 for both
+because no prover evidence ran locally. Only the counterexample's
+`example::authorize` (2 security lines) moved from test to runtime. Reports
+are in target/share4/*-{base,after}.json.
+
+M4 full Bertie check: inputs as in fix 2 (baseline(M1), baseline(M2), the M2
+report with test_evidence from the current build, git diff -U0 1625f31
+8068b9f). Output:
+
+```text
+M1 {'proven': 4065, 'tested': 253, 'unverified': 714, 'total': 5032} functional 369
+M2 {'proven': 4063, 'tested': 253, 'unverified': 714, 'total': 5030} functional 381
+check(baseline(M1), baseline(M2), M2, full_diff) = []
+```
+
+The added `tests::u16_encoder_matches_to_be_bytes` has cfg-test evidence,
+so the unmatched-replacement check ignores it. The shorter proven encoder
+meets the deletion allowance.
+
+Open gap, held for Andrew (not merged): a bare `#[test]` is accepted as
+built-in even when the module imports a macro named `test`
+(`use attrs::test;`, or a glob that may bind it). That function stays in the
+release binary but is still counted as test. Codex had started a fix. I
+finished it so it also inherits imports into fn and impl bodies; a `mod`
+starts a fresh scope. All 201 cargo tests pass with it. It is committed on
+branch `v1123/shadowed-test-attribute` (fae5a14) only, because it fails the
+impact check. bertie-tls is unchanged (25 units go from builtin-attribute to
+cfg-test evidence, still test). scratch-server goes from tested/total
+824/1710 to 917/1803. These five security units move from test (unverified)
+to runtime (tested):
+
+- scratch_server::record_tests::stage15_unpad_equivalence_100000 (17)
+- scratch_server::record_tests::stage15_aad_equivalence_80001 (11)
+- scratch_server::record_tests::stage15_inner_plaintext_exact_capacity (8)
+- scratch_server::record_tests::stage15_inner_and_length_equivalence (34)
+- scratch_server::record_tests::stage15_key_shape_and_offers_equivalence (23)
+
+They are real tests. src/tls_test_provider.rs declares the module as
+`#[cfg(test)] #[path = "record_tests.rs"] mod record_tests;`, and the file
+starts with `use super::*;`. The kit derives the module from the file path
+(`record_tests`). The declared path is `tls::test_provider::record_tests`:
+src/tls.rs declares `#[cfg(test)] #[path = "tls_test_provider.rs"] mod
+test_provider;`. So the kit misses both enclosing cfg(test) attributes. The glob then makes
+`#[test]` look shadowable. The same pre-existing gap already counts
+cfg(test)-only code as runtime on main. In src/tls_test_provider.rs,
+src/record_tests.rs and src/binary_handshake_tests.rs, 48 units (344 lines)
+outside the test functions are runtime with evidence `none`. Examples are
+`random`, `compare_unpad` and `provider`. This error overcounts runtime,
+which is the conservative direction. Resolving `#[path]` declarations would
+make the shadowing fix count-neutral for scratch-server. It would also drop
+those 344 lines from scratch-server's runtime totals. Both are measurement changes, so both need Andrew's
+decision first.

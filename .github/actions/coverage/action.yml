@@ -85,7 +85,11 @@ runs:
           --workspace "$PROJECT" --report-args "$REPORT_ARGS" \
           --baseline "$BASELINE" --coverage "$COVERAGE" --config "$CONFIG" \
           --enforce-ratchet="$ENFORCE_RATCHET" --base "$base" --output "$GITHUB_WORKSPACE/target/coverage-ci" \
-          > logs/ci-kit/coverage.log 2>&1 || { tail -n 40 logs/ci-kit/coverage.log; exit 1; }
+          > logs/ci-kit/coverage.log 2>&1 || {
+            tail -n 40 logs/ci-kit/coverage.log
+            grep '^coverage FAIL:' logs/ci-kit/coverage.log | tail -n 1 || true
+            exit 1
+          }
         if [ "$ENFORCE_RATCHET" = false ]; then head -n 1 "$GITHUB_WORKSPACE/target/coverage-ci/summary.md"; fi
     - id: ratchet
       if: always()

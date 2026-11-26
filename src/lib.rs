@@ -49,6 +49,16 @@ pub enum Category {
     Test,
 }
 
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
+#[serde(rename_all = "kebab-case")]
+pub enum TestEvidence {
+    BuiltinAttribute,
+    CfgTest,
+    TestTarget,
+    #[default]
+    None,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Unit {
     pub id: String,
@@ -102,10 +112,10 @@ pub struct Unit {
     pub kani_harness: bool,
     #[serde(skip)]
     pub kani_only: bool,
-    /// Structurally test code: a test attribute, an enclosing `#[cfg(test)]` item at any
-    /// depth (including out-of-line module declarations), or an integration-test/bench target.
+    #[serde(default)]
+    pub test_evidence: TestEvidence,
     #[serde(skip)]
-    pub test_code: bool,
+    unrecognized_test_attribute: bool,
 }
 fn is_zero(n: &usize) -> bool {
     *n == 0
@@ -305,7 +315,8 @@ pub fn inventory(root: &Path) -> Result<Report> {
                     inherent_impl: None,
                     kani_harness: false,
                     kani_only: false,
-                    test_code: false,
+                    test_evidence: TestEvidence::None,
+                    unrecognized_test_attribute: false,
                 });
                 continue;
             };
@@ -346,7 +357,13 @@ pub fn inventory(root: &Path) -> Result<Report> {
                 (module == declared || module.starts_with(&format!("{declared}::")))
                     && cfg_implies_test(attrs)
             });
-            u.test_code |= *test_target || declared_test;
+            if u.test_evidence == TestEvidence::None {
+                if *test_target {
+                    u.test_evidence = TestEvidence::TestTarget;
+                } else if declared_test {
+                    u.test_evidence = TestEvidence::CfgTest;
+                }
+            }
             for (_, attrs) in test_modules.iter().filter(|(declared, _)| {
                 module == declared || module.starts_with(&format!("{declared}::"))
             }) {
@@ -476,15 +493,10 @@ fn module_decls(
     }
 }
 
-/// Attributes that make a function a test: `#[test]`, `#[tokio::test]` and similar.
-fn test_attribute(attrs: &str) -> bool {
-    let Ok(stream) = attrs.parse::<TokenStream>() else {
-        return false;
-    };
-    cfg::attributes(stream, false).into_iter().any(|t| {
-        let TokenTree::Group(g) = t else {
-            return false;
-        };
+fn test_attribute(attrs: TokenStream) -> (TestEvidence, bool) {
+    let mut unrecognized = false;
+    for t in attrs {
+        let TokenTree::Group(g) = t else { continue };
         let path: Vec<String> = g
             .stream()
             .into_iter()
@@ -494,17 +506,17 @@ fn test_attribute(attrs: &str) -> bool {
                 _ => None,
             })
             .collect();
-        path.last().is_some_and(|last| last == "test")
-            || [
-                "bench",
-                "test_case",
-                "rstest",
-                "wasm_bindgen_test",
-                "quickcheck",
-                "proptest",
-            ]
-            .contains(&path.last().map(String::as_str).unwrap_or(""))
-    })
+        let path: Vec<_> = path.iter().map(String::as_str).collect();
+        match path.as_slice() {
+            ["test" | "bench"]
+            | ["std" | "core", "prelude", "v1" | "rust_2015" | "rust_2018" | "rust_2021" | "rust_2024", "test"] => {
+                return (TestEvidence::BuiltinAttribute, false)
+            }
+            [.., "test"] => unrecognized = true,
+            _ => {}
+        }
+    }
+    (TestEvidence::None, unrecognized)
 }
 
 /// True when some `#[cfg(...)]` in `attrs` can only hold under `cfg(test)`.
@@ -680,12 +692,13 @@ fn walk(
                         .join("\n");
                     let text: TokenStream = tokens[start..=end].iter().cloned().collect();
                     let name = name.to_string();
-                    let own_attributes =
-                        cfg::attributes(tokens[start..i].iter().cloned().collect(), false)
-                            .to_string();
+                    let attrs = cfg::attributes(tokens[start..i].iter().cloned().collect(), false);
+                    let own_attributes = attrs.to_string();
                     let scope_attributes = format!("{} {}", inherited_attrs, own_attributes);
-                    let test_code =
-                        test_attribute(&own_attributes) || cfg_implies_test(&scope_attributes);
+                    let (mut test_evidence, unrecognized_test_attribute) = test_attribute(attrs);
+                    if test_evidence == TestEvidence::None && cfg_implies_test(&scope_attributes) {
+                        test_evidence = TestEvidence::CfgTest;
+                    }
                     let kani_harness = kani::is_harness(&own_attributes);
                     let kani_only = cfg::has_attribute(&scope_attributes, "cfg (kani)")
                         || (!kani_harness && kani::is_harness(&scope_attributes));
@@ -729,7 +742,8 @@ fn walk(
                         scope_attributes,
                         kani_harness,
                         kani_only,
-                        test_code,
+                        test_evidence,
+                        unrecognized_test_attribute,
                     });
                     // Local functions also count as units; trait declarations have no body.
                     if let TokenTree::Group(body) = last_token {

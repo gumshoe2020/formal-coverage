@@ -32,9 +32,9 @@ def load_record(source):
         raise ValueError('invalid data branch in record')
     baseline = (source / 'baseline.json').read_text()
     data = json.loads(baseline)
-    if not isinstance(data, dict) or set(data) - {'proof_depth'} != KEYS or any(
+    if not isinstance(data, dict) or data.get('schema') not in (1, 2) or set(data) - {'proof_depth'} != KEYS or any(
             type(data[k]) is not int for k in ('total', 'proven', 'tested', 'unverified')):
-        raise ValueError('record baseline is not a schema-1 baseline')
+        raise ValueError('record baseline is of unsupported schema or shape')
     functional_lines(data)
     return sha, branch, baseline, (source / 'COVERAGE-MEASURED.md').read_text()
 

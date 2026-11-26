@@ -83,8 +83,8 @@ leaving a credential in the checkout.
   from `baselines/<full-sha>.json` on the data branch (same schema as
   `baseline.json`). The coverage action fetches the branch first. If the file is
   missing (that main commit was never measured, or predates adoption), or is
-  unreadable or not a schema-1 baseline, the run fails closed with a message naming the
-  commit.
+  unreadable or outside supported baseline schemas 1 and 2, the run fails closed
+  with a message naming the commit.
 - **Bootstrap.** For the first adoption only, set `bootstrap_baseline` to a path
   (for example the project's last committed `coverage/baseline.json`). It is read
   from the merge-base commit, not the PR's tree, and is used only while the data
@@ -135,7 +135,21 @@ then delete `bootstrap_baseline`, `coverage/baseline.json` and the measured sect
 
 The committed baseline and measured section of COVERAGE.md must match the new
 report exactly. The baseline at the PR merge base (or push's `before` commit) is
-the floor. Unverified security lines cannot increase; proven share cannot drop.
+the floor. Consumers can adopt this wording for rule 1.
+
+> Unverified security lines must never increase, and proven share must never decrease except when the entire drop comes from deleting proven code, tested lines do not increase, and no proven unit is demoted or leaves security scope.
+
+A deletion-only drop counts as equal share for rule 2. The merge-base floor
+must contain schema-2 unit statuses. A schema-1 floor keeps the previous rule
+that any drop fails, even with a functional gain. Recorded-mode consumers gain
+the allowance after main records a schema-2 floor for their merge base.
+The kit matches a function by file and qualified report id. A surviving proven
+function must remain proven security runtime. A shorter unit needs source
+deletion evidence, and a missing unit needs a diff removing its entire span.
+Ambiguous identities and unexplained losses fail. Moving code outside security
+scope requires maintainer approval under rule 3.
+
+A pure deletion with no functional gain still fails rule 2.
 A diff intersecting security-runtime spans in either inventory must increase
 proven share or, at equal share, increase the count of proven security runtime
 lines with a functional contract (both functional depth categories combined).

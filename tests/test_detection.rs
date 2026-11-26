@@ -31,6 +31,18 @@ fn free_test() {
 #[tokio::test]
 async fn tokio_case() {}
 
+#[attrs::test]
+fn authorize() {}
+
+#[std::prelude::rust_2021::test]
+fn qualified() {}
+
+#[core::prelude::v1::test]
+fn qualified_core() {}
+
+#[bench]
+fn benchmark() {}
+
 #[cfg(all(test, unix))]
 fn all_test() {}
 
@@ -86,7 +98,9 @@ fn test_code_is_detected_structurally_at_any_depth() {
         "diagnostic_classes_and_privacy",
         "helper",
         "free_test",
-        "tokio_case",
+        "qualified",
+        "qualified_core",
+        "benchmark",
         "all_test",
         "out_of_line_helper",
         "nested_helper",
@@ -96,6 +110,8 @@ fn test_code_is_detected_structurally_at_any_depth() {
         assert_eq!(category(&r, name), Category::Test, "{name}");
     }
     for name in [
+        "tokio_case",
+        "authorize",
         "entry",
         "helper_runtime",
         "any_test",
@@ -104,13 +120,30 @@ fn test_code_is_detected_structurally_at_any_depth() {
     ] {
         assert_eq!(category(&r, name), Category::Runtime, "{name}");
     }
+    for (name, evidence) in [
+        ("qualified", "builtin-attribute"),
+        ("nested_helper", "cfg-test"),
+        ("shared_helper", "test-target"),
+        ("authorize", "none"),
+    ] {
+        let unit = r.units.iter().find(|u| u.name == name).unwrap();
+        assert_eq!(
+            serde_json::to_value(unit).unwrap()["test_evidence"],
+            evidence
+        );
+    }
+    for name in ["tokio_case", "authorize"] {
+        assert!(r.warnings.contains(&format!(
+            "detect::{name}: unrecognized test attribute; measured as runtime"
+        )));
+    }
     let s = formal_coverage::summarize(&r);
     let test_units = r.units.iter().filter(|u| u.category == Category::Test);
     assert_eq!(
         s.test_code.sloc,
         test_units.clone().map(|u| u.sloc).sum::<usize>()
     );
-    assert_eq!(s.test_code.units, 9);
+    assert_eq!(s.test_code.units, 11);
     let runtime: usize = r
         .units
         .iter()
@@ -123,7 +156,7 @@ fn test_code_is_detected_structurally_at_any_depth() {
     );
     let md = formal_coverage::markdown(&r);
     assert!(md.contains(&format!(
-        "TEST CODE: {} SLoC in 9 first-party units",
+        "TEST CODE: {} SLoC in 11 first-party units",
         s.test_code.sloc
     )));
     assert!(md.contains("| detect::policy_tests::diagnostic_classes_and_privacy | src/lib.rs:"));

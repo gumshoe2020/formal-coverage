@@ -18,14 +18,19 @@ def snapshot(report):
         raise ValueError('invalid security totals')
     proven = sum(statuses.get(k, 0) for k in PROVEN)
     tested = statuses.get('tested', 0)
-    inventory = sorted([dict(file=u['file'], line=u['line'], end_line=u['end_line'])
-                        for u in report['units'] if u['first_party'] and u['security']
-                        and u['category'] == 'runtime'], key=lambda u: (u['file'], u['line'], u['end_line']))
-    return dict(schema=1, scope='first-party security runtime', total=total, proven=proven,
-                tested=tested, unverified=total-proven-tested, statuses=statuses,
+    units = [u for u in report['units'] if u['first_party'] and u['security']
+             and u['category'] == 'runtime']
+    fields = ('file', 'line', 'end_line')
+    evidence = ('id', 'sloc', 'status', 'inline_proof_sloc')
+    complete = all(all(k in u for k in evidence) for u in units)
+    if complete:
+        fields += evidence
+    inventory = sorted(({k: u[k] for k in fields} for u in units),
+                       key=lambda u: tuple(u[k] for k in fields))
+    return dict(schema=2 if complete else 1, scope='first-party security runtime', total=total,
+                proven=proven, tested=tested, unverified=total-proven-tested, statuses=statuses,
                 proof_sloc=report['proof_ratio']['proof_sloc'],
                 proof_ratio=report['proof_ratio']['ratio'], inventory=inventory)
-
 
 
 def proof_depth(report):

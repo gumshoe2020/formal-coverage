@@ -1,5 +1,40 @@
 # Changelog
 
+## 1.12.3 — 2026-11-26
+
+- The coverage ratchet treats a proven-share drop explained by deleted proven
+  code as equal share when tested and unverified lines do not increase and no
+  proven unit is demoted or excluded. Touched security code still requires a
+  gain in functional lines. The allowance starts with a schema-2 merge-base
+  baseline containing unit identities, statuses and sizes.
+- **Measurement change: test-code classification.** Before, any attribute
+  whose path ended in `test` marked a function as test code and left it out of
+  runtime totals. That included a pass-through `#[attrs::test]`, which leaves
+  the function in the release binary. A function now counts as test code only
+  with structural evidence that it cannot be in a non-test build: the built-in
+  `#[test]`/`#[bench]` (including the `core`/`std::prelude::*::test` paths), an
+  enclosing `#[cfg(test)]` at any depth, or an integration-test/bench target.
+  Other `…::test` attributes (`tokio::test`, `attrs::test`) count only when
+  one of those also holds. Otherwise the unit is measured as runtime and the
+  report warns `<unit>: unrecognized test attribute; measured as runtime`.
+  Each unit's JSON now records `test_evidence` (`builtin-attribute`,
+  `cfg-test`, `test-target` or `none`). Measured impact: none on bertie-tls
+  main (tested/unverified/total 1578/3454/5032) or scratch-server
+  (824/886/1710), and none on the six kit fixtures. Only the fix-3
+  counterexample changed: `example::authorize` (2 lines) is now runtime.
+- The deletion allowance ignores an unmatched new unit only when its
+  `test_evidence` is `builtin-attribute`, `cfg-test` or `test-target`. A real
+  bertie-tls change that shortens a proven encoder and adds a `#[cfg(test)]`
+  test now passes. Functional security lines go from 369 to 381. A proven
+  function renamed, or moved into an unverified helper, still fails. A proven
+  function moved into a `#[cfg(test)]` module passes only with a gain in
+  functional proof depth.
+- A failing coverage action now shows why. `ci/run.py` flushes the buffered
+  report before writing `coverage FAIL: …` to stderr, so the verdict is the
+  last line of `logs/ci-kit/coverage.log`. The action also prints the verdict
+  line again after the `tail -n 40`. Before, the verdict could land above a
+  long report and fall outside the tail, as it did in a bertie-tls PR #96 job.
+
 ## 1.12.2 — 2026-11-26
 
 - Run from a git hook (for example a pre-push `cargo test`), the

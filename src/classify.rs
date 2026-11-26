@@ -101,7 +101,9 @@ pub fn analyze_with(root: &Path, options: &Options) -> Result<Report> {
     // whole-crate reproduces v1.4.2, which kept test code in runtime categories.
     if options.size_mode != SizeMode::WholeCrate {
         for u in &mut report.units {
-            if u.test_code && u.category == crate::Category::Runtime {
+            if u.test_evidence != crate::TestEvidence::None
+                && u.category == crate::Category::Runtime
+            {
                 u.category = crate::Category::Test;
             }
         }
@@ -323,11 +325,22 @@ pub fn analyze_with(root: &Path, options: &Options) -> Result<Report> {
             .filter(|d| !d.security)
             .map(|d| d.sloc)
             .sum::<usize>();
+    for u in &report.units {
+        if u.unrecognized_test_attribute
+            && u.test_evidence == crate::TestEvidence::None
+            && u.category == crate::Category::Runtime
+        {
+            report.warnings.push(format!(
+                "{}: unrecognized test attribute; measured as runtime",
+                u.id
+            ));
+        }
+    }
     report.approximation = "Approximate syntactic identifier graph: ambiguous names include all matching functions; unresolved calls and macros include all first-party functions. No entry points includes all. cfg/test code included; spec/proof functions inventoried separately as proof-code, excluded from runtime totals. Overrides apply after reachability (not_security last). Dependency closure and target are recorded separately; package source inventories conservatively include cfg/test code.".into();
     if options.size_mode != SizeMode::WholeCrate {
         report.approximation = report.approximation.replace(
             "cfg/test code included;",
-            "structural test code (test attributes, items under cfg(test) at any depth, integration-test and bench targets) inventoried separately as test-code, excluded from runtime totals; other cfg-disabled code included;",
+            "structural test code (built-in test and bench attributes, items under cfg(test) at any depth, integration-test and bench targets) inventoried separately as test-code, excluded from runtime totals; other cfg-disabled code included;",
         );
         report.approximation = report.approximation.replace(
             "package source inventories conservatively include cfg/test code.",
