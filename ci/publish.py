@@ -8,6 +8,7 @@ import re
 import subprocess
 import tempfile
 
+from git_temp import temp_repo_env
 from gitauth import github_env
 
 NAMES = {'proven', 'tested', 'unverified', 'proof-ratio', 'ratchet'}
@@ -40,6 +41,8 @@ def publish(source, result):
     badges = validate(source, result)
     env = github_env(os.environ['GH_TOKEN'])
     with tempfile.TemporaryDirectory(prefix='coverage-badges-', dir=os.environ.get('RUNNER_TEMP')) as directory:
+        env = temp_repo_env(env)
+
         def git(*args, capture=False):
             return subprocess.run(['git', '-C', directory, *args], env=env, check=True,
                                   stdout=subprocess.PIPE if capture else None, text=True)

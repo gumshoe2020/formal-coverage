@@ -2,7 +2,6 @@
 import json
 import os
 from pathlib import Path
-import subprocess
 import sys
 import tempfile
 import unittest
@@ -10,8 +9,9 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import fetch_data_branch
+from gitenv import git
 import record
-from test_recorded import RecordedRepo, encoded, git
+from test_recorded import RecordedRepo, encoded
 from test_write_coverage import WriteCoverageTests
 from test_ratchet import fixture, with_depth
 
@@ -24,7 +24,7 @@ class RecordTests(unittest.TestCase):
         self.addCleanup(self.directory.cleanup)
         self.root = Path(self.directory.name)
         self.remote = self.root / 'remote.git'
-        subprocess.run(['git', 'init', '--bare', '-q', '-b', 'main', str(self.remote)], check=True)
+        git(self.root, 'init', '--bare', '-q', '-b', 'main', str(self.remote))
         self.url = 'file://' + str(self.remote)
         self.report = WriteCoverageTests().report()
 
@@ -37,7 +37,7 @@ class RecordTests(unittest.TestCase):
         return path
 
     def remote_git(self, *args):
-        return subprocess.check_output(['git', '--git-dir', str(self.remote), *args], text=True).strip()
+        return git(self.remote, *args)
 
     def test_first_record_creates_orphan_data_branch(self):
         self.assertTrue(record.record(self.source(SHA1), self.url))

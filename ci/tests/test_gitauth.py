@@ -7,6 +7,7 @@ import tempfile
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import gitenv
 from gitauth import github_env
 
 
@@ -17,8 +18,8 @@ class GitAuthTests(unittest.TestCase):
         expected = 'AUTHORIZATION: basic ' + base64.b64encode(
             ('x-access-token:' + token).encode()).decode()
         with tempfile.TemporaryDirectory() as repo:
-            env = dict(github_env(token), GIT_CONFIG_NOSYSTEM='1',
-                       GIT_CONFIG_GLOBAL='/dev/null')
+            with gitenv.scrubbed_environ():
+                env = github_env(token)
             subprocess.run(['git', 'init', '-q', repo], env=env, check=True)
             for persisted in (False, True):
                 with self.subTest(persisted=persisted):

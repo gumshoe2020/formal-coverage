@@ -12,6 +12,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import config
+import gitenv
 import publish
 import run
 import test_badges
@@ -126,7 +127,7 @@ class RunnerTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             work = Path(directory)
             def git(*args):
-                return subprocess.check_output(['git', '-C', directory, *args], stderr=subprocess.DEVNULL, text=True).strip()
+                return gitenv.git(work, *args)
             git('init')
             report = test_write_coverage.WriteCoverageTests().report()
             (work / '.gitignore').write_text('/out/\n/tool\n/job-summary\n')
@@ -135,18 +136,18 @@ class RunnerTests(unittest.TestCase):
             subprocess.run([sys.executable, str(ROOT / 'ci/write-coverage.py'), 'fixture.json'],
                            cwd=work, capture_output=True, check=True)
             git('add', '.')
-            git('-c', 'user.name=Test', '-c', 'user.email=test@example.invalid', 'commit', '-m', 'initial reviewed floor')
+            git('commit', '-m', 'initial reviewed floor')
             base = git('rev-parse', 'HEAD')
             (work / 'README.md').write_text('Docs only\n')
             git('add', '.')
-            git('-c', 'user.name=Test', '-c', 'user.email=test@example.invalid', 'commit', '-m', 'docs')
+            git('commit', '-m', 'docs')
             tool = work / 'tool'
             tool.write_text('#!' + sys.executable + '\nimport sys,shutil\nfrom pathlib import Path\na=sys.argv\nshutil.copyfile("fixture.json",a[a.index("--json")+1])\nPath(a[a.index("--markdown")+1]).write_text("fixture")\n')
             tool.chmod(0o755)
             output = work / 'out'
             command = [sys.executable, str(ROOT / 'ci/run.py'), '--tool', str(tool),
                        '--workspace', str(work), '--base', base, '--output', str(output)]
-            result = subprocess.run(command, capture_output=True, text=True)
+            result = gitenv.run(command, capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertIn('ratchet PASS', (output / 'summary.md').read_text())
             self.assertEqual(json.loads((output / 'badges/ratchet.json').read_text())['message'], 'pass')
@@ -157,19 +158,19 @@ class RunnerTests(unittest.TestCase):
                 run.floor_and_diff(work, 'missing-baseline.json', base)
             off = command + ['--enforce-ratchet', 'false']
             for invalid in ('False', 'TRUE', '', '0'):
-                result = subprocess.run(command + ['--enforce-ratchet', invalid], capture_output=True, text=True)
+                result = gitenv.run(command + ['--enforce-ratchet', invalid], capture_output=True, text=True)
                 self.assertNotEqual(result.returncode, 0)
                 self.assertIn('invalid choice', result.stderr)
             baseline_path = work / 'coverage/baseline.json'
             baseline_path.write_text(baseline_path.read_text() + '\n')
-            git('-c', 'user.name=Test', '-c', 'user.email=test@example.invalid', 'commit', '-a', '-m', 'stale baseline')
+            git('commit', '-a', '-m', 'stale baseline')
             summary = work / 'job-summary'
-            result = subprocess.run(off, capture_output=True, text=True, env=dict(os.environ, GITHUB_STEP_SUMMARY=str(summary)))
+            result = gitenv.run(off, capture_output=True, text=True, env=dict(os.environ, GITHUB_STEP_SUMMARY=str(summary)))
             self.assertEqual(result.returncode, 0, result.stderr)
             notice = 'ratchet: not enforced (would report ratchet FAIL: baseline.json or COVERAGE.md differs'
             self.assertIn(notice, result.stdout)
             self.assertIn(notice, summary.read_text())
-            result = subprocess.run(command + ['--enforce-ratchet', 'true'], capture_output=True, text=True)
+            result = gitenv.run(command + ['--enforce-ratchet', 'true'], capture_output=True, text=True)
             self.assertNotEqual(result.returncode, 0)
             self.assertIn('baseline.json or COVERAGE.md differs', result.stderr)
             valid = baseline_path.read_text()
@@ -177,21 +178,21 @@ class RunnerTests(unittest.TestCase):
             invalid['total'] = 0
             baseline_path.write_text(json.dumps(invalid))
             git('add', 'coverage/baseline.json')
-            git('-c', 'user.name=Test', '-c', 'user.email=test@example.invalid', 'commit', '-m', 'bad floor')
+            git('commit', '-m', 'bad floor')
             baseline_path.write_text(valid)
-            git('-c', 'user.name=Test', '-c', 'user.email=test@example.invalid', 'commit', '-a', '-m', 'restore baseline')
-            result = subprocess.run(off + ['--base', 'HEAD~1'], capture_output=True, text=True)
+            git('commit', '-a', '-m', 'restore baseline')
+            result = gitenv.run(off + ['--base', 'HEAD~1'], capture_output=True, text=True)
             self.assertNotEqual(result.returncode, 0)
             self.assertIn('invalid merge-base totals', result.stderr)
             report['dependency_inventory_complete'] = False
             (work / 'fixture.json').write_text(json.dumps(report))
-            git('-c', 'user.name=Test', '-c', 'user.email=test@example.invalid', 'commit', '-a', '-m', 'incomplete inventory')
-            result = subprocess.run(off, capture_output=True, text=True)
+            git('commit', '-a', '-m', 'incomplete inventory')
+            result = gitenv.run(off, capture_output=True, text=True)
             self.assertNotEqual(result.returncode, 0)
             self.assertIn('incomplete inventory', result.stderr)
             # Every tool failure blocks, even when it produced a plausible report.
             tool.write_text('#!' + sys.executable + '\nraise SystemExit(7)\n')
-            result = subprocess.run(command, capture_output=True, text=True)
+            result = gitenv.run(command, capture_output=True, text=True)
             self.assertNotEqual(result.returncode, 0)
 
 

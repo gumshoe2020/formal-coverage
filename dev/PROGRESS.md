@@ -384,3 +384,50 @@ YAML changed. actionlint passed on .github/workflows/ci.yml.
   hax out outside the workspace); otherwise its coverage job refuses, listing hax-src files.
 
 DIRTY-TREE-READY
+
+## formal-coverage v1.12.2 — tests must not touch the real repo when run from a git hook
+
+- 2026-11-26 (Claude Code takes over; Codex left no v1.12.2 changes, tree clean at 85880c2).
+- Reproduced the bug offline against v1.12.1 test code: `GIT_DIR=<decoy>/.git cargo test
+  --test fstar_evidence reused_checks` committed "main receipt fixture" by Test <test@local>
+  onto the decoy, deleting its tracked file.
+- M1: inventory of every test git spawn (Rust: one fixture closure plus the in-process
+  reuse `git show`; Python: helpers in test_recorded/test_kit/test_record/test_receipts/
+  test_gitauth, run.py subprocesses, in-process record/publish_receipts/fetch_data_branch/
+  run). Table in NOTES.
+- M2: shared helpers `tests/common/mod.rs` and `ci/tests/gitenv.py` remove git's
+  `--local-env-vars` list, isolate config and fix the commit identity. All test git calls,
+  run.py/receipts.py subprocesses and (via a process-wide clean on import / in the reuse
+  test) in-process kit code go through them. cargo test fstar_evidence 27 pass; Python 106 OK;
+  fmt and clippy clean.
+- M3: tests/hook_env.rs and ci/tests/test_hook_env.py point GIT_DIR (alone, and with
+  GIT_WORK_TREE+GIT_INDEX_FILE) at a decoy, run the shared git fixtures and assert every
+  decoy file is byte-unchanged; a v1.12.1-style unscrubbed control proves the decoy is
+  reachable. Both fail with the decoy mutated when the helpers stop scrubbing (v1.12.1
+  behaviour), pass with them. dev/v1122/decoy_suite.sh: whole Rust (201 passed, 1 ignored)
+  and Python (109 OK) suites under the hook env, decoy unchanged, for both env shapes.
+- M4: production call sites judged in NOTES. Read-only sites (reuse.rs, run.py, receipts.py)
+  and fetch_data_branch.py inherit GIT_DIR correctly. Real but gated risk: record.py,
+  publish_receipts.py and publish.py run `git -C <tempdir> init/checkout/commit/push`, so
+  with GIT_DIR exported in a repo without `origin` they switch that repo's HEAD to the data
+  branch, commit and push (offline decoy probe); with `origin` they abort harmlessly.
+  CI-only gates make this unreachable on hosted runners. Reported, not fixed.
+- M5: CHANGELOG `## 1.12.2 — unreleased`: test-only fix, plus a known-issue entry for the
+  M4 publisher risk (reported, not fixed). ci/README.md tells contributors to route test
+  git through the helpers and points to the decoy script. Cargo version left at 1.12.1.
+- Final verification (offline): cargo test --locked 201 passed, 0 failed, 1 existing ignored;
+  cargo clippy --locked --all-targets -- -D warnings PASS; cargo fmt --check PASS;
+  `python3 -m unittest discover -s ci/tests` 109 tests OK; git diff --check PASS.
+  dev/v1122/decoy_suite.sh with `GIT_DIR=<decoy>/.git GIT_WORK_TREE=<decoy>` and with
+  `GIT_DIR` only: same counts, decoy unchanged both times. Logs target/v1122.
+  No push, tag, release, gh/GitHub API, network or consumer edits. `git push` and the
+  pre-push hook were never run. Each milestone commit did run the pre-commit quality gate
+  (cargo fmt --check, clippy; no tests, no git fixtures): committing was required and hooks
+  must not be bypassed.
+  Shared-memory diary not filed (tools unavailable here).
+
+HOOK-ENV-READY
+2026-11-26 hook-env part 2 M1: isolated all three publishers. Milestone commits blocked by installed pre-commit hook and the no-hook/no-bypass instructions.
+2026-11-26 hook-env part 2 M2: three publisher decoy controls failed with the scrub disabled and passed with it enabled. Local transfer substituted for push.
+2026-11-26 hook-env part 2 M3: replaced known issue with the fix and documented publisher isolation in ci/README.md.
+2026-11-26 hook-env part 2: all requested local checks passed using file-only fixture transfers. HOOK-ENV-2-BLOCKED on milestone commits only; HEAD remains e5588a1.

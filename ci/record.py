@@ -15,6 +15,7 @@ import tempfile
 
 from config import valid_branch
 from coverage_metrics import functional_lines
+from git_temp import temp_repo_env
 from gitauth import github_env
 
 KEYS = {'schema', 'scope', 'total', 'proven', 'tested', 'unverified', 'statuses',
@@ -51,6 +52,8 @@ def record(source, remote, env=None, attempts=ATTEMPTS):
 
 def record_once(sha, branch, baseline, page, remote, env):
     with tempfile.TemporaryDirectory(prefix='coverage-record-', dir=os.environ.get('RUNNER_TEMP')) as directory:
+        env = temp_repo_env(env)
+
         def git(*args, capture=False):
             return subprocess.run(['git', '-C', directory, *args], env=env, check=True,
                                   stdout=subprocess.PIPE if capture else None, text=True)

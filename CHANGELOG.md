@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.12.2 — 2026-11-26
+
+- Run from a git hook (for example a pre-push `cargo test`), the
+  test suites inherited the hook's `GIT_DIR`, which overrides `git -C`. A
+  fixture's `git add`/`commit` then committed onto the real branch, deleting
+  every tracked file. Every test git command now goes through one helper per
+  language (`tests/common/mod.rs`, `ci/tests/gitenv.py`). The helper removes the
+  variables `git rev-parse --local-env-vars` lists, ignores global and system
+  git config and commits as a fixed test identity. Kit scripts and kit code the
+  tests run get the same cleaned environment. New regression tests point
+  `GIT_DIR` (alone, and with `GIT_WORK_TREE` and `GIT_INDEX_FILE`) at a decoy
+  repository and check that the decoy stays byte-identical.
+- The baseline, receipt and badge publishers now clear inherited repository
+  variables before running git in their temporary directories. A hook's
+  `GIT_DIR` can no longer redirect a publisher's checkout or commit into the
+  caller's repository. The publishers retain their configured HTTP auth headers.
+
 ## 1.12.1 — 2026-11-26
 
 - `ci/run.py` (and so the coverage action) now refuses to compute a ratchet

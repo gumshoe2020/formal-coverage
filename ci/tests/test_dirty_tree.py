@@ -8,8 +8,10 @@ import tempfile
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import gitenv
+from gitenv import git
 import run
-from test_recorded import RecordedRepo, git
+from test_recorded import RecordedRepo
 import test_write_coverage
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -54,7 +56,7 @@ class CommittedRepo:
         runner = [str(ROOT / 'ci/run.py')] if guarded else ['-c', UNGUARDED]
         command = [sys.executable, *runner, '--tool', str(self.tool), '--workspace', str(self.work),
                    '--base', self.base, '--enforce-ratchet', enforce, '--output', str(out)]
-        return subprocess.run(command, capture_output=True, text=True), out
+        return gitenv.run(command, capture_output=True, text=True), out
 
     def edit_security_line(self):
         parser = self.work / 'src/parser.rs'

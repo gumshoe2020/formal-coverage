@@ -1,4 +1,5 @@
 //! Synthetic policy tests; no hax, F*, or fixture Rust execution.
+mod common;
 use formal_coverage::{apply_fstar_evidence, inventory, sha256, FstarModule, FstarReceipt, Report};
 use std::{
     collections::BTreeMap,
@@ -1396,43 +1397,9 @@ fn reused_checks_preserve_json_and_source_bound_rules() {
         serde_json::to_vec(&saved["receipts"]["checked/Hax_fixture.fst"]).unwrap(),
     )
     .unwrap();
-    let git = |base: &std::path::Path, args: &[&str]| {
-        let out = std::process::Command::new("git")
-            .arg("-C")
-            .arg(base)
-            .args(args)
-            .output()
-            .unwrap();
-        assert!(
-            out.status.success(),
-            "{}",
-            String::from_utf8_lossy(&out.stderr)
-        );
-    };
-    git(&data, &["init", "-q", "-b", "coverage-data"]);
-    git(&data, &["add", "."]);
-    git(
-        &data,
-        &[
-            "-c",
-            "user.name=Test",
-            "-c",
-            "user.email=test@local",
-            "commit",
-            "-qm",
-            "main receipt fixture",
-        ],
-    );
-    git(&f.root, &["init", "-q"]);
-    git(
-        &f.root,
-        &[
-            "fetch",
-            "-q",
-            data.canonicalize().unwrap().to_str().unwrap(),
-            "coverage-data:refs/remotes/origin/coverage-data",
-        ],
-    );
+    // apply_fstar_reuse runs `git show` itself; a hook's GIT_DIR would redirect it.
+    common::scrub_process_env();
+    common::seed_data_branch(&data, &f.root);
     f.receipt.modules.clear();
     fs::write(&f.log, "").unwrap();
     f.receipt.log_sha256 = sha256(b"");

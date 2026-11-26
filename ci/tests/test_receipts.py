@@ -3,22 +3,19 @@ import copy
 import json
 import os
 from pathlib import Path
-import subprocess
 import sys
 import tempfile
 import unittest
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+import gitenv
+from gitenv import git
 import receipts
 import publish_receipts
 
 SHA = 'a' * 40
 TOOL = Path(__file__).resolve().parents[2] / 'target/debug/formal-coverage'
-
-
-def git(path, *args):
-    return subprocess.check_output(['git', '-C', str(path), *args], text=True).strip()
 
 
 class ReceiptTests(unittest.TestCase):
@@ -45,7 +42,7 @@ class ReceiptTests(unittest.TestCase):
         (self.source / 'branch').write_text('coverage-data')
         self.save()
         self.remote = self.root / 'remote.git'
-        subprocess.run(['git', 'init', '--bare', '--quiet', str(self.remote)], check=True)
+        git(self.root, 'init', '--bare', '--quiet', str(self.remote))
 
     def save(self):
         (self.source / 'Root.json').write_text(receipts.encoded(self.r))
@@ -75,7 +72,7 @@ class ReceiptTests(unittest.TestCase):
     def test_publisher_is_append_only_and_coexists_with_baselines(self):
         self.assertTrue(publish_receipts.record(self.source, str(self.remote)))
         clone = self.root / 'clone'
-        subprocess.run(['git', 'clone', '--quiet', '--branch', 'coverage-data', str(self.remote), str(clone)], check=True)
+        git(self.root, 'clone', '--quiet', '--branch', 'coverage-data', str(self.remote), str(clone))
         before = git(clone, 'rev-parse', 'HEAD')
         self.assertFalse(publish_receipts.record(self.source, str(self.remote)))
         self.r['log'] += 'different bytes\n'
@@ -87,7 +84,7 @@ class ReceiptTests(unittest.TestCase):
         (clone / 'baselines').mkdir()
         (clone / 'baselines/floor.json').write_text('retained')
         git(clone, 'add', '.')
-        git(clone, '-c', 'user.name=Test', '-c', 'user.email=test@local', 'commit', '-qm', 'baseline')
+        git(clone, 'commit', '-qm', 'baseline')
         git(clone, 'push', '-q', 'origin', 'coverage-data')
         (self.source / 'sha').write_text('b' * 40)
         self.r['main_commit'] = 'b' * 40
@@ -122,16 +119,16 @@ class ReceiptTests(unittest.TestCase):
         self.assertTrue(TOOL.is_file(), 'build cargo binary before kit tests')
         publish_receipts.record(self.source, str(self.remote))
         workspace = self.root / 'workspace'
-        subprocess.run(['git', 'clone', '--quiet', '--branch', 'coverage-data', str(self.remote), str(workspace)], check=True)
+        git(self.root, 'clone', '--quiet', '--branch', 'coverage-data', str(self.remote), str(workspace))
         output = self.root / 'reuse.json'
         def select(base=SHA):
             return receipts.select(TOOL, self.context, workspace, base, 'coverage-data', output)
         self.assertEqual(select(), [])
         self.assertEqual(set(json.loads(output.read_text())['receipts']), {'Root.fst'})
-        cli = subprocess.run([sys.executable, str(Path(receipts.__file__)), 'select',
-                              '--tool', str(TOOL), '--context', str(self.context),
-                              '--workspace', str(workspace), '--base', SHA,
-                              '--output', str(output)], capture_output=True, text=True, check=True)
+        cli = gitenv.run([sys.executable, str(Path(receipts.__file__)), 'select',
+                          '--tool', str(TOOL), '--context', str(self.context),
+                          '--workspace', str(workspace), '--base', SHA,
+                          '--output', str(output)], capture_output=True, text=True, check=True)
         self.assertEqual(cli.stdout, '')  # An empty module list means zero checks.
         self.assertEqual(json.loads(output.read_text())['data_branch'], 'coverage-data')
         (self.base / 'Dep.fsti').write_text('changed')
@@ -143,7 +140,7 @@ class ReceiptTests(unittest.TestCase):
         broken = workspace / f'receipts/{SHA}/Root.json'
         broken.write_text('{}')
         git(workspace, 'add', '.')
-        git(workspace, '-c', 'user.name=Test', '-c', 'user.email=test@local', 'commit', '-qm', 'malformed')
+        git(workspace, 'commit', '-qm', 'malformed')
         self.assertEqual(select(), ['Root.fst'])
 
 

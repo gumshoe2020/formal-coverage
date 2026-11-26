@@ -1,25 +1,20 @@
 """Recorded-floor mode: floor read from the data branch, nothing numeric committed in PRs."""
 import json
 from pathlib import Path
-import subprocess
 import sys
 import tempfile
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import config
+import gitenv
+from gitenv import git
 import run
 from coverage_metrics import snapshot
 from test_ratchet import fixture, EXCEPTION
 from test_write_coverage import WriteCoverageTests
 
 ROOT = Path(__file__).resolve().parents[2]
-IDENT = ['-c', 'user.name=Test', '-c', 'user.email=test@example.invalid']
-
-
-def git(work, *args):
-    return subprocess.check_output(['git', '-C', str(work), *IDENT, *args], text=True,
-                                   stderr=subprocess.DEVNULL).strip()
 
 
 def encoded(report):
@@ -52,8 +47,8 @@ class RecordedRepo:
 
     def record(self, sha, report, branch='coverage-data'):
         """Put baselines/<sha>.json on the data branch, as the recording job would."""
-        exists = subprocess.run(['git', '-C', str(self.work), 'rev-parse', '--verify', '-q', 'refs/heads/' + branch],
-                                capture_output=True).returncode == 0
+        exists = gitenv.run(['git', '-C', str(self.work), 'rev-parse', '--verify', '-q', 'refs/heads/' + branch],
+                            capture_output=True).returncode == 0
         here = git(self.work, 'rev-parse', '--abbrev-ref', 'HEAD')
         if exists:
             git(self.work, 'checkout', '-q', branch)
@@ -71,7 +66,7 @@ class RecordedRepo:
         out = self.work / 'target/out'
         command = [sys.executable, str(ROOT / 'ci/run.py'), '--tool', str(self.tool), '--workspace', str(self.work),
                    '--enforce-ratchet', enforce, '--config', 'coverage/ci.json', '--base', base or self.base, '--output', str(out)]
-        return subprocess.run(command, capture_output=True, text=True), out
+        return gitenv.run(command, capture_output=True, text=True), out
 
 
 class RecordedConfigTests(unittest.TestCase):

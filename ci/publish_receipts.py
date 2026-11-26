@@ -10,6 +10,7 @@ import sys
 import tempfile
 
 from config import valid_branch
+from git_temp import temp_repo_env
 from gitauth import github_env
 from receipts import full_sha, module_name
 
@@ -75,6 +76,8 @@ def record(source, remote, env=None, attempts=3):
 
 def record_once(commit, branch, records, remote, env):
     with tempfile.TemporaryDirectory(prefix='coverage-receipts-', dir=os.environ.get('RUNNER_TEMP')) as directory:
+        env = temp_repo_env(env)
+
         def git(*args, capture=False):
             return subprocess.run(['git', '-C', directory, *args], env=env, check=True,
                                   stdout=subprocess.PIPE if capture else None, text=True)

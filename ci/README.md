@@ -214,6 +214,16 @@ and wraps each composite's unchanged steps in a workflow with declared inputs.
 It checks their expressions, step references and shell scripts; this is not a
 GitHub-hosted execution test. Publishing must be exercised after review/release.
 
+Tests that run git, or run kit code that does, take their git environment from
+`ci/tests/gitenv.py` (Python) or `tests/common/mod.rs` (Rust). Never spawn a bare
+`git`: inside a git hook, the hook's `GIT_DIR` overrides `git -C` and a fixture
+would commit to the real repository. `dev/v1122/decoy_suite.sh` runs both suites
+with `GIT_DIR` pointed at a decoy repository and checks that the decoy is unchanged.
+
+The baseline, receipt and badge publishers use `ci/git_temp.py` to clear inherited
+repository variables before operating in their temporary repositories. Numbered
+git configuration entries, including the GitHub authentication headers, are retained.
+
 The metric, ratchet, writers and original tests were adapted from bertie-tls
 `26b54ae` (Apache-2.0); see THIRD_PARTY_NOTICES.md. New runner/actions do not alter
 Rust measurement behavior. See the root README for a copy-paste workflow.

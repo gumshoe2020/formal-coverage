@@ -1009,3 +1009,131 @@ verdict on stdout and that the output directory was never created (refused befor
 M4. Docs describe the exemption exactly as implemented. No opt-out flag was added: M2
 found no kit write that needs one. The only consumer friction found is a caller-owned
 untracked checkout (bertie `hax-src/`), fixed by one consumer `.gitignore` line.
+
+## 2026-11-26 — formal-coverage v1.12.2 (tests isolated from a hook's git environment)
+
+Bug: a pre-push hook ran `cargo test` with `GIT_DIR` exported. `GIT_DIR` (and the other
+repository-locating variables) override `git -C <dir>`, so the F* reuse fixture's
+`git -C <tempdir> add/commit` committed onto the real branch. Reproduced offline against the
+v1.12.1 test code with a decoy repo and `GIT_DIR=<decoy>/.git` only: the decoy gained
+`Test <test@local> main receipt fixture`, deleting its tracked `keep.txt`, and the test failed
+(`data-record does not appear to be a git repository`). Fixture roots live under the ignored
+`logs/v1.7/fixtures/` inside the checkout, so they are inside a real repo regardless.
+
+M1. Every place a test spawns git, directly or through code it runs:
+
+| Where | How git runs | Writes? |
+| --- | --- | --- |
+| `tests/fstar_evidence.rs` `reused_checks_preserve_json_and_source_bound_rules` (local `git` closure) | `git -C data init/add/commit`, `git -C root init/fetch` | yes (the bug) |
+| same test → `formal_coverage::apply_fstar_reuse` → `src/fstar/reuse.rs::verify_origin` (in-process) | `git -C root show <ref>:receipts/...` | read |
+| `src/` `#[cfg(test)]` modules | none spawn git (reuse.rs unit tests never reach `verify_origin`) | — |
+| other Rust tests spawning `CARGO_BIN_EXE_formal-coverage` / `cargo` | binary reaches git only via `--fstar-reuse` (no test passes it); cargo on path-only fixtures does not run git | — |
+| `ci/tests/test_recorded.py` `git()` + `RecordedRepo` (init, add, commit, checkout, orphan, rm, update-ref, branch -D, rev-parse) — also used by test_dirty_tree and test_record | direct | yes |
+| `ci/tests/test_recorded.py` `RecordedRepo.run` → `ci/run.py` subprocess | run.py: rev-parse/show/diff/rev-list/status | read |
+| `ci/tests/test_dirty_tree.py` fixture (init/add/commit via test_recorded.git); `run` → `ci/run.py` or `-c` unguarded run.main | direct + subprocess | yes |
+| `ci/tests/test_kit.py` local `git()` (init/add/commit) in the run.py test; `run.py` subprocesses; in-process `run.floor_and_diff` | direct + subprocess + in-process | yes |
+| `ci/tests/test_record.py` `git init --bare`, `git --git-dir remote ...`; in-process `record.record` (init/remote/ls-remote/fetch/checkout/add/commit/push in a tempdir), `fetch_data_branch.fetch`; `RecordedRepo.run` → run.py | direct + in-process + subprocess | yes |
+| `ci/tests/test_receipts.py` `git()` (add/commit/push in clones), `git init --bare`, `git clone`; in-process `publish_receipts.record` | direct + in-process | yes |
+| `ci/tests/test_gitauth.py` `git init`, `git config --local`, `git config --get-all` with `github_env` | direct | yes (config) |
+| `ci/tests/test_kit.py` in-process `publish.publish` | raises before git (event check) | — |
+| `ci/tests/test_receipts.py` in-process `receipts.select` and the `receipts.py select` CLI subprocess | `git show` via run.show; the real kit binary (`report --fstar-reuse` only in `prepare`, with zero receipts, so no git) | read |
+| test_write_coverage / test_badges / test_ratchet | no git | — |
+
+M2. One helper per language. Rust: `tests/common/mod.rs` (`mod common;` in each test crate
+that needs it). Python: `ci/tests/gitenv.py`. Both read git's own list once with `git
+rev-parse --local-env-vars` (16 names on git 2.54, including GIT_DIR, GIT_WORK_TREE,
+GIT_INDEX_FILE, GIT_OBJECT_DIRECTORY, GIT_COMMON_DIR, GIT_CONFIG_PARAMETERS/COUNT), remove
+them, set `GIT_CONFIG_GLOBAL=/dev/null` and `GIT_CONFIG_NOSYSTEM=1`, and commit as
+`Test <test@example.invalid>` (author and committer env), so the per-call `-c user.*` flags
+are gone. The list command works with GIT_DIR set, even to a missing path.
+- Rust `git(dir)` returns the scrubbed `git -C dir` Command; `run_git` asserts success.
+  The reuse test calls in-process `apply_fstar_reuse`, which spawns git with the process
+  environment, so it first calls `scrub_process_env()` (same removal + isolation on the
+  process env; edition 2021, other tests in that binary spawn no git).
+- Python `git(path, *args)` and `run(command, ...)` pass `env=clean_env(...)` explicitly
+  (fixtures, run.py and receipts.py subprocesses). Kit code called in-process (record,
+  publish_receipts, fetch_data_branch, receipts.select, run.floor_and_diff) inherits
+  os.environ, so importing gitenv cleans os.environ once; every module that reaches git
+  imports it, and discovery imports all modules before running any test.
+  `scrubbed_environ()` lets test_gitauth build `github_env()` from a clean environment
+  while keeping its own GIT_CONFIG_COUNT/KEY/VALUE header settings.
+- Not routed: test_kit's `bash -ec` action-output script and `write-coverage.py`
+  subprocesses (neither runs git).
+
+M3. Regression tests, one per language, each against a decoy repository created by the test:
+`tests/hook_env.rs` (its own test binary, one test, because it sets the variables
+process-wide) and `ci/tests/test_hook_env.py`. Two hook environments, each with a fresh
+decoy: `GIT_DIR` only (the incident) and `GIT_DIR`+`GIT_WORK_TREE`+`GIT_INDEX_FILE`. The
+shared fixtures run with that environment set in the test process (Rust: the F* data-branch
+fixture, now `common::seed_data_branch`, shared with fstar_evidence; Python: RecordedRepo
+with record() and a run.py measurement, CommittedRepo with run.py, bare init and clone).
+Then every file under the decoy (HEAD, index, refs, objects, logs, worktree) must be
+byte-identical. The decoy is checked before any fixture failure is reported. A control then
+runs the v1.12.1-style unscrubbed `git -C` in the same environment and asserts the decoy
+did change (with `GIT_DIR` only, `refs/heads/main` moves), so the test cannot pass vacuously.
+Python also checks that importing gitenv cleans os.environ and that clean_env drops exactly
+git's list.
+- Against v1.12.1 behaviour (helper scrubbing disabled, temporarily): Rust fails with
+  `["GIT_DIR"]: helper fixture changed the decoy: [.git/COMMIT_EDITMSG, .git/FETCH_HEAD,
+  .git/index, .git/logs/HEAD, .git/logs/refs/heads/main, 4 objects, .git/refs/heads/main]`;
+  Python fails in both environments (24 changed decoy files with GIT_DIR only;
+  `.git/COMMIT_EDITMSG` when GIT_WORK_TREE and GIT_INDEX_FILE also point at the decoy,
+  because `add .` then sees the clean decoy tree and the commit is refused). Restored: pass.
+  The real v1.12.1 test code itself mutated the decoy the same way (bug reproduction above).
+- Whole suites via `dev/v1122/decoy_suite.sh` (builds a decoy, runs `cargo test --locked`
+  and `python3 -m unittest discover -s ci/tests` with the hook variables, fingerprints every
+  decoy file before and after): `GIT_DIR=<decoy>/.git GIT_WORK_TREE=<decoy>` → Rust 201
+  passed, 0 failed, 1 ignored (existing); Python 109 OK; decoy unchanged. `GIT_DIR` only →
+  same counts, decoy unchanged.
+
+M4. Production git call sites (unchanged; they inherit the caller's environment):
+
+| Call site | Git use | Inheriting GIT_DIR: judgement |
+| --- | --- | --- |
+| `src/fstar/reuse.rs::verify_origin` | `git -C root show <ref>:receipts/...` | Correct: read-only; inside a hook GIT_DIR names the repo being measured. A mismatched GIT_DIR can only make the check fail closed or compare against another repo's data branch; no writes. |
+| `ci/run.py` `git()`, `uncommitted_paths`, `show` | rev-parse, show, diff, rev-list, `status --no-optional-locks` | Correct: read-only, same repo in practice. A pre-commit hook's temporary GIT_INDEX_FILE makes the dirty-tree guard see the index being committed, which is the right view. |
+| `ci/receipts.py` `select` (via run.show) | `git show` | Correct: read-only, as run.py. |
+| `ci/fetch_data_branch.py` | `git -C workspace ls-remote/fetch origin` into `refs/remotes/origin/<branch>` | Correct: writes only the data-branch tracking ref and objects of the repository being measured, which is what it is for. |
+| `ci/record.py::record_once`, `ci/publish_receipts.py::record_once`, `ci/publish.py::publish` | `git -C <new tempdir> init`, `remote add origin`, fetch, `checkout --orphan`/`-b`, (`rm -rf .`), add, commit, push | **Risk** (same pattern as the test bug). Offline probe with GIT_DIR at a decoy without an `origin`: `record.record` re-initialised the decoy, added `origin`, switched its HEAD to an orphan `coverage-data`, committed there and pushed that branch to the target remote (publish_receipts.py and publish.py by code reading: same sequence, publish.py also `rm -rf .`); the decoy's worktree then showed the data files as deleted. With an existing `origin`, `remote add` fails (exit 3) before anything else and the decoy is byte-unchanged. Mitigated by the CLI gates (push on main, GITHUB_SHA/REPOSITORY, token) and by hosted runners not exporting GIT_DIR; triggered only by running them inside a hook or with GIT_DIR exported (e.g. a workflow-level `env: GIT_DIR`), in a repo with no `origin`. Reported, not fixed (product behaviour). |
+
+Note: git resolves a relative GIT_DIR after `-C` (checked: `GIT_DIR=.git git -C ../b` names
+b's git dir), so a hook's relative `GIT_DIR=.git` would follow `-C` into the target directory.
+The incident therefore implies an absolute GIT_DIR; why it was absolute (for example a linked
+worktree's git dir) was not verified here. The helpers handle both forms.
+
+## 2026-11-26 — v1.12.2 publisher isolation (part 2)
+
+M1 call-site audit. Each row lists every command issued by its nested git wrapper.
+All target the publisher-created directory and use its scrubbed environment.
+
+| Caller | Temporary repository operations and purpose |
+| --- | --- |
+| record.record_once | init, remote add origin, ls-remote, fetch, checkout -b or --orphan, add, commit, push — append a baseline and refresh the measured page. |
+| publish_receipts.record_once | init, remote add origin, ls-remote, fetch, checkout -b or --orphan, add, commit, push — append validated receipts. |
+| publish.publish | init, remote add origin, ls-remote, fetch, checkout -b or --orphan, rm, add, commit, push — replace the badges tree under the existing lease. |
+
+None of these three scripts issues a workspace git command. The shared helper's
+read-only rev-parse --local-env-vars queries Git's variable names. GIT_CONFIG_COUNT
+is on that list but activates the numbered config entries used by github_env, so
+it is retained. The helper copies the environment and leaves the auth code intact.
+
+M2. test_publish_hook exercises all three public publish functions. Git's URL-specific
+insteadOf config maps the hard-coded fixture repository URL to its local bare repo.
+GIT_ALLOW_PROTOCOL=file confines transport. Each case fingerprints the decoy,
+including its worktree, config, objects, refs, index and logs, and checks the sole
+remote ref, one root commit, subject, exact tree paths and blob IDs. In a separate
+run, replacing each publisher's imported temp_repo_env with an identity function
+made all three decoy assertions fail. All three passed with the scrub enabled.
+
+Verification uses an untracked PATH wrapper under target/hook-env2/bin. It runs
+ordinary git commands unchanged and substitutes a fetch from the fixture checkout
+into the local bare remote for each push request. This verifies commit transfer and
+ref contents without executing git push; push transport and lease enforcement are
+outside the coverage of this run. No worktree hook or milestone commit was run.
+
+M3 and local verification. Updated CHANGELOG and ci/README.md. Offline cargo test
+--locked passed (201 passed, one ignored), clippy --locked --all-targets -- -D warnings
+and fmt --check passed. Python discovery passed all 113 on rerun after one fixture
+init error during the first run. Both decoy_suite.sh modes passed and reported the
+outer decoy unchanged. ci/lint-actions.py passed. Logs and the local verification
+wrapper are in target/hook-env2. Independent acceptance remains pending.
