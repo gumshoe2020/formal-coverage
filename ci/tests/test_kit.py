@@ -129,6 +129,7 @@ class RunnerTests(unittest.TestCase):
                 return subprocess.check_output(['git', '-C', directory, *args], stderr=subprocess.DEVNULL, text=True).strip()
             git('init')
             report = test_write_coverage.WriteCoverageTests().report()
+            (work / '.gitignore').write_text('/out/\n/tool\n/job-summary\n')
             (work / 'fixture.json').write_text(json.dumps(report))
             (work / 'COVERAGE.md').write_text('Intro\n<!-- measured coverage: begin -->\n<!-- measured coverage: end -->\n')
             subprocess.run([sys.executable, str(ROOT / 'ci/write-coverage.py'), 'fixture.json'],
@@ -161,6 +162,7 @@ class RunnerTests(unittest.TestCase):
                 self.assertIn('invalid choice', result.stderr)
             baseline_path = work / 'coverage/baseline.json'
             baseline_path.write_text(baseline_path.read_text() + '\n')
+            git('-c', 'user.name=Test', '-c', 'user.email=test@example.invalid', 'commit', '-a', '-m', 'stale baseline')
             summary = work / 'job-summary'
             result = subprocess.run(off, capture_output=True, text=True, env=dict(os.environ, GITHUB_STEP_SUMMARY=str(summary)))
             self.assertEqual(result.returncode, 0, result.stderr)
@@ -177,11 +179,13 @@ class RunnerTests(unittest.TestCase):
             git('add', 'coverage/baseline.json')
             git('-c', 'user.name=Test', '-c', 'user.email=test@example.invalid', 'commit', '-m', 'bad floor')
             baseline_path.write_text(valid)
-            result = subprocess.run(off + ['--base', 'HEAD'], capture_output=True, text=True)
+            git('-c', 'user.name=Test', '-c', 'user.email=test@example.invalid', 'commit', '-a', '-m', 'restore baseline')
+            result = subprocess.run(off + ['--base', 'HEAD~1'], capture_output=True, text=True)
             self.assertNotEqual(result.returncode, 0)
             self.assertIn('invalid merge-base totals', result.stderr)
             report['dependency_inventory_complete'] = False
             (work / 'fixture.json').write_text(json.dumps(report))
+            git('-c', 'user.name=Test', '-c', 'user.email=test@example.invalid', 'commit', '-a', '-m', 'incomplete inventory')
             result = subprocess.run(off, capture_output=True, text=True)
             self.assertNotEqual(result.returncode, 0)
             self.assertIn('incomplete inventory', result.stderr)

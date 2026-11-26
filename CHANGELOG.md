@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.12.1 — 2026-11-26
+
+- `ci/run.py` (and so the coverage action) now refuses to compute a ratchet
+  verdict when the checkout has uncommitted changes: tracked files modified,
+  staged or deleted, or untracked files that are not git-ignored. It exits 1
+  naming the workspace, the fix (commit first) and up to ten paths. Before, a
+  local run on uncommitted edits measured them but took the change set from
+  `base..HEAD`, so with HEAD at the base it saw no touched security code and
+  printed `ratchet PASS`. This applies in both enforcement modes and both
+  floor modes. The action's own `logs/ci-kit/build.log` and `coverage.log`
+  are the only exemption. Anything a workflow writes into the checkout before
+  the coverage action (prover outputs, receipts, dependency checkouts) must be
+  git-ignored or written outside the checkout.
+
 ## 1.12.0 — 2026-11-26
 
 - Recorded-floor fetches and publish actions now reset inherited GitHub HTTP

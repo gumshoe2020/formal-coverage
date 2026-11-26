@@ -346,3 +346,41 @@ and the unreleased 1.12.0 changelog. The README template retains
 --locked, cargo clippy --locked --all-targets -- -D warnings, cargo fmt --check,
 and python3 -m unittest discover -s ci/tests (92 tests). No action or workflow
 YAML changed. actionlint passed on .github/workflows/ci.yml.
+
+## formal-coverage v1.12.1 — the ratchet must not pass on uncommitted work
+
+- 2026-11-26 (Claude Code takes over; Codex left no v1.12.1 changes, tree clean at bb08606).
+- M1: `run.py` refuses a dirty tree before measuring. One check at the top of `run()`
+  covers both ratchet paths (committed `floor_and_diff`, recorded `ratchet_recorded`), in
+  both enforcement modes. Uncommitted = any `git status --porcelain -z --untracked-files=all`
+  entry. Exit 1, one-line message naming the workspace, fix and base, then up to 10 paths.
+  Existing fixtures adjusted: they now ignore their own outputs and commit their tracked edits.
+- M2: inventoried every workspace write (NOTES table). Only the action's
+  `logs/ci-kit/{build,coverage}.log` exist in the workspace before run.py; exempted by exact
+  untracked path. No kit step touches tracked files; no opt-out flag needed. Offline replay
+  of the action on a clean fixture-consumer clone (committed + recorded): clean proceeds,
+  tracked edit and untracked .rs refuse; v1.12.0 false PASS reproduced and now refused.
+  Consumer finding: bertie-tls checks out `hax-src/` into the workspace without ignoring it,
+  so it must ignore that path before adopting 1.12.1 (reported, not exempted).
+- M3: ci/tests/test_dirty_tree.py (14 tests): clean proceeds; tracked edit, staged-only edit,
+  deletion, untracked file (also in a new directory, named individually) refuse; ignored
+  files proceed; false PASS: the same uncommitted security edit gives `ratchet PASS` with the
+  guard removed, refuses with it, and once committed fails on the ratchet rule itself;
+  advisory mode refuses; recorded floor refuses; action-log exemption is exact (other files
+  in logs/ci-kit and tracked files at those paths refuse); the path list is capped at 10;
+  the exempt paths match action.yml. 106 kit tests pass.
+- M4: ci/README.md gains "Commit before measuring" (why, what counts, the one exemption,
+  no override). The local example now keeps report/log under ignored `target/` and commits
+  before run.py. The action section and root README template ask that pre-coverage steps
+  write to ignored paths or runner.temp. CHANGELOG `## 1.12.1 — unreleased`. The Cargo
+  version stays 1.12.0 (not requested; a release pass bumps it).
+- Final verification (offline): cargo test --locked 200 passed, 0 failed, 1 existing ignored;
+  cargo clippy --locked --all-targets -- -D warnings PASS; cargo fmt --check PASS;
+  `python3 -m unittest discover -s ci/tests` 106 tests OK; actionlint via ci/lint-actions.py
+  (README workflow + all composites) PASS; git diff --check PASS. Logs target/v1121/logs.
+  No push, tag, release, gh/GitHub API, network or consumer edits. Hosted CI and
+  independent acceptance not run. Shared-memory diary not filed (tools unavailable here).
+- Consumer action before adopting 1.12.1: bertie-tls must git-ignore `/hax-src/` (or check
+  hax out outside the workspace); otherwise its coverage job refuses, listing hax-src files.
+
+DIRTY-TREE-READY

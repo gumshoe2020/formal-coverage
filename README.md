@@ -422,6 +422,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       # Insert this project's pinned prover setup and fresh receipt generation here.
+      # Write their outputs to git-ignored paths or runner.temp: the coverage step refuses uncommitted changes.
       - uses: gumshoe2020/formal-coverage/.github/actions/coverage@FORMAL_COVERAGE_COMMIT_SHA
         with:
           workspace: '.'

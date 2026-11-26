@@ -17,10 +17,43 @@ from coverage_metrics import baseline
 from coverage_section import END, START, measured_section
 
 HERE = Path(__file__).resolve().parent
+# Written by the coverage action at the checkout root before run.py starts.
+ACTION_LOGS = ('logs/ci-kit/build.log', 'logs/ci-kit/coverage.log')
+SHOWN_PATHS = 10
 
 
 def git(workspace, *args):
     return subprocess.check_output(['git', '-C', str(workspace), *args], text=True).strip()
+
+
+def uncommitted_paths(workspace):
+    """Paths whose state differs from HEAD: tracked edits, staged or not, and untracked files."""
+    status = subprocess.check_output(['git', '--no-optional-locks', '-C', str(workspace), 'status',
+                                      '--porcelain', '-z', '--untracked-files=all'], text=True)
+    entries = iter(status.split('\0'))
+    paths = []
+    for entry in entries:
+        if not entry:
+            continue
+        code, path = entry[:2], entry[3:]
+        if set(code) & {'R', 'C'}:
+            next(entries)  # rename/copy source; the destination is reported
+        if code == '??' and path in ACTION_LOGS:
+            continue
+        paths.append(path)
+    return paths
+
+
+def require_committed(workspace, base):
+    """The ratchet diffs base..HEAD but measures the files on disk; they must agree."""
+    paths = uncommitted_paths(workspace)
+    if not paths:
+        return
+    shown = [f'  {path}' for path in paths[:SHOWN_PATHS]]
+    if len(paths) > SHOWN_PATHS:
+        shown.append(f'  ... and {len(paths) - SHOWN_PATHS} more')
+    raise ValueError(f'uncommitted changes in {workspace}; commit them first: '
+                     f'the ratchet compares {base} to HEAD\n' + '\n'.join(shown))
 
 
 def floor_and_diff(workspace, baseline, base):
@@ -101,6 +134,7 @@ def measure(tool, workspace, extra, output):
 
 def run(args):
     workspace = args.workspace.resolve()
+    require_committed(workspace, args.base)
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=True)
     config_path = (workspace / args.config).resolve() if args.config else None

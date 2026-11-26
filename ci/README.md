@@ -54,6 +54,10 @@ On an enforced failure it stages a red ratchet from the committed baseline if re
 those other badge numbers describe that baseline, not a successful new run.
 Do not use the ratchet output as a substitute for the whole job result.
 Use a separate job per project; output paths are fixed within a job.
+The checkout must match its commit when the action measures: see
+[Commit before measuring](#commit-before-measuring). Have earlier steps write
+prover outputs, receipts and dependency checkouts to git-ignored paths (such as
+`target/`) or outside the checkout (such as `runner.temp`).
 
 `publish-badges` inputs: `artifact-name` and required `coverage-result`
 (`${{ needs.coverage.result }}`). No outputs. Requires `contents: write` on its
@@ -163,16 +167,39 @@ both markers and a `## Exceptions` table before first use):
 | --- | --- | --- | --- |
 ```
 
-From the project directory, after generating receipts with the project's prover:
+From the project directory, after generating receipts with the project's prover
+(the example assumes `target/` is git-ignored):
 
 ```sh
-/path/to/formal-coverage report . --fstar-log target/fstar.log --json report.json
-python3 /path/to/kit/ci/write-coverage.py report.json  # developer updates, review and commit
+/path/to/formal-coverage report . --fstar-log target/fstar.log --json target/report.json
+python3 /path/to/kit/ci/write-coverage.py target/report.json  # developer updates, review and commit
+git commit ...  # the ratchet only sees committed changes
 python3 /path/to/kit/ci/run.py --tool /path/to/formal-coverage \
   --workspace . --report-args '["--fstar-log","target/fstar.log"]' \
   --config coverage/ci.json --base "$(git merge-base origin/main HEAD)" \
-  --output target/coverage-ci > coverage-ci.log 2>&1
+  --output target/coverage-ci > target/coverage-ci.log 2>&1
 ```
+
+### Commit before measuring
+
+`run.py` measures the files on disk, but the ratchet takes the change set from
+`git diff <base> HEAD` and the commits in `<base>..HEAD`. Uncommitted edits would
+be measured yet invisible to that diff: with HEAD at the base, a security edit
+would look untouched and pass. So before measuring, `run.py` refuses with
+`uncommitted changes in <workspace>; commit them first: the ratchet compares
+<base> to HEAD`, followed by up to ten paths. It checks `git status` for the whole
+repository: tracked files modified, staged or deleted, and untracked files that
+are not git-ignored (a new source file would be measured but not diffed). Ignored
+files are fine, so keep receipts, reports and logs under an ignored directory or
+outside the checkout. This applies in both enforcement and floor modes, and
+there is no override: commit (a work-in-progress commit is fine) and rerun.
+
+The only exemption is the coverage action's own log files, which it writes at
+the checkout root before `run.py` starts. An **untracked** file at exactly
+`logs/ci-kit/build.log` or `logs/ci-kit/coverage.log` is not reported. Other
+files under `logs/ci-kit/`, and tracked files at those paths, still count. The
+output directory gets no exemption: in CI it does not exist yet, and locally it
+should be under an ignored directory such as `target/`.
 
 `report` itself has no ratio gate; every nonzero report exit blocks. The kit never
 retries a failed report with audits disabled. The native ratio is displayed

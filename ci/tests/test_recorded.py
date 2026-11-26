@@ -33,6 +33,7 @@ class RecordedRepo:
         self.work = Path(directory)
         git(self.work, 'init', '-q', '-b', 'main')
         self.config = {'floor': 'recorded', **(ci_config or {})}
+        (self.work / '.gitignore').write_text('/target/\n')
         (self.work / 'coverage').mkdir()
         (self.work / 'coverage/ci.json').write_text(json.dumps(self.config))
         (self.work / 'COVERAGE.md').write_text('Prose only\n\n## Exceptions\n\n| Commit | Approving maintainer | Reason | Restoration obligation |\n| --- | --- | --- | --- |\n')

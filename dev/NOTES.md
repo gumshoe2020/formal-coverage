@@ -942,3 +942,70 @@ as current values in the summary or badges. Recorded files use the existing writ
 in a temporary repository, with and without a local checkout header. Git config
 reports the empty reset literally. The test captures output and compares it
 without including header values in assertion failures. Both cases passed.
+
+## 2026-11-26 — formal-coverage v1.12.1 (dirty-tree guard)
+
+M1. `require_committed(workspace, base)` runs first in `run()`, before the output directory
+is created and before the tool runs, so nothing the kit writes during the run can trip it.
+Both diff sites are only reachable through `run()`, so one call guards both. Advisory mode
+refuses too: an advisory verdict on an uncommitted tree would be just as wrong. The paths
+come from `git status`, which reports them relative to the repository root and lists the
+whole repository, matching the scope of `git diff base HEAD`. `--untracked-files=all` lists
+individual files instead of collapsed directories, so the exemption can match exact paths.
+`--no-optional-locks` avoids taking the index lock. Rename/copy entries consume their source
+path. Ignored files are not listed (no `--ignored`). Not a repository → git error → exit 1.
+
+M2. Every write into the workspace by the kit or its callers, before or during run.py:
+
+| Writer | Path | When | Handling |
+| --- | --- | --- | --- |
+| action `source` step | `$GITHUB_OUTPUT` | before | outside the workspace |
+| `actions/cache` | `runner.temp/formal-coverage-build` | before | outside |
+| action build step | `logs/ci-kit/build.log` (checkout root) | before | **exact-path exemption** (untracked only) |
+| cargo (kit build) | `--target-dir $RUNNER_TEMP/...`; kit sources in `github.action_path` | before | outside; `--locked`, no lockfile write |
+| `fetch_data_branch.py` | `.git` refs/objects only | before | not working-tree state |
+| action measure step | `logs/ci-kit/coverage.log` (stdout redirect, opened before run.py) | before | **exact-path exemption** (untracked only) |
+| run.py | `--output` (`$GITHUB_WORKSPACE/target/coverage-ci`) | after the check | created after it; not exempt |
+| formal-coverage `report` | `--json/--markdown` in output; cargo `target/.rustc_info.json` | after the check | not relevant |
+| write-coverage `--check` / write-badges | output dir | after the check | not relevant |
+| badge staging, uploads | `target/coverage-ci/badges`, reads | after run.py | not relevant |
+| publish-* actions | `runner.temp/*-in` in separate jobs | n/a | outside, other job |
+
+No kit step modifies a tracked file. Exemption rule (documented in ci/README.md): an
+**untracked** entry whose repository-relative path is exactly `logs/ci-kit/build.log` or
+`logs/ci-kit/coverage.log`. Not a directory or glob; a tracked file at those paths, staged or
+modified, is still refused. These paths are the action's fixed log locations at the checkout
+root, and the coverage log is open for writing while run.py runs. Moving them out of the
+workspace would change the `-report` artifact layout (a behaviour change), so they stay.
+The output directory gets no exemption: an arbitrary `--output` could otherwise hide sources.
+In CI it does not exist when the check runs, and locally it is normally under ignored `target/`.
+
+Caller-owned writes (prover setup, receipts, dependency checkouts) are the caller's
+responsibility: they must be git-ignored or outside the checkout. Consumer finding
+(read-only inspection of bertie-tls coverage.yml at 790b6c2): it checks out cryspen/hax with
+`path: hax-src` inside the workspace, and `.gitignore` ignores only `/target`. Its receipts
+go to `target/ci-logs/fstar` (ignored). The kit's logs go to `logs/ci-kit` (now exempt).
+So with 1.12.1, bertie's coverage job would refuse with `hax-src/...` listed until bertie
+ignores `/hax-src/` or checks hax out under `target/` or `runner.temp`. That is a consumer
+change, not a kit step, so it gets no exemption and no opt-out flag. The pinned v1.11.0 is
+unaffected until the pin moves. Not edited here: consumer repos are out of scope.
+
+Offline replay (dev/v1121/consumer_flow.py, results in dev/v1121/results.md): a clean clone
+of a local bare origin seeded from fixtures/inventory, with the action's `run:` blocks in
+order and GitHub's env, for both committed and recorded floors (recorded fetches
+coverage-data from the local origin). Clean → `ratchet PASS`, and the only pre-measure
+workspace entries are the two exempt logs. A tracked edit to src/lib.rs and an untracked
+src/new_parser.rs each refuse, naming the file. False PASS reproduced with the v1.12.0 kit
+(`git archive v1.12.0`): an uncommitted security edit with base == HEAD gives `ratchet PASS`;
+v1.12.1 refuses. Pre-existing, unchanged: in recorded mode, badge staging after any measure
+failure exits 1 because there is no committed baseline to colour (same in 1.12.0).
+
+M3. The false-PASS test runs run.py's own entry point with `require_committed` replaced by a
+no-op (an in-process stand-in for 1.12.0) to prove the scenario really was a PASS before
+asserting the refusal; the consumer replay also reproduces it with the real v1.12.0 kit.
+Refusal tests assert exit 1, the exact first line, the exact listed paths, no ratchet
+verdict on stdout and that the output directory was never created (refused before measuring).
+
+M4. Docs describe the exemption exactly as implemented. No opt-out flag was added: M2
+found no kit write that needs one. The only consumer friction found is a caller-owned
+untracked checkout (bertie `hax-src/`), fixed by one consumer `.gitignore` line.
