@@ -55,6 +55,9 @@ pub struct Dependency {
     pub default_size_unknown: bool,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub override_reason: Option<String>,
+    /// A matched `--dependency-totals` receipt's buckets.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub receipt: Option<crate::shipped_tree::DependencyReceipt>,
     #[serde(skip)]
     pub package_id: Option<String>,
     #[serde(skip)]
@@ -74,6 +77,8 @@ pub struct Options {
     pub binary: Option<PathBuf>,
     /// Compiled-files mode: where `cargo check` writes; default `<root>/target/formal-coverage`.
     pub check_target_dir: Option<PathBuf>,
+    /// Replaces `[ship] features` for this run (a consumer's resolved feature set).
+    pub ship_features: Option<Vec<String>>,
 }
 
 pub fn analyze(root: &Path, config_path: Option<&Path>) -> Result<Report> {
@@ -298,8 +303,8 @@ pub fn analyze_with(root: &Path, options: &Options) -> Result<Report> {
     }
     crate::size::apply(root, options, &mut report)?;
     apply_dependency_rules(&config.dependencies, &mut report)?;
-    if let Some(ship) = &config.ship {
-        crate::ship::apply(root, options, ship, &mut report)?;
+    if let Some(ship) = shipped(config.ship.as_ref(), options)? {
+        crate::ship::apply(root, options, &ship, &mut report)?;
     }
     report.security_relevant = report
         .units
@@ -357,6 +362,17 @@ pub fn analyze_with(root: &Path, options: &Options) -> Result<Report> {
     Ok(report)
 }
 /// `[dependencies."name"]` / `[dependencies."name@version"]` inputs on runtime dependencies.
+fn shipped(ship: Option<&crate::Ship>, options: &Options) -> Result<Option<crate::Ship>> {
+    let Some(features) = &options.ship_features else {
+        return Ok(ship.cloned());
+    };
+    let ship = ship.ok_or_else(|| anyhow::anyhow!("--ship-features needs a [ship] section"))?;
+    Ok(Some(crate::Ship {
+        features: features.clone(),
+        ..ship.clone()
+    }))
+}
+
 fn apply_dependency_rules(
     rules: &[(String, crate::inputs::DependencyRule)],
     report: &mut Report,

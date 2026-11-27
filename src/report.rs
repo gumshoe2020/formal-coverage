@@ -637,6 +637,7 @@ pub fn markdown(r: &Report) -> String {
             run.trusted_sites.iter().map(|(f,l,k)|format!("{}:{l} {}",cell(f),cell(k))).collect::<Vec<_>>().join("; "),
             run.escape_sites.iter().map(|(f,l,k)|format!("{}:{l} {}",cell(f),cell(k))).collect::<Vec<_>>().join("; ")));
     }
+    out.push_str(&crate::shipped_tree::markdown(r));
     out.push_str("\n## Evidence and limitations\n\n");
     for w in &r.warnings {
         out.push_str(&format!("- {}\n", cell(w)));

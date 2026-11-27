@@ -136,6 +136,7 @@ fn dependency(name: String, version: String, security: bool) -> Dependency {
         override_reason: None,
         package_id: None,
         lib_name: None,
+        receipt: None,
     }
 }
 pub(crate) fn resolve(root: &Path, target: Option<&str>, report: &mut Report) -> Result<()> {

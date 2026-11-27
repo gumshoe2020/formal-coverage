@@ -64,6 +64,7 @@ pub fn run_git(dir: &Path, args: &[&str]) {
 /// Commits everything under `data` as branch `coverage-data` in a new repository there,
 /// then fetches it into a new repository at `root` as `refs/remotes/origin/coverage-data`:
 /// the fetched data branch that F* receipt reuse reads.
+#[allow(dead_code)]
 pub fn seed_data_branch(data: &Path, root: &Path) {
     run_git(data, &["init", "-q", "-b", "coverage-data"]);
     run_git(data, &["add", "."]);

@@ -103,3 +103,4 @@ runs/**/*.log
 
 # per-pass build/run logs carry local paths
 /dev/**/*.log
+/result

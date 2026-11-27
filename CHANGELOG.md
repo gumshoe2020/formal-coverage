@@ -1,5 +1,41 @@
 # Changelog
 
+## 1.13.0 — 2026-11-26
+
+New features; existing numbers and ratchet inputs do not change.
+
+- **`report --totals-json FILE --totals-source SOURCE`** writes a line-total
+  receipt for the single `[ship]` package: its first-party security runtime
+  lines in four buckets (proven = proven, proven-bounded, proven-extracted,
+  proven-upstream; tested; trusted; unverified = unverified and hazard), the
+  bucket map, the kit version and binary sha256, the package id (name,
+  version, `git+URL#FULL-REV` or `checksum:SHA256`, resolved features,
+  target), the evidence used and the sha256 of the full JSON report. The
+  bytes are deterministic and contain no paths. It is refused when `[ship]`
+  is missing, names more than one package or is not confirmed by the build,
+  when an input has a TODO reason or no reason (schema 2), when files are
+  unparseable, and, inside a git checkout, when the measured files have
+  uncommitted changes or HEAD is not the claimed rev.
+- **`report --dependency-totals RECEIPT...`** counts dependency receipts in
+  a new informational **Shipped tree** section (JSON `shipped_tree`,
+  Markdown table) and adds `receipt` to each matched `dependencies[]` entry.
+  It enforces: one receipt per package id; source, resolved features and
+  target equal to this build's (`cargo metadata`, `Cargo.lock`); the same kit
+  version; a compiled-files dependency size equal to the receipt's
+  `shipped_files_sloc`; and no more claimed lines than that size. Compiled
+  lines outside the receipt count as unverified. Without receipts the report
+  is unchanged; with them, only the two additions differ.
+- **`--ship-features a,b`** replaces `[ship] features` for one run, so a
+  package can be measured with the feature set a consumer builds.
+- **Nix flake.** `nix build`, `nix run` and the pinned `hax-fstar` shell;
+  the flake takes its version from `Cargo.toml`.
+- **`lib.<system>.coverageTotals`** builds a receipt in Nix: vendored
+  `Cargo.lock` dependencies (`cargoHash`), the package's own verification
+  script offline with the pinned hax/F*/Z3, then `report --totals-json`.
+  Receipt derivations are never substituted from a binary cache. On
+  bertie-tls main (380c23f, default features) its buckets equal the numbers
+  CI recorded: proven 4063, tested 253, trusted 161, unverified 553.
+
 ## 1.12.4 — 2026-11-26
 
 Both changes below are **measurement changes**. They move lines between

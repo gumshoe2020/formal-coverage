@@ -371,6 +371,85 @@ proof statements; its low cost says nothing about whether the specification is
 useful. Syntactic line counts also cannot measure proof difficulty or establish
 end-to-end correctness.
 
+## Line-total receipts
+
+`report --totals-json receipt.json --totals-source git+URL#FULL-REV` writes a
+small receipt with the shipped package's first-party security runtime lines in
+four buckets: proven (proven, proven-bounded, proven-extracted,
+proven-upstream), tested, trusted and unverified (unverified and hazard). It
+records the kit version and binary hash, the package's name, version, exact
+source (`git+URL#REV` or `checksum:SHA256`), resolved features and target, the
+evidence used and the sha256 of the full JSON report. The package is the one
+`[ship]` names; `--ship-features` measures it with another feature set, such
+as the one a consumer builds. The receipt is refused for a config without a
+single confirmed `[ship]` package, with TODO or missing reasons, and, in a git
+checkout, for uncommitted changes or a HEAD other than the claimed rev.
+
+### Counting dependency receipts: the Shipped tree
+
+`report --dependency-totals bertie.json ...` matches each receipt to exactly
+one runtime dependency and adds a **Shipped tree** section (JSON
+`shipped_tree`, Markdown table): first-party plus third-party
+security-relevant lines by bucket. The run fails when a receipt's source
+(full git rev or crate checksum), resolved features or target differ from
+this build's `cargo metadata` and `Cargo.lock`, when it comes from another kit
+version, when two receipts name the same package, or when it claims more lines
+than this build compiles for the dependency. The dependency must be sized in
+compiled-files mode without a configured `sloc`, and the receipt's
+`shipped_files_sloc` must equal that size: both sides measured the same
+files. The dependency's compiled lines outside the receipt's scope (items
+outside functions, test and proof code, inline proof lines) count as
+unverified; dependencies without a receipt count as before. Each matched
+`dependencies[]` entry gains `receipt` (buckets, lines outside the receipt,
+receipt sha256). Everything else in the report, including first-party totals
+and the ratchet's inputs, is byte-identical with and without receipts; the
+Shipped tree is informational.
+
+## Nix
+
+```sh
+nix run . -- --version
+nix build .#formal-coverage
+nix develop .#hax-fstar
+```
+
+The binary builds from `Cargo.lock`, takes its version from `Cargo.toml` and
+runs the full test suite. `flake.lock`
+pins nixpkgs to the `nixos-26.05` release branch. The verification shell uses
+hax `5ccf89dd2e996c9f88f2267eaa2a64739c4ca41a` and its pinned F* `2025.10.06`,
+Z3 `4.13.3`, and Rust `nightly-2025-11-08`, matching bertie-tls's proof toolchain.
+It exports `HAX_CORE_LIBS` and `HAX_LIB_PROOFS` from the pinned Nix-store source,
+prints tool versions, and rejects an unexpected F* or Z3 version on entry.
+
+`lib.<system>.coverageTotals` builds a line-total receipt in the Nix sandbox:
+
+```nix
+formal-coverage.lib.${system}.coverageTotals {
+  src = builtins.fetchGit { url = "https://github.com/gumshoe2020/bertie-tls"; rev = "<full rev>"; };
+  url = "https://github.com/gumshoe2020/bertie-tls";
+  package = "bertie-tls";
+  features = [ "api" "std" "defensive" ];          # the consumer's resolved set
+  cargoHash = "sha256-...";                        # vendored Cargo.lock dependencies
+  verify = "python3 scripts/verify-fstar.py";      # FSTAR_JOBS = the build's cores
+  reportArgs = [ "--fstar-log" "target/ci-logs/fstar/fstar.log" ];
+}
+```
+
+It vendors the lockfile's dependencies, runs the package's own verification
+script offline with the pinned hax, F* and Z3, then runs `report --totals-json`
+with `--totals-source git+URL#REV`. The output holds `totals.json`, the full
+report and the verification exit code (a failed proof is not a failed build:
+it earns no credit; the verification log stays in the Nix build log). `rev` defaults to `src.rev`; `config` supplies a
+`formal-coverage.toml` for revisions without one. Receipt derivations are
+never substituted from a binary cache. The network-free guarantee needs the
+Nix sandbox, which is off by default on macOS (`sandbox = true` in nix.conf,
+or `--option sandbox true` as a trusted user); `--rebuild` rechecks a receipt.
+
+Exposed systems: `aarch64-darwin`, `x86_64-linux`, `aarch64-linux`, and
+`x86_64-darwin`. Only `aarch64-darwin` has been built and tested; the other
+systems are evaluated by `nix flake check --all-systems --no-build`. bertie-tls's
+current `scripts/verify-fstar.py` runs unmodified inside `coverageTotals`.
+
 ## Limitations
 
 The identifier graph and source sizes are approximate. Inline cfg/platform source

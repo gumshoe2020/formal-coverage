@@ -26,7 +26,9 @@ mod classify;
 mod dependencies;
 mod inputs;
 mod ship;
+pub mod shipped_tree;
 mod size;
+pub mod totals;
 use anyhow::{Context, Result};
 pub use classify::{analyze, analyze_target, analyze_with, Config, Dependency, Options, Override};
 pub use inputs::{migrate_config, todo_reason, DependencyRule, InputRecord, Rule, Ship};
@@ -195,6 +197,9 @@ pub struct Report {
     #[serde(default)]
     pub trusted_items: Vec<evidence::TrustedItem>,
     pub upstream_claims: Vec<Claim>,
+    /// Present only when `--dependency-totals` receipts were given.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub shipped_tree: Option<shipped_tree::ShippedTree>,
 }
 #[derive(Deserialize)]
 struct Metadata {
@@ -435,7 +440,7 @@ pub fn inventory(root: &Path) -> Result<Report> {
         .collect();
     let dependency_inventory_complete = declared_external_dependencies.is_empty();
     units.sort_by(|a, b| (&a.file, a.line, &a.id).cmp(&(&b.file, b.line, &b.id)));
-    Ok(Report { ship: None, not_shipped: vec![], proof_ratio_range: ProofRatioRange::default(), no_proof_ratio_gate: false, unparseable_files, unknown_hax_paths: vec![], ghost_lines: GhostLines::default(), schema: REPORT_SCHEMA, size_mode: String::new(), size_profile: String::new(), binary_sha256: None, size_fallbacks: vec![], approximation: "Syntactic token inventory; includes cfg-disabled functions and Verus ghost/spec code. Security classification pending.".into(), units, source_files: source_files.into_iter().collect(), security_relevant: 0, everything_else: 0, overrides: vec![], config_schema: 0, inputs: vec![], dependencies: vec![], build_dependencies: vec![], dev_dependencies_excluded: 0, closure: String::new(), closure_reason: None, target: String::new(), cargo_version: String::new(), declared_external_dependencies, dependency_inventory_complete, warnings: vec![], evidence_runs: vec![], fstar_definitions: vec![], fstar_proof: fstar_proof::ProofState::default(), fstar_extraction: fstar::ExtractionConfig::default(), non_fstar_trust: vec![], escape_hatches: path_hazards, trusted_items: vec![], upstream_claims: vec![] })
+    Ok(Report { ship: None, not_shipped: vec![], proof_ratio_range: ProofRatioRange::default(), no_proof_ratio_gate: false, unparseable_files, unknown_hax_paths: vec![], ghost_lines: GhostLines::default(), schema: REPORT_SCHEMA, size_mode: String::new(), size_profile: String::new(), binary_sha256: None, size_fallbacks: vec![], approximation: "Syntactic token inventory; includes cfg-disabled functions and Verus ghost/spec code. Security classification pending.".into(), units, source_files: source_files.into_iter().collect(), security_relevant: 0, everything_else: 0, overrides: vec![], config_schema: 0, inputs: vec![], dependencies: vec![], build_dependencies: vec![], dev_dependencies_excluded: 0, closure: String::new(), closure_reason: None, target: String::new(), cargo_version: String::new(), declared_external_dependencies, dependency_inventory_complete, warnings: vec![], evidence_runs: vec![], fstar_definitions: vec![], fstar_proof: fstar_proof::ProofState::default(), fstar_extraction: fstar::ExtractionConfig::default(), non_fstar_trust: vec![], escape_hatches: path_hazards, trusted_items: vec![], upstream_claims: vec![], shipped_tree: None })
 }
 /// Module files of every workspace member, followed from every target root.
 /// A `#[path]` may load a file another member measures, so the measured set

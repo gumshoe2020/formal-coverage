@@ -41,6 +41,18 @@ struct Input {
     json: Option<PathBuf>,
     #[arg(long)]
     markdown: Option<PathBuf>,
+    /// Replace `[ship] features` for this run (comma-separated).
+    #[arg(long, value_delimiter = ',')]
+    ship_features: Option<Vec<String>>,
+    /// Line-total receipts of dependencies, counted in the Shipped tree section.
+    #[arg(long, num_args = 1..)]
+    dependency_totals: Vec<PathBuf>,
+    /// Write a line-total receipt for the single `[ship]` package.
+    #[arg(long, requires = "totals_source")]
+    totals_json: Option<PathBuf>,
+    /// The measured package's exact source: git+URL#FULL-REV or checksum:SHA256.
+    #[arg(long, requires = "totals_json")]
+    totals_source: Option<String>,
 }
 #[derive(Subcommand)]
 enum Commands {
@@ -96,6 +108,7 @@ fn run(input: &Input) -> anyhow::Result<formal_coverage::Report> {
             size_mode: input.size_mode,
             binary: input.binary.clone(),
             check_target_dir: input.check_target_dir.clone(),
+            ship_features: input.ship_features.clone(),
         },
     )?;
     formal_coverage::apply_evidence_many(
@@ -119,6 +132,13 @@ fn run(input: &Input) -> anyhow::Result<formal_coverage::Report> {
         formal_coverage::apply_fstar_evidence(&mut report, &input.workspace_dir, &input.fstar_log)?;
         String::new()
     };
+    if !input.dependency_totals.is_empty() {
+        formal_coverage::shipped_tree::apply(
+            &mut report,
+            &input.workspace_dir,
+            &input.dependency_totals,
+        )?;
+    }
     let json = serde_json::to_value(&report)?;
     let mut document = json.as_object().unwrap().clone();
     document.insert(
@@ -133,8 +153,12 @@ fn run(input: &Input) -> anyhow::Result<formal_coverage::Report> {
         "summary_default_rules".into(),
         serde_json::to_value(formal_coverage::summarize_default_rules(&report))?,
     );
+    let report_json = serde_json::to_string_pretty(&document)?;
     if let Some(path) = &input.json {
-        std::fs::write(path, serde_json::to_string_pretty(&document)?)?;
+        std::fs::write(path, &report_json)?;
+    }
+    if let Some(path) = &input.totals_json {
+        write_totals(&report, input, report_json.as_bytes(), path)?;
     }
     let md = formal_coverage::markdown(&report) + &provenance;
     if let Some(path) = &input.markdown {
@@ -142,6 +166,18 @@ fn run(input: &Input) -> anyhow::Result<formal_coverage::Report> {
     }
     println!("{md}");
     Ok(report)
+}
+fn write_totals(
+    report: &formal_coverage::Report,
+    input: &Input,
+    report_json: &[u8],
+    path: &std::path::Path,
+) -> anyhow::Result<()> {
+    use formal_coverage::totals;
+    let source = totals::parse_source(input.totals_source.as_deref().unwrap_or_default())?;
+    let receipt = totals::receipt(report, &input.workspace_dir, &source, report_json)?;
+    std::fs::write(path, totals::to_bytes(&receipt)?)?;
+    Ok(())
 }
 fn main() -> anyhow::Result<()> {
     match Cli::parse().command {
